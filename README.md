@@ -317,29 +317,56 @@ npm run tunnel  # Exposes localhost:3847 via localtunnel
 
 ## Roadmap
 
-### Now: Software Factory
-Autonomous PR review, CI debugging, security patching, incident response. Cron agents expand the ProductRank knowledge graph daily.
+At its core, this is **container management running different automation tasks per system**. Each new system we onboard is the same problem — isolated containers, cron schedules, verification loops, governance — just with different agents and different data. Every system we add compounds the value of the shared infrastructure.
 
-**Key metric:** Agent-written PRs as % of total PRs
+### Phase 1: ProductRank Uptime + Graph Growth
+Stand up the factory to ensure ProductRank reliability. CI debugging catches regressions, PR review maintains code quality, security patching keeps dependencies clean. Cron agents grow the knowledge graph daily — discovering tools, refreshing signals, detecting drift, backfilling profiles, testing integrations.
 
-### Next: Visa Claws
-Reuse factory infrastructure as backend for Visa's agentic commerce platform. Same agent patterns that review PRs can review transactions, flag fraud, automate compliance.
+**Containers:** 5 core agents (webhook-triggered) + 5 cron agents (scheduled)
+**Key metric:** ProductRank uptime + graph confidence scores trending toward 1.0
 
-**Key metric:** Infrastructure reuse ratio
+### Phase 2: General-Purpose Factory
+Extract the patterns that work for ProductRank and make them reusable. Same container orchestration, same governance, same verification loops — different repos, different agents. Any TypeScript/Node project can plug in PR review, CI debugging, and security patching with minimal config.
 
-### Then: Visa Network
-Expand from single-org to multi-org. Knowledge graph becomes shared data layer across the Visa partner network.
+**Containers:** Same core agents, parameterized per-repo
+**Key metric:** Time to onboard a new repo (target: <1 hour)
 
-**Key metric:** Graph coverage (% of developer tools with trusted profiles)
+### Phase 3: Visa Claws Reliability
+Apply the factory to Visa's agentic commerce platform. The same agents that review PRs can review transaction flows, the same CI debugger can diagnose payment pipeline failures, the same security patcher can respond to PCI compliance alerts. The governance layer already handles cost caps, audit trails, and blast radius — it just needs transaction-specific rules.
 
-| Component | Factory | Claws | Network |
-|-----------|---------|-------|---------|
-| Event Router | GitHub webhooks | Transaction events | Multi-org events |
-| Agent Runner | PR review, CI debug | Fraud detection, compliance | Cross-org analysis |
-| Governance | File/cost limits | Transaction limits | Org-level permissions |
-| Queue | Webhook processing | Transaction processing | Federated queues |
-| Audit Log | Agent actions | Compliance trail | Cross-org audit |
-| Knowledge Graph | Tool rankings | Merchant intelligence | Network intelligence |
+**Containers:** Core agents + commerce-specific agents (transaction reviewer, compliance checker)
+**Key metric:** Mean time to detect + fix commerce pipeline issues
+
+### Phase 4: Marketplace Crawlers
+Deploy crawler agents that ensure we're always offering the best configurations, freshest prices, and working APIs across our marketplace. Same container infrastructure — just different cron schedules and different data targets. Drift detection catches stale pricing, signal harvesting refreshes API status, integration testing verifies endpoints actually work.
+
+**Containers:** Pricing crawlers, API health checkers, config validators, deal scrapers
+**Key metric:** Data freshness (% of products with pricing updated in last 7 days)
+
+### The Compounding Effect
+
+```
+Phase 1: ProductRank    → Build the container orchestration + governance
+Phase 2: General        → Reuse for any repo (same infra, different agents)
+Phase 3: Visa Claws     → Reuse for commerce (same infra, different domain)
+Phase 4: Marketplace    → Reuse for data freshness (same infra, different targets)
+```
+
+Each phase adds ~2-5 new agent types but reuses 100% of:
+- Container management (sandbox creation, warm pools, teardown)
+- Queue infrastructure (BullMQ dispatch, retry logic, dead letter)
+- Governance (permissions, cost caps, audit trails, blast radius)
+- Verification loops (verifiers, LLM judge, bounded retries)
+- Entry points (webhooks, cron, Slack, CLI)
+
+| Component | ProductRank | General | Visa Claws | Marketplace |
+|-----------|-------------|---------|------------|-------------|
+| Event Router | GitHub webhooks | GitHub webhooks | Transaction events | Cron schedules |
+| Agents | PR review, CI debug, graph crons | PR review, CI debug, security | Transaction review, compliance | Price crawlers, API health |
+| Governance | File/cost limits | Per-repo limits | PCI compliance rules | Rate limits, budget caps |
+| Queue | Webhook + cron processing | Same | Transaction processing | Crawl scheduling |
+| Audit Log | Agent actions | Agent actions | Compliance trail | Data lineage |
+| Data Target | Knowledge graph (Supabase) | Target repo | Payment flows | Product catalog |
 
 ---
 
