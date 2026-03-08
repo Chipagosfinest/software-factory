@@ -1,0 +1,32 @@
+{
+  "action": "opened",
+  "number": 42,
+  "pull_request": {
+    "number": 42,
+    "title": "feat: add user authentication",
+    "body": "Implements JWT-based authentication with refresh tokens.",
+    "draft": false,
+    "head": {
+      "ref": "feature/auth",
+      "sha": "abc123def456"
+    },
+    "base": {
+      "ref": "main",
+      "sha": "def456abc789"
+    },
+    "user": {
+      "login": "alecgutman"
+    },
+    "labels": []
+  },
+  "repository": {
+    "name": "my-app",
+    "owner": {
+      "login": "alecgutman"
+    },
+    "default_branch": "main"
+  },
+  "installation": {
+    "id": 12345
+  }
+}

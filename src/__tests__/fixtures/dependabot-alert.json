@@ -1,0 +1,30 @@
+{
+  "action": "created",
+  "alert": {
+    "number": 7,
+    "security_vulnerability": {
+      "severity": "high",
+      "package": {
+        "name": "lodash"
+      },
+      "vulnerable_version_range": "< 4.17.21",
+      "first_patched_version": {
+        "identifier": "4.17.21"
+      }
+    },
+    "security_advisory": {
+      "cve_id": "CVE-2021-23337",
+      "summary": "Prototype Pollution in lodash"
+    }
+  },
+  "repository": {
+    "name": "my-app",
+    "owner": {
+      "login": "alecgutman"
+    },
+    "default_branch": "main"
+  },
+  "installation": {
+    "id": 12345
+  }
+}

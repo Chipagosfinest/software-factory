@@ -1,0 +1,41 @@
+{
+  "action": "completed",
+  "check_suite": {
+    "id": 98765,
+    "conclusion": "failure",
+    "head_sha": "abc123def456",
+    "head_branch": "feature/auth",
+    "check_runs": [
+      {
+        "id": 11111,
+        "name": "build",
+        "conclusion": "success",
+        "output": {
+          "title": "Build",
+          "summary": "Build succeeded",
+          "text": null
+        }
+      },
+      {
+        "id": 22222,
+        "name": "test",
+        "conclusion": "failure",
+        "output": {
+          "title": "Tests",
+          "summary": "2 tests failed",
+          "text": "FAIL src/auth.test.ts\n  Auth middleware\n    ✕ should reject expired tokens (12ms)\n    ✕ should handle missing Authorization header (3ms)\n\nError: Expected status 401 but received 500"
+        }
+      }
+    ]
+  },
+  "repository": {
+    "name": "my-app",
+    "owner": {
+      "login": "alecgutman"
+    },
+    "default_branch": "main"
+  },
+  "installation": {
+    "id": 12345
+  }
+}
