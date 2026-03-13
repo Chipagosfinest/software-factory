@@ -208,4 +208,7 @@ export const FactoryCircuitBreakers = {
   get github() {
     return CircuitBreakerRegistry.get('github', { failureThreshold: 5, resetTimeoutMs: 120_000 })
   },
+  get linear() {
+    return CircuitBreakerRegistry.get('linear', { failureThreshold: 3, resetTimeoutMs: 60_000 })
+  },
 }

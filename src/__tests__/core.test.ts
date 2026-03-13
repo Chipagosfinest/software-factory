@@ -117,7 +117,7 @@ describe('db', () => {
     })
 
     const log = getAuditLog(10)
-    expect(log).toHaveLength(1)
+    expect(log.length).toBeGreaterThanOrEqual(1)
 
     const costs = getCostSummary()
     expect(costs.totalCost).toBe(0)

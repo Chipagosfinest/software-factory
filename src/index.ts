@@ -7,6 +7,8 @@ import { startWorker } from './queue/worker.js'
 import { startCronScheduler, triggerCron } from './core/scheduler.js'
 import { getAuditLog, getAgentRuns, getCostSummary } from './core/db.js'
 import { getFlywheelMetrics } from './core/flywheel.js'
+import { startOrchestrator, stopOrchestrator, getOrchestratorStatus } from './orchestrator/orchestrator.js'
+import { getOrchestratorMetrics } from './core/db.js'
 import type { AgentType } from './types.js'
 
 const app = new Hono()
@@ -89,6 +91,27 @@ app.get('/graph/metrics', async (c) => {
   }
 })
 
+// ─── Orchestrator endpoints ─────────────────────────────────
+
+app.get('/orchestrator/status', (c) => {
+  return c.json(getOrchestratorStatus())
+})
+
+app.get('/orchestrator/tasks', (c) => {
+  const metrics = getOrchestratorMetrics()
+  return c.json(metrics)
+})
+
+app.post('/orchestrator/start', async (c) => {
+  await startOrchestrator()
+  return c.json({ status: 'started' })
+})
+
+app.post('/orchestrator/stop', (c) => {
+  stopOrchestrator()
+  return c.json({ status: 'stopped' })
+})
+
 const port = parseInt(process.env.PORT || '3847')
 
 console.log(`Software Factory starting on port ${port}`)
@@ -99,6 +122,11 @@ startWorker()
 // Start cron scheduler (only if Redis is available)
 startCronScheduler().catch((err) => {
   console.warn('[startup] Cron scheduler failed to start (Redis may not be running):', err.message)
+})
+
+// Start orchestrator (Symphony-style reconciliation loop)
+startOrchestrator().catch((err) => {
+  console.warn('[startup] Orchestrator failed to start:', err.message)
 })
 
 serve({ fetch: app.fetch, port }, (info) => {

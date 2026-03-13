@@ -51,6 +51,14 @@ export async function chat(request: LLMRequest): Promise<LLMResponse> {
     throw result.error || new Error('LLM call failed')
   }
 
+  // Track cost for all calls, not just chatJson
+  recordCost({
+    model: result.data.model,
+    promptTokens: result.data.usage.promptTokens,
+    completionTokens: result.data.usage.completionTokens,
+    costUsd: result.data.costUsd,
+  })
+
   return result.data
 }
 

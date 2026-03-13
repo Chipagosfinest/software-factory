@@ -194,3 +194,84 @@ export interface JudgeVerdict {
   issues: string[]
   reasoning: string
 }
+
+// ─── Orchestrator (Symphony-style) ──────────────────────────
+
+export type TaskStatus = 'unclaimed' | 'claimed' | 'running' | 'retry_queued' | 'released' | 'completed' | 'failed'
+
+export interface OrchestratorTask {
+  id: string                    // Linear issue ID or internal UUID
+  externalId?: string           // Linear issue identifier (e.g., "SF-42")
+  title: string
+  description: string
+  status: TaskStatus
+  agentType: AgentType
+  repo: RepoRef
+  workspace?: WorkspaceInfo
+  retryCount: number
+  maxRetries: number
+  lastError?: string
+  backoffUntil?: string         // ISO timestamp — don't retry before this
+  createdAt: string
+  claimedAt?: string
+  startedAt?: string
+  completedAt?: string
+  resultPrUrl?: string          // URL of the PR created by the agent
+  costUsd: number
+  labels: string[]
+  source: 'linear' | 'github' | 'manual'
+}
+
+export interface WorkspaceInfo {
+  worktreePath: string          // Absolute path to the git worktree
+  branch: string                // Branch name for this workspace
+  baseBranch: string            // Branch to base work on (usually main)
+  repoPath: string              // Path to the main repo
+  createdAt: string
+}
+
+export interface WorkflowConfig {
+  agents: Record<string, WorkflowAgentConfig>
+  defaults: {
+    maxRetries: number
+    timeoutMinutes: number
+    model?: string
+  }
+  labels: {
+    autoAssign: string[]        // Linear labels that auto-assign to factory
+    ignore: string[]            // Labels to skip
+  }
+}
+
+export interface WorkflowAgentConfig {
+  enabled: boolean
+  model?: string
+  timeoutMinutes?: number
+  maxRetries?: number
+  prompt?: string               // Override prompt path
+  allowedPaths?: string[]       // Restrict file access
+}
+
+export interface LinearIssue {
+  id: string
+  identifier: string            // e.g., "SF-42"
+  title: string
+  description: string
+  state: { name: string; type: string }
+  labels: { name: string }[]
+  assignee?: { name: string }
+  project?: { name: string }
+  url: string
+  createdAt: string
+  updatedAt: string
+}
+
+export interface OrchestratorMetrics {
+  activeTasks: number
+  completedToday: number
+  failedToday: number
+  retryQueueDepth: number
+  avgCompletionMinutes: number
+  totalCostToday: number
+  tasksByStatus: Record<TaskStatus, number>
+}
