@@ -18,16 +18,15 @@ const DEFAULT_OPTIONS: OrchestratorOptions = {
 }
 
 let _running = false
-let _timer: ReturnType<typeof setInterval> | null = null
 let _tickCount = 0
+let _consecutiveFailures = 0
+const MAX_CONSECUTIVE_FAILURES = 5
 
 /**
  * Start the orchestrator polling loop.
  *
- * This is the Symphony-style reconciliation daemon. Every tick:
- * 1. Poll Linear for new factory-labeled issues
- * 2. Run the reconciler to process state transitions
- * 3. Log metrics
+ * Uses serial setTimeout (not setInterval) to prevent tick overlap.
+ * Each tick completes before the next one starts.
  */
 export async function startOrchestrator(opts?: Partial<OrchestratorOptions>): Promise<void> {
   const options = { ...DEFAULT_OPTIONS, ...opts }
@@ -47,19 +46,35 @@ export async function startOrchestrator(opts?: Partial<OrchestratorOptions>): Pr
   }
 
   _running = true
+  _consecutiveFailures = 0
   console.log(`[orchestrator] Starting with ${options.pollIntervalMs}ms poll interval`)
 
-  // Initial tick
-  await tick(options)
+  // Serial loop — each tick completes before scheduling the next
+  const loop = async () => {
+    while (_running) {
+      try {
+        await tick(options)
+        _consecutiveFailures = 0
+      } catch (error) {
+        _consecutiveFailures++
+        console.error(`[orchestrator] Tick failed (${_consecutiveFailures}/${MAX_CONSECUTIVE_FAILURES}):`, error)
 
-  // Set up recurring poll
-  _timer = setInterval(async () => {
-    try {
-      await tick(options)
-    } catch (error) {
-      console.error('[orchestrator] Tick failed:', error)
+        if (_consecutiveFailures >= MAX_CONSECUTIVE_FAILURES) {
+          console.error(`[orchestrator] ${MAX_CONSECUTIVE_FAILURES} consecutive failures — auto-stopping`)
+          _running = false
+          break
+        }
+      }
+
+      // Wait before next tick (only if still running)
+      if (_running) {
+        await new Promise(resolve => setTimeout(resolve, options.pollIntervalMs))
+      }
     }
-  }, options.pollIntervalMs)
+  }
+
+  // Run loop in background (don't await — let startOrchestrator return)
+  loop().catch(err => console.error('[orchestrator] Loop crashed:', err))
 }
 
 async function tick(options: OrchestratorOptions): Promise<void> {
@@ -93,10 +108,6 @@ async function tick(options: OrchestratorOptions): Promise<void> {
 
 /** Stop the orchestrator loop */
 export function stopOrchestrator(): void {
-  if (_timer) {
-    clearInterval(_timer)
-    _timer = null
-  }
   _running = false
   console.log('[orchestrator] Stopped')
 }

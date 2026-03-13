@@ -20,8 +20,7 @@ const DEFAULT_CONFIG: WorkflowConfig = {
   },
 }
 
-let _cachedConfig: WorkflowConfig | null = null
-let _cachedMtime: number = 0
+const _cache = new Map<string, { config: WorkflowConfig; mtime: number }>()
 
 /**
  * Parse WORKFLOW.md from a repo directory.
@@ -54,17 +53,17 @@ export function parseWorkflowConfig(repoPath: string): WorkflowConfig {
     return { ...DEFAULT_CONFIG }
   }
 
-  // Hot-reload: only re-parse if file changed
+  // Hot-reload: only re-parse if file changed (keyed by repoPath)
   const mtime = statSync(workflowPath).mtimeMs
-  if (_cachedConfig && mtime === _cachedMtime) {
-    return _cachedConfig
+  const cached = _cache.get(repoPath)
+  if (cached && mtime === cached.mtime) {
+    return cached.config
   }
 
   const content = readFileSync(workflowPath, 'utf-8')
   const config = parseYamlFrontMatter(content)
 
-  _cachedConfig = config
-  _cachedMtime = mtime
+  _cache.set(repoPath, { config, mtime })
 
   return config
 }
@@ -159,6 +158,5 @@ export function getWorkflowInstructions(repoPath: string): string {
 
 /** Invalidate the cached config (for testing) */
 export function invalidateCache(): void {
-  _cachedConfig = null
-  _cachedMtime = 0
+  _cache.clear()
 }

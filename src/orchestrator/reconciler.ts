@@ -1,7 +1,7 @@
 import { randomUUID } from 'crypto'
 import type { AgentType, LinearIssue, OrchestratorTask, RepoRef } from '../types.js'
 import { taskStateMachine } from './state.js'
-import { createWorkspace, removeWorkspace, cleanupStaleWorkspaces } from './workspace.js'
+import { createWorkspace, removeWorkspace, cleanupStaleWorkspaces, getRepoPathForRef } from './workspace.js'
 import { parseWorkflowConfig } from './workflow.js'
 import { upsertTask, getTasksByStatus, getTaskByExternalId, getTaskById, getActiveTaskIds, recordAudit } from '../core/db.js'
 import { enqueueEvent } from '../queue/queue.js'
@@ -184,12 +184,20 @@ export function completeTask(taskId: string, prUrl?: string): void {
     return
   }
 
-  if (task.status !== 'running') {
+  // Allow completing from 'running' or 'retry_queued' (handles stall detection race)
+  if (task.status !== 'running' && task.status !== 'retry_queued') {
     console.warn(`[reconciler] Cannot complete task ${taskId} in status ${task.status}`)
     return
   }
 
-  const completed = taskStateMachine.transition(task, 'completed')
+  // If in retry_queued, transition back to running first, then complete
+  let current = task
+  if (current.status === 'retry_queued') {
+    current = taskStateMachine.transition(current, 'claimed')
+    current = taskStateMachine.transition(current, 'running')
+  }
+
+  const completed = taskStateMachine.transition(current, 'completed')
   completed.resultPrUrl = prUrl
   persistTask(completed)
 
@@ -320,6 +328,11 @@ function loadTaskById(id: string): OrchestratorTask | null {
   return row ? rowToTask(row) : null
 }
 
+function safeParseJson<T>(json: string | null | undefined, fallback: T): T {
+  if (!json) return fallback
+  try { return JSON.parse(json) } catch { return fallback }
+}
+
 function rowToTask(row: any): OrchestratorTask {
   return {
     id: row.id,
@@ -338,7 +351,8 @@ function rowToTask(row: any): OrchestratorTask {
       worktreePath: row.workspace_path,
       branch: row.workspace_branch ?? '',
       baseBranch: row.repo_default_branch ?? 'main',
-      repoPath: '',
+      // Reconstruct repoPath deterministically from repo ref (survives restart)
+      repoPath: getRepoPathForRef({ owner: row.repo_owner, repo: row.repo_name, defaultBranch: row.repo_default_branch ?? 'main', installationId: 0 }),
       createdAt: row.claimed_at ?? '',
     } : undefined,
     retryCount: row.retry_count ?? 0,
@@ -351,7 +365,7 @@ function rowToTask(row: any): OrchestratorTask {
     completedAt: row.completed_at ?? undefined,
     resultPrUrl: row.result_pr_url ?? undefined,
     costUsd: row.cost_usd ?? 0,
-    labels: JSON.parse(row.labels_json ?? '[]'),
+    labels: safeParseJson(row.labels_json, []),
     source: row.source ?? 'manual',
   }
 }

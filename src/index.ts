@@ -129,7 +129,7 @@ startOrchestrator().catch((err) => {
   console.warn('[startup] Orchestrator failed to start:', err.message)
 })
 
-serve({ fetch: app.fetch, port }, (info) => {
+const server = serve({ fetch: app.fetch, port }, (info) => {
   console.log(`Listening on http://localhost:${info.port}`)
   console.log(`Webhook URL: POST /webhook/github`)
   console.log(`Health: GET /health`)
@@ -137,4 +137,23 @@ serve({ fetch: app.fetch, port }, (info) => {
   console.log(`Runs: GET /runs`)
   console.log(`Costs: GET /costs`)
   console.log(`Graph: GET /graph/metrics`)
+  console.log(`Orchestrator: GET /orchestrator/status`)
 })
+
+// Graceful shutdown handler
+function shutdown(signal: string) {
+  console.log(`[shutdown] Received ${signal}, shutting down gracefully...`)
+  stopOrchestrator()
+  server.close(() => {
+    console.log('[shutdown] Server closed')
+    process.exit(0)
+  })
+  // Force exit after 10s if graceful shutdown hangs
+  setTimeout(() => {
+    console.error('[shutdown] Forced exit after 10s timeout')
+    process.exit(1)
+  }, 10_000)
+}
+
+process.on('SIGTERM', () => shutdown('SIGTERM'))
+process.on('SIGINT', () => shutdown('SIGINT'))

@@ -1,9 +1,10 @@
 import { execSync, execFileSync } from 'child_process'
-import { existsSync, mkdirSync, rmSync } from 'fs'
+import { existsSync, mkdirSync, rmSync, readdirSync } from 'fs'
 import { resolve, join } from 'path'
 import type { WorkspaceInfo, RepoRef } from '../types.js'
 
 const WORKSPACE_ROOT = process.env.WORKSPACE_ROOT || resolve(process.cwd(), '.workspaces')
+const MAX_CONCURRENT_WORKSPACES = parseInt(process.env.MAX_CONCURRENT_WORKSPACES || '5')
 
 /** Ensure the workspace root directory exists */
 function ensureRoot(): void {
@@ -12,27 +13,61 @@ function ensureRoot(): void {
   }
 }
 
-/** Clone or find the main repo locally */
+/** Validate repo is on the allowlist (prevents arbitrary repo clone attacks) */
+function isRepoAllowed(repo: RepoRef): boolean {
+  const allowlist = process.env.ALLOWED_REPOS
+  if (!allowlist) return true  // No allowlist = allow all (dev mode)
+
+  const allowed = new Set(allowlist.split(',').map(r => r.trim().toLowerCase()))
+  return allowed.has(`${repo.owner}/${repo.repo}`.toLowerCase())
+}
+
+/** Clone or find the main repo locally. Strips credentials after clone. */
 function getRepoPath(repo: RepoRef): string {
   const repoDir = join(WORKSPACE_ROOT, '_repos', `${repo.owner}--${repo.repo}`)
 
   if (existsSync(join(repoDir, '.git'))) {
-    // Fetch latest
-    execSync('git fetch origin', { cwd: repoDir, stdio: 'pipe', timeout: 30_000 })
+    execFileSync('git', ['fetch', 'origin'], { cwd: repoDir, stdio: 'pipe', timeout: 30_000 })
     return repoDir
   }
 
-  // Clone fresh
   mkdirSync(join(WORKSPACE_ROOT, '_repos'), { recursive: true })
-  const cloneUrl = `https://x-access-token:${process.env.GITHUB_TOKEN}@github.com/${repo.owner}/${repo.repo}.git`
-  execSync(`git clone ${cloneUrl} "${repoDir}"`, { stdio: 'pipe', timeout: 120_000 })
+
+  // Clone with token in URL, then strip it from the stored remote
+  const token = process.env.GITHUB_TOKEN || ''
+  const cloneUrl = token
+    ? `https://x-access-token:${token}@github.com/${repo.owner}/${repo.repo}.git`
+    : `https://github.com/${repo.owner}/${repo.repo}.git`
+
+  execFileSync('git', ['clone', cloneUrl, repoDir], { stdio: 'pipe', timeout: 120_000 })
+
+  // Strip credentials from stored remote URL (security: prevents token leakage)
+  const cleanUrl = `https://github.com/${repo.owner}/${repo.repo}.git`
+  execFileSync('git', ['remote', 'set-url', 'origin', cleanUrl], { cwd: repoDir, stdio: 'pipe' })
 
   return repoDir
+}
+
+/** Deterministically reconstruct repoPath from repo ref (for restart recovery) */
+export function getRepoPathForRef(repo: RepoRef): string {
+  return join(WORKSPACE_ROOT, '_repos', `${repo.owner}--${repo.repo}`)
 }
 
 /** Create an isolated git worktree for a task */
 export function createWorkspace(taskId: string, repo: RepoRef, baseBranch?: string): WorkspaceInfo {
   ensureRoot()
+
+  // Security: validate repo is allowed
+  if (!isRepoAllowed(repo)) {
+    throw new Error(`Repository ${repo.owner}/${repo.repo} not in ALLOWED_REPOS allowlist`)
+  }
+
+  // Backpressure: limit concurrent workspaces
+  const currentCount = countActiveWorkspaces()
+  if (currentCount >= MAX_CONCURRENT_WORKSPACES) {
+    throw new Error(`Max concurrent workspaces (${MAX_CONCURRENT_WORKSPACES}) reached. Current: ${currentCount}`)
+  }
+
   const repoPath = getRepoPath(repo)
   const base = baseBranch || repo.defaultBranch || 'main'
 
@@ -46,7 +81,14 @@ export function createWorkspace(taskId: string, repo: RepoRef, baseBranch?: stri
     removeWorkspace(worktreePath, repoPath)
   }
 
-  // Create worktree from the base branch (use execFileSync to prevent injection)
+  // Delete branch if it exists from a previous attempt (fixes retry collision)
+  try {
+    execFileSync('git', ['branch', '-D', branch], { cwd: repoPath, stdio: 'pipe' })
+  } catch {
+    // Branch doesn't exist — expected on first attempt
+  }
+
+  // Create worktree from the base branch
   execFileSync('git', ['worktree', 'add', '-b', branch, worktreePath, `origin/${base}`], {
     cwd: repoPath,
     stdio: 'pipe',
@@ -64,22 +106,30 @@ export function createWorkspace(taskId: string, repo: RepoRef, baseBranch?: stri
 
 /** Remove a workspace and its worktree */
 export function removeWorkspace(worktreePath: string, repoPath: string): void {
+  if (!repoPath || !existsSync(repoPath)) {
+    // repoPath unknown or missing — just delete the directory
+    if (existsSync(worktreePath)) {
+      rmSync(worktreePath, { recursive: true, force: true })
+      console.warn(`[workspace] Force-deleted ${worktreePath} (no repoPath)`)
+    }
+    return
+  }
+
   try {
-    execSync(`git worktree remove "${worktreePath}" --force`, {
+    execFileSync('git', ['worktree', 'remove', worktreePath, '--force'], {
       cwd: repoPath,
       stdio: 'pipe',
       timeout: 15_000,
     })
-  } catch {
-    // Force remove if worktree command fails
+  } catch (err) {
+    console.warn(`[workspace] git worktree remove failed for ${worktreePath}: ${err instanceof Error ? err.message : err}`)
     if (existsSync(worktreePath)) {
       rmSync(worktreePath, { recursive: true, force: true })
     }
-    // Prune stale worktree references
     try {
-      execSync('git worktree prune', { cwd: repoPath, stdio: 'pipe' })
+      execFileSync('git', ['worktree', 'prune'], { cwd: repoPath, stdio: 'pipe' })
     } catch {
-      // ignore
+      // ignore prune errors
     }
   }
 }
@@ -95,7 +145,7 @@ export function pushWorkspace(workspace: WorkspaceInfo): void {
 
 /** List all active worktrees for a repo */
 export function listWorkspaces(repoPath: string): string[] {
-  const output = execSync('git worktree list --porcelain', {
+  const output = execFileSync('git', ['worktree', 'list', '--porcelain'], {
     cwd: repoPath,
     encoding: 'utf-8',
     timeout: 10_000,
@@ -110,7 +160,7 @@ export function listWorkspaces(repoPath: string): string[] {
 
 /** Check if a workspace has uncommitted changes */
 export function hasChanges(worktreePath: string): boolean {
-  const status = execSync('git status --porcelain', {
+  const status = execFileSync('git', ['status', '--porcelain'], {
     cwd: worktreePath,
     encoding: 'utf-8',
     timeout: 10_000,
@@ -134,27 +184,41 @@ export function commitChanges(worktreePath: string, message: string): string {
   }).trim()
 }
 
+/** Count current workspace directories (excluding _repos) */
+function countActiveWorkspaces(): number {
+  ensureRoot()
+  if (!existsSync(WORKSPACE_ROOT)) return 0
+  try {
+    return readdirSync(WORKSPACE_ROOT).filter(e => e !== '_repos').length
+  } catch {
+    return 0
+  }
+}
+
 /** Cleanup all stale workspaces (no running tasks) */
 export function cleanupStaleWorkspaces(activeTaskIds: Set<string>): number {
   ensureRoot()
   let cleaned = 0
-
   if (!existsSync(WORKSPACE_ROOT)) return 0
 
-  const entries = execSync(`ls -1 "${WORKSPACE_ROOT}"`, {
-    encoding: 'utf-8',
-    timeout: 5_000,
-  }).trim().split('\n').filter(Boolean)
+  let entries: string[]
+  try {
+    entries = readdirSync(WORKSPACE_ROOT).filter(Boolean)
+  } catch {
+    return 0
+  }
 
   for (const entry of entries) {
-    if (entry === '_repos') continue  // skip repo cache
+    if (entry === '_repos') continue
+    // Match against sanitized task IDs (same transform as createWorkspace)
     if (!activeTaskIds.has(entry)) {
       const path = join(WORKSPACE_ROOT, entry)
       try {
         rmSync(path, { recursive: true, force: true })
         cleaned++
-      } catch {
-        // ignore cleanup errors
+        console.log(`[workspace] Cleaned stale workspace: ${entry}`)
+      } catch (err) {
+        console.warn(`[workspace] Failed to clean ${entry}: ${err instanceof Error ? err.message : err}`)
       }
     }
   }

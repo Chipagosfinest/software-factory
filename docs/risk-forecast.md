@@ -1,27 +1,41 @@
 # Risk Forecast — First 30 Days of Operation
 
-This document forecasts problems you'll encounter running autonomous agents for the first time, with severity ratings and specific mitigations. Updated continuously as the system evolves.
+This document forecasts problems you'll encounter running autonomous agents for the first time. Based on audits from three specialized agents: **Security Engineer**, **Staff SRE**, and **Cost Analyst**.
 
 ---
 
-## Cost Risks
+## Fixed Issues (Applied in This PR)
 
-### P0 — Fixed: `chat()` Now Tracks Costs
-**What:** The `chat()` function in `llm.ts` was not calling `recordCost()`, meaning any LLM call not going through `chatJson()` was invisible to budget tracking.
-**Status:** Fixed. All LLM calls now record costs.
+| # | Issue | Severity | Fix |
+|---|-------|----------|-----|
+| 1 | `chat()` didn't track costs — invisible LLM spend | P0 | Added `recordCost()` to `chat()` in `llm.ts` |
+| 2 | No global daily spend cap — 100 events × $2 = $200/day | P0 | `checkGlobalDailyBudget()` in `budget-guard.ts`, $20 default |
+| 3 | Command injection via `execSync` with user-controlled input | P0 | All git ops use `execFileSync` with array args |
+| 4 | GitHub token persisted in `.git/config` after clone | P0 | `git remote set-url` strips credentials post-clone |
+| 5 | Arbitrary repo clone via Linear issue injection | P0 | `ALLOWED_REPOS` allowlist in `workspace.ts` |
+| 6 | `setInterval` tick overlap — concurrent reconciliation | P0 | Replaced with serial `while` loop + `setTimeout` |
+| 7 | `repoPath` lost on process restart — empty string | P0 | Deterministic reconstruction via `getRepoPathForRef()` |
+| 8 | Git branch collision on retry — `branch already exists` | P1 | `git branch -D` before creating worktree |
+| 9 | Stall detection race — agent completes while marked stalled | P1 | `completeTask()` accepts `retry_queued` status |
+| 10 | No graceful shutdown — orphaned state on deploy | P1 | `SIGTERM`/`SIGINT` handlers call `stopOrchestrator()` |
+| 11 | SQLite BUSY under concurrent writers | P2 | `busy_timeout = 5000` pragma |
+| 12 | Linear API key missing Bearer prefix | P2 | Fixed `Authorization: Bearer ${key}` |
+| 13 | Workflow config cache global singleton | P2 | Keyed by `repoPath` in a `Map` |
+| 14 | Unsafe JSON parse on DB rows | P2 | `safeParseJson()` with fallback |
+| 15 | No workspace backpressure | P2 | `MAX_CONCURRENT_WORKSPACES` limit (default 5) |
+| 16 | Consecutive tick failures silently ignored | P2 | Auto-stop after 5 consecutive failures |
 
-### P0 — Fixed: Global Daily Spend Cap Added
-**What:** Webhook agents had per-run caps ($2 each) but no daily aggregate. 100 webhook events × $2 = $200/day theoretical maximum.
-**Fix:** Added `checkGlobalDailyBudget()` in `budget-guard.ts`. Default cap: $20/day (configurable via `GLOBAL_DAILY_BUDGET_USD`). Enforced in `runner.ts` BEFORE agent execution.
+---
 
-### P0 — Per-Run Cost Limit is Post-Hoc
-**What:** `validateCost()` in `runner.ts` checks cost AFTER the agent finishes. A single agent run processing a massive PR could exceed $2 before anyone notices.
-**Mitigation:** Current context budget (100KB cap in `context.ts`) limits input tokens. The biggest realistic single-run cost is ~$0.13 (PR review with judge retry). Monitor — if runs start exceeding $0.50, add mid-run cost checking.
-**Severity:** Medium — unlikely to cause real damage given 100KB cap.
+## Remaining Risks (Monitor + Fix Later)
 
-### P1 — Retry Multiplication
-**What:** Each orchestrator task retries up to 2 times. Each retry is a full agent run. A task could cost 3× expected.
-**Mitigation:** Convergence detection in reconciler prevents retrying on identical errors. Max 2 retries caps worst case at ~$0.39/task.
+### Cost Risks
+
+**Per-run cost limit is post-hoc (P2)**
+`validateCost()` checks cost AFTER the agent finishes. A massive PR could exceed $2 before anyone notices. Mitigated by 100KB context budget — biggest realistic cost is ~$0.13.
+
+**Retry multiplication (P2)**
+Each task retries up to 2×. Convergence detection prevents identical-error retries. Worst case: ~$0.39/task.
 
 ### Daily Cost Projections
 
@@ -32,88 +46,63 @@ This document forecasts problems you'll encounter running autonomous agents for 
 | 100 tasks/day | ~$5.80 | ~$174 |
 | Cron agents | ~$0.30 | ~$9 |
 
-**Break-even:** 1 task/day. A single PR review costs ~$0.06 and saves ~15 minutes.
+**Break-even: 1 task/day.** A single PR review costs ~$0.06 and saves ~15 minutes.
+
+### Operational Risks
+
+**Redis dependency (P1 — Day 1)**
+BullMQ queue, worker, cron, orchestrator all depend on Redis. If not running, server starts but no agents execute. Health endpoint should verify Redis connection.
+
+**Missing env vars (P1 — Day 1)**
+No startup validation. Missing `OPENROUTER_API_KEY` = every agent fails silently. Add required env var checks before server listens.
+
+**GitHub rate limiting (P1 — Week 1)**
+`buildRepoContext()` makes 4-6 API calls per task. At burst rates, GitHub returns 403. Circuit breaker catches this but doesn't read `x-ratelimit-remaining` headers for proactive backoff.
+
+**Agent timeout is cosmetic (P2 — Week 1)**
+`Promise.race` in `runner.ts` rejects the handler promise, but the actual LLM calls keep running in the background, spending money and potentially creating PRs after the task is marked failed. Fix: pass `AbortSignal` to agent handlers.
+
+**No workspace sandboxing (P2 — structural)**
+Agents have full filesystem access in worktrees. LLM-as-Judge pattern provides some protection, but no true isolation. Docker sandboxes are the long-term fix (disabled, awaiting infra).
+
+**SQLite table growth (P3 — Month 1)**
+~300 rows/day, 9K/month, ~50MB/year. Add retention cron to prune >90 day records.
+
+**defaultBranch hardcoded to 'main' (P3 — Week 1)**
+Repos using `master` or custom default branches will fail on worktree creation. Query GitHub API or make configurable.
+
+**No alerting channel (P2 — Day 1)**
+Everything logs to stdout. Wire up Telegram/Discord notifications for task failures, cost overages, and health degradation.
+
+### Security Risks
+
+**WORKFLOW.md from untrusted repos (P2)**
+A cloned repo's WORKFLOW.md controls agent model, timeout, and retries. Combined with `ALLOWED_REPOS` (now fixed), this is mitigated. Additional clamp: validate numeric fields have sane maximums.
+
+**No workspace escape prevention (P2 — structural)**
+Agents can read `~/.ssh/`, `.env`, other worktrees. Mitigated by LLM-as-Judge (no arbitrary code execution). Docker sandboxes are the real fix.
+
+**Linear API key broad scope (P3)**
+API key accesses all teams/issues. Use Linear OAuth for production.
 
 ---
 
-## Operational Risks
+## Anti-Death-Spiral Protections
 
-### Day 1 Problems
-
-#### P1 — Redis Not Running
-**What:** BullMQ queue, worker, cron scheduler, and orchestrator all depend on Redis. If Redis isn't running on first deploy, you get silent failures.
-**Symptoms:** Server starts, webhooks return "dispatched", but no agents run.
-**Fix:** Health endpoint should check Redis connection. Current startup catches errors but doesn't surface them clearly.
-
-#### P1 — Missing Environment Variables
-**What:** No startup validation. Missing `OPENROUTER_API_KEY` = every agent fails. Missing `GITHUB_APP_ID` = all GitHub calls fail.
-**Fix:** Add startup checks that validate required env vars before the server listens.
-
-#### P2 — SQLite Path Permissions
-**What:** `DB_PATH=./software-factory.db` needs write access. In containerized deployments, the filesystem may be read-only.
-**Fix:** Use a volume mount or set `DB_PATH` to a writable location.
-
-### Week 1 Problems
-
-#### P1 — GitHub Rate Limiting
-**What:** `buildRepoContext()` makes 4-6 API calls per task. At burst rates, GitHub returns 403. The circuit breaker catches this but doesn't back off based on `x-ratelimit-remaining` headers.
-**Fix:** Add rate-limit-aware backoff to the GitHub client. Check remaining quota before making calls.
-
-#### P2 — Duplicate Events
-**What:** GitHub sends webhook retries if your server is slow to respond (>10s). Same event could be processed twice. `enqueueEvent()` uses event ID for idempotency, but if the queue job ID format differs, duplicates slip through.
-**Fix:** BullMQ job ID deduplication should be verified end-to-end.
-
-#### P2 — Stale Worktree Accumulation
-**What:** If the orchestrator crashes mid-reconciliation, worktrees for completed tasks may not be cleaned up.
-**Fix:** `cleanupStaleWorkspaces()` runs on every tick and handles this. Also `.workspaces/` is in `.gitignore`.
-
-### Month 1 Problems
-
-#### P2 — SQLite Table Growth
-**What:** No retention policy. `cost_tracking`, `audit_log`, and `agent_runs` tables grow indefinitely.
-**Projection:** ~300 rows/day at moderate load. 9K rows/month. ~50MB after a year. Not urgent but should add cleanup.
-**Fix:** Add a monthly cron to prune records older than 90 days.
-
-#### P3 — Linear API Polling Efficiency
-**What:** Polling Linear every 30s even when idle wastes API calls (2,880/day). Under Linear's 1,500/hour limit but wasteful.
-**Fix:** Implement webhook-based Linear integration (Linear Webhooks API) instead of polling. Or increase poll interval to 2 minutes when idle.
-
----
-
-## Security Risks
-
-### P0 — Command Injection in Git Operations
-**What:** `workspace.ts` passes `taskId` into shell commands via `execSync`. If a Linear issue title or ID contains shell metacharacters, they could be executed.
-**Current mitigation:** `taskId` is a UUID (safe). Branch names are sanitized with `replace(/[^a-zA-Z0-9-]/g, '-')`. Commit messages use escaped double quotes.
-**Remaining risk:** Commit messages still use string interpolation in a shell command. A carefully crafted agent output could inject.
-**Fix:** Use array-form `execFileSync` instead of `execSync` for all git commands, or pass commit messages via `--file` flag.
-
-### P1 — GitHub Token in Clone URL
-**What:** `workspace.ts` embeds `GITHUB_TOKEN` in the clone URL: `https://x-access-token:${token}@github.com/...`. This token appears in `.git/config` of every worktree.
-**Risk:** If any agent reads `.git/config`, it sees the token. If worktrees aren't cleaned up, tokens persist on disk.
-**Fix:** Use `git credential-helper` or set the token via environment variable (`GIT_ASKPASS`) instead of URL embedding.
-
-### P1 — No Workspace Sandboxing
-**What:** Agents running in worktrees have full filesystem access. Nothing prevents an agent from reading `~/.ssh/`, `.env`, or other worktrees.
-**Mitigation:** Current agents use the LLM-as-Judge pattern, not arbitrary code execution. The judge reviews all outputs before posting to GitHub.
-**Long-term fix:** Docker sandboxes per agent run (Phase 5 in original plan, currently disabled).
-
-### P2 — Linear API Key Has Broad Access
-**What:** The Linear API key grants access to all teams and issues, not just the factory-labeled ones.
-**Fix:** Use Linear OAuth with scoped permissions when moving to production. The API key is fine for development.
-
----
-
-## Anti-Death-Spiral Protections (Autoresearch Pattern)
+Learned from Karpathy's autoresearch convergence bug where agents retry on perfect scores indefinitely.
 
 | Guard | What It Prevents | Where |
 |-------|-----------------|-------|
 | Max 2 retries | Infinite retry loops | `state.ts` maxRetries check |
-| Exponential backoff | Hammering APIs | `state.ts` computeBackoff() |
-| Convergence detection | Same error repeating (no progress) | `reconciler.ts` failTask() |
+| Exponential backoff | Hammering APIs on failure | `state.ts` computeBackoff() (30s → 2m → 8m → 30m → 2h) |
+| Convergence detection | Same error repeating | `reconciler.ts` failTask() |
 | Stall detection | Agent hangs forever | `reconciler.ts` reconcile() step 4 |
 | Per-run cost cap | Single expensive run | `governance.ts` validateCost() |
-| Global daily cap | Aggregate runaway | `budget-guard.ts` checkGlobalDailyBudget() |
+| Global daily cap | Aggregate runaway spend | `budget-guard.ts` checkGlobalDailyBudget() ($20/day) |
+| Workspace limit | Disk exhaustion | `workspace.ts` MAX_CONCURRENT_WORKSPACES (5) |
+| Repo allowlist | Arbitrary repo clone attack | `workspace.ts` isRepoAllowed() |
+| Serial tick loop | Concurrent reconciliation | `orchestrator.ts` while loop (not setInterval) |
+| Auto-stop on failures | Persistent tick errors | `orchestrator.ts` MAX_CONSECUTIVE_FAILURES (5) |
 | Kill switch | Emergency stop all | `executor-gate.ts` |
 | Context budget | Massive prompt costs | `context.ts` MAX_CONTEXT_BYTES = 100KB |
 
@@ -126,8 +115,21 @@ Set up alerts for these before going live:
 - [ ] Daily spend exceeds 50% of `GLOBAL_DAILY_BUDGET_USD`
 - [ ] Any agent run exceeds $1.00 (half the per-run cap)
 - [ ] Redis connection lost
-- [ ] Orchestrator tick count stopped incrementing
+- [ ] Orchestrator tick count stopped incrementing (check `/orchestrator/status`)
 - [ ] >5 tasks in `failed` status in a single day
 - [ ] SQLite database exceeds 100MB
 - [ ] GitHub rate limit remaining < 100
-- [ ] Worktree count exceeds 10 (should be 0-3 normally)
+- [ ] Worktree count exceeds `MAX_CONCURRENT_WORKSPACES`
+- [ ] Consecutive tick failures > 0 (early warning)
+
+## First Deploy Checklist
+
+- [ ] Redis running and accessible
+- [ ] `OPENROUTER_API_KEY` set and verified with 1 test call
+- [ ] `GITHUB_TOKEN` or GitHub App credentials configured
+- [ ] `ORCHESTRATOR_ENABLED=false` initially (enable after verifying webhooks work)
+- [ ] `ALLOWED_REPOS` set to your repos (don't leave empty in production)
+- [ ] `GLOBAL_DAILY_BUDGET_USD=20.00` (or lower for testing)
+- [ ] Test webhook: `curl -X POST localhost:3847/webhook/github` with fixture
+- [ ] Verify `/health`, `/costs`, `/orchestrator/status` endpoints respond
+- [ ] Monitor logs for first 30 minutes after enabling orchestrator

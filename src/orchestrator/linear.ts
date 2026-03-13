@@ -15,7 +15,7 @@ async function graphql<T>(query: string, variables?: Record<string, unknown>): P
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: getApiKey(),
+        Authorization: `Bearer ${getApiKey()}`,
       },
       body: JSON.stringify({ query, variables }),
     })
