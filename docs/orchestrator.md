@@ -176,6 +176,52 @@ Each task gets its own git worktree under `.workspaces/`:
 - Branch isolation — two agents can work concurrently
 - Safety invariant — worktree tied to task ID, cleaned up on completion
 
+## Future: Deep Agents-Inspired Enhancements
+
+### Sub-Agent Delegation
+
+The orchestrator currently dispatches one agent per task. Deep Agents' `task` tool pattern suggests a **hierarchical** model where the dispatched agent can spawn sub-agents:
+
+```
+Orchestrator → CI Debugger Agent
+                  ├── Sub-agent: Parse CI logs (cheap model)
+                  ├── Sub-agent: Search codebase for related failures (parallel)
+                  └── Main agent: Reason about fix using sub-agent results
+```
+
+Benefits:
+- Sub-agents have isolated context windows (don't pollute parent)
+- Can use cheaper models for simple subtasks (log parsing, code search)
+- Multiple sub-agents run in parallel
+- Parent agent stays focused on high-level reasoning
+
+### Middleware Pipeline
+
+Currently each agent is configured independently in `src/agents/`. Deep Agents' middleware pattern would refactor this into composable layers:
+
+```
+Base Middleware (all agents):
+  └── GovernanceMiddleware (cost caps, blast radius, audit)
+  └── CostTrackingMiddleware (per-call LLM spend)
+  └── AuditMiddleware (log every action)
+  └── SummarizationMiddleware (context window management)
+
+Per-Agent Middleware:
+  └── PR Reviewer: + GitHubReviewMiddleware
+  └── CI Debugger: + CILogParserMiddleware + VerificationLoopMiddleware
+  └── Security:    + CVEFeedMiddleware
+```
+
+### Context Summarization
+
+Long-running agent sessions (complex CI failures, multi-file PRs) can exhaust context windows. Deep Agents auto-summarizes when token usage exceeds a threshold:
+- Trigger at 85% of context window
+- Keep 10% of recent messages verbatim
+- Offload full history to storage
+- Replace with summary in active context
+
+This would be implemented as middleware that wraps every agent run.
+
 ## Environment Variables
 
 | Variable | Default | Description |

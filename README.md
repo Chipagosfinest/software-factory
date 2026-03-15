@@ -1,22 +1,29 @@
 # Software Factory
 
-An agent-native software development platform that autonomously handles PR review, CI debugging, security patching, and incident response. Background agents work continuously — developers stay **on the loop** instead of in the loop.
+Research and implementation of agent-native software development patterns — autonomous PR review, CI debugging, security patching, incident response, and background maintenance. Aggregated from OpenAI, Spotify, Ramp, Stripe, and LangChain's production systems.
 
-Built for [ProductRank](https://github.com/alecgutman/productrank) and designed to extend into [Visa's agentic commerce platform](https://github.com/alecgutman/productrank/blob/main/.planning/FUTURE-FEATURES.md).
+Background agents work continuously — developers stay **on the loop** instead of in the loop.
 
 ---
 
 ## Why Build This?
 
-Three companies have proven this pattern at scale:
+Four companies and one open-source framework have proven these patterns:
 
-| Company | System | Result | Key Insight |
-|---------|--------|--------|-------------|
+| Source | System | Result | Key Insight |
+|--------|--------|--------|-------------|
+| **OpenAI** | [Harness Engineering](https://openai.com/index/harness-engineering/) | ~1M lines, 1,500 PRs, 0 hand-written code, 3→7 engineers | AGENTS.md as table of contents, layered architecture enforced by linters, background "garbage collection" agents, 6-hour autonomous runs, 3.5 PRs/engineer/day. |
 | **Spotify** | [Honk](https://engineering.atspotify.com/2025/11/spotifys-background-coding-agent-part-1) | 1,500+ merged PRs, 50% of all PRs automated | Containerized K8s execution + verification loops + LLM judge. Claude Code is top-performing agent. |
 | **Ramp** | [Inspect](https://builders.ramp.com/post/why-we-built-our-background-agent) | 30% of all PRs in months | Modal sandboxes with warm pools, multiplayer sessions, filesystem snapshots. Sessions are fast to start and effectively free to run. |
 | **Stripe** | [Minions](https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents) | 1,300 PRs/week, zero human-written code | Goose fork + isolated devboxes (10s spin-up) + 400 MCP tools via "Toolshed". Max 2 CI retries — diminishing returns after that. |
+| **LangChain** | [Deep Agents](https://github.com/langchain-ai/deepagents) | 10.9k stars, Claude Code-inspired | Middleware pipelines + sub-agent delegation + context summarization. Composition patterns, not deployment — **no governance layer** (that's our differentiator). |
 
-**The pattern is clear:** isolated sandboxes, PRs as review gates, humans review before merge. We apply the same architecture to ProductRank's knowledge graph maintenance and Visa's commerce platform.
+**Three complementary pattern sets emerge:**
+- **Environment Design** (OpenAI) — the engineer's job is not to write code, but to design environments, specify intent, and build feedback loops. AGENTS.md is a map, not a manual. Architecture enforced mechanically. Background agents handle entropy.
+- **Deployment & Scale** (Spotify/Ramp/Stripe) — isolated sandboxes, PRs as review gates, warm pools, humans review before merge
+- **Composition & Structure** (Deep Agents) — middleware pipelines for reusable agent behavior, sub-agents for context isolation, auto-summarization for long sessions
+
+Software Factory combines all three: OpenAI-style environment design, Deep Agents-style composition, and production-grade governance.
 
 ---
 
@@ -129,28 +136,6 @@ CI Failure Event
 
 ---
 
-## Knowledge Graph Agents (Cron)
-
-Five autonomous agents expand the ProductRank knowledge graph daily. Each agent updates a product's `confidence` score — products graduate from "raw" to "trusted" as confidence accumulates.
-
-| Agent | Schedule | Dimension | Δ Confidence | Cost |
-|-------|----------|-----------|-------------|------|
-| **Tool Discovery** | Daily 3:00 AM | Breadth — new tools | — | ~$1.50/day |
-| **Signal Harvester** | Daily 2:00 AM | Accuracy — fresh metrics | +0.3 | Free (GitHub/npm APIs) |
-| **Drift Detector** | Daily 4:00 AM | Reliability — staleness | +0.2 | ~$0.50/day |
-| **Backfill** | Daily 1:00 AM | Depth — rich profiles | +0.2 | ~$3.00/day |
-| **Integration Tester** | Weekly Sun 5:00 AM | Completeness — verified | +0.3 | Free (Docker) |
-
-**Confidence threshold:** Products with `confidence >= 0.8` rank normally in GraphRank. Below 0.8, they're weighted down.
-
-**The flywheel:**
-```
-DISCOVER → VALIDATE → BACKFILL → DISCOVER
-   (new)    (verify)    (gaps)     (more)
-```
-
----
-
 ## Sandbox & Execution Model
 
 Lessons applied from the three production systems:
@@ -200,6 +185,151 @@ From Spotify's Part 2 — context engineering is the single biggest lever for ag
 
 ---
 
+## Harness Engineering (OpenAI) — Environment-First Agent Development
+
+**Source:** [OpenAI Harness Engineering](https://openai.com/index/harness-engineering/) — Feb 2026, by Ryan Lopopolo
+
+OpenAI built and shipped an internal beta product with **zero lines of manually-written code** — ~1M lines of code, 1,500 PRs, 3→7 engineers over 5 months, 3.5 PRs/engineer/day. The throughput *increased* as the team grew, validating that the harness was the bottleneck, not model capability.
+
+**The core thesis:** The software engineer's primary job is no longer to write code, but to **design environments, specify intent, and build feedback loops** that allow agents to do reliable work.
+
+### Key Architectural Patterns
+
+#### 1. AGENTS.md as Table of Contents, Not Encyclopedia
+
+The "one big AGENTS.md" approach failed for four reasons:
+1. **Context is scarce** — a giant instruction file crowds out the task, code, and relevant docs
+2. **Too much guidance = non-guidance** — when everything is "important," nothing is
+3. **It rots instantly** — becomes a graveyard of stale rules agents can't verify
+4. **Hard to verify** — a single blob doesn't lend itself to mechanical checks
+
+Instead, AGENTS.md (~100 lines) is a **map with pointers** to a structured `docs/` knowledge base:
+
+```
+AGENTS.md              # ~100 lines, table of contents only
+ARCHITECTURE.md        # Top-level map of domains and package layering
+docs/
+├── design-docs/       # Catalogued, indexed, with verification status
+│   ├── index.md
+│   └── core-beliefs.md
+├── exec-plans/        # Execution plans as first-class artifacts
+│   ├── active/
+│   ├── completed/
+│   └── tech-debt-tracker.md
+├── generated/         # Auto-generated docs (e.g., DB schema)
+├── product-specs/     # Product requirements
+├── references/        # External llms.txt files for libraries
+├── DESIGN.md
+├── FRONTEND.md
+├── QUALITY_SCORE.md   # Grades each domain, tracks gaps over time
+├── RELIABILITY.md
+└── SECURITY.md
+```
+
+**Progressive disclosure:** Agents start with a small, stable entry point and are taught where to look next, rather than being overwhelmed up front.
+
+**Relevance to Software Factory:** Our agent prompts in `src/agents/prompts/` should adopt this pattern. Each prompt should be a short map that points to domain-specific docs, not a monolithic instruction set.
+
+#### 2. Layered Domain Architecture (Mechanically Enforced)
+
+Code can only depend "forward" through fixed layers:
+
+```
+Types → Config → Repo → Service → Runtime → UI
+```
+
+Cross-cutting concerns (auth, connectors, telemetry, feature flags) enter through a single explicit interface: **Providers**. Anything else is disallowed and enforced via custom linters (themselves generated by agents).
+
+**Key insight:** "This is the kind of architecture you usually postpone until you have hundreds of engineers. With coding agents, it's an early prerequisite: the constraints are what allows speed without decay."
+
+**Relevance to Software Factory:** We should enforce our own layer constraints (`core/` → `agents/` → `queue/` → `router`) with linter rules, not just convention.
+
+#### 3. Golden Principles + Background Garbage Collection
+
+"Golden principles" are opinionated, mechanical rules that keep the codebase legible:
+1. Prefer shared utility packages over hand-rolled helpers (centralize invariants)
+2. Don't probe data "YOLO-style" — validate boundaries or use typed SDKs
+3. Structured logging enforced statically
+4. Naming conventions for schemas and types
+5. File size limits
+
+On a regular cadence, **background Codex tasks**:
+- Scan for deviations from golden principles
+- Update quality grades per domain
+- Open targeted refactoring PRs (most reviewable in under a minute, automerged)
+- Scan for stale documentation and open cleanup PRs ("doc-gardening agent")
+
+**"Technical debt is like a high-interest loan: it's almost always better to pay it down continuously in small increments than to let it compound."**
+
+**Relevance to Software Factory:** Our cron agents already do this for the knowledge graph. The same pattern should apply to the factory's own codebase — background agents that enforce golden principles and open cleanup PRs.
+
+#### 4. Application Legibility for Agents
+
+OpenAI made their app bootable per git worktree, so agents could launch and drive one instance per change. They wired in:
+- **Chrome DevTools Protocol** — DOM snapshots, screenshots, navigation
+- **Full observability stack per worktree** — LogQL, PromQL, TraceQL queries
+- Each worktree gets an isolated version of the app including its own logs and metrics
+- **6-hour single Codex runs** — agents work overnight while humans sleep
+
+**Relevance to Software Factory:** Our sandbox model should include observability. Agents debugging CI failures should be able to query logs and metrics, not just read raw output.
+
+#### 5. Custom Linter Errors as Agent Teaching Tools
+
+Rather than just flagging violations, linter error messages include **remediation instructions**. This allows agents to self-correct while learning architectural constraints during execution.
+
+**Relevance to Software Factory:** Our pre-commit guard (`scripts/pre-commit-guard.sh`) already does this for shell command safety and empty catch blocks. Extend to all golden principles.
+
+#### 6. Execution Plans as First-Class Artifacts
+
+Complex work is captured in **execution plans** with progress and decision logs that are checked into the repository. Active plans, completed plans, and known tech debt are all versioned and co-located, allowing agents to operate without relying on external context.
+
+**Relevance to Software Factory:** Our orchestrator tasks in Linear could benefit from companion execution plans in the repo that track progress and decisions.
+
+#### 7. End-to-End Agent Autonomy Loop
+
+Given a single prompt, the agent can:
+1. Validate current state of codebase
+2. Reproduce a reported bug
+3. Record a video demonstrating the failure
+4. Implement a fix
+5. Validate the fix by driving the application
+6. Record a second video demonstrating the resolution
+7. Open a pull request
+8. Respond to agent and human feedback
+9. Detect and remediate build failures
+10. Escalate to a human only when judgment is required
+11. Merge the change
+
+**Relevance to Software Factory:** Our CI Debugger already does steps 1-8. Video recording (step 3, 6) and self-merge (step 11) are natural extensions.
+
+### Key Metrics & Learnings
+
+| Metric | Value |
+|--------|-------|
+| Team size | 3 → 7 engineers |
+| Codebase | ~1M lines of code |
+| PRs merged | ~1,500 |
+| Throughput | 3.5 PRs/engineer/day (increasing with team size) |
+| Human code | 0 lines (intentional constraint) |
+| Time estimate | ~1/10th of hand-written equivalent |
+| Max single run | 6+ hours (overnight) |
+| Weekly cleanup | 20% of engineer time → automated to near-zero |
+
+### Harness Engineering vs. Software Factory
+
+| Dimension | OpenAI Harness | Software Factory | Gap/Opportunity |
+|-----------|---------------|------------------|-----------------|
+| Knowledge base | Structured docs/, ~100-line AGENTS.md as map | Flat prompts/ directory | Adopt docs/ structure with progressive disclosure |
+| Architecture enforcement | Custom linters + structural tests | Pre-commit guard (partial) | Expand to full layer enforcement |
+| Background cleanup agents | Garbage collection + doc-gardening | Knowledge graph cron agents only | Add codebase self-maintenance agents |
+| Observability for agents | Full LogQL/PromQL/TraceQL per worktree | Log file reading only | Add queryable observability stack |
+| Agent-to-agent review | Agents review other agents' PRs | Human review only | Add LLM judge (already planned, Spotify-style) |
+| Application driving | Chrome DevTools Protocol, bootable per worktree | Sandbox execution only | Add browser automation for UI products |
+| Execution plans | Versioned in repo, with progress logs | Linear issues only | Dual-write: Linear + repo-local plan |
+| Merge philosophy | Minimal blocking gates, corrections cheap | Everything requires human review | Consider auto-merge for low-risk agent PRs |
+
+---
+
 ## Entry Points
 
 Inspired by Stripe's multi-entry design (Slack is most common, then CLI, web, internal tools):
@@ -207,7 +337,7 @@ Inspired by Stripe's multi-entry design (Slack is most common, then CLI, web, in
 | Entry Point | Status | Description |
 |-------------|--------|-------------|
 | **GitHub Webhooks** | ✅ Built | Primary trigger for PR review, CI debug, security, merge |
-| **Cron Jobs** | ✅ Built | Knowledge graph agents (discovery, signals, drift, backfill, integration) |
+| **Cron Jobs** | ✅ Built | Scheduled background agents (cleanup, drift detection, data freshness) |
 | **Alert Webhooks** | ✅ Built | PagerDuty/custom alerts → incident responder |
 | **Slack** | 🔮 Planned | Tag bot in thread → classify repo → kick off agent (Stripe/Ramp pattern) |
 | **CLI** | 🔮 Planned | `sf run --agent=ci-debugger --pr=123` |
@@ -225,7 +355,6 @@ Inspired by Stripe's multi-entry design (Slack is most common, then CLI, web, in
 | **GitHub** | Octokit + GitHub App auth | PR creation, review comments, check annotations |
 | **Queue** | BullMQ + Redis | Reliable event processing with retries |
 | **Audit DB** | SQLite (better-sqlite3) | Local audit logs and agent state |
-| **ProductRank DB** | Supabase (PostgreSQL) | Knowledge graph storage (304 products, 19.4k edges) |
 | **Sandbox** | Docker containers | Isolated execution per agent run |
 
 ---
@@ -252,31 +381,25 @@ src/
       incident.md
       merge.md
       judge.md
-    cron/                     # ProductRank knowledge graph agents
-      tool-discovery.ts       # Find new developer tools daily
-      signal-harvester.ts     # Refresh GitHub stars, npm downloads
-      drift-detector.ts       # Detect deprecated/archived tools
-      backfill.ts             # Enrich incomplete product profiles
-      integration-tester.ts   # Verify claimed integrations in Docker
+    cron/                     # Scheduled background agents (per-project)
   core/
     budget-guard.ts           # Per-agent LLM cost tracking + caps
     circuit-breaker.ts        # Failure rate detection + auto-disable
     context.ts                # Repo context builder (file tree, recent changes)
     db.ts                     # SQLite audit log
     executor-gate.ts          # Pre-execution governance checks
-    flywheel.ts               # Product confidence scoring
     github.ts                 # GitHub API client (PRs, comments, checks)
     governance.ts             # Permissions, audit logging, blast radius
     llm.ts                    # OpenRouter LLM client with cost tracking
     scheduler.ts              # Cron schedule management
-    supabase.ts               # ProductRank DB connection
     webhook.ts                # GitHub webhook verification
   queue/
     queue.ts                  # BullMQ job definitions
     worker.ts                 # BullMQ worker processing
 docs/
-  roadmap.md                  # Factory → Claws → Network evolution
-  knowledge-graph.md          # Five-dimension graph expansion strategy
+  roadmap.md                  # Factory evolution roadmap
+  orchestrator.md             # Symphony-style orchestrator design
+  risk-forecast.md            # Risk assessment and mitigation
 ```
 
 ---
@@ -313,44 +436,55 @@ npm run tunnel  # Exposes localhost:3847 via localtunnel
 
 6. **Cattle, not pets** — Every sandbox is identical and disposable. Pre-warmed from a pool, torn down after use. No persistent agent state. (Stripe devbox philosophy.)
 
+7. **Compose via middleware, govern at the boundary** — Agent capabilities are composed through middleware pipelines (planning, filesystem, sub-agents, summarization). Governance is enforced at the tool/sandbox level, not via LLM self-policing. Deep Agents explicitly takes this approach: "the agent can do anything its tools allow." We add the governance layer that the framework leaves to integrators — circuit breakers, cost caps, blast radius controls, audit trails.
+
+### Governance: What We Add That Frameworks Don't
+
+Deep Agents provides composition (middleware, sub-agents, skills) but explicitly **does not provide governance**. Their security model delegates all safety to the tool/sandbox level. Software Factory fills this gap:
+
+| Safety Layer | Software Factory | Deep Agents | Why It Matters |
+|---|---|---|---|
+| Circuit breaker | `core/circuit-breaker.ts` — auto-disables on failure rate | None | Prevents cascading failures across agents |
+| Budget guard | `core/budget-guard.ts` — $5/day hard cap | None | Stops runaway LLM spend |
+| Per-run cost cap | `governance.ts` — $2/run | None | Bounds individual agent sessions |
+| Blast radius | `governance.ts` — file scoping per agent | None | Security agent can't rewrite auth system |
+| Audit trail | `core/db.ts` — every LLM call, API call, file change | None | Compliance, debugging, cost attribution |
+| Max retries | 2 retries (Stripe pattern) | `recursion_limit: 1000` (too high for production) | Prevents infinite loops on non-converging errors |
+| Convergence detection | Same error = immediate fail | None | Stops retrying identical failures |
+| Kill switch | `executor_gate.json` — blocks all execution | None | Emergency stop without redeployment |
+| Execution timeout | 5-min hard kill | Optional `timeout` param (no default) | Prevents hung agents from consuming resources |
+| Human-in-the-loop | Planned (approval gates) | `interrupt_on` per-tool | DA has this one — we should adopt their pattern |
+
+**The takeaway:** Use Deep Agents' composition patterns (middleware, sub-agents, context summarization) for building agents. Use Software Factory's governance patterns (circuit breakers, cost caps, audit trails) for running them safely in production. The two are complementary.
+
 ---
 
 ## Roadmap
 
 At its core, this is **container management running different automation tasks per system**. Each new system we onboard is the same problem — isolated containers, cron schedules, verification loops, governance — just with different agents and different data. Every system we add compounds the value of the shared infrastructure.
 
-### Phase 1: ProductRank Uptime + Graph Growth
-Stand up the factory to ensure ProductRank reliability. CI debugging catches regressions, PR review maintains code quality, security patching keeps dependencies clean. Cron agents grow the knowledge graph daily — discovering tools, refreshing signals, detecting drift, backfilling profiles, testing integrations.
+### Phase 1: Core Factory
+Stand up the factory with the 5 core agents (PR review, CI debug, security, incident, merge). Establish governance layer, sandbox infrastructure, and event routing.
 
-**Containers:** 5 core agents (webhook-triggered) + 5 cron agents (scheduled)
-**Key metric:** ProductRank uptime + graph confidence scores trending toward 1.0
+**Key metric:** Agent-written PRs as % of total PRs
 
-### Phase 2: General-Purpose Factory
-Extract the patterns that work for ProductRank and make them reusable. Same container orchestration, same governance, same verification loops — different repos, different agents. Any TypeScript/Node project can plug in PR review, CI debugging, and security patching with minimal config.
+### Phase 2: Harness Engineering + Middleware Refactor
+Apply OpenAI's harness engineering patterns alongside Deep Agents' composition model:
+- Restructure knowledge base: AGENTS.md as map → structured `docs/` directory as system of record
+- Enforce layer constraints mechanically (custom linters, not convention)
+- Add background "garbage collection" agents that scan for deviations and open cleanup PRs
+- Refactor from monolithic agent configs to composable middleware pipelines
+- Add sub-agent delegation for context isolation and parallel execution
+- Add observability stack per sandbox (queryable logs/metrics, not raw output)
 
-**Containers:** Same core agents, parameterized per-repo
+**Key metric:** Time to add a new agent type (target: base middleware + prompt + domain tools)
+
+### Phase 3: General-Purpose Factory
+Extract patterns into a reusable platform. Same container orchestration, same governance, same verification loops — different repos, different agents. Any project can plug in PR review, CI debugging, and security patching with minimal config.
+
 **Key metric:** Time to onboard a new repo (target: <1 hour)
 
-### Phase 3: Visa Claws Reliability
-Apply the factory to Visa's agentic commerce platform. The same agents that review PRs can review transaction flows, the same CI debugger can diagnose payment pipeline failures, the same security patcher can respond to PCI compliance alerts. The governance layer already handles cost caps, audit trails, and blast radius — it just needs transaction-specific rules.
-
-**Containers:** Core agents + commerce-specific agents (transaction reviewer, compliance checker)
-**Key metric:** Mean time to detect + fix commerce pipeline issues
-
-### Phase 4: Marketplace Crawlers
-Deploy crawler agents that ensure we're always offering the best configurations, freshest prices, and working APIs across our marketplace. Same container infrastructure — just different cron schedules and different data targets. Drift detection catches stale pricing, signal harvesting refreshes API status, integration testing verifies endpoints actually work.
-
-**Containers:** Pricing crawlers, API health checkers, config validators, deal scrapers
-**Key metric:** Data freshness (% of products with pricing updated in last 7 days)
-
 ### The Compounding Effect
-
-```
-Phase 1: ProductRank    → Build the container orchestration + governance
-Phase 2: General        → Reuse for any repo (same infra, different agents)
-Phase 3: Visa Claws     → Reuse for commerce (same infra, different domain)
-Phase 4: Marketplace    → Reuse for data freshness (same infra, different targets)
-```
 
 Each phase adds ~2-5 new agent types but reuses 100% of:
 - Container management (sandbox creation, warm pools, teardown)
@@ -359,25 +493,187 @@ Each phase adds ~2-5 new agent types but reuses 100% of:
 - Verification loops (verifiers, LLM judge, bounded retries)
 - Entry points (webhooks, cron, Slack, CLI)
 
-| Component | ProductRank | General | Visa Claws | Marketplace |
-|-----------|-------------|---------|------------|-------------|
-| Event Router | GitHub webhooks | GitHub webhooks | Transaction events | Cron schedules |
-| Agents | PR review, CI debug, graph crons | PR review, CI debug, security | Transaction review, compliance | Price crawlers, API health |
-| Governance | File/cost limits | Per-repo limits | PCI compliance rules | Rate limits, budget caps |
-| Queue | Webhook + cron processing | Same | Transaction processing | Crawl scheduling |
-| Audit Log | Agent actions | Agent actions | Compliance trail | Data lineage |
-| Data Target | Knowledge graph (Supabase) | Target repo | Payment flows | Product catalog |
+---
+
+## Deep Agents (LangChain) — Middleware-Driven Agent Composition
+
+**Source:** [langchain-ai/deepagents](https://github.com/langchain-ai/deepagents) — 10.9k stars, MIT, 939 commits, Claude Code-inspired
+
+While Spotify/Ramp/Stripe show how to **deploy** agents at scale, Deep Agents shows how to **compose** them. Built on LangGraph, it's an open-source implementation of the patterns that make Claude Code general-purpose — planning, sub-agents, filesystem access, and detailed prompts — packaged as composable middleware.
+
+### Key Architectural Patterns
+
+#### 1. Middleware Pipeline (vs. Monolithic Agent Config)
+
+Deep Agents composes agent behavior through stacked middleware, not monolithic configs:
+
+```
+TodoListMiddleware → FilesystemMiddleware → SubAgentMiddleware → SummarizationMiddleware → SkillsMiddleware → HumanInTheLoopMiddleware
+```
+
+Each middleware transforms the request/response pipeline independently. This means:
+- **Base middleware** (logging, cost tracking) applies to all agents
+- **Domain middleware** (GitHub tools, Telegram, media gen) is layered on per-agent
+- Middleware ordering matters — later layers can override or wrap earlier ones
+- New capabilities = new middleware, not rewriting agent configs
+
+**Relevance to Software Factory:** Our agents are defined as monolithic prompt + tool configs. A middleware approach would let us share governance, cost tracking, and audit logging as base middleware, then layer agent-specific capabilities on top. Adding a new agent type would be: base middleware + domain middleware + prompt.
+
+#### 2. Sub-Agent Delegation via `task` Tool
+
+The `task` tool spawns **ephemeral sub-agents with isolated context windows**:
+
+```python
+SubAgent = {
+    "name": "research-analyst",
+    "description": "Conduct thorough research on complex topics",
+    "system_prompt": "...",
+    "tools": [...],            # Can differ from parent
+    "model": "openai:gpt-4o",  # Can differ from parent
+    "middleware": [...]         # Gets its own middleware stack
+}
+```
+
+Key design decisions:
+- Sub-agents are **stateless** — they return a single result message, then die
+- Multiple sub-agents can run **in parallel** (single message, multiple tool calls)
+- State keys are **explicitly excluded** to prevent parent→child state leaking (`_EXCLUDED_STATE_KEYS`)
+- Each sub-agent gets its own middleware stack (can be simpler than parent)
+- A default "general-purpose" sub-agent is always available for miscellaneous delegation
+
+**Relevance to Software Factory:** Our CI Debugger could delegate log parsing to a cheap sub-agent, then use results for reasoning. PR Reviewer could spawn parallel sub-agents to review different file groups. The pattern keeps the parent agent's context window clean.
+
+#### 3. Automatic Context Summarization
+
+When token usage exceeds a fraction-based threshold:
+1. Older messages summarized via LLM call
+2. Full history offloaded to backend storage (`/conversation_history/{thread_id}.md`)
+3. Summary replaces original messages in active context
+4. On-demand `compact_conversation` tool for agent-initiated compaction
+
+```python
+SummarizationMiddleware(
+    model="gpt-4o-mini",        # Cheap model for summarization
+    trigger=("fraction", 0.85), # Trigger at 85% of context window
+    keep=("fraction", 0.10),    # Keep 10% of recent messages verbatim
+)
+```
+
+**Relevance to Software Factory:** Long CI debugging sessions or multi-file PR reviews can exhaust context. Auto-summarization would let agents work on larger PRs without degrading quality.
+
+#### 4. Skills as Layered, Override-able Directories
+
+Skills are loaded from **ordered source paths** — later sources override earlier ones (last wins):
+
+```python
+sources=["/skills/base/", "/skills/user/", "/skills/project/"]
+```
+
+Each skill is a directory with `SKILL.md` (YAML frontmatter + markdown instructions). Skills are injected into the system prompt with progressive disclosure — metadata (name + description) loads first, full content only when the agent decides to use it.
+
+```
+/skills/user/web-research/
+├── SKILL.md          # YAML frontmatter + instructions
+└── helper.py         # Supporting files
+```
+
+**Relevance to Software Factory:** Our agent prompts are currently flat files in `src/agents/prompts/`. A layered skill system would let us define base skills (code review patterns, test writing) shared across all agents, then agent-specific overrides.
+
+#### 5. Human-in-the-Loop via `interrupt_on`
+
+Configurable per-tool interrupts that pause execution for human approval:
+
+```python
+create_deep_agent(
+    interrupt_on={
+        "edit_file": True,                          # Pause before every edit
+        "execute": InterruptOnConfig(filter=...),   # Conditional pause
+    }
+)
+```
+
+Requires a checkpointer for state persistence during the approval wait. The `HumanInTheLoopMiddleware` handles serialization/deserialization of agent state across the interrupt boundary.
+
+**Relevance to Software Factory:** Maps directly to our governance layer. Currently governance is checked pre-execution. `interrupt_on` would let agents plan their changes, pause for review, then execute — instead of our current all-or-nothing model.
+
+#### 6. Backend Abstraction
+
+Multiple storage backends behind a protocol interface:
+
+| Backend | Storage | Use Case |
+|---------|---------|----------|
+| `StateBackend` | In-memory (ephemeral) | Testing, stateless runs |
+| `FilesystemBackend` | Local disk | Development, single-node |
+| `StoreBackend` | LangGraph persistent store | Production, multi-node |
+| `CompositeBackend` | Multiple backends composed | Hybrid (local cache + remote) |
+
+Agent code never touches storage directly — everything through `BackendProtocol`:
+- `read_file()`, `write_file()`, `edit_file()` — file operations
+- `ls()`, `glob()`, `grep()` — search operations
+- `execute()` — shell commands (via `SandboxBackendProtocol`)
+
+**Relevance to Software Factory:** Our agents are tightly coupled to Docker + local filesystem. Backend abstraction would enable remote sandboxes (Modal, Fly.io), cloud storage, and multi-node execution without changing agent code.
+
+### Planning via `write_todos`
+
+Built-in task decomposition — the agent creates/updates a todo list as it works:
+
+```python
+TodoListMiddleware()  # Adds write_todos tool to every agent
+```
+
+The agent reads its own todos to track multi-step progress. Not just for display — the todo state persists across tool calls and is used for planning complex operations.
+
+**Relevance to Software Factory:** Our agents are currently single-shot (receive event → reason → act). Adding self-planning would help with complex CI failures that require multiple investigation steps.
+
+### How Deep Agents Complements Existing Research
+
+| Dimension | Spotify/Ramp/Stripe | Deep Agents | Combined Insight |
+|-----------|---------------------|-------------|------------------|
+| **Execution** | K8s pods, Modal, EC2 devboxes | Backend abstraction (protocol-based) | Use their infra patterns with DA's abstraction layer |
+| **Agent composition** | Monolithic agents per task | Middleware pipeline + sub-agents | Layer shared behaviors, delegate subtasks |
+| **Context management** | Static prompts, pre-hydration | Auto-summarization + compaction | Pre-hydrate (Stripe) then manage window (DA) |
+| **Verification** | External verifiers, LLM judge | Internal todo tracking + planning | Judge + plan = fewer wasted verification rounds |
+| **Governance** | Cost caps, file scoping, audit | `interrupt_on` per-tool | Pre-checks (ours) + runtime interrupts (DA) |
+| **Reusability** | Per-repo config | Skills directories with layering | Skills = reusable prompt fragments across agents |
+
+### Key Design Principle: "Trust But Verify at the Tool Level"
+
+Deep Agents explicitly adopts a security model where "the agent can do anything its tools allow." Rather than hoping LLMs will self-police, boundaries are enforced at the **tool and sandbox implementation level**. This aligns with our executor-gate pattern — governance is a hard gate, not a suggestion.
+
+### Implementation Ideas for Software Factory
+
+1. **Middleware refactor** — Extract governance, cost tracking, and audit logging into shared middleware. New agents = base middleware + domain tools + prompt.
+2. **Sub-agent delegation** — Let CI Debugger spawn cheap sub-agents for log parsing. Let PR Reviewer parallelize file group reviews.
+3. **Context summarization** — Add summarization for long-running agent sessions (multi-file PRs, complex incidents).
+4. **Layered skills** — Move from flat `prompts/*.md` to `skills/base/` + `skills/{agent}/` with override semantics.
+5. **Backend protocol** — Abstract sandbox interface so agents work against local Docker, Modal, or Fly.io without code changes.
 
 ---
 
 ## References
 
+### Environment Design & Harness Engineering (OpenAI)
+- [Harness Engineering](https://openai.com/index/harness-engineering/) — ~1M lines, 0 hand-written code, 3.5 PRs/eng/day. AGENTS.md as map, layered architecture, golden principles, background GC agents, 6-hour autonomous runs
+- [Unlocking the Codex Harness](https://openai.com/index/unlocking-the-codex-harness/) — App Server architecture powering Codex's sandboxed execution
+- [Unrolling the Codex Agent Loop](https://openai.com/index/unrolling-the-codex-agent-loop/) — Internal agent loop design and execution model
+
+### Production Systems (Deployment & Scale)
 - [Spotify Honk Part 1](https://engineering.atspotify.com/2025/11/spotifys-background-coding-agent-part-1) — 1,500+ PRs, Fleet Management → AI agents, containerized K8s execution
 - [Spotify Honk Part 2](https://engineering.atspotify.com/2025/11/context-engineering-background-coding-agents-part-2) — Context engineering, Claude Code as top agent, static prompts > dynamic tools
 - [Spotify Honk Part 3](https://engineering.atspotify.com/2025/12/feedback-loops-background-coding-agents-part-3) — Verification loops, LLM judge (~25% veto rate), sandboxed containers
 - [Ramp Inspect](https://builders.ramp.com/post/why-we-built-our-background-agent) — 30% of PRs, Modal sandboxes, warm pools, multiplayer sessions, OpenCode agent
 - [Stripe Minions Part 1](https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents) — 1,300 PRs/week, Goose fork, Slack-first entry, 400+ MCP tools
 - [Stripe Minions Part 2](https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents-part-2) — Devboxes (AWS EC2), 10s warm spin-up, conditional rules, max 2 CI retries
+
+### Frameworks & Architecture (Composition & Design)
+- [LangChain Deep Agents](https://github.com/langchain-ai/deepagents) — Middleware-driven agent composition, sub-agent delegation, context summarization, skills system. Claude Code-inspired, LangGraph-native. 10.9k stars, MIT.
+- [Deep Agents Docs](https://docs.langchain.com/oss/python/deepagents/overview) — Full documentation and quickstart
+
+### Community Analysis
+- [The Emerging Harness Engineering Playbook](https://www.ignorance.ai/p/the-emerging-harness-engineering) — Third-party analysis of OpenAI's approach
+- [Harness Engineering for Coding Agents](https://alexlavaee.me/blog/harness-engineering-why-coding-agents-need-infrastructure/) — Infrastructure perspective on agent harness patterns
+- [HumanLayer: Skill Issue](https://www.humanlayer.dev/blog/skill-issue-harness-engineering-for-coding-agents) — Human-in-the-loop perspective on harness engineering
 - [background-agents.com](https://background-agents.com) — Industry overview of background agent platforms
 
 ---

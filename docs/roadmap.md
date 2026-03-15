@@ -1,27 +1,34 @@
-# ProductRank Expansion Roadmap
+# Software Factory Roadmap
 
-## Now: Software Factory
-Autonomous PR review, CI debugging, security patching, incident response, and merge conflict resolution. Cron agents expand the ProductRank knowledge graph daily.
+## Now: Core Factory
+Stand up the factory with the 5 core agents (PR review, CI debug, security, incident, merge). Establish governance layer, sandbox infrastructure, and event routing.
 
 **Key metric:** Agent-written PRs as % of total PRs
 
-## Next: Visa Claws
-Reuse Software Factory infrastructure (agents, queue, governance) as the backend for Visa's agentic commerce platform. The same agent patterns that review PRs can review transactions, flag fraud, and automate compliance.
+## Next: Harness Engineering + Middleware Refactor
+Apply OpenAI's harness engineering patterns alongside Deep Agents' composition model:
+- Restructure knowledge base: AGENTS.md as map → structured `docs/` directory as system of record
+- Enforce layer constraints mechanically (custom linters, not convention)
+- Add background "garbage collection" agents that scan for deviations and open cleanup PRs
+- Refactor from monolithic agent configs to composable middleware pipelines
+- Add sub-agent delegation for context isolation and parallel execution
+- Add observability stack per sandbox (queryable logs/metrics, not raw output)
 
-**Key metric:** Infrastructure reuse ratio (how much of Factory becomes Claws)
+**Key metric:** Time to add a new agent type (target: base middleware + prompt + domain tools) + code quality grade trending upward via background agents
 
-## Then: Visa Network
-Expand from single-org to multi-org. The knowledge graph becomes a shared data layer for tool recommendations across the Visa partner network.
+## Then: General-Purpose Factory
+Extract patterns into a reusable platform. Same container orchestration, same governance, same verification loops — different repos, different agents. Any project can plug in PR review, CI debugging, and security patching with minimal config.
 
-**Key metric:** Graph coverage (% of developer tools with trusted profiles)
+**Key metric:** Time to onboard a new repo (target: <1 hour)
 
-## Architecture Reuse
+## Research Sources
 
-| Component | Factory Use | Claws Use | Network Use |
-|-----------|------------|-----------|-------------|
-| Event Router | GitHub webhooks | Transaction events | Multi-org events |
-| Agent Runner | PR review, CI debug | Fraud detection, compliance | Cross-org analysis |
-| Governance | File/cost limits | Transaction limits | Org-level permissions |
-| Queue (BullMQ) | Webhook processing | Transaction processing | Federated queues |
-| Audit Log | Agent actions | Compliance trail | Cross-org audit |
-| Knowledge Graph | Tool rankings | Merchant intelligence | Network intelligence |
+| Source | Key Pattern | Applied Where |
+|--------|------------|---------------|
+| OpenAI Harness Engineering | AGENTS.md as map, layered architecture, golden principles, background GC agents, agent-legible observability, execution plans | Knowledge base structure, linter enforcement, codebase self-maintenance |
+| Spotify Honk | K8s containers, LLM judge, verification loops | Sandbox, CI debugger |
+| Ramp Inspect | Modal warm pools, multiplayer sessions | Sandbox warm pools |
+| Stripe Minions | 400+ MCP tools, devboxes, conditional rules | Tool strategy, per-dir rules |
+| LangChain Deep Agents | Middleware pipelines, sub-agents, context summarization, skills | Middleware refactor phase |
+| OpenAI Symphony | Orchestrator state machine, reconciliation loop | Orchestrator |
+| Karpathy Autoresearch | Convergence detection, anti-death-spiral | Safety guardrails |
