@@ -31,4 +31,5 @@ Extract patterns into a reusable platform. Same container orchestration, same go
 | Stripe Minions | 400+ MCP tools, devboxes, conditional rules | Tool strategy, per-dir rules |
 | LangChain Deep Agents | Middleware pipelines, sub-agents, context summarization, skills | Middleware refactor phase |
 | OpenAI Symphony | Orchestrator state machine, reconciliation loop | Orchestrator |
-| Karpathy Autoresearch | Convergence detection, anti-death-spiral | Safety guardrails |
+| Karpathy Autoresearch | NEVER STOP loop, single-metric acceptance, fixed time budget, crash recovery, simplicity criterion | Agent loop design, convergence detection, safety guardrails |
+| Tobi Lutke QMD | Hybrid search (BM25 + vector + reranking), MCP server, collections + context, query expansion | Agent knowledge retrieval, docs/ search |

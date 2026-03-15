@@ -651,6 +651,131 @@ Deep Agents explicitly adopts a security model where "the agent can do anything 
 
 ---
 
+## Autoresearch (Karpathy) — Autonomous Agent Experimentation Loop
+
+**Source:** [karpathy/autoresearch](https://github.com/karpathy/autoresearch) — MIT, March 2026
+
+Karpathy's framework for autonomous overnight research. While built for ML training, the agent loop patterns are universally applicable to any iterative autonomous work.
+
+### Core Architecture: Three-File System
+
+```
+prepare.py   — fixed constants, data prep, evaluation (IMMUTABLE)
+train.py     — the single file the agent modifies (AGENT-EDITED)
+program.md   — agent instructions and constraints (HUMAN-EDITED)
+```
+
+**Key insight:** Humans program `program.md` markdown files, not Python. The agent programs the code. This is the same "harness engineering" pattern OpenAI describes — humans design the environment, agents execute.
+
+### Patterns Relevant to Software Factory
+
+#### 1. The NEVER STOP Loop
+
+```
+LOOP FOREVER:
+  1. Read current state (git branch/commit)
+  2. Modify code with experimental idea
+  3. Git commit
+  4. Run experiment (redirect output to log, don't flood context)
+  5. Read results (grep key metrics from log)
+  6. If improved → keep commit, advance branch
+  7. If equal/worse → git reset to previous state
+  8. If crashed → distinguish fixable bug vs fundamentally broken, decide accordingly
+```
+
+**"Do NOT pause to ask the human if you should continue. The human might be asleep."** The loop runs until manually interrupted. ~12 experiments/hour, ~100 overnight.
+
+**Relevance:** Our background agents should adopt this philosophy. Cron-triggered agents shouldn't need human confirmation to continue iterating on a problem.
+
+#### 2. Single Metric Acceptance (Binary Keep/Discard)
+
+One metric (`val_bpb`), one decision: did it improve or not? This eliminates ambiguity — no multi-criteria evaluation, no subjective assessment. The agent never debates whether a change is "good enough."
+
+**Relevance:** Each Software Factory agent should have a single clear success metric:
+- CI Debugger: did the build pass?
+- PR Reviewer: does the review catch the known issue category?
+- Security Patcher: did the vulnerability scan pass?
+
+#### 3. Fixed Time Budget per Experiment
+
+Every experiment runs for exactly 5 minutes, regardless of what the agent changed. This makes experiments directly comparable and prevents runaway resource consumption.
+
+**Relevance:** Our 5-minute agent timeout is the same pattern. Fixed budgets make cost predictable and experiments comparable.
+
+#### 4. Simplicity Criterion
+
+"A 0.001 improvement that adds 20 lines of hacky code? Probably not worth it. A 0.001 improvement from deleting code? Definitely keep."
+
+**Relevance:** Agent-generated PRs should be evaluated on complexity cost vs. improvement magnitude, not just "does it pass tests."
+
+#### 5. Structured Experiment Logging (results.tsv)
+
+Every experiment is logged with: commit hash, metric, memory usage, status (keep/discard/crash), and description. This creates a reviewable audit trail of all attempts.
+
+```
+commit   val_bpb   memory_gb  status   description
+a1b2c3d  0.997900  44.0       keep     baseline
+b2c3d4e  0.993200  44.2       keep     increase LR to 0.04
+c3d4e5f  1.005000  44.0       discard  switch to GeLU activation
+d4e5f6g  0.000000  0.0        crash    double model width (OOM)
+```
+
+**Relevance:** Our audit log in `core/db.ts` serves the same purpose. The structured format enables post-hoc analysis of what agent strategies work.
+
+#### 6. Crash Recovery Logic
+
+Distinguish between:
+- **Fixable bugs** (typo, missing import) → fix and re-run
+- **Fundamentally broken ideas** → log "crash," discard, move on
+- **Stuck** → "think harder, read papers, try combining previous near-misses, try radical changes"
+
+**Relevance:** Our convergence detection pattern. If the same error repeats, mark failed immediately. If a different error appears, the agent is making progress (even if failing).
+
+---
+
+## QMD (Tobi Lutke) — Local-First Knowledge Search for Agents
+
+**Source:** [tobi/qmd](https://github.com/tobi/qmd) — by Shopify CEO
+
+A local-first search engine for personal knowledge management. Indexes markdown, meeting transcripts, and documentation with hybrid search (BM25 + vector + LLM reranking). All processing runs locally via node-llama-cpp with GGUF models.
+
+### Patterns Relevant to Software Factory
+
+#### 1. Hybrid Search (Three-Layer)
+
+```
+BM25 (keyword) + Vector (semantic) + LLM Reranking (quality)
+```
+
+Not just keyword matching, not just embeddings — both, then LLM-reranked. This is the pattern for making agent context retrieval actually work.
+
+**Relevance:** When agents need to search codebases, docs, or previous experiment results, hybrid search dramatically improves recall over any single approach.
+
+#### 2. MCP Server for Agent Access
+
+QMD exposes search as MCP tools (`query`, `get`, `multi_get`, `status`), allowing AI agents to search indexed documents directly.
+
+**Relevance:** Software Factory agents could use QMD-style search to query the structured `docs/` knowledge base (OpenAI harness pattern) rather than relying on grep/glob alone.
+
+#### 3. Collections + Context Metadata
+
+Documents are organized into named collections with glob patterns. Hierarchical context descriptors improve search relevance — the search engine knows *what kind* of document it's searching, not just the content.
+
+```bash
+qmd collection add ~/notes --name notes
+qmd context add qmd://notes "Personal notes and ideas"
+```
+
+**Relevance:** Agent prompts, design docs, and execution plans could be organized as QMD collections with domain-specific context, enabling semantic search across the factory's knowledge base.
+
+#### 4. Query Expansion
+
+Simple queries auto-expand via LLM into structured sub-queries with types: `lex` (keyword), `vec` (semantic), `hyde` (hypothetical document). Users can also manually specify query types for fine-grained control.
+
+**Relevance:** When agents search for context before acting, query expansion finds related information that exact-match search misses.
+
+---
+
 ## References
 
 ### Environment Design & Harness Engineering (OpenAI)
@@ -669,6 +794,10 @@ Deep Agents explicitly adopts a security model where "the agent can do anything 
 ### Frameworks & Architecture (Composition & Design)
 - [LangChain Deep Agents](https://github.com/langchain-ai/deepagents) — Middleware-driven agent composition, sub-agent delegation, context summarization, skills system. Claude Code-inspired, LangGraph-native. 10.9k stars, MIT.
 - [Deep Agents Docs](https://docs.langchain.com/oss/python/deepagents/overview) — Full documentation and quickstart
+
+### Autonomous Agent Loops & Knowledge
+- [Karpathy Autoresearch](https://github.com/karpathy/autoresearch) — NEVER STOP loop, single-metric acceptance, fixed time budget, crash recovery, simplicity criterion. Overnight autonomous experimentation.
+- [Tobi Lutke QMD](https://github.com/tobi/qmd) — Local-first hybrid search (BM25 + vector + LLM reranking), MCP server for agent access, collections with context metadata, query expansion. By Shopify CEO.
 
 ### Community Analysis
 - [The Emerging Harness Engineering Playbook](https://www.ignorance.ai/p/the-emerging-harness-engineering) — Third-party analysis of OpenAI's approach
