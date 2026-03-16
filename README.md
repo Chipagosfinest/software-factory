@@ -8,7 +8,7 @@ Background agents work continuously — developers stay **on the loop** instead 
 
 ## Research Sources
 
-Seven production systems and open-source frameworks inform this design:
+Eight production systems, open-source frameworks, and extended tooling research inform this design:
 
 | Source | System | Result | Key Insight |
 |--------|--------|--------|-------------|
@@ -19,11 +19,13 @@ Seven production systems and open-source frameworks inform this design:
 | **LangChain** | [Deep Agents](https://github.com/langchain-ai/deepagents) | 10.9k stars, Claude Code-inspired | Middleware pipelines + sub-agent delegation + context summarization |
 | **Karpathy** | [Autoresearch](https://github.com/karpathy/autoresearch) | ~100 experiments overnight | NEVER STOP loop, single-metric acceptance, fixed time budgets |
 | **Tobi Lutke** | [QMD](https://github.com/tobi/qmd) | Local-first knowledge search | Hybrid search (BM25 + vector + LLM reranking), MCP server |
+| **Paperclip** | [paperclipai/paperclip](https://github.com/paperclipai/paperclip) | 26.7k★ agent orchestration platform | Per-agent budgets, task checkout locks, heartbeat health, React dashboard, run transcripts |
 
-**Three complementary pattern sets:**
+**Four complementary pattern sets:**
 - **Environment Design** (OpenAI) — humans design environments and feedback loops, agents execute. [Details →](docs/harness-engineering.md)
 - **Deployment & Scale** (Spotify/Ramp/Stripe) — isolated sandboxes, PRs as review gates, warm pools, bounded retries
 - **Composition & Structure** (Deep Agents) — middleware pipelines for reusable behavior, sub-agents for context isolation. [Details →](docs/deep-agents.md)
+- **Fleet Orchestration** (Paperclip) — multi-agent coordination with budgets, task locks, heartbeat health, and observability UI. [Details →](docs/paperclip.md)
 
 ---
 
@@ -182,7 +184,16 @@ docs/
   autoresearch.md         # Karpathy autonomous loop patterns
   qmd.md                  # Tobi Lutke knowledge search patterns
   orchestrator.md         # Symphony-style orchestrator design
+  paperclip.md            # Paperclip fleet orchestration patterns
+  competency-graph.md     # Source competency matrix + complementary pairs
   competitive-analysis.md # Devin, Factory.ai, Copilot Agent, etc.
+  devin-factory.md        # Devin + Factory.ai deep-dive
+  coding-agents-landscape.md # Full coding agents landscape
+  enterprise-adoption.md  # Enterprise agentic adoption patterns
+  obsidian-knowledge.md   # Obsidian as agent knowledge base
+  github-ecosystem.md     # GitHub agent ecosystem (Actions, Copilot Agent, Agentic Workflows)
+  dev-tools-stack.md      # Developer tools stack (Linear, Sentry, CI/CD, monitoring)
+  potent-combos.md        # System combinations + topology diagrams
   codebase-status.md      # Implementation completeness tracker
   roadmap.md              # Factory evolution roadmap
   risk-forecast.md        # Risk assessment and mitigation
@@ -227,7 +238,16 @@ Extract into a reusable platform. Same orchestration, governance, and verificati
 | [Autoresearch](docs/autoresearch.md) | Karpathy | NEVER STOP loop, single-metric acceptance, fixed time budget, crash recovery |
 | [QMD](docs/qmd.md) | Tobi Lutke | Hybrid search (BM25 + vector + reranking), MCP server, collections, query expansion |
 | [Competitive Analysis](docs/competitive-analysis.md) | — | Devin, Factory.ai, GitHub Copilot Agent, Blitzy |
+| [Paperclip](docs/paperclip.md) | Paperclip AI | Fleet orchestration, per-agent budgets, task checkout, heartbeat protocol, React dashboard |
+| [Competency Graph](docs/competency-graph.md) | All sources | Which source excels at what, complementary pairs, adoption map per phase |
 | [Orchestrator](docs/orchestrator.md) | Symphony/Autoresearch | Reconciliation loop, task state machine, git worktree isolation |
+| [Devin + Factory.ai](docs/devin-factory.md) | Devin, Factory.ai | Autonomous agent platforms, merge rates, enterprise compliance |
+| [Coding Agents Landscape](docs/coding-agents-landscape.md) | Multiple | Full landscape: Claude Code, Codex, Cursor, Devin, OpenHands, Aider, etc. |
+| [Enterprise Adoption](docs/enterprise-adoption.md) | Industry | Enterprise agentic adoption patterns, ROI data, organizational change |
+| [Obsidian Knowledge](docs/obsidian-knowledge.md) | Obsidian/QMD | Obsidian as agent knowledge base with MCP + hybrid search |
+| [GitHub Ecosystem](docs/github-ecosystem.md) | GitHub | Actions, Copilot Agent, Agentic Workflows, MCP servers |
+| [Dev Tools Stack](docs/dev-tools-stack.md) | Multiple | Linear, Sentry, CI/CD, monitoring — the agent-friendly tool stack |
+| [Potent Combos](docs/potent-combos.md) | All sources | System combinations, topology diagrams, integration patterns |
 
 ---
 
@@ -239,7 +259,9 @@ Extract into a reusable platform. Same orchestration, governance, and verificati
 
 **Frameworks:** [Deep Agents](https://github.com/langchain-ai/deepagents) | [Deep Agents Docs](https://docs.langchain.com/oss/python/deepagents/overview) | [Autoresearch](https://github.com/karpathy/autoresearch) | [QMD](https://github.com/tobi/qmd)
 
-**Community:** [Emerging Harness Playbook](https://www.ignorance.ai/p/the-emerging-harness-engineering) | [background-agents.com](https://background-agents.com)
+**Extended Tools:** [Linear Agent API](https://linear.app/developers/agents) | [GitHub Agentic Workflows](https://github.blog/ai-and-ml/automate-repository-tasks-with-github-agentic-workflows/) | [Devin](https://devin.ai) | [Factory.ai](https://factory.ai)
+
+**Community:** [Emerging Harness Playbook](https://www.ignorance.ai/p/the-emerging-harness-engineering) | [background-agents.com](https://background-agents.com) | [Anthropic 2026 Agentic Coding Trends](https://resources.anthropic.com/hubfs/2026%20Agentic%20Coding%20Trends%20Report.pdf)
 
 ---
 

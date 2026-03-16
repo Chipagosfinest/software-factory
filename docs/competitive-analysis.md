@@ -47,6 +47,16 @@ Our closest competitor is **Factory.ai** (agent-native SDLC platform). Devin is 
 - **Key Features**: Full application generation, requirements→design→code pipeline
 - **Website**: https://blitzy.com
 
+### Paperclip AI
+- **Model**: Open-source agent orchestration platform — "the company layer" for autonomous agents
+- **Pricing**: Free (MIT license), self-hosted
+- **Stars**: 26.7k GitHub stars, 3.5k forks (March 2026)
+- **Strengths**: Per-agent monthly budgets, task checkout locks, heartbeat health monitoring, React dashboard with live WebSocket transcripts, config versioning with rollback, multi-tenancy, OpenClaw native adapter
+- **Weaknesses**: No agent implementation (orchestration only), no knowledge graph, no context engineering, no verification loops, no LLM judge
+- **Key Features**: Fleet coordination, approval gates, run transcript persistence, org charts
+- **Relationship to Us**: Complementary — Paperclip orchestrates fleets of agents, we build the individual agents. Their budget + transcript + dashboard patterns are directly adoptable.
+- **Website**: https://github.com/paperclipai/paperclip
+
 ### Other Notable Players
 
 | Player | Focus | Relevance |
@@ -64,21 +74,23 @@ Our closest competitor is **Factory.ai** (agent-native SDLC platform). Devin is 
 
 ## Feature Comparison Matrix
 
-| Capability | Software Factory | Devin | Factory.ai | Copilot Agent | Blitzy |
-|---|---|---|---|---|---|
-| **PR Review** | ✅ Core agent | ✅ | ✅ | ✅ Agentic (GA) | ❌ |
-| **CI Debugging** | ✅ Shift-left + LLM judge | ✅ | ✅ Self-healing | ✅ Repair agent | ❌ |
-| **Security Patching** | ✅ CVE auto-patch | ❌ Manual | ⚠️ Limited | ✅ Secret/dep scanning | ❌ |
-| **Incident Response** | ✅ PagerDuty→RCA→fix PR | ❌ | ⚠️ Slack triage only | ❌ | ❌ |
-| **Merge Conflicts** | ✅ Dedicated agent | ❌ | ❌ | ❌ | ❌ |
-| **Feature Building** | ❌ Not yet | ✅ Core use case | ✅ | ✅ Issue→PR | ✅ Core use case |
-| **Knowledge Graph** | ✅ ProductRank integration | ❌ | ❌ | ❌ | ❌ |
-| **IDE Integration** | ❌ | ✅ Web IDE | ✅ VS Code/JetBrains/Vim | ✅ VS Code native | ❌ |
-| **Interactive Planning** | ❌ | ✅ Collaborative | ⚠️ Slack-based | ⚠️ Issue-based | ❌ |
-| **Fine-tuning** | ❌ | ✅ Codebase learning | ❌ | ❌ | ❌ |
-| **Self-hosted** | ✅ Your infra | ❌ SaaS only | ⚠️ VPC option | ❌ GitHub-native | ❌ SaaS only |
-| **Cost Governance** | ✅ $2/run caps, audit | ❌ Flat pricing | ⚠️ Token billing | ❌ Subscription | ❌ |
-| **Open Source** | Private (could open) | ❌ | ❌ | ❌ | ❌ |
+| Capability | Software Factory | Devin | Factory.ai | Copilot Agent | Blitzy | Paperclip |
+|---|---|---|---|---|---|---|
+| **PR Review** | ✅ Core agent | ✅ | ✅ | ✅ Agentic (GA) | ❌ | ❌ (orchestration only) |
+| **CI Debugging** | ✅ Shift-left + LLM judge | ✅ | ✅ Self-healing | ✅ Repair agent | ❌ | ❌ |
+| **Security Patching** | ✅ CVE auto-patch | ❌ Manual | ⚠️ Limited | ✅ Secret/dep scanning | ❌ | ❌ |
+| **Incident Response** | ✅ PagerDuty→RCA→fix PR | ❌ | ⚠️ Slack triage only | ❌ | ❌ | ❌ |
+| **Merge Conflicts** | ✅ Dedicated agent | ❌ | ❌ | ❌ | ❌ | ❌ |
+| **Feature Building** | ❌ Not yet | ✅ Core use case | ✅ | ✅ Issue→PR | ✅ Core use case | ❌ |
+| **Knowledge Graph** | ✅ ProductRank integration | ❌ | ❌ | ❌ | ❌ | ❌ |
+| **Fleet Orchestration** | ⚠️ Basic (reconciler) | ❌ | ⚠️ Internal | ❌ | ❌ | ✅ Core product |
+| **Per-Agent Budgets** | ⚠️ Per-run only | ❌ | ⚠️ Token billing | ❌ | ❌ | ✅ Monthly + throttle |
+| **Web Dashboard** | ❌ | ✅ Web IDE | ✅ | ❌ | ❌ | ✅ React + WebSocket |
+| **Run Transcripts** | ⚠️ Audit log only | ✅ | ✅ | ❌ | ❌ | ✅ Persistent + searchable |
+| **IDE Integration** | ❌ | ✅ Web IDE | ✅ VS Code/JetBrains/Vim | ✅ VS Code native | ❌ | ❌ |
+| **Self-hosted** | ✅ Your infra | ❌ SaaS only | ⚠️ VPC option | ❌ GitHub-native | ❌ SaaS only | ✅ MIT license |
+| **Cost Governance** | ✅ $2/run caps, audit | ❌ Flat pricing | ⚠️ Token billing | ❌ Subscription | ❌ | ✅ Best-in-class |
+| **Open Source** | Private (could open) | ❌ | ❌ | ❌ | ❌ | ✅ MIT |
 
 ---
 

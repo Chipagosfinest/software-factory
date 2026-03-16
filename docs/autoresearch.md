@@ -78,6 +78,110 @@ Maps directly to convergence detection: if the same error repeats, mark failed i
 
 ---
 
+## The Ratchet Pattern: Git as Memory (March 2026 Update)
+
+The core loop uses **git as the agent's memory** — a pattern we call the "ratchet":
+
+```
+                    ┌─────────────────────────────┐
+                    │     Current best commit      │
+                    │     (branch pointer)         │
+                    └──────────┬──────────────────┘
+                               │
+                    ┌──────────▼──────────────────┐
+                    │  Agent modifies train.py     │
+                    │  git commit                  │
+                    └──────────┬──────────────────┘
+                               │
+                    ┌──────────▼──────────────────┐
+                    │  Run experiment (5 min)       │
+                    │  Read metrics from log        │
+                    └──────────┬──────────────────┘
+                               │
+                ┌──────────────┴──────────────────┐
+                │                                  │
+        ┌───────▼──────┐                  ┌───────▼──────┐
+        │  Improved?   │                  │  Same/Worse? │
+        │  KEEP commit │                  │  git reset   │
+        │  Advance     │                  │  to previous │
+        │  branch      │                  │  best        │
+        └──────────────┘                  └──────────────┘
+```
+
+**Why this is powerful:**
+- The branch pointer only moves forward on improvement — it's a ratchet, not a random walk
+- Every improvement is permanently captured as a git commit with a description
+- Failed experiments are logged in `results.tsv` but don't pollute the codebase
+- The agent can review its own commit history to understand what it has tried
+- If the agent crashes and restarts, it picks up exactly where the branch pointer is
+
+**Real results:** 700 autonomous changes over 2 days. ~20 additive improvements transferred successfully to larger models. 11% efficiency gain on the "Time to GPT-2" leaderboard.
+
+---
+
+## Three-Part Circuit Breaker
+
+Autoresearch doesn't have an explicit circuit breaker, but `program.md` encodes three implicit safety limits that prevent runaway execution:
+
+### 1. Step Count Limit
+
+Each experiment is a discrete step. The `program.md` can specify a maximum number of experiments (e.g., "run at most 200 experiments"). More commonly, the constraint is implicit: the agent runs until manually stopped, but the fixed time budget per experiment means cost is bounded per step.
+
+### 2. Cost Ceiling
+
+The fixed 5-minute GPU budget per experiment creates a hard cost ceiling:
+- ~12 experiments/hour × cost-per-experiment = predictable hourly cost
+- ~100 experiments overnight × cost-per-experiment = predictable overnight cost
+- OOM crashes (GPU memory exceeded) are detected and logged as "crash" — the agent discards the change and tries something else rather than retrying the same OOM
+
+### 3. Error Streak Detection
+
+The crash recovery logic implicitly implements error streak detection:
+- If the same error repeats (same traceback, same failure mode), the agent recognizes it's stuck
+- After multiple consecutive crashes, `program.md` instructs: "think harder, read papers, try combining previous near-misses, try radical changes"
+- If nothing works after sustained failure, the agent should "try something completely different" rather than continuing to iterate on the same broken approach
+
+**Mapping to Software Factory:**
+
+| Autoresearch Concept | Software Factory Equivalent |
+|----------------------|----------------------------|
+| Step count | Max retries per agent run (2 CI rounds) |
+| Cost ceiling (5-min GPU) | Per-run cost cap ($2 default) |
+| Error streak | Convergence detection (same error = immediate fail) |
+| Fixed time budget | Execution timeout (5-min hard kill) |
+| `program.md` constraints | Agent system prompt + governance rules |
+
+---
+
+## Crash Recovery: Specifics
+
+The crash recovery logic distinguishes three failure modes with different handling:
+
+### Fixable Bugs
+- **Symptoms:** ImportError, NameError, SyntaxError, TypeError with clear traceback
+- **Action:** Fix the specific error and re-run the same experiment
+- **Limit:** Max 2 fix attempts per experiment before discarding
+
+### Fundamentally Broken Ideas
+- **Symptoms:** OOM (out of memory), NaN loss, training divergence, timeout
+- **Action:** Log "crash" status in results.tsv, git reset to previous best, move on
+- **Key insight:** Don't try to "fix" an OOM — the idea itself is too expensive. Discard and try something else.
+
+### Stuck State
+- **Symptoms:** Multiple consecutive discards or crashes, no improvement for N experiments
+- **Action:** Escalate creativity — the agent is instructed to:
+  1. Review the full results.tsv history
+  2. Look for near-misses (experiments that almost improved)
+  3. Try combining two near-miss ideas
+  4. Try a radical departure from the current approach
+  5. Read relevant papers or documentation for new ideas
+
+This three-tier recovery maps directly to how Software Factory agents should handle failures: quick-fix → discard → creative escalation.
+
+---
+
 ## Resources
 
 - [karpathy/autoresearch](https://github.com/karpathy/autoresearch) — Source code
+- [Karpathy's 630-line Script Ran 50 Experiments Overnight](https://thenewstack.io/karpathy-autonomous-experiment-loop/) — The New Stack analysis
+- [700 Autonomous Changes in 2 Days](https://github.com/karpathy/autoresearch#results) — Production results and transferred improvements

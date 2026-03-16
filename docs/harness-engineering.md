@@ -135,6 +135,58 @@ Given a single prompt, the agent can:
 
 ---
 
+## AGENTS.md and the AAIF Standard (March 2026 Update)
+
+The AGENTS.md pattern described in the original post has been adopted far beyond OpenAI. In December 2025, Anthropic donated the Model Context Protocol (MCP) to the Linux Foundation's **Agentic AI Foundation (AAIF)**. As of March 2026, the AAIF ecosystem includes **60,000+ repositories** using AGENTS.md-style structured instruction files, and the MCP server registry has grown to **10,000+ public servers**.
+
+This validates the core thesis: structured, machine-readable environment specifications are becoming the standard interface between human intent and agent execution — not just within a single company, but industry-wide.
+
+### OpenAI Codex Results (Updated)
+
+The original post described ~1M lines and ~1,500 PRs. Updated production metrics confirm:
+
+| Metric | Value |
+|--------|-------|
+| Total code produced | ~1M lines, **0 hand-written** (maintained as intentional constraint) |
+| Throughput scaling | Throughput *increased* as team grew from 3→7, validating harness as the bottleneck |
+| Single run ceiling | 6+ hours (overnight Codex runs) |
+| Background maintenance | 20% of engineer time previously spent on cleanup → automated to near-zero via background Codex tasks |
+
+The "zero hand-written code" constraint was deliberate — it forces every engineering improvement into the harness rather than bypassing it with manual code. This is the key insight: **improving the environment improves all future agent work, while hand-writing code only fixes one problem.**
+
+### Symphony Framework
+
+OpenAI's internal **Symphony** orchestration framework manages multi-step agent work:
+
+1. **Reconciliation loop** — Periodically compares desired state (execution plan) with actual state (repo), then dispatches agents to close gaps
+2. **Task state machine** — Each task progresses through states: `pending` → `assigned` → `running` → `verifying` → `complete` (or `failed`)
+3. **Git worktree isolation** — Each agent gets an isolated git worktree, enabling parallel execution without merge conflicts
+4. **Execution plans as artifacts** — Plans live in `docs/exec-plans/` with `active/`, `completed/`, and `tech-debt-tracker.md`. Progress logs and decision rationale are checked into the repo alongside the plan.
+
+The reconciliation pattern is key: rather than fire-and-forget task dispatch, Symphony continuously re-evaluates whether the codebase matches the plan, catching drift and re-assigning work as needed.
+
+### Execution Plan Structure
+
+Execution plans are first-class repo artifacts, not ephemeral tickets:
+
+```
+docs/exec-plans/
+├── active/
+│   └── 2026-03-api-redesign.md    # Current plan with progress log
+├── completed/
+│   └── 2026-02-auth-migration.md  # Archived with decision rationale
+└── tech-debt-tracker.md            # Known debt with priority scores
+```
+
+Each plan includes:
+- **Goal** — What we're building and why
+- **Steps** — Ordered tasks with dependencies
+- **Progress log** — Agent appends notes as it works (commit hashes, decisions, blockers)
+- **Decision rationale** — Why each approach was chosen (prevents future agents from relitigating)
+- **Verification criteria** — How to confirm the plan is complete
+
+---
+
 ## Additional Resources
 
 - [Harness Engineering](https://openai.com/index/harness-engineering/) — Original post
@@ -143,3 +195,7 @@ Given a single prompt, the agent can:
 - [The Emerging Harness Engineering Playbook](https://www.ignorance.ai/p/the-emerging-harness-engineering) — Third-party analysis
 - [Harness Engineering for Coding Agents](https://alexlavaee.me/blog/harness-engineering-why-coding-agents-need-infrastructure/) — Infrastructure perspective
 - [HumanLayer: Skill Issue](https://www.humanlayer.dev/blog/skill-issue-harness-engineering-for-coding-agents) — Human-in-the-loop perspective
+- [Agent Harness Anatomy](https://blog.langchain.com/the-anatomy-of-an-agent-harness/) — LangChain's analysis of the harness pattern
+- [Harness Engineering Complete Guide](https://www.nxcode.io/resources/news/harness-engineering-complete-guide-ai-agent-codex-2026) — NxCode comprehensive guide
+- [MCP Ecosystem — FastMCP](https://fastmcp.me/blog/most-popular-mcp-tools-2026) — 10,000+ MCP servers as of March 2026
+- [MCP Roadmap 2026](https://thenewstack.io/model-context-protocol-roadmap-2026/) — Linux Foundation AAIF adoption

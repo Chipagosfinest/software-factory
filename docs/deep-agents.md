@@ -144,7 +144,72 @@ Deep Agents explicitly adopts a security model where "the agent can do anything 
 
 ---
 
+## Middleware Pipeline: Fixed Order Matters (March 2026 Update)
+
+The middleware pipeline is **not** arbitrary — Deep Agents enforces a fixed execution order that reflects dependencies between layers:
+
+```
+1. PlanningMiddleware (TodoList)    — Decomposes task into steps
+2. MemoryMiddleware                 — Retrieves relevant past context
+3. SkillsMiddleware                 — Injects relevant skill instructions
+4. FilesystemMiddleware             — Provides file read/write/search tools
+5. SubAgentMiddleware               — Enables spawning child agents
+6. SummarizationMiddleware          — Manages context window via compaction
+```
+
+**Why this order:**
+- Planning must happen first so memory retrieval and skill loading can be informed by the plan
+- Skills must load before filesystem access so the agent knows *how* to use files (coding conventions, patterns)
+- Sub-agents must be available before summarization, because sub-agent delegation is a strategy for avoiding context overflow
+- Summarization runs last as a safety net — it only triggers when the context window is near capacity
+
+Reversing or reordering these layers degrades agent performance. The Deep Agents docs note that middleware ordering is "the most common source of subtle bugs in custom agent configurations."
+
+---
+
+## Observation Masking vs. Summarization
+
+A key finding from JetBrains research (2026) on context management in coding agents:
+
+| Strategy | How It Works | Cost Impact | Quality Impact |
+|----------|-------------|-------------|----------------|
+| **Summarization** (Deep Agents default) | LLM call compacts older messages into summary | Adds ~1 LLM call per compaction | Good — preserves intent, loses detail |
+| **Observation masking** (JetBrains approach) | Truncate/mask tool outputs *before* they enter context | Zero additional LLM calls | Better — keeps recent context intact |
+
+JetBrains reported that observation masking achieved:
+- **52% lower cost** compared to full-context approaches
+- **2.6% higher solve rates** on SWE-bench tasks
+
+The insight: most tool outputs (file listings, grep results, test logs) contain far more text than the agent needs. Masking strategies include:
+- **Truncation** — Keep first/last N lines of tool output
+- **Regex extraction** — Pull only error lines, key metrics, or specific patterns
+- **Structured extraction** — Convert verbose output to structured data (JSON) before inserting into context
+
+**Implication for Software Factory:** Combine both approaches — mask verbose tool outputs at the tool level (observation masking), then use summarization as a second-line defense when context still grows too large.
+
+---
+
+## Context Engineering: The Emerging Discipline
+
+The 2026 agent ecosystem has converged on "context engineering" as the primary lever for agent quality. Key findings across sources:
+
+1. **Context is the bottleneck, not model capability** — Same model (Opus 4.5) scores 17 problems apart in different agent harnesses. Architecture matters as much as the underlying LLM. (Source: MorphLLM benchmark, 731 test issues)
+
+2. **Progressive disclosure beats front-loading** — OpenAI's AGENTS.md pattern (small entry point → deep docs on demand) outperforms monolithic system prompts. Deep Agents' skills system implements this via metadata-first loading.
+
+3. **Pre-hydration + runtime management** — Stripe pre-fetches relevant context deterministically before agent execution (MCP pre-fetch). Deep Agents manages the window during execution via summarization. Both are needed.
+
+4. **Negative constraints outperform positive instructions** — Telling agents what NOT to do is more effective than step-by-step guides. (Source: Spotify Part 2, Anthropic 2026 Agentic Coding Trends Report)
+
+5. **One change at a time** — Combining multiple changes in a single agent session exhausts context and produces partial results. Single-purpose sessions with focused context consistently outperform multi-task sessions.
+
+---
+
 ## Resources
 
 - [langchain-ai/deepagents](https://github.com/langchain-ai/deepagents) — Source code
 - [Deep Agents Docs](https://docs.langchain.com/oss/python/deepagents/overview) — Full documentation and quickstart
+- [Agent Harness Anatomy](https://blog.langchain.com/the-anatomy-of-an-agent-harness/) — LangChain's harness pattern analysis (includes middleware ordering rationale)
+- [Anthropic 2026 Agentic Coding Trends Report](https://resources.anthropic.com/hubfs/2026%20Agentic%20Coding%20Trends%20Report.pdf) — Context engineering best practices
+- [MorphLLM AI Coding Agent Benchmark](https://www.morphllm.com/ai-coding-agent) — Same-model, different-harness performance gaps
+- [Spotify Context Engineering (Part 2)](https://engineering.atspotify.com/2025/11/context-engineering-background-coding-agents-part-2) — Negative constraints, one-change-at-a-time

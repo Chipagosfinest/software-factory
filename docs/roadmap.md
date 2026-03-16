@@ -33,3 +33,4 @@ Extract patterns into a reusable platform. Same container orchestration, same go
 | OpenAI Symphony | Orchestrator state machine, reconciliation loop | Orchestrator |
 | Karpathy Autoresearch | NEVER STOP loop, single-metric acceptance, fixed time budget, crash recovery, simplicity criterion | Agent loop design, convergence detection, safety guardrails |
 | Tobi Lutke QMD | Hybrid search (BM25 + vector + reranking), MCP server, collections + context, query expansion | Agent knowledge retrieval, docs/ search |
+| Paperclip AI | Per-agent monthly budgets, task checkout locks, heartbeat protocol, React dashboard, run transcript persistence | Budget guard upgrade (Now), transcript storage (Now), fleet orchestration + dashboard (Phase 3) |
