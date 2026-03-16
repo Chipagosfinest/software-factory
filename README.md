@@ -1,76 +1,84 @@
 # Software Factory
 
+> Autonomous DevOps/SRE agents that keep production running while humans sleep.
+
 Research and implementation of agent-native software development patterns — autonomous PR review, CI debugging, security patching, incident response, and background maintenance.
 
-Background agents work continuously — developers stay **on the loop** instead of in the loop.
+```
+                        ┌─────────────────────────────────────────┐
+                        │          SOFTWARE FACTORY               │
+                        │                                         │
+  GitHub Webhooks ─────▶│  5 Agents  ·  Governance  ·  Sandbox   │──────▶ PRs
+  PagerDuty Alerts ────▶│                                         │──────▶ Reviews
+  Cron Schedules ──────▶│  "On the loop, not in the loop"        │──────▶ Fix Commits
+  Slack Commands ──────▶│                                         │──────▶ RCA Reports
+                        └─────────────────────────────────────────┘
+```
 
 ---
 
-## Research Sources
-
-Eight production systems, open-source frameworks, and extended tooling research inform this design:
-
-| Source | System | Result | Key Insight |
-|--------|--------|--------|-------------|
-| **OpenAI** | [Harness Engineering](https://openai.com/index/harness-engineering/) | ~1M lines, 0 hand-written code, 3.5 PRs/eng/day | AGENTS.md as map, layered architecture enforced by linters, background GC agents |
-| **Spotify** | [Honk](https://engineering.atspotify.com/2025/11/spotifys-background-coding-agent-part-1) | 1,500+ merged PRs, 50% automated | K8s containers + verification loops + LLM judge |
-| **Ramp** | [Inspect](https://builders.ramp.com/post/why-we-built-our-background-agent) | 30% of all PRs | Modal sandboxes, warm pools, multiplayer sessions |
-| **Stripe** | [Minions](https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents) | 1,300 PRs/week | Goose fork + devboxes + 400 MCP tools, max 2 CI retries |
-| **LangChain** | [Deep Agents](https://github.com/langchain-ai/deepagents) | 10.9k stars, Claude Code-inspired | Middleware pipelines + sub-agent delegation + context summarization |
-| **Karpathy** | [Autoresearch](https://github.com/karpathy/autoresearch) | ~100 experiments overnight | NEVER STOP loop, single-metric acceptance, fixed time budgets |
-| **Tobi Lutke** | [QMD](https://github.com/tobi/qmd) | Local-first knowledge search | Hybrid search (BM25 + vector + LLM reranking), MCP server |
-| **Paperclip** | [paperclipai/paperclip](https://github.com/paperclipai/paperclip) | 26.7k★ agent orchestration platform | Per-agent budgets, task checkout locks, heartbeat health, React dashboard, run transcripts |
-
-**Four complementary pattern sets:**
-- **Environment Design** (OpenAI) — humans design environments and feedback loops, agents execute. [Details →](docs/harness-engineering.md)
-- **Deployment & Scale** (Spotify/Ramp/Stripe) — isolated sandboxes, PRs as review gates, warm pools, bounded retries
-- **Composition & Structure** (Deep Agents) — middleware pipelines for reusable behavior, sub-agents for context isolation. [Details →](docs/deep-agents.md)
-- **Fleet Orchestration** (Paperclip) — multi-agent coordination with budgets, task locks, heartbeat health, and observability UI. [Details →](docs/paperclip.md)
-
----
-
-## Architecture
+## How It Works
 
 ```
-GitHub Webhooks / Cron / PagerDuty / Slack
-              │
-        Event Router (src/router.ts)
-              │
-     ┌────────┼────────┬──────────┬──────────┐
-     │        │        │          │          │
-  PR Review  CI Debug  Security  Incident  Merge
-   Agent      Agent    Agent     Agent     Agent
-     │        │        │          │          │
-     └────────┴────────┴──────────┴──────────┘
-              │                   │
-        Sandbox Runner      GitHub API
-       (isolated env)      (PRs/comments)
-              │
-        Human Review Gate
-       (all output = PRs)
+  ┌──────────┐     ┌──────────┐     ┌──────────┐     ┌──────────┐     ┌──────────┐
+  │  EVENT   │────▶│  ROUTE   │────▶│  AGENT   │────▶│  VERIFY  │────▶│  OUTPUT  │
+  │          │     │          │     │          │     │          │     │          │
+  │ Webhook  │     │ Normalize│     │ Reason + │     │ Sandbox  │     │ PR or    │
+  │ Alert    │     │ Hydrate  │     │ Fix in   │     │ Tests    │     │ Comment  │
+  │ Cron     │     │ Context  │     │ Sandbox  │     │ LLM Judge│     │ on GitHub│
+  └──────────┘     └──────────┘     └──────────┘     └──────────┘     └──────────┘
+                                                           │
+                                                    ┌──────┴──────┐
+                                                    │  Max 2 CI   │
+                                                    │  retries    │
+                                                    │  then stop  │
+                                                    └─────────────┘
 ```
 
-### Three Infrastructure Pillars
-
-1. **Isolated Compute** — Each agent runs in a sandboxed environment. No shared state, automatic teardown. Inspired by Spotify's K8s jobs and Stripe's devbox philosophy.
-
-2. **Event Router** — Webhooks, cron schedules, and alert feeds normalized into typed events, dispatched with full context. Pre-hydrates context (Stripe-style deterministic MCP pre-fetch).
-
-3. **Governance Layer** — Permissions, audit trails, blast-radius controls, cost caps ($2/run), 5-minute timeouts. All output goes through PRs — humans review before merge.
+**Every agent action produces a PR. Nothing merges without human approval.**
 
 ---
 
 ## Core Agents
 
-| Agent | Trigger | Output |
-|-------|---------|--------|
-| **PR Reviewer** | `pull_request.opened` / `.synchronize` | Review comments + approval/request changes |
-| **CI Debugger** | `check_suite.completed` (failure) | Diagnosis comment + fix PR on new branch |
-| **Security Patcher** | `dependabot_alert.created` / CVE cron | Patch PR with explanation |
-| **Incident Responder** | PagerDuty webhook / custom alert | Root cause analysis + fix PR |
-| **Merge Resolver** | PR with conflict label | Conflict resolution commit |
+```
+  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐
+  │   PR REVIEWER   │  │   CI DEBUGGER   │  │ SECURITY PATCHER│
+  │                 │  │                 │  │                 │
+  │ pull_request.   │  │ check_suite.    │  │ dependabot_     │
+  │ opened          │  │ completed       │  │ alert.created   │
+  │                 │  │ (failure)       │  │ + CVE cron      │
+  │ ──────────────  │  │ ──────────────  │  │ ──────────────  │
+  │ Review comments │  │ Diagnosis +     │  │ Patch PR with   │
+  │ Approve/reject  │  │ fix PR          │  │ explanation     │
+  └─────────────────┘  └─────────────────┘  └─────────────────┘
 
-The CI Debugger follows a **shift-left feedback loop** combining patterns from Spotify and Stripe:
+  ┌─────────────────┐  ┌─────────────────┐
+  │    INCIDENT     │  │     MERGE       │
+  │    RESPONDER    │  │    RESOLVER     │
+  │                 │  │                 │
+  │ PagerDuty       │  │ PR with         │
+  │ webhook         │  │ conflict label  │
+  │                 │  │                 │
+  │ ──────────────  │  │ ──────────────  │
+  │ RCA + fix PR    │  │ Resolution      │
+  │                 │  │ commit          │
+  └─────────────────┘  └─────────────────┘
+```
+
+### CI Debugger: Shift-Left Feedback Loop
+
+```
+  ┌───────┐    ┌────────┐    ┌───────┐    ┌────────┐    ┌───────┐
+  │ Parse │───▶│ Reason │───▶│  Fix  │───▶│ Verify │───▶│ Judge │
+  │  logs │    │  about  │    │  code │    │ (tests)│    │(LLM)  │
+  └───────┘    └────────┘    └───────┘    └────────┘    └───────┘
+                                               │              │
+                                               │   ✗ veto     │
+                                               ◀──────────────┘
+                                          (max 2 retries)
+```
+
 1. Parse failure logs (regex extraction, not raw dump)
 2. Local verification (<5s lint/format checks)
 3. Agent reasoning + fix generation in sandbox
@@ -79,69 +87,257 @@ The CI Debugger follows a **shift-left feedback loop** combining patterns from S
 
 ---
 
+## Competitive Position
+
+```
+  Feature Building ◀──────────────────────────────────▶ Production Maintenance
+       │                                                         │
+       │  Devin ─────────┐                                       │
+       │  Blitzy ────────┤                                       │
+       │  Codex ─────────┤                                       │
+       │                 │                                       │
+       │  Copilot ───────┼───────────────────────────────────────┤
+       │  Factory.ai ────┼───────────────────────────────────────┤
+       │  Cursor ────────┤                                       │
+       │                 │                                       │
+       │                 │               Software Factory ───────┤
+       │                 │               + Knowledge Graph ──────┤
+       │                 │               + Incident Response ────┤  ◀── UNIQUE
+       │                 │               + Merge Resolution ─────┤  ◀── UNIQUE
+       │                 │                                       │
+```
+
+**We don't compete with Devin head-on.** Devin is "hire an AI engineer." We're "autonomous DevOps/SRE that keeps production running while humans sleep." [Full analysis →](docs/competitive-analysis.md)
+
+---
+
+## Agent Topology Patterns
+
+Five topology types observed across production agent systems:
+
+```
+  ONE-SHOT TREE          PIPELINE              ORG CHART
+  (Stripe: 1300 PR/wk)  (Spotify: verify+judge) (Paperclip: budgets)
+
+       [D]                A → B → C → D → E       [CEO]
+      / | \                           ↑   |       /  |  \
+    [A] [B] [C]                       └───┘     [E] [Q] [O]
+     ↓   ↓   ↓               (max 2 retries)   / \  |   |
+   PR1  PR2  PR3                              [d][d][q] [s]
+
+
+  MESH                   RATCHET
+  (Ramp: multiplayer)    (Karpathy: git memory)
+
+    [A] ←→ [B]           ┌─────────────────┐
+     ↕  ╲╱  ↕            │ Read → Modify → │
+    shared state          │ Commit → Run →  │
+     ↕  ╱╲  ↕            │ Improved? ──────│
+    [C] ←→ [D]           │  yes: keep      │
+        ↕                 │  no:  reset     │
+     [Human]              │ LOOP FOREVER    │
+                          └─────────────────┘
+```
+
+[Full topology diagrams + 6 potent combo architectures →](docs/potent-combos.md)
+
+---
+
+## Governance: What We Add That Frameworks Don't
+
+```
+  ┌─────────────────────────── GOVERNANCE LAYER ───────────────────────────┐
+  │                                                                        │
+  │  ┌────────────┐  ┌────────────┐  ┌────────────┐  ┌────────────┐      │
+  │  │  CIRCUIT   │  │   BUDGET   │  │   BLAST    │  │    KILL    │      │
+  │  │  BREAKER   │  │   GUARD    │  │   RADIUS   │  │   SWITCH   │      │
+  │  │            │  │            │  │            │  │            │      │
+  │  │ Auto-off   │  │ $2/run     │  │ File-scope │  │ JSON gate  │      │
+  │  │ on failure │  │ $5/day     │  │ per agent  │  │ no redeploy│      │
+  │  │ rate spike │  │ hard caps  │  │ isolation  │  │ needed     │      │
+  │  └────────────┘  └────────────┘  └────────────┘  └────────────┘      │
+  │                                                                        │
+  │  ┌────────────┐  ┌────────────┐  ┌────────────┐  ┌────────────┐      │
+  │  │ CONVERGENCE│  │   AUDIT    │  │  TIMEOUT   │  │  LLM JUDGE │      │
+  │  │ DETECTION  │  │   TRAIL    │  │            │  │            │      │
+  │  │            │  │            │  │            │  │            │      │
+  │  │ Same error │  │ Every call │  │ 5-min hard │  │ Diff review│      │
+  │  │ = stop now │  │ logged     │  │ kill       │  │ scope check│      │
+  │  └────────────┘  └────────────┘  └────────────┘  └────────────┘      │
+  │                                                                        │
+  └────────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## Research Sources
+
+Eight production systems and open-source frameworks inform this design:
+
+```
+  ┌──────────────────────────────────────────────────────────────────────┐
+  │                     RESEARCH → SOFTWARE FACTORY                      │
+  │                                                                      │
+  │  ENVIRONMENT          DEPLOYMENT           COMPOSITION    FLEET      │
+  │  DESIGN               & SCALE              & STRUCTURE    MGMT       │
+  │                                                                      │
+  │  ┌──────────┐    ┌──────────────────┐    ┌──────────┐  ┌─────────┐ │
+  │  │  OpenAI  │    │ Spotify  Ramp    │    │   Deep   │  │Paperclip│ │
+  │  │ Harness  │    │ Honk    Inspect  │    │  Agents  │  │   AI    │ │
+  │  │          │    │                  │    │          │  │         │ │
+  │  │ AGENTS.md│    │ Stripe  Minions  │    │Middleware│  │ Budgets │ │
+  │  │ Layers   │    │                  │    │Sub-agents│  │ Tasks   │ │
+  │  │ GC bots  │    │ Sandboxes, PRs   │    │Summaries │  │ Health  │ │
+  │  └──────────┘    │ Warm pools, retry│    └──────────┘  │Dashboard│ │
+  │                  └──────────────────┘                  └─────────┘ │
+  │                                                                      │
+  │  KNOWLEDGE           AUTONOMY                                        │
+  │                                                                      │
+  │  ┌──────────┐    ┌──────────┐                                       │
+  │  │   QMD    │    │Autoresrch│                                       │
+  │  │ (Lutke)  │    │(Karpathy)│                                       │
+  │  │          │    │          │                                       │
+  │  │ BM25 +   │    │NEVER STOP│                                       │
+  │  │ Vector + │    │Git memory│                                       │
+  │  │ Reranking│    │Ratchet   │                                       │
+  │  └──────────┘    └──────────┘                                       │
+  └──────────────────────────────────────────────────────────────────────┘
+```
+
+| Source | System | Result | Key Insight |
+|--------|--------|--------|-------------|
+| **OpenAI** | [Harness Engineering](https://openai.com/index/harness-engineering/) | ~1M lines, 0 hand-written code, 3.5 PRs/eng/day | AGENTS.md as map, layered architecture, background GC agents |
+| **Spotify** | [Honk](https://engineering.atspotify.com/2025/11/spotifys-background-coding-agent-part-1) | 1,500+ merged PRs, 50% automated | K8s containers + verification loops + LLM judge |
+| **Ramp** | [Inspect](https://builders.ramp.com/post/why-we-built-our-background-agent) | 30% of all PRs | Modal sandboxes, warm pools, multiplayer sessions |
+| **Stripe** | [Minions](https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents) | 1,300 PRs/week | Goose fork + devboxes + 400 MCP tools, max 2 CI retries |
+| **LangChain** | [Deep Agents](https://github.com/langchain-ai/deepagents) | 10.9k stars, Claude Code-inspired | Middleware pipelines + sub-agent delegation + context summarization |
+| **Karpathy** | [Autoresearch](https://github.com/karpathy/autoresearch) | ~100 experiments overnight | NEVER STOP loop, single-metric acceptance, fixed time budgets |
+| **Tobi Lutke** | [QMD](https://github.com/tobi/qmd) | Local-first knowledge search | Hybrid search (BM25 + vector + LLM reranking), MCP server |
+| **Paperclip** | [paperclipai/paperclip](https://github.com/paperclipai/paperclip) | 26.7k★ agent orchestration | Per-agent budgets, task checkout locks, heartbeat health, React dashboard |
+
+---
+
+## Competency Heat Map
+
+Which source is best at what — and where Software Factory draws from each:
+
+```
+Scale: ████ best-in-class  ███░ strong  ██░░ partial  █░░░ minimal  ░░░░ absent
+```
+
+| Competency | OpenAI | Spotify | Stripe | Deep Agents | Karpathy | QMD | Paperclip |
+|---|---|---|---|---|---|---|---|
+| Context engineering | ███░ | ████ | ███░ | ██░░ | █░░░ | ░░░░ | ░░░░ |
+| Middleware/composition | ░░░░ | ░░░░ | ░░░░ | ████ | ░░░░ | ░░░░ | ░░░░ |
+| Sandbox isolation | ██░░ | ████ | ████ | ░░░░ | █░░░ | ░░░░ | ░░░░ |
+| Verification loops | ███░ | ████ | ████ | ░░░░ | ████ | ░░░░ | ░░░░ |
+| LLM judge | ░░░░ | ████ | ██░░ | ░░░░ | ░░░░ | ░░░░ | ░░░░ |
+| Cost control | ██░░ | █░░░ | ██░░ | ░░░░ | ░░░░ | ░░░░ | ████ |
+| Fleet management | ░░░░ | ░░░░ | ██░░ | ██░░ | ░░░░ | ░░░░ | ████ |
+| Knowledge search | ░░░░ | ░░░░ | ░░░░ | ░░░░ | ░░░░ | ████ | ░░░░ |
+
+[Full competency matrix with 25 dimensions →](docs/competency-graph.md)
+
+---
+
+## Enterprise Adoption (March 2026)
+
+Real-world results from companies running autonomous coding agents at scale:
+
+```
+  ┌─────────────────────────────────────────────────────────────────────┐
+  │                                                                     │
+  │   Uber          84% of engineers using AI tools                    │
+  │   ████████████████████████████████████████░░░░░░░░░░               │
+  │                                                                     │
+  │   Stripe        1,300 PRs/week via Minions                         │
+  │   ██████████████████████████████████████████████████               │
+  │                                                                     │
+  │   Spotify       650+ agent PRs merged/month                        │
+  │   ████████████████████████████████░░░░░░░░░░░░░░░░                │
+  │                                                                     │
+  │   OpenAI        3.5 PRs/eng/day, 0 hand-written code              │
+  │   █████████████████████████████████████████████████                │
+  │                                                                     │
+  │   Shopify       CEO: 0 → 2,000 commits in 2 months               │
+  │   ████████████████████████████████████████████████░                │
+  │                                                                     │
+  │   EY            5,000+ engineers on Factory.ai Droids              │
+  │   ████████████████████████████░░░░░░░░░░░░░░░░░░░░                │
+  │                                                                     │
+  │   Market        $7.8B (2025) → $52.6B (2030) at 46% CAGR         │
+  │                                                                     │
+  └─────────────────────────────────────────────────────────────────────┘
+```
+
+[Full enterprise adoption data with 14 company case studies →](docs/enterprise-adoption.md)
+
+---
+
 ## Context Engineering
 
-From Spotify Part 2 — the single biggest lever for agent quality:
+The single biggest lever for agent quality (from Spotify Part 2):
 
-- **Describe the end state**, not step-by-step instructions
-- **State preconditions** — tell the agent when NOT to act
-- **One change at a time** — combining changes exhausts context and produces partial results
-- **Define success as tests** — "make this code better" fails; "these tests should pass" succeeds
-- **Start constrained** (Spotify-style few tools), add only when prompts aren't enough
-
----
-
-## Sandbox & Execution Model
-
-| Pattern | Source | Implementation |
-|---------|--------|---------------|
-| Containerized execution | Spotify | Isolated containers per run, auto-detected verifiers |
-| Warm pools | Ramp + Stripe | Pre-built images refreshed every 30 min, snapshot/restore |
-| Cost caps | All | $2/run default, $5/day hard limit, per-call tracking |
-| Bounded retries | Stripe | Max 2 CI rounds, convergence detection |
-| LLM Judge | Spotify | Post-fix diff validation, scope creep detection |
-| Kill switch | Custom | `executor_gate.json` blocks all execution without redeployment |
-
----
-
-## Design Principles
-
-1. **PRs are the review gate** — every agent action produces a PR. Nothing merges without human approval.
-2. **Constraints over instructions** — tell agents what NOT to do. Negative constraints outperform step-by-step guides.
-3. **Bounded blast radius** — each agent scoped to relevant files. Cost caps prevent runaway spend.
-4. **Shift feedback left** — local lint in <5s, then CI only if local passes. Max 2 CI retries.
-5. **Verification loops, not hope** — agents call black-box verifiers before opening PRs. LLM judge catches scope creep.
-6. **Cattle, not pets** — every sandbox identical and disposable. No persistent agent state.
-7. **Compose via middleware, govern at the boundary** — capabilities composed through middleware pipelines. Governance enforced at the tool/sandbox level, not via LLM self-policing.
-
-### Governance: What We Add That Frameworks Don't
-
-Deep Agents provides composition but explicitly **does not provide governance**. Software Factory fills this gap:
-
-| Safety Layer | Implementation | Why It Matters |
-|---|---|---|
-| Circuit breaker | Auto-disables on failure rate | Prevents cascading failures |
-| Budget guard | $5/day hard cap | Stops runaway LLM spend |
-| Per-run cost cap | $2/run default | Bounds individual sessions |
-| Blast radius | File scoping per agent | Agent can't rewrite unrelated code |
-| Audit trail | Every LLM call, API call, file change logged | Compliance and debugging |
-| Convergence detection | Same error = immediate fail | Stops retrying identical failures |
-| Kill switch | JSON gate file, no redeployment needed | Emergency stop |
-| Execution timeout | 5-min hard kill | Prevents hung agents |
+```
+  ┌─────────────────────────────────────────────────────────────────┐
+  │                                                                 │
+  │  ✓  Describe the END STATE, not step-by-step instructions      │
+  │  ✓  State PRECONDITIONS — tell agent when NOT to act           │
+  │  ✓  ONE CHANGE at a time — combined changes exhaust context    │
+  │  ✓  Define success as TESTS — not "make this better"           │
+  │  ✓  Start CONSTRAINED — add tools only when prompts fail       │
+  │                                                                 │
+  │  Key findings:                                                  │
+  │  • Same model scores 17pts apart in different harnesses        │
+  │  • Observation masking: 52% cheaper, 2.6% higher solve rates   │
+  │  • BM25 pre-filtering reduces hallucination 22-37%             │
+  │  • 85% perf degradation with large tool spaces (scope to ~20)  │
+  │                                                                 │
+  └─────────────────────────────────────────────────────────────────┘
+```
 
 ---
 
 ## Tech Stack
 
-| Layer | Technology |
-|-------|-----------|
-| Runtime | Node.js + TypeScript |
-| Server | Hono |
-| LLM | OpenRouter (model-agnostic) |
-| GitHub | Octokit + GitHub App auth |
-| Queue | BullMQ + Redis |
-| Audit DB | SQLite |
-| Sandbox | Docker containers |
+```
+  ┌─────────────────────────────────────────────┐
+  │  Runtime        Node.js + TypeScript        │
+  │  Server         Hono (lightweight, fast)    │
+  │  LLM            OpenRouter (model-agnostic) │
+  │  GitHub         Octokit + GitHub App auth   │
+  │  Queue          BullMQ + Redis              │
+  │  Audit DB       SQLite                      │
+  │  Sandbox        Docker containers           │
+  └─────────────────────────────────────────────┘
+```
+
+---
+
+## Roadmap
+
+```
+  Phase 1 (NOW)              Phase 2 (NEXT)              Phase 3 (THEN)
+  ━━━━━━━━━━━━━━             ━━━━━━━━━━━━━━━             ━━━━━━━━━━━━━━
+
+  Core Factory               Harness + Middleware        General-Purpose
+                             Refactor                    Factory
+
+  ▪ 5 core agents            ▪ Middleware pipelines      ▪ Multi-repo support
+  ▪ Governance layer         ▪ Sub-agent delegation      ▪ React dashboard
+  ▪ Sandbox infra            ▪ Background GC agents      ▪ Warm pools
+  ▪ Event routing            ▪ Layer enforcement         ▪ Fleet orchestration
+  ▪ Audit logging            ▪ QMD knowledge search      ▪ Multi-tenancy
+
+  Sources:                   Sources:                    Sources:
+  Spotify, Stripe,           Deep Agents ★               Paperclip ★
+  Karpathy, OpenAI           OpenAI, QMD                 Ramp, Stripe
+
+  Metric: Agent PR %         Metric: Time to add         Metric: Onboard
+                             new agent type              repo in <1 hour
+```
+
+[Full roadmap →](docs/roadmap.md)
 
 ---
 
@@ -178,25 +374,6 @@ src/
     orchestrator.ts     # Symphony-style reconciliation loop
     reconciler.ts       # Task state machine
     workspace.ts        # Git worktree isolation
-docs/
-  harness-engineering.md  # OpenAI patterns deep-dive
-  deep-agents.md          # LangChain composition patterns
-  autoresearch.md         # Karpathy autonomous loop patterns
-  qmd.md                  # Tobi Lutke knowledge search patterns
-  orchestrator.md         # Symphony-style orchestrator design
-  paperclip.md            # Paperclip fleet orchestration patterns
-  competency-graph.md     # Source competency matrix + complementary pairs
-  competitive-analysis.md # Devin, Factory.ai, Copilot Agent, etc.
-  devin-factory.md        # Devin + Factory.ai deep-dive
-  coding-agents-landscape.md # Full coding agents landscape
-  enterprise-adoption.md  # Enterprise agentic adoption patterns
-  obsidian-knowledge.md   # Obsidian as agent knowledge base
-  github-ecosystem.md     # GitHub agent ecosystem (Actions, Copilot Agent, Agentic Workflows)
-  dev-tools-stack.md      # Developer tools stack (Linear, Sentry, CI/CD, monitoring)
-  potent-combos.md        # System combinations + topology diagrams
-  codebase-status.md      # Implementation completeness tracker
-  roadmap.md              # Factory evolution roadmap
-  risk-forecast.md        # Risk assessment and mitigation
 ```
 
 ---
@@ -214,40 +391,49 @@ npm run dev
 
 ---
 
-## Roadmap
-
-### Phase 1: Core Factory (Current)
-Stand up the 5 core agents, governance layer, sandbox infrastructure, and event routing.
-
-### Phase 2: Harness Engineering + Middleware Refactor
-Apply [OpenAI's patterns](docs/harness-engineering.md) alongside [Deep Agents' composition model](docs/deep-agents.md) — structured docs, linter enforcement, background GC agents, middleware pipelines, sub-agent delegation, observability.
-
-### Phase 3: General-Purpose Factory
-Extract into a reusable platform. Same orchestration, governance, and verification — different repos, different agents. Target: onboard a new repo in <1 hour.
-
-[Full roadmap →](docs/roadmap.md)
-
----
-
 ## Research Deep-Dives
+
+### Core Systems
 
 | Document | Source | Key Patterns |
 |----------|--------|-------------|
-| [Harness Engineering](docs/harness-engineering.md) | OpenAI | AGENTS.md as map, layered architecture, golden principles, background GC agents, 6-hour runs |
-| [Deep Agents](docs/deep-agents.md) | LangChain | Middleware pipelines, sub-agent delegation, context summarization, skills, backend abstraction |
-| [Autoresearch](docs/autoresearch.md) | Karpathy | NEVER STOP loop, single-metric acceptance, fixed time budget, crash recovery |
-| [QMD](docs/qmd.md) | Tobi Lutke | Hybrid search (BM25 + vector + reranking), MCP server, collections, query expansion |
-| [Competitive Analysis](docs/competitive-analysis.md) | — | Devin, Factory.ai, GitHub Copilot Agent, Blitzy |
-| [Paperclip](docs/paperclip.md) | Paperclip AI | Fleet orchestration, per-agent budgets, task checkout, heartbeat protocol, React dashboard |
-| [Competency Graph](docs/competency-graph.md) | All sources | Which source excels at what, complementary pairs, adoption map per phase |
-| [Orchestrator](docs/orchestrator.md) | Symphony/Autoresearch | Reconciliation loop, task state machine, git worktree isolation |
-| [Devin + Factory.ai](docs/devin-factory.md) | Devin, Factory.ai | Autonomous agent platforms, merge rates, enterprise compliance |
-| [Coding Agents Landscape](docs/coding-agents-landscape.md) | Multiple | Full landscape: Claude Code, Codex, Cursor, Devin, OpenHands, Aider, etc. |
-| [Enterprise Adoption](docs/enterprise-adoption.md) | Industry | Enterprise agentic adoption patterns, ROI data, organizational change |
-| [Obsidian Knowledge](docs/obsidian-knowledge.md) | Obsidian/QMD | Obsidian as agent knowledge base with MCP + hybrid search |
-| [GitHub Ecosystem](docs/github-ecosystem.md) | GitHub | Actions, Copilot Agent, Agentic Workflows, MCP servers |
-| [Dev Tools Stack](docs/dev-tools-stack.md) | Multiple | Linear, Sentry, CI/CD, monitoring — the agent-friendly tool stack |
-| [Potent Combos](docs/potent-combos.md) | All sources | System combinations, topology diagrams, integration patterns |
+| [Harness Engineering](docs/harness-engineering.md) | OpenAI | AGENTS.md, layered architecture, Symphony framework, execution plans, AAIF/Linux Foundation |
+| [Deep Agents](docs/deep-agents.md) | LangChain | Middleware pipelines, sub-agent delegation, observation masking, context engineering |
+| [Autoresearch](docs/autoresearch.md) | Karpathy | NEVER STOP loop, ratchet pattern, three-part circuit breaker, crash recovery |
+| [QMD](docs/qmd.md) | Tobi Lutke | Hybrid search (BM25 + vector + reranking), hallucination reduction, query expansion |
+| [Paperclip](docs/paperclip.md) | Paperclip AI | Fleet orchestration, per-agent budgets, task checkout, heartbeat protocol |
+| [Orchestrator](docs/orchestrator.md) | Symphony | Reconciliation loop, task state machine, git worktree isolation |
+
+### Competitive Landscape
+
+| Document | Source | Key Patterns |
+|----------|--------|-------------|
+| [Competitive Analysis](docs/competitive-analysis.md) | — | Feature matrix: Software Factory vs Devin vs Factory.ai vs Copilot vs Blitzy vs Paperclip |
+| [Devin + Factory.ai](docs/devin-factory.md) | Devin, Factory.ai | Architecture deep-dive, pricing, Nubank 8x efficiency, EY 5000 engineers |
+| [Coding Agents Landscape](docs/coding-agents-landscape.md) | 12+ tools | Claude Code, Codex, Cursor, OpenHands, Aider, Cline, Amazon Q — full comparison |
+| [Enterprise Adoption](docs/enterprise-adoption.md) | 14 companies | Uber, Anthropic, OpenAI, Spotify, Shopify, Microsoft, Goldman Sachs |
+
+### Ecosystem & Architecture
+
+| Document | Source | Key Patterns |
+|----------|--------|-------------|
+| [Potent Combos](docs/potent-combos.md) | All sources | 5 topology types, 6 high-synergy combos, mega-topology diagram, anti-patterns |
+| [Competency Graph](docs/competency-graph.md) | All sources | 25-dimension competency matrix, complementary pairs, phase adoption map |
+| [GitHub Ecosystem](docs/github-ecosystem.md) | GitHub | Agent HQ, Agentic Workflows, Copilot Agent, custom agents, MCP servers |
+| [Dev Tools Stack](docs/dev-tools-stack.md) | Multiple | Linear Agent API, PagerDuty, Sentry, CI/CD — recommended stack at $42/mo |
+| [Obsidian Knowledge](docs/obsidian-knowledge.md) | Obsidian/QMD | MCP servers, integration patterns, comparison with other knowledge stores |
+
+---
+
+## Design Principles
+
+1. **PRs are the review gate** — every agent action produces a PR. Nothing merges without human approval.
+2. **Constraints over instructions** — tell agents what NOT to do. Negative constraints outperform step-by-step guides.
+3. **Bounded blast radius** — each agent scoped to relevant files. Cost caps prevent runaway spend.
+4. **Shift feedback left** — local lint in <5s, then CI only if local passes. Max 2 CI retries.
+5. **Verification loops, not hope** — agents call black-box verifiers before opening PRs. LLM judge catches scope creep.
+6. **Cattle, not pets** — every sandbox identical and disposable. No persistent agent state.
+7. **Compose via middleware, govern at the boundary** — capabilities composed through middleware pipelines. Governance enforced at the tool/sandbox level, not via LLM self-policing.
 
 ---
 
@@ -257,7 +443,7 @@ Extract into a reusable platform. Same orchestration, governance, and verificati
 
 **Production Systems:** [Spotify Honk Pt 1](https://engineering.atspotify.com/2025/11/spotifys-background-coding-agent-part-1) | [Pt 2](https://engineering.atspotify.com/2025/11/context-engineering-background-coding-agents-part-2) | [Pt 3](https://engineering.atspotify.com/2025/12/feedback-loops-background-coding-agents-part-3) | [Ramp Inspect](https://builders.ramp.com/post/why-we-built-our-background-agent) | [Stripe Minions Pt 1](https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents) | [Pt 2](https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents-part-2)
 
-**Frameworks:** [Deep Agents](https://github.com/langchain-ai/deepagents) | [Deep Agents Docs](https://docs.langchain.com/oss/python/deepagents/overview) | [Autoresearch](https://github.com/karpathy/autoresearch) | [QMD](https://github.com/tobi/qmd)
+**Frameworks:** [Deep Agents](https://github.com/langchain-ai/deepagents) | [Deep Agents Docs](https://docs.langchain.com/oss/python/deepagents/overview) | [Autoresearch](https://github.com/karpathy/autoresearch) | [QMD](https://github.com/tobi/qmd) | [Paperclip](https://github.com/paperclipai/paperclip)
 
 **Extended Tools:** [Linear Agent API](https://linear.app/developers/agents) | [GitHub Agentic Workflows](https://github.blog/ai-and-ml/automate-repository-tasks-with-github-agentic-workflows/) | [Devin](https://devin.ai) | [Factory.ai](https://factory.ai)
 
