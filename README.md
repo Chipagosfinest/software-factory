@@ -111,6 +111,52 @@ Research and implementation of agent-native software development patterns — au
 
 ---
 
+## Live Proof-of-Concept: The Code Factory in the Wild
+
+On March 17, 2026, Ryan Carson [@ryancarson](https://x.com/ryancarson/status/2033958219891028302) filed 6 bugs from his phone while waiting at the doctor's office. The first was merged before he left. 3–6 were running in parallel.
+
+```
+  THE ROLE INVERSION (what Carson proved)
+
+  Before:  Developer = 80% writing code  + 20% deciding what to build
+  After:   Developer = 80% filing issues + 20% reviewing agent PRs
+
+  The bottleneck moved from IMPLEMENTATION → JUDGMENT.
+
+  Stack: Symphony (Elixir/OTP orchestrator, Apache 2.0)
+         + Codex App Server (one isolated instance per task)
+         + Linear (issue tracker as the human interface)
+         + GitHub (PR creation + auto-merge on success)
+         Setup time: 2-3 days. Default concurrency: 10 agents.
+```
+
+```
+  Developer (phone) ──▶ Linear Issue ──▶ Symphony
+                                              │
+                                     ┌────────┼────────┐
+                                     ▼        ▼        ▼
+                                  Codex 1  Codex 2  Codex 3  ... (10 max)
+                               (isolated (isolated (isolated
+                                git clone) git clone) git clone)
+                                     │        │        │
+                                     ▼        ▼        ▼
+                                  CI pass  CI pass  CI pass
+                                     │        │        │
+                                     └────────┼────────┘
+                                              ▼
+                                      PRs on GitHub
+                                              │
+                                       Human reviews
+                                              │
+                                           Merged ✓
+```
+
+Carson's cost data: **$297 in API costs** to complete work worth **$50,000**. Setup: 2–3 days. Runs 14-hour unattended sessions.
+
+[Full Symphony architecture + Ralph loop origin + role inversion thesis →](docs/symphony-carson.md)
+
+---
+
 ## Agent Topology Patterns
 
 Five topology types observed across production agent systems:
