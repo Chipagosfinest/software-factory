@@ -218,7 +218,7 @@ Five topology types observed across production agent systems:
 
 ## Research Sources
 
-Eight production systems and open-source frameworks inform this design:
+Nine production systems and open-source frameworks inform this design:
 
 ```
   ┌──────────────────────────────────────────────────────────────────────┐
@@ -237,16 +237,17 @@ Eight production systems and open-source frameworks inform this design:
   │  └──────────┘    │ Warm pools, retry│    └──────────┘  │Dashboard│ │
   │                  └──────────────────┘                  └─────────┘ │
   │                                                                      │
-  │  KNOWLEDGE           AUTONOMY                                        │
+  │  KNOWLEDGE           AUTONOMY           FLEET MGMT                   │
   │                                                                      │
-  │  ┌──────────┐    ┌──────────┐                                       │
-  │  │   QMD    │    │Autoresrch│                                       │
-  │  │ (Lutke)  │    │(Karpathy)│                                       │
-  │  │          │    │          │                                       │
-  │  │ BM25 +   │    │NEVER STOP│                                       │
-  │  │ Vector + │    │Git memory│                                       │
-  │  │ Reranking│    │Ratchet   │                                       │
-  │  └──────────┘    └──────────┘                                       │
+  │  ┌──────────┐    ┌──────────┐    ┌──────────┐                      │
+  │  │   QMD    │    │Autoresrch│    │ Composio │                      │
+  │  │ (Lutke)  │    │(Karpathy)│    │  Agent   │                      │
+  │  │          │    │          │    │  Orch.   │                      │
+  │  │ BM25 +   │    │NEVER STOP│    │          │                      │
+  │  │ Vector + │    │Git memory│    │ Plugins  │                      │
+  │  │ Reranking│    │Ratchet   │    │ Worktrees│                      │
+  │  └──────────┘    └──────────┘    │ States   │                      │
+  │                                  └──────────┘                      │
   └──────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -260,6 +261,7 @@ Eight production systems and open-source frameworks inform this design:
 | **Karpathy** | [Autoresearch](https://github.com/karpathy/autoresearch) | ~100 experiments overnight | NEVER STOP loop, single-metric acceptance, fixed time budgets |
 | **Tobi Lutke** | [QMD](https://github.com/tobi/qmd) | Local-first knowledge search | Hybrid search (BM25 + vector + LLM reranking), MCP server |
 | **Paperclip** | [paperclipai/paperclip](https://github.com/paperclipai/paperclip) | 26.7k★ agent orchestration | Per-agent budgets, task checkout locks, heartbeat health, React dashboard |
+| **Composio** | [ComposioHQ/agent-orchestrator](https://github.com/ComposioHQ/agent-orchestrator) | 4.5k★ fleet management | Plugin-based 8-slot architecture, LLM task decomposition, fingerprinted review dispatch, 15-state session lifecycle |
 
 ---
 
@@ -271,16 +273,18 @@ Which source is best at what — and where Software Factory draws from each:
 Scale: ████ best-in-class  ███░ strong  ██░░ partial  █░░░ minimal  ░░░░ absent
 ```
 
-| Competency | OpenAI | Spotify | Stripe | Deep Agents | Karpathy | QMD | Paperclip |
-|---|---|---|---|---|---|---|---|
-| Context engineering | ███░ | ████ | ███░ | ██░░ | █░░░ | ░░░░ | ░░░░ |
-| Middleware/composition | ░░░░ | ░░░░ | ░░░░ | ████ | ░░░░ | ░░░░ | ░░░░ |
-| Sandbox isolation | ██░░ | ████ | ████ | ░░░░ | █░░░ | ░░░░ | ░░░░ |
-| Verification loops | ███░ | ████ | ████ | ░░░░ | ████ | ░░░░ | ░░░░ |
-| LLM judge | ░░░░ | ████ | ██░░ | ░░░░ | ░░░░ | ░░░░ | ░░░░ |
-| Cost control | ██░░ | █░░░ | ██░░ | ░░░░ | ░░░░ | ░░░░ | ████ |
-| Fleet management | ░░░░ | ░░░░ | ██░░ | ██░░ | ░░░░ | ░░░░ | ████ |
-| Knowledge search | ░░░░ | ░░░░ | ░░░░ | ░░░░ | ░░░░ | ████ | ░░░░ |
+| Competency | OpenAI | Spotify | Stripe | Deep Agents | Karpathy | QMD | Paperclip | Composio |
+|---|---|---|---|---|---|---|---|---|
+| Context engineering | ███░ | ████ | ███░ | ██░░ | █░░░ | ░░░░ | ░░░░ | █░░░ |
+| Middleware/composition | ░░░░ | ░░░░ | ░░░░ | ████ | ░░░░ | ░░░░ | ░░░░ | ████ |
+| Sandbox isolation | ██░░ | ████ | ████ | ░░░░ | █░░░ | ░░░░ | ░░░░ | ███░ |
+| Verification loops | ███░ | ████ | ████ | ░░░░ | ████ | ░░░░ | ░░░░ | ███░ |
+| LLM judge | ░░░░ | ████ | ██░░ | ░░░░ | ░░░░ | ░░░░ | ░░░░ | ░░░░ |
+| Cost control | ██░░ | █░░░ | ██░░ | ░░░░ | ░░░░ | ░░░░ | ████ | ██░░ |
+| Fleet management | ░░░░ | ░░░░ | ██░░ | ██░░ | ░░░░ | ░░░░ | ████ | ████ |
+| Knowledge search | ░░░░ | ░░░░ | ░░░░ | ░░░░ | ░░░░ | ████ | ░░░░ | ░░░░ |
+| Plugin architecture | ░░░░ | ░░░░ | ░░░░ | ░░░░ | ░░░░ | ░░░░ | ░░░░ | ████ |
+| Task decomposition | ░░░░ | ░░░░ | ░░░░ | ░░░░ | ░░░░ | ░░░░ | ░░░░ | ████ |
 
 [Full competency matrix with 25 dimensions →](docs/competency-graph.md)
 
@@ -449,6 +453,7 @@ npm run dev
 | [QMD](docs/qmd.md) | Tobi Lutke | Hybrid search (BM25 + vector + reranking), hallucination reduction, query expansion |
 | [Paperclip](docs/paperclip.md) | Paperclip AI | Fleet orchestration, per-agent budgets, task checkout, heartbeat protocol |
 | [Orchestrator](docs/orchestrator.md) | Symphony | Reconciliation loop, task state machine, git worktree isolation |
+| [Agent Orchestrator](docs/agent-orchestrator.md) | Composio | Plugin-based fleet management, LLM task decomposition, fingerprinted review dispatch, 15-state session lifecycle, agent-agnostic interface |
 
 ### Competitive Landscape
 
@@ -506,7 +511,7 @@ npm run dev
 
 **Production Systems:** [Spotify Honk Pt 1](https://engineering.atspotify.com/2025/11/spotifys-background-coding-agent-part-1) | [Pt 2](https://engineering.atspotify.com/2025/11/context-engineering-background-coding-agents-part-2) | [Pt 3](https://engineering.atspotify.com/2025/12/feedback-loops-background-coding-agents-part-3) | [Ramp Inspect](https://builders.ramp.com/post/why-we-built-our-background-agent) | [Stripe Minions Pt 1](https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents) | [Pt 2](https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents-part-2)
 
-**Frameworks:** [Deep Agents](https://github.com/langchain-ai/deepagents) | [Deep Agents Docs](https://docs.langchain.com/oss/python/deepagents/overview) | [Autoresearch](https://github.com/karpathy/autoresearch) | [QMD](https://github.com/tobi/qmd) | [Paperclip](https://github.com/paperclipai/paperclip)
+**Frameworks:** [Deep Agents](https://github.com/langchain-ai/deepagents) | [Deep Agents Docs](https://docs.langchain.com/oss/python/deepagents/overview) | [Autoresearch](https://github.com/karpathy/autoresearch) | [QMD](https://github.com/tobi/qmd) | [Paperclip](https://github.com/paperclipai/paperclip) | [Agent Orchestrator](https://github.com/ComposioHQ/agent-orchestrator)
 
 **Extended Tools:** [Linear Agent API](https://linear.app/developers/agents) | [GitHub Agentic Workflows](https://github.blog/ai-and-ml/automate-repository-tasks-with-github-agentic-workflows/) | [Devin](https://devin.ai) | [Factory.ai](https://factory.ai)
 
