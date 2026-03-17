@@ -413,11 +413,21 @@ npm run dev
 | [Coding Agents Landscape](docs/coding-agents-landscape.md) | 12+ tools | Claude Code, Codex, Cursor, OpenHands, Aider, Cline, Amazon Q — full comparison |
 | [Enterprise Adoption](docs/enterprise-adoption.md) | 14 companies | Uber, Anthropic, OpenAI, Spotify, Shopify, Microsoft, Goldman Sachs |
 
+### Deep-Dive Topics
+
+| Document | Source | Key Patterns |
+|----------|--------|-------------|
+| [Context Engineering](docs/context-engineering.md) | Spotify, OpenAI, Anthropic, JetBrains | Observation masking (52% cheaper), AGENTS.md (60K repos), tool sprawl (85% degradation), dynamic assembly |
+| [Agent Safety & Cost Control](docs/agent-safety-cost-control.md) | Stripe, OWASP, Microsoft | Kill switches, approval gates, blast radius, failure taxonomy, $400M cloud leak, Replit/AWS incidents |
+| [Sandbox Isolation](docs/sandbox-isolation.md) | Spotify, Stripe, Ramp, E2B | Containers, VMs, warm pools, git worktrees, network isolation, cost at scale |
+| [SWE-bench Ecosystem](docs/swe-bench-ecosystem.md) | Princeton, METR, Scale AI | 7 variants, leaderboard gaming, METR 19% slowdown paradox, real-world metrics |
+| [MCP Ecosystem](docs/mcp-ecosystem-deep-dive.md) | Anthropic, Microsoft | Protocol spec, 81K stars, tool poisoning, MCPBench (64% accuracy), competing protocols |
+| [Agent Memory Systems](docs/agent-memory-systems.md) | Napkin, Mem0, Letta, hmem | Progressive disclosure, BM25 vs vector, write-time vs read-time curation, memory security |
+
 ### Ecosystem & Architecture
 
 | Document | Source | Key Patterns |
 |----------|--------|-------------|
-| [Agent Memory Systems](docs/agent-memory-systems.md) | Napkin, Mem0, Letta, hmem | Progressive disclosure, BM25 vs vector, write-time vs read-time curation, memory security |
 | [Potent Combos](docs/potent-combos.md) | All sources | 5 topology types, 6 high-synergy combos, mega-topology diagram, anti-patterns |
 | [Competency Graph](docs/competency-graph.md) | All sources | 25-dimension competency matrix, complementary pairs, phase adoption map |
 | [GitHub Ecosystem](docs/github-ecosystem.md) | GitHub | Agent HQ, Agentic Workflows, Copilot Agent, custom agents, MCP servers |
