@@ -413,6 +413,12 @@ npm run dev
 | [Coding Agents Landscape](docs/coding-agents-landscape.md) | 12+ tools | Claude Code, Codex, Cursor, OpenHands, Aider, Cline, Amazon Q — full comparison |
 | [Enterprise Adoption](docs/enterprise-adoption.md) | 14 companies | Uber, Anthropic, OpenAI, Spotify, Shopify, Microsoft, Goldman Sachs |
 
+### Live Demonstrations
+
+| Document | Source | Key Patterns |
+|----------|--------|-------------|
+| [Symphony + Carson Code Factory](docs/symphony-carson.md) | Ryan Carson (@ryancarson) | 6 bugs filed from phone, resolved in parallel — Symphony (Elixir) + Codex + Linear + GitHub. Ralph loop origin. Role inversion thesis. |
+
 ### Deep-Dive Topics
 
 | Document | Source | Key Patterns |
