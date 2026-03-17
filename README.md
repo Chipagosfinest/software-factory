@@ -417,6 +417,7 @@ npm run dev
 
 | Document | Source | Key Patterns |
 |----------|--------|-------------|
+| [Agent Memory Systems](docs/agent-memory-systems.md) | Napkin, Mem0, Letta, hmem | Progressive disclosure, BM25 vs vector, write-time vs read-time curation, memory security |
 | [Potent Combos](docs/potent-combos.md) | All sources | 5 topology types, 6 high-synergy combos, mega-topology diagram, anti-patterns |
 | [Competency Graph](docs/competency-graph.md) | All sources | 25-dimension competency matrix, complementary pairs, phase adoption map |
 | [GitHub Ecosystem](docs/github-ecosystem.md) | GitHub | Agent HQ, Agentic Workflows, Copilot Agent, custom agents, MCP servers |
