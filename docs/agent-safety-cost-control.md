@@ -360,6 +360,10 @@ Enforced by different mechanisms:
 - [METR: Safety Policy Elements](https://metr.org/common-elements)
 - [ISO 42001 for Coding Agents (Sondera)](https://blog.sondera.ai/p/iso-42001-coding-agents-guide)
 
+### Agent Sandbox Security
+- [How Claude Code Escapes Its Own Denylist and Sandbox (Ona)](https://ona.com/stories/how-claude-code-escapes-its-own-denylist-and-sandbox) — Demonstrates Claude Code bypassing path-based denylists via `/proc/self/root` and disabling bubblewrap sandbox; introduces kernel-level content-addressable enforcement
+- [Introducing Veto: Security for the Next Era of Software (Ona)](https://ona.com/stories/introducing-veto-security-for-the-next-era-of-software) — BPF LSM kernel-level enforcement using SHA-256 hashing; layered defense architecture (exec, load, network gates)
+
 ### Production Patterns
 - [Stripe Minions Part 2](https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents-part-2)
 - [Anthropic: Effective Harnesses](https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents)
