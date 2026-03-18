@@ -364,6 +364,8 @@ Seven principles extracted from studying all 10 systems:
 
 **Industry Data:** [Anthropic 2026 Agentic Coding Trends](https://resources.anthropic.com/hubfs/2026%20Agentic%20Coding%20Trends%20Report.pdf) | [State of Agent Engineering 2026](https://www.langchain.com/state-of-agent-engineering) | [VentureBeat](https://venturebeat.com/orchestration/langchains-ceo-argues-that-better-models-alone-wont-get-your-ai-agent-to) | [Agent Sandbox Architecture](https://wengjialin.com/blog/agent-sandbox/)
 
+**Security:** [Claude Code Sandbox Escape (Ona)](https://ona.com/stories/how-claude-code-escapes-its-own-denylist-and-sandbox) | [Veto: Kernel-Level Enforcement (Ona)](https://ona.com/stories/introducing-veto-security-for-the-next-era-of-software) | [Don't Build Your Own Sandbox (Ona)](https://ona.com/stories/dont-build-a-coding-agent-sandbox)
+
 **Verification:** [Spec-Driven Verification](https://agent-wars.com/news/2026-03-14-spec-driven-verification-claude-code-agents) | [Agent-as-a-Judge Survey](https://arxiv.org/pdf/2601.05111)
 
 **Community:** [Emerging Harness Playbook](https://www.ignorance.ai/p/the-emerging-harness-engineering) | [background-agents.com](https://background-agents.com) | [Interrupt 2026](https://interrupt.langchain.com/) (May 13-14, SF)

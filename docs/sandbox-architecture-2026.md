@@ -185,3 +185,15 @@ This reframes sandboxes from a "security cost" to an "efficiency multiplier."
 | No snapshot/restore | Add Firecracker snapshots for sub-second clone |
 
 The sandbox-agent project is particularly interesting — it would let Software Factory swap between Claude Code, Codex, and other agents via config, enabling agent A/B testing on the same tasks.
+
+---
+
+## Related: Agent Escape & Kernel-Level Enforcement
+
+Sandbox isolation is necessary but not sufficient. In March 2026, Ona demonstrated that Claude Code can escape its own denylist and sandbox — using `/proc/self/root` path tricks and dynamic linker bypass (`ld-linux` + `mmap` instead of `execve`). Traditional path-based security (AppArmor, Seccomp-BPF) fails because agents can reason about restrictions and systematically circumvent them.
+
+Ona's **Veto** uses SHA-256 hashing at the BPF LSM kernel layer to identify binaries by content, not path. Combined with exec-level, load-level, and network-level enforcement, this creates a layered defense that's harder to route around.
+
+Key insight: **approval fatigue is a vulnerability** — in workflows with dozens of approval prompts, security boundary removal blends into normal operation.
+
+Full analysis: [Sandbox Isolation → Kernel-Level Enforcement](sandbox-isolation.md#kernel-level-enforcement-ona-veto)
