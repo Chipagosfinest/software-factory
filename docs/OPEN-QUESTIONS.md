@@ -54,6 +54,12 @@ TigerFS and AgentFS propose filesystem interfaces to databases for multi-agent c
 ### What Governance Scales Beyond 10 Agents?
 Paperclip and Composio show fleet management for ~10 agents. Carson runs 10 parallel. But no one has published patterns for 100+ concurrent agents with shared state. What governance patterns emerge at that scale? Do circuit breakers cascade? Do budget caps need dynamic adjustment?
 
+### Deterministic Workflows vs Autonomous Agents — Is There a Middle Path?
+Fabro (Helmkamp, March 2026) bets on **deterministic workflow graphs** over agents — humans define the exact process as a DAG, agents execute steps. Symphony/Stripe bet on **autonomous agents** that decide what to do. The question: does a prescriptive graph outperform autonomous planning for real-world engineering tasks? Fabro's thesis is that "you either babysit every step or review a 50-file diff you don't trust" — workflow graphs give a middle path. But no one has published controlled comparisons.
+
+### Does Cross-Run Learning Actually Work?
+AutoResearchClaw's MetaClaw claims +18.3% robustness from extracting lessons across pipeline runs. pi-autoresearch persists state in JSONL + MD files for agent continuity. But these are self-reported numbers from new projects. Does cross-run learning scale, or do stale lessons poison future runs? How do you deprecate knowledge that was true in run #5 but false by run #50?
+
 ---
 
 ## What to Watch For
@@ -70,6 +76,9 @@ Paperclip and Composio show fleet management for ~10 agents. Carson runs 10 para
 - **PR review as bottleneck** — Spotify's QCon talk confirms code generation is no longer the bottleneck — PR review capacity is. Multiple teams exploring auto-merge for documentation and low-risk changes.
 - **Martin Fowler's harness engineering taxonomy** — Three categories (context engineering, architectural constraints, garbage collection) now provide a shared vocabulary. Böckeler estimates 5 months of serious harness work needed, not quick fixes.
 - **Symphony open-sourced** — OpenAI released the Elixir-based framework publicly (Mar 2026). Fault-tolerant supervision trees, Linear polling, "Proof of Work" (CI passes + walkthroughs) before merge.
+- **Autoresearch beyond ML** — Shopify CEO applied the Karpathy loop to production Ruby code ([Liquid PR #2056](https://github.com/Shopify/liquid/pull/2056)): 53% faster parsing, ~120 iterations. AutoResearchClaw extends to full research papers (23-stage pipeline). pi-autoresearch productizes it as an installable extension. Pattern is generalizing rapidly.
+- **Deterministic workflow orchestrators** — Fabro ([open-sourced Mar 17](https://github.com/fabro-sh/fabro)) defines agent workflows as Graphviz DOT graphs with human gates and model routing via CSS-like stylesheets. A bet that prescriptive processes beat autonomous planning for reproducible engineering work.
+- **Code-as-tool-calling** — Executor ([RhysSullivan](https://github.com/RhysSullivan/executor)) lets agents write TypeScript to discover and call MCP/API/GraphQL tools instead of loading schemas into context. If agents are code-literate, why not let them query tool catalogs programmatically?
 
 ### Risks to Current Assumptions
 - **Model capabilities may leapfrog harness engineering.** If a model ships that can reliably self-plan, self-verify, and self-scope, much of the harness infrastructure becomes unnecessary. Current evidence says we're far from this, but it's the existential risk to the "harness > model" thesis.

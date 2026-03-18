@@ -150,6 +150,33 @@ Anthropic's "Building Effective Agents" post emphasizes that tool design matters
 | **Per-server activation** | Users enable specific MCP servers per conversation | BoltAI, Claude Desktop |
 | **Restricted API keys** | Limit available tools via auth scoping | Stripe ("tool availability is determined by the permissions you configure on the restricted key") |
 | **Tool output optimization** | Compress tool responses to reduce context consumption | Apigene claims "up to 99% payload reduction via compact JSON" |
+| **Code-as-tool-calling** | Agent writes code to discover and call tools instead of schema-in-context | Executor (RhysSullivan) |
+
+### Executor: Code-as-Tool-Calling (March 2026)
+
+A fundamentally different approach to tool sprawl: instead of stuffing MCP tool schemas into the agent's context, **give the agent a code execution environment** and let it programmatically discover and call tools.
+
+**Repo**: [RhysSullivan/executor](https://github.com/RhysSullivan/executor) — 625 stars, active development (3rd architecture iteration)
+
+**How it works:**
+1. Connect sources (MCP servers, OpenAPI REST APIs, GraphQL endpoints)
+2. Executor indexes sources into a workspace tool catalog
+3. Agent writes TypeScript to discover and call tools:
+```typescript
+const matches = await tools.discover({ query: "github issues", limit: 5 });
+const detail = await tools.describe.tool({ path: matches.bestPath, includeSchemas: true });
+return await tools.github.issues.list({ owner: "vercel", repo: "next.js" });
+```
+
+**Why this matters for tool sprawl:** Traditional MCP integration puts tool schemas in the context window (10K-30K tokens for 150 tools). Executor moves tool schemas out of context entirely — the agent queries them on-demand via code. This converts a context-space problem into a compute-time problem.
+
+**Sandbox runtimes:** QuickJS (default), SES (Secure EcmaScript), Deno — each offering different security/performance tradeoffs. Human-in-the-loop execution pauses and resumes cleanly.
+
+**MCP bridge:** Executor itself exposes an MCP endpoint, so other tools can drive it via MCP. This creates a meta-layer: MCP servers consumed via code execution, exposed back out via MCP.
+
+**Relevance:** Executor represents a shift from "declarative tool manifests" (list all tools upfront) to "imperative tool discovery" (search for what you need). If agents are increasingly code-literate, this may be a more natural interface than expanding context windows.
+
+Source: [@RhysSullivan announcement](https://x.com/RhysSullivan/status/2030885614502183367) | [GitHub](https://github.com/RhysSullivan/executor)
 
 ---
 

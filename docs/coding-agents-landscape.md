@@ -22,6 +22,7 @@ The market has split into four categories: IDE-based assistants, terminal agents
 | **Terminal agents** | CLI-native, git-integrated | Claude Code, Aider, OpenCode, Codex CLI | Power developers |
 | **Cloud autonomous** | Fire-and-forget, sandboxed execution | Devin, Factory.ai, Jules, OpenHands | Engineering teams |
 | **Background/async** | Webhook-triggered, runs without human presence | Cursor Background Agents, Codex Automations, Software Factory | DevOps/SRE teams |
+| **Workflow orchestrators** | Deterministic graphs over agent execution | Fabro, Symphony | Teams wanting reproducibility |
 | **Code review** | PR-level review and auto-fix | CodeRabbit, Ellipsis, Cursor BugBot | Teams with PR workflows |
 | **No-code builders** | Prompt-to-app, non-technical users | Lovable, Bolt.new, v0, Replit Agent | Non-developers |
 
@@ -48,6 +49,7 @@ The market has split into four categories: IDE-based assistants, terminal agents
 | **Windsurf** | AI IDE | N/A | N/A | $15-60 | No | Acquired by Google | Medium |
 | **CodeRabbit** | Code review | N/A | N/A | Free-$24/dev | No | Yes | Low |
 | **Blitzy** | Swarm builder | N/A | 86.8% | Enterprise custom | No | Yes | Very High |
+| **Slate/RLM** | Swarm agent | N/A | N/A | TBD (soft launch) | No | Not yet | Very High |
 
 ---
 
@@ -291,6 +293,40 @@ Sources: [Best AI App Builder 2026](https://getmocha.com/blog/best-ai-app-builde
 - **Limitation**: Greenfield-only; no maintenance, no PR review, no existing codebase support
 
 Source: [Blitzy](https://blitzy.com/)
+
+#### Slate / RLM (Realm)
+
+Swarm-native coding agent. Self-described as "the first frontier agent to directly use a code environment for swarm orchestration."
+
+- **Architecture**: "Hive mind" — orchestrator runs in a code environment and programmatically spawns/synchronizes parallel subagent threads. Not message-passing between agents; a shared execution context.
+- **Auto model selection**: Orchestrator (Sonnet, Opus, GPT 5.4) dynamically selects execution models (Codex 5.3, GLM 5, Haiku) per-subtask based on complexity and cost.
+- **Threads**: Subagents run as "threads" — massive parallel execution with synchronization primitives in the code environment.
+- **Status**: Soft launch (March 2026), actively developing. No published benchmarks yet.
+
+**How it differs from Blitzy:** Blitzy runs 3,000 static agents for greenfield. Slate's orchestrator is itself running code that spawns agents dynamically — the topology emerges from execution, not configuration. Closer to AgentConductor's dynamic topology concept but implemented as code execution rather than RL-generated YAML DAGs.
+
+Source: [@realmcore_ announcement](https://x.com/realmcore_/status/2032146316730778004)
+
+### Workflow Orchestrators
+
+#### Fabro (Bryan Helmkamp)
+
+Open-source "dark software factory" — deterministic workflow graphs layered over agent execution. Single Rust binary.
+
+- **Architecture**: Define workflows as Graphviz DOT graphs with branching, loops, parallelism, and human gates. Agents execute steps; humans intervene only where it matters.
+- **Multi-model routing**: CSS-like stylesheets route tasks to appropriate models with fallback chains. Solves the "reasoning sandwich" problem declaratively.
+- **Sandboxes**: Isolated Daytona VMs with snapshot setup, network controls, auto-cleanup (same provider as LangChain Open SWE).
+- **Git checkpointing**: Automatic commits at each workflow stage with full execution metadata — the autoresearch ratchet pattern generalized to arbitrary workflows.
+- **Automatic retrospectives**: Post-run summaries with cost, duration, file changes, and LLM narratives.
+- **Stats**: 356 stars, 1,333 commits, v0.174.0, MIT license
+- **Install**: `curl -fsSL https://fabro.sh/install.md | claude`
+
+**Strengths**: Solves the "babysit every step OR review 50-file diff" problem. Deterministic reproducibility. Single binary, zero runtime deps. Git audit trail.
+**Weaknesses**: New (March 2026 open-source), small community, no published benchmarks.
+
+**How it differs from Symphony:** Symphony (OpenAI/Elixir) polls Linear for tasks and dispatches agents autonomously. Fabro lets humans define the *exact workflow graph* the agent follows — it's prescriptive rather than autonomous. Symphony is "agent decides what to do"; Fabro is "human defines the process, agent executes it."
+
+Sources: [@brynary announcement](https://x.com/brynary/status/2033901199603241012) | [GitHub](https://github.com/fabro-sh/fabro) | [Docs](https://docs.fabro.sh)
 
 ---
 

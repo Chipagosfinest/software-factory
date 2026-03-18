@@ -117,6 +117,44 @@ The core loop uses **git as the agent's memory** — a pattern we call the "ratc
 
 **Real results:** 700 autonomous changes over 2 days. ~20 additive improvements transferred successfully to larger models. 11% efficiency gain on the "Time to GPT-2" leaderboard.
 
+### Beyond ML: Shopify's Liquid Parser (March 2026)
+
+Shopify CEO Tobi Lütke applied the autoresearch loop to **production Ruby code** — the Liquid template engine powering all Shopify stores. [PR #2056](https://github.com/Shopify/liquid/pull/2056) documents the results:
+
+| Metric | Before | After | Improvement |
+|--------|--------|-------|-------------|
+| Parse + render time | 7,469µs | 3,534µs | **53% faster** |
+| Parse time alone | 6,031µs | 2,353µs | **61% faster** |
+| Object allocations | 62,620 | 24,530 | **61% fewer** |
+
+The approach: ~120 iterations of modify → test (974 unit tests) → benchmark → keep or discard. Each modification validated against the full test suite before performance evaluation. Failed experiments documented alongside successes (split-based tokenization, tag name interning, regex match objects, polymorphic condition subclasses).
+
+**Key insight for Software Factory:** This proves the autoresearch pattern works beyond ML training. The same loop (modify → evaluate single metric → keep/discard) applied to CPU performance optimization of production code. The "single metric acceptance" principle (Karpathy's `val_bpb` → Lütke's `µs/render`) is the transferable pattern. Any task reducible to "did the number improve?" can be looped overnight.
+
+### pi-autoresearch — Productized Extension (March 2026)
+
+**Repo**: [davebcn87/pi-autoresearch](https://github.com/davebcn87/pi-autoresearch) — 2.2K stars, MIT
+**Platform**: Extension for the [pi](https://github.com/badlogicgames/pi) coding agent
+
+Transforms the autoresearch pattern from a script into an installable extension with visual monitoring:
+
+```
+pi install https://github.com/davebcn87/pi-autoresearch
+/skill:autoresearch-create
+```
+
+**Two-layer design:**
+- **Extension** (domain-agnostic): `run_experiment`, `log_experiment` tools + live dashboard widget
+- **Skill** (domain-specific): Gathers optimization targets, writes session files, initiates loop
+
+**What it adds over raw autoresearch:**
+- **Visual monitoring**: Status widget, expandable dashboard (`Ctrl+X`), fullscreen overlay (`Ctrl+Shift+X`)
+- **Persistent state**: Append-only `autoresearch.jsonl` + living `autoresearch.md` survive context resets and agent restarts
+- **Quality gates**: Optional `autoresearch.checks.sh` runs correctness checks (tests, lint, types) after successful benchmarks
+- **Flexible metrics**: Any optimization target — test speed, bundle size, build times, Lighthouse scores, training loss
+
+**The pattern generalizes:** The extension/skill separation mirrors Deep Agents' middleware/sub-agent split. One infrastructure serves unlimited optimization domains. Session persistence in human-readable files (JSONL + MD) means a fresh agent can resume exactly where a predecessor left off — solving the "context window death" problem for long-running optimization.
+
 ---
 
 ## Three-Part Circuit Breaker
@@ -180,8 +218,81 @@ This three-tier recovery maps directly to how Software Factory agents should han
 
 ---
 
+## AutoResearchClaw — Full Pipeline Extension (March 2026)
+
+While Karpathy's autoresearch automates the *experiment loop* (modify → run → evaluate → keep/discard), **AutoResearchClaw** automates the *entire research lifecycle* from idea to conference-ready paper.
+
+**Repo**: [aiming-lab/AutoResearchClaw](https://github.com/aiming-lab/AutoResearchClaw) — MIT License
+**Tagline**: "Chat an Idea. Get a Paper."
+**Released**: March 15, 2026 (v0.1.0) — three rapid releases in 3 days (v0.1 → v0.2 → v0.3)
+
+### 23-Stage Pipeline Across 8 Phases
+
+```
+┌──────────────────────── AutoResearchClaw Pipeline ────────────────────────┐
+│                                                                            │
+│  Phase 1: SCOPING          Phase 2: LITERATURE       Phase 3: SYNTHESIS    │
+│  ┌─────────────┐           ┌─────────────┐          ┌─────────────┐       │
+│  │ Decompose   │──────────▶│ Search      │─────────▶│ Cluster     │       │
+│  │ topic into  │           │ OpenAlex,   │          │ findings,   │       │
+│  │ problem tree│           │ Semantic    │          │ multi-agent │       │
+│  └─────────────┘           │ Scholar,    │          │ debate →    │       │
+│                             │ arXiv       │          │ hypotheses  │       │
+│                             └─────────────┘          └──────┬──────┘       │
+│                                                              ▼             │
+│  Phase 4: EXPERIMENT DESIGN    Phase 5: EXECUTION    Phase 6: ANALYSIS     │
+│  ┌─────────────┐               ┌─────────────┐      ┌─────────────┐       │
+│  │ Hardware-   │──────────────▶│ Sandbox run │─────▶│ Multi-agent │       │
+│  │ aware code  │               │ Self-healing│      │ evaluation  │       │
+│  │ (GPU/MPS/   │               │ (NaN/Inf    │      │ PROCEED /   │       │
+│  │  CPU auto)  │               │  auto-fix)  │      │ REFINE /    │       │
+│  └─────────────┘               └─────────────┘      │ PIVOT       │       │
+│                                                      └──────┬──────┘       │
+│                                                              ▼             │
+│  Phase 7: PAPER WRITING        Phase 8: FINALIZATION                       │
+│  ┌─────────────┐               ┌─────────────┐                            │
+│  │ 5-6.5K word │──────────────▶│ Quality     │─────▶ LaTeX + BibTeX       │
+│  │ paper +     │               │ gates,      │      NeurIPS / ICML /      │
+│  │ peer review │               │ citation    │      ICLR templates        │
+│  └─────────────┘               │ verification│                            │
+│                                 └─────────────┘                            │
+└────────────────────────────────────────────────────────────────────────────┘
+```
+
+### Key Differentiators from Karpathy's Loop
+
+| Aspect | Karpathy Autoresearch | AutoResearchClaw |
+|--------|----------------------|------------------|
+| **Scope** | Experiment loop only | Idea → conference paper |
+| **Literature** | None (agent reads docs ad hoc) | Real citations from arXiv, Semantic Scholar, OpenAlex |
+| **Citation integrity** | N/A | 4-layer verification (arXiv ID → DOI → title match → relevance) |
+| **Experiment recovery** | Git reset on failure | Self-healing: detects NaN/Inf, auto-repairs broken code |
+| **Evaluation** | Single metric (val_bpb) | Multi-agent debate with PROCEED/REFINE/PIVOT decisions |
+| **Output** | Improved code + results.tsv | Full paper + BibTeX + charts + peer review reports |
+| **Cross-run learning** | None | MetaClaw: lessons extracted from each run inform future runs |
+
+### v0.3.0 — MetaClaw Integration (March 17, 2026)
+
+The MetaClaw bridge enables **cross-run learning** — each pipeline execution extracts lessons that improve subsequent runs. In controlled experiments, this yielded a **+18.3% robustness improvement**. This is the autoresearch equivalent of Karpathy's "ratchet" applied to the research pipeline itself: the system gets better at doing research by doing research.
+
+### Multi-Agent Subsystems (v0.2.0)
+
+- **CodeAgent**: Generates and debugs experiment code with hardware awareness
+- **BenchmarkAgent**: Manages reproducible evaluation with statistical analysis
+- **FigureAgent**: Auto-generates charts with confidence intervals
+
+### Relevance to Software Factory
+
+AutoResearchClaw extends the autoresearch pattern from "optimize one metric" to "complete a complex multi-phase workflow autonomously." The 8-phase pipeline with quality gates at each stage mirrors how Software Factory agents could handle complex feature work: scope → research → plan → implement → verify → document.
+
+The self-healing experiment execution and multi-agent evaluation are directly applicable patterns. The MetaClaw cross-run learning addresses the open question in our research: "Does Agent Memory Work at Scale?" — AutoResearchClaw demonstrates that structured knowledge extraction from agent runs can measurably improve future performance.
+
+---
+
 ## Resources
 
 - [karpathy/autoresearch](https://github.com/karpathy/autoresearch) — Source code
 - [Karpathy's 630-line Script Ran 50 Experiments Overnight](https://thenewstack.io/karpathy-autonomous-experiment-loop/) — The New Stack analysis
 - [700 Autonomous Changes in 2 Days](https://github.com/karpathy/autoresearch#results) — Production results and transferred improvements
+- [aiming-lab/AutoResearchClaw](https://github.com/aiming-lab/AutoResearchClaw) — Full pipeline: idea to conference paper
+- [@DataChaz announcement](https://x.com/DataChaz/status/2033584901858202073) — "The wildest open-source project I've seen this month"

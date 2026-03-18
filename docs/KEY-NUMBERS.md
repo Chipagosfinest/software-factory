@@ -81,6 +81,12 @@
 | 11% training speedup | Karpathy's 20 tweaks applied to larger LM | [Potent Combos](potent-combos.md) |
 | 10 parallel agents | Carson Symphony max concurrency | [Symphony + Carson](symphony-carson.md) |
 | 14.2K stars in 1 week | Paperclip AI GitHub traction | [Potent Combos](potent-combos.md) |
+| 53% faster parse+render | Shopify Liquid PR #2056 (Lütke autoresearch loop, ~120 iterations) | [Autoresearch](autoresearch.md) |
+| 61% fewer allocations | Shopify Liquid PR #2056 (62,620 → 24,530 objects) | [Autoresearch](autoresearch.md) |
+| +18.3% robustness | AutoResearchClaw MetaClaw cross-run learning | [Autoresearch](autoresearch.md) |
+| 23 stages, 8 phases | AutoResearchClaw full idea-to-paper pipeline | [Autoresearch](autoresearch.md) |
+| 2.2K stars | pi-autoresearch extension (productized autoresearch pattern) | [Autoresearch](autoresearch.md) |
+| 625 stars | Executor (code-as-tool-calling, RhysSullivan) | [MCP Ecosystem](mcp-ecosystem-deep-dive.md) |
 
 ## Multi-Agent Topology Research
 

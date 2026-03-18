@@ -34,9 +34,10 @@ The 2025-2026 landscape shows two fundamentally different bets on how to solve t
 
 **Repo**: [github.com/Michaelliv/napkin](https://github.com/Michaelliv/napkin)
 **Package**: `napkin-ai` on npm
-**License**: MIT | **Stars**: 9 (brand new — created March 15, 2026)
+**License**: MIT | **Created**: March 15, 2026
 **Stack**: TypeScript, MiniSearch (BM25), sql.js, zero external APIs
 **Built for**: `pi` coding agent (Mario Zechner's platform)
+**Public announcement**: [March 16, 2026](https://x.com/micLivs/status/2033605835092312491) — "a knowledge base that doubles as an agent memory layer, ultra fast, completely sidestepping vector search"
 
 ### The Anti-RAG Bet
 
