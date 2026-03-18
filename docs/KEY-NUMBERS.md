@@ -18,8 +18,8 @@
 | ~25% veto rate | Spotify LLM judge catches scope creep and phantom fixes | [Potent Combos](potent-combos.md) |
 | ~70% first-pass CI | Stripe agent success rate on CI repair | [Potent Combos](potent-combos.md) |
 | 89% acceptance rate | With diff summaries vs 62% without (Anthropic 2026) | [Context Engineering](context-engineering.md) |
-| 40% error reduction | Context engineering impact (Anthropic 2026 Report) | README.md |
-| 2-4x faster delivery | Plan → production with agents (Anthropic 2026) | README.md |
+| 40% error reduction | Context engineering impact (Anthropic 2026 Report) | [README](../README.md) |
+| 2-4x faster delivery | Plan → production with agents (Anthropic 2026) | [README](../README.md) |
 | 1.75x more logic errors | AI-generated code vs human (CodeRabbit) | [Enterprise Adoption](enterprise-adoption.md) |
 | 2.74x more XSS vulns | AI-generated code vs human (CodeRabbit) | [Enterprise Adoption](enterprise-adoption.md) |
 
@@ -29,10 +29,10 @@
 |--------|---------------|-----------|
 | 52% cheaper | Observation masking vs raw context (JetBrains) | [Context Engineering](context-engineering.md) |
 | +2.6% solve rate | Observation masking bonus over baseline (JetBrains) | [Context Engineering](context-engineering.md) |
-| 22-37% less hallucination | BM25 pre-filtering impact | README.md |
-| 85% perf degradation | Large tool spaces — scope to ~20 tools | README.md |
-| 47 tool calls/session | Average in 2026 (Anthropic Report) | README.md |
-| 78% multi-file edits | Up from 34% in 2025 (Anthropic Report) | README.md |
+| 22-37% less hallucination | BM25 pre-filtering impact | [README](../README.md) |
+| 85% perf degradation | Large tool spaces — scope to ~20 tools | [README](../README.md) |
+| 47 tool calls/session | Average in 2026 (Anthropic Report) | [README](../README.md) |
+| 78% multi-file edits | Up from 34% in 2025 (Anthropic Report) | [README](../README.md) |
 | ~500 MCP tools | Stripe Toolshed, curated to ~15 per task | [Enterprise Adoption](enterprise-adoption.md) |
 | 64% accuracy | MCPBench benchmark for MCP tool use | [MCP Ecosystem](mcp-ecosystem-deep-dive.md) |
 | 81K GitHub stars | MCP protocol adoption metric | [MCP Ecosystem](mcp-ecosystem-deep-dive.md) |
@@ -65,10 +65,10 @@
 | 65-72% of code | AI-generated at Uber | [Enterprise Adoption](enterprise-adoption.md) |
 | 5,000+ engineers | EY on Factory.ai Droids | [Enterprise Adoption](enterprise-adoption.md) |
 | 80% of Fortune 500 | Using active AI agents in production (Microsoft) | [Enterprise Adoption](enterprise-adoption.md) |
-| 57% have agents in prod | LangChain survey of their users | README.md |
-| 89% adopted observability | LangChain survey | README.md |
-| 52% adopted evals | LangChain survey (low!) | README.md |
-| 32% cite quality barrier | LangChain survey | README.md |
+| 57% have agents in prod | LangChain survey of their users | [README](../README.md) |
+| 89% adopted observability | LangChain survey | [README](../README.md) |
+| 52% adopted evals | LangChain survey (low!) | [README](../README.md) |
+| 32% cite quality barrier | LangChain survey | [README](../README.md) |
 | 12x efficiency | Nubank data migrations with Devin | [Devin + Factory.ai](devin-factory.md) |
 | 20x cost savings | Nubank with Devin | [Devin + Factory.ai](devin-factory.md) |
 | 79% time reduction | Rakuten: 24 days → 5 days time-to-market | [Enterprise Adoption](enterprise-adoption.md) |
@@ -100,6 +100,6 @@
 | <5s local lint | Stripe: lint locally before any CI push | [Enterprise Adoption](enterprise-adoption.md) |
 | 5-min hard kill | Timeout for runaway agent execution | [Agent Safety & Cost Control](agent-safety-cost-control.md) |
 | $2/run, $5/day | Software Factory default budget caps | [Agent Safety & Cost Control](agent-safety-cost-control.md) |
-| ~20 tools max | Beyond this, 85% performance degradation | README.md |
+| ~20 tools max | Beyond this, 85% performance degradation | [README](../README.md) |
 | 400 lines max | File size limit before mandatory split | CLAUDE.md |
 | 85% context threshold | Deep Agents auto-summarization trigger | [Deep Agents](deep-agents.md) |

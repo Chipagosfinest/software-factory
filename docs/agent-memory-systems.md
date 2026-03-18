@@ -32,7 +32,7 @@ The 2025-2026 landscape shows two fundamentally different bets on how to solve t
 
 ## Napkin (Michael Livshitz) — Progressive Disclosure
 
-**Repo**: github.com/Michaelliv/napkin
+**Repo**: [github.com/Michaelliv/napkin](https://github.com/Michaelliv/napkin)
 **Package**: `napkin-ai` on npm
 **License**: MIT | **Stars**: 9 (brand new — created March 15, 2026)
 **Stack**: TypeScript, MiniSearch (BM25), sql.js, zero external APIs
@@ -156,7 +156,7 @@ Beyond search and read, Napkin provides:
 
 ## Napkin (Siqi Chen / @blader) — Curated Scratchpad
 
-**Repo**: github.com/blader/napkin
+**Repo**: [github.com/blader/napkin](https://github.com/blader/napkin)
 **Type**: Claude Code skill
 **License**: MIT | **Stars**: 390
 **Complexity**: 4 commits, ~1 file

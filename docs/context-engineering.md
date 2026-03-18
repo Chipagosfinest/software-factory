@@ -270,7 +270,7 @@ From [Writing Tools for Agents](https://www.anthropic.com/engineering/writing-to
 | OpenAI Codex: throughput | **3.5 PRs/eng/day** | [OpenAI harness engineering](https://openai.com/index/harness-engineering/) |
 | Stripe Minions: weekly throughput | **1,000+ merged PRs/week** | [Stripe Minions blog](https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents) |
 | Spotify Honk: total merged PRs | **1,500+ merged** | [Spotify Part 1](https://engineering.atspotify.com/2025/11/spotifys-background-coding-agent-part-1) |
-| TELUS with agents: shipping speed | **30% faster** | [Anthropic 2026 Trends Report](https://resources.anthropic.com/2026-agentic-coding-trends-report) |
+| TELUS with agents: shipping speed | **30% faster** | [Anthropic 2026 Trends Report](https://resources.anthropic.com/hubfs/2026%20Agentic%20Coding%20Trends%20Report.pdf) |
 | Rakuten: time-to-market reduction | **79%** (24→5 days) | Anthropic 2026 Trends Report |
 
 **Note:** The often-cited "17 points apart" claim likely combines harness (13.7pt) + infrastructure (6pt) effects. No single source cites exactly 17 as a standalone finding.
@@ -310,7 +310,7 @@ From [Writing Tools for Agents](https://www.anthropic.com/engineering/writing-to
 - [Writing Tools for Agents](https://www.anthropic.com/engineering/writing-tools-for-agents)
 - [Infrastructure Noise in Evals](https://www.anthropic.com/engineering/infrastructure-noise)
 - [Effective Harnesses for Long-Running Agents](https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents)
-- [2026 Agentic Coding Trends Report](https://resources.anthropic.com/2026-agentic-coding-trends-report)
+- [2026 Agentic Coding Trends Report](https://resources.anthropic.com/hubfs/2026%20Agentic%20Coding%20Trends%20Report.pdf)
 
 ### JetBrains Research
 - [Cutting Through the Noise](https://blog.jetbrains.com/research/2025/12/efficient-context-management/)
