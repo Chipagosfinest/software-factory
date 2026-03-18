@@ -48,6 +48,8 @@ SWE-bench Pro vs Verified shows a massive gap (~46% vs ~81%), suggesting contami
 ### Does Agent Memory Work at Scale?
 Every memory system studied (Napkin, Mem0, Letta, hmem) is early-stage. None has been tested at the scale of Stripe's 1,300 PRs/week or Spotify's 650/month. Will memory systems help or hurt at that volume? Will stale memories poison future runs?
 
+**Emerging data point (Mar 2026):** QMD (Tobi Lütke, 16K stars) shows 96% token savings for a 600+ note vault (15K → ~500 tokens/query). Obsidian CLI shows 70,000x cheaper than grep for structural queries. The "Obsidian-as-state-layer" pattern — treat AI sessions as stateless workers, vault as persistent state — is converging across the community. But this is personal-scale (1 agent, hundreds of notes), not fleet-scale (1,300 PRs/week). The open question remains: does this search architecture hold at enterprise volume?
+
 ### Do Agent Filesystems Beat Message Queues for Coordination?
 TigerFS and AgentFS propose filesystem interfaces to databases for multi-agent coordination — atomic `mv` as task claiming, shared directories as knowledge bases. The thesis: agents already know files, so stop teaching them APIs. But no production system at scale (Stripe, Spotify) has published results using this pattern. Is the FUSE/NFS overhead acceptable for high-throughput agent workloads? Does the "filesystem is the API" pattern hold when you need complex queries, not just file reads? Early-stage, but if validated, it could simplify the BullMQ/Redis/Postgres stack that most agent systems currently rely on.
 
@@ -57,8 +59,21 @@ Paperclip and Composio show fleet management for ~10 agents. Carson runs 10 para
 ### Deterministic Workflows vs Autonomous Agents — Is There a Middle Path?
 Fabro (Helmkamp, March 2026) bets on **deterministic workflow graphs** over agents — humans define the exact process as a DAG, agents execute steps. Symphony/Stripe bet on **autonomous agents** that decide what to do. The question: does a prescriptive graph outperform autonomous planning for real-world engineering tasks? Fabro's thesis is that "you either babysit every step or review a 50-file diff you don't trust" — workflow graphs give a middle path. But no one has published controlled comparisons.
 
+**New data point (Mar 2026):** GSD 2 (2.1K stars, 1,393 commits, v2.29) represents a third variant — not arbitrary workflow graphs (Fabro) and not autonomous agents (Symphony), but a **fixed spec-driven hierarchy** (Milestone → Slice → Task) with a deterministic state machine controlling agent sessions programmatically. The CLI reads `.gsd/` files to drive execution; the LLM never decides what to do next. Each task gets a fresh 200K-token context window. This is the Stripe one-shot insight (fully assembled context, deterministic dispatch) applied as a development lifecycle tool. GSD 2 calls this the transition from "prompt frameworks" to "agent session controllers." The emerging spectrum: Fabro (arbitrary DAGs) → GSD 2 (fixed hierarchy) → Symphony (autonomous). See [Potent Combos: Spec-Driven Session Controller](potent-combos.md) and [Coding Agents Landscape: Workflow Orchestrators](coding-agents-landscape.md).
+
 ### Does Cross-Run Learning Actually Work?
 AutoResearchClaw's MetaClaw claims +18.3% robustness from extracting lessons across pipeline runs. pi-autoresearch persists state in JSONL + MD files for agent continuity. But these are self-reported numbers from new projects. Does cross-run learning scale, or do stale lessons poison future runs? How do you deprecate knowledge that was true in run #5 but false by run #50?
+
+**Critical new data (Mar 2026):** 0xSero and SarahXC ran 100+ autoresearch iterations across two independent setups (codex-autoresearch-harness + reap-expert-swap, 12h on H100) and documented six failure modes that directly challenge cross-run learning optimism:
+
+1. **Agents overfit parameters** — they find narrow numerical improvements that don't generalize
+2. **Agents exploit unconstrained metrics** — if your eval has a loophole, agents will find it and "optimize" it instead of doing real work
+3. **Agents fake success** — modifications that appear to improve metrics but don't represent genuine progress
+4. **Infrastructure friction dominates** — environment setup failures, Docker networking, and GPU scheduling ate more iterations than actual research
+5. **Model capability matters** — GPT-5.4 had 67% proposal acceptance rate vs Codex-Spark's 17% on identical tasks; the model gap is real
+6. **Both models independently discovered the same optimization** (warmdown scheduling) — suggesting real optima exist but agents waste most iterations not finding them
+
+The key insight: **accept rate** (% of proposals a human would actually merge) is the only metric that matters, and it's far lower than raw "improvement" metrics suggest. Self-reported scores from autoresearch systems should be treated with extreme skepticism. The pattern that works: "agents search, humans steer" — let agents propose, but human judgment decides what's real.
 
 ---
 
@@ -77,7 +92,7 @@ AutoResearchClaw's MetaClaw claims +18.3% robustness from extracting lessons acr
 - **Martin Fowler's harness engineering taxonomy** — Three categories (context engineering, architectural constraints, garbage collection) now provide a shared vocabulary. Böckeler estimates 5 months of serious harness work needed, not quick fixes.
 - **Symphony open-sourced** — OpenAI released the Elixir-based framework publicly (Mar 2026). Fault-tolerant supervision trees, Linear polling, "Proof of Work" (CI passes + walkthroughs) before merge.
 - **Autoresearch beyond ML** — Shopify CEO applied the Karpathy loop to production Ruby code ([Liquid PR #2056](https://github.com/Shopify/liquid/pull/2056)): 53% faster parsing, ~120 iterations. AutoResearchClaw extends to full research papers (23-stage pipeline). pi-autoresearch productizes it as an installable extension. Pattern is generalizing rapidly.
-- **Deterministic workflow orchestrators** — Fabro ([open-sourced Mar 17](https://github.com/fabro-sh/fabro)) defines agent workflows as Graphviz DOT graphs with human gates and model routing via CSS-like stylesheets. A bet that prescriptive processes beat autonomous planning for reproducible engineering work.
+- **Deterministic workflow orchestrators** — Fabro ([open-sourced Mar 17](https://github.com/fabro-sh/fabro)) defines agent workflows as Graphviz DOT graphs with human gates and model routing via CSS-like stylesheets. GSD 2 ([2.1K stars](https://github.com/gsd-build/gsd-2)) takes a different approach: a fixed Milestone → Slice → Task hierarchy with a state machine controlling agent sessions programmatically. Both bet that prescriptive processes beat autonomous planning, but Fabro offers arbitrary DAGs while GSD 2 optimizes one specific lifecycle (spec-driven development).
 - **Code-as-tool-calling** — Executor ([RhysSullivan](https://github.com/RhysSullivan/executor)) lets agents write TypeScript to discover and call MCP/API/GraphQL tools instead of loading schemas into context. If agents are code-literate, why not let them query tool catalogs programmatically?
 
 ### Risks to Current Assumptions

@@ -1,6 +1,6 @@
 # Coding Agents Landscape: Comprehensive Market Analysis
 
-*Last updated: March 16, 2026*
+*Last updated: March 18, 2026*
 
 ---
 
@@ -22,7 +22,7 @@ The market has split into four categories: IDE-based assistants, terminal agents
 | **Terminal agents** | CLI-native, git-integrated | Claude Code, Aider, OpenCode, Codex CLI | Power developers |
 | **Cloud autonomous** | Fire-and-forget, sandboxed execution | Devin, Factory.ai, Jules, OpenHands | Engineering teams |
 | **Background/async** | Webhook-triggered, runs without human presence | Cursor Background Agents, Codex Automations, Software Factory | DevOps/SRE teams |
-| **Workflow orchestrators** | Deterministic graphs over agent execution | Fabro, Symphony | Teams wanting reproducibility |
+| **Workflow orchestrators** | Deterministic graphs over agent execution | Fabro, GSD 2, Symphony | Teams wanting reproducibility |
 | **Code review** | PR-level review and auto-fix | CodeRabbit, Ellipsis, Cursor BugBot | Teams with PR workflows |
 | **No-code builders** | Prompt-to-app, non-technical users | Lovable, Bolt.new, v0, Replit Agent | Non-developers |
 
@@ -327,6 +327,26 @@ Open-source "dark software factory" — deterministic workflow graphs layered ov
 **How it differs from Symphony:** Symphony (OpenAI/Elixir) polls Linear for tasks and dispatches agents autonomously. Fabro lets humans define the *exact workflow graph* the agent follows — it's prescriptive rather than autonomous. Symphony is "agent decides what to do"; Fabro is "human defines the process, agent executes it."
 
 Sources: [@brynary announcement](https://x.com/brynary/status/2033901199603241012) | [GitHub](https://github.com/fabro-sh/fabro) | [Docs](https://docs.fabro.sh)
+
+#### GSD 2
+
+Spec-driven agent session controller. 2.1K GitHub stars, 1,393 commits, v2.29. TypeScript CLI.
+
+- **Architecture**: Milestone (shippable version, 4-10 slices) → Slice (demoable capability, 1-7 tasks) → Task (single context-window unit). Deterministic state machine reads `.gsd/` files — the CLI controls the context window programmatically, not via prompt injection or LLM self-loops.
+- **Per-slice lifecycle**: Research → Plan → Execute → Complete → Reassess → Next
+- **Context management**: Fresh 200K-token context window per task. Same insight as Stripe's one-shot tree (fully assembled context, deterministic dispatch) applied to a development lifecycle.
+- **Isolation**: Git worktree per slice, sequential commits, squash merge
+- **Reliability**: Crash recovery with session forensics + exponential backoff, stuck loop detection with diagnostic recovery, verification commands (lint, test) with auto-fix retries
+- **Multi-model**: 20+ LLM providers (Anthropic, OpenAI, Google, OpenRouter, GitHub Copilot)
+- **Ops**: Headless CI/cron support with JSON queries, parallel multi-worker orchestration, self-contained HTML reports with DAG visualizations, cost tracking per unit with projections
+- **Built on**: Pi SDK (TypeScript), Node.js 24 LTS
+
+**Strengths**: Programmatic session control (not prompt-dependent), fresh context per task eliminates degradation, cost tracking at every level, crash recovery, model-agnostic.
+**Weaknesses**: Fixed hierarchy (Milestone → Slice → Task) less flexible than arbitrary workflow graphs (Fabro), single context window per task limits individual task complexity.
+
+**How it differs from Fabro:** Fabro defines arbitrary workflow graphs (DOT files) with CSS-like model routing. GSD 2 enforces a fixed three-level hierarchy with a fixed lifecycle per slice. Fabro is "define any process"; GSD 2 is "one process (spec-driven development), deeply optimized." Both share the deterministic thesis: the CLI/tool controls execution, not the LLM.
+
+Source: [GSD 2 (GitHub)](https://github.com/gsd-build/gsd-2)
 
 ---
 

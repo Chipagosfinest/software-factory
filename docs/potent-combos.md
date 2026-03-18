@@ -8,7 +8,7 @@ High-synergy system combinations and topology patterns for autonomous coding age
 
 ## 1. Agent Topology Types
 
-Eight topology types observed across production and research agent systems. ASCII diagrams inspired by Manu Cornet's org chart comic — because how you wire agents matters more than how smart they are.
+Nine topology types observed across production and research agent systems. ASCII diagrams inspired by Manu Cornet's org chart comic — because how you wire agents matters more than how smart they are.
 
 ---
 
@@ -321,6 +321,52 @@ Eight topology types observed across production and research agent systems. ASCI
 
 ---
 
+### Spec-Driven Session Controller (GSD 2)
+
+```
+       ┌──────────────── .gsd/ STATE MACHINE ────────────────┐
+       │                                                       │
+       │   Milestone (shippable version, 4-10 slices)         │
+       │   └─ Slice (demoable capability, 1-7 tasks)          │
+       │      └─ Task (single context-window unit)            │
+       │                                                       │
+       │   Per slice:                                          │
+       │   Research → Plan → Execute → Complete → Reassess    │
+       │                                    │                  │
+       │                                    └─▶ Next slice     │
+       │                                                       │
+       │   ┌───────────┐  ┌────────┐  ┌─────────┐            │
+       │   │ Research  │─▶│  Plan  │─▶│ Execute │──▶ ...      │
+       │   │(read-only)│  │(spec)  │  │(sandbox)│             │
+       │   └───────────┘  └────────┘  └─────────┘            │
+       │                                                       │
+       │   Fresh 200K-token context per task                   │
+       │   Git worktree isolation per slice                    │
+       │   Sequential commits → squash merge                   │
+       └───────────────────────────────────────────────────────┘
+```
+
+**Data flow:** A deterministic state machine reads `.gsd/` files to control agent sessions programmatically — not prompt injection, not LLM self-loops. Each task gets a fresh 200K-token context window with fully assembled context (the same insight as Stripe's one-shot tree: deterministic dispatch over pre-hydrated context). Milestones decompose into Slices, Slices into Tasks. Cost tracking rolls up from task → slice → milestone with projections.
+
+**Control flow:** The CLI is the controller, not the LLM. The state machine drives Research → Plan → Execute → Complete → Reassess per slice. Crash recovery uses session forensics + exponential backoff. Stuck loop detection triggers diagnostic recovery. Verification commands (lint, test) run with auto-fix retries. This is the transition from "prompt frameworks" to "agent session controllers."
+
+**Failure mode:** Rigid decomposition — if a task exceeds one context window, it fails. Crash recovery mitigates transient failures, but the fundamental unit (single context window per task) is a hard constraint. Parallel multi-worker orchestration helps throughput but not individual task complexity.
+
+**How it differs from other topologies:**
+- vs **Fabro**: Both are deterministic, but Fabro defines arbitrary workflow graphs (DOT files) while GSD 2 enforces a fixed hierarchy (Milestone → Slice → Task) with a fixed lifecycle per slice. Fabro is "define any process"; GSD 2 is "one process, deeply optimized."
+- vs **Pipeline** (Spotify): Pipeline is a single agent through sequential stages. GSD 2 spins up fresh context per task — no context degradation across the lifecycle.
+- vs **Ratchet** (Karpathy): Ratchet loops forever on one metric. GSD 2 progresses through a spec — each slice is demoable, each milestone is shippable.
+
+**Best use case:** Solo developers or small teams building features against a spec. The Milestone → Slice → Task hierarchy maps naturally to product roadmaps. 20+ LLM provider support (Anthropic, OpenAI, Google, OpenRouter, GitHub Copilot) makes it model-agnostic.
+
+**Software Factory fit:** GSD 2's session controller pattern could inform how we structure multi-step agent runs — instead of a single context window per webhook event, decompose complex tasks (e.g., large security patches, multi-file refactors) into task-sized units with fresh context each.
+
+**Stats:** 2.1K stars, 1,393 commits, v2.29. TypeScript, Node.js 24 LTS. Built on Pi SDK. Headless CI/cron support with JSON queries. Self-contained HTML reports with DAG visualizations.
+
+**Source:** [GSD 2 (GitHub)](https://github.com/gsd-build/gsd-2)
+
+---
+
 ### Topology Comparison Matrix
 
 | Topology | Control | Agents | Who Decides Execution Path | Best Metric |
@@ -333,18 +379,19 @@ Eight topology types observed across production and research agent systems. ASCI
 | **Sequential Multi-Agent** | Hand-off | Specialized per stage | Fixed role sequence | +13.7pp harness-only (LangChain) |
 | **Dynamic DAG** | RL-generated | Variable per task | RL orchestrator creates topology | +14.6% on APPS (AgentConductor) |
 | **Deterministic Graph** | Prescriptive | Per-node routing | Human-authored DOT graph | Reproducible, auditable (Fabro) |
+| **Spec-Driven Session** | Prescriptive | Fresh context per task | CLI state machine reads `.gsd/` files | 2.1K stars, 1,393 commits (GSD 2) |
 
 **The autonomy spectrum:**
 
 ```
   Prescriptive ◄──────────────────────────────────────────────► Autonomous
 
-  Fabro        Pipeline    Org Chart    Seq. Multi    One-Shot    Ratchet
-  (human       (fixed      (delegated   (role-based   (dispatch   (agent
-   graph)       stages)     hierarchy)   autonomy)     + forget)   decides)
-                                                                    │
-                                                        Dynamic DAG ┘
-                                                        (RL picks topology)
+  GSD 2   Fabro    Pipeline    Org Chart    Seq. Multi    One-Shot    Ratchet
+  (spec    (human   (fixed      (delegated   (role-based   (dispatch   (agent
+   hier.)   graph)   stages)     hierarchy)   autonomy)     + forget)   decides)
+                                                                         │
+                                                             Dynamic DAG ┘
+                                                             (RL picks topology)
 ```
 
 ---
@@ -685,6 +732,7 @@ Legend:
   Composio ───────── Plugin architecture, LLM task decomposition
   AgentConductor ── RL-trained dynamic topology generation (arXiv)
   Fabro ────────── Deterministic workflow graphs, Daytona sandboxes
+  GSD 2 ────────── Spec-driven session controller, Milestone→Slice→Task
   Slate/RLM ────── Swarm-native code-environment orchestration
   Executor ─────── Code-as-tool-calling MCP bridge
   AutoResClaw ──── Full research pipeline (extends autoresearch)
@@ -1054,6 +1102,7 @@ Which combo fits which type of project? Use this matrix to pick your architectur
 - [Agentic Coding Trends Implementation Guide (Hugging Face)](https://huggingface.co/blog/Svngoku/agentic-coding-trends-2026) — Technical patterns reference
 - [Azure AI Agent Design Patterns (Microsoft Learn)](https://learn.microsoft.com/en-us/azure/architecture/ai-ml/guide/ai-agent-design-patterns) — Enterprise orchestration patterns
 - [Fabro: Dark Software Factory (GitHub)](https://github.com/fabro-sh/fabro) — Deterministic workflow graphs, CSS-like model routing, Daytona sandboxes
+- [GSD 2: Spec-Driven Session Controller (GitHub)](https://github.com/gsd-build/gsd-2) — Milestone→Slice→Task hierarchy, deterministic state machine, fresh 200K context per task, crash recovery, 20+ LLM providers
 - [Slate/RLM: Swarm-Native Agents (@realmcore_)](https://x.com/realmcore_/status/2032146316730778004) — Code-environment orchestration, hive mind subagent threads, auto model selection
 - [Executor: Code-as-Tool-Calling (GitHub)](https://github.com/RhysSullivan/executor) — Agents write TypeScript to discover tools, MCP bridge, QuickJS/SES/Deno sandboxes
 - [AutoResearchClaw: Full Research Pipeline (GitHub)](https://github.com/aiming-lab/AutoResearchClaw) — 23-stage idea-to-paper pipeline, MetaClaw cross-run learning (+18.3%)

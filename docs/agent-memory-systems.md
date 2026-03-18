@@ -360,6 +360,109 @@ Napkin Liv's architecture maps almost perfectly to OpenClaw's existing structure
 
 ---
 
+## QMD — Production Search for Agent Memory
+
+**Repo**: [github.com/tobi/qmd](https://github.com/tobi/qmd) | **16K stars** | By Tobi Lütke (Shopify CEO)
+**Stack**: SQLite + BM25 + local vector embeddings + LLM re-ranking via node-llama-cpp (~2GB GGUF models, all local)
+
+### Why It Matters
+
+QMD is the production-grade search layer that sits between Obsidian/markdown vaults and agent memory. It solves the problem that both grep (file reads) and pure vector search fail at: fast, local, multi-signal retrieval that returns relevant *snippets* instead of whole files.
+
+### The Token Savings
+
+Andrew Levine (@andrarchy) reported **96% token savings** using QMD:
+- **Before**: 600+ note Obsidian vault, agent greps through files and reads them whole — ~15,000 tokens per search query
+- **After**: QMD returns relevant snippets — ~500 tokens per query
+
+The Obsidian CLI (queries Obsidian's built-in search index) shows an even starker comparison:
+- **Orphan detection via grep**: ~7M tokens, 15.6 seconds
+- **Orphan detection via Obsidian CLI**: ~100 tokens, 0.26 seconds (70,000x cheaper)
+
+### Architecture
+
+Three complementary search approaches:
+1. **BM25 full-text** — fast keyword matching (exact terms, error strings, IDs, code symbols)
+2. **Vector semantic** — conceptual similarity via local GGUF embeddings
+3. **LLM re-ranking** — Reciprocal Rank Fusion for final result quality
+
+Search modes selectable per query: keyword-only (fastest), semantic-only, or hybrid with re-ranking (best quality).
+
+### Agent Integration Patterns
+
+QMD integrates directly as an OpenClaw memory backend (replaces default SQLite):
+```
+memory.backend: "qmd"
+memory.citations: "auto"  // adds source paths + line numbers
+```
+
+Can also index external directories (Obsidian vaults, project docs) alongside agent memory. Critical setting: `compaction.memoryFlush.enabled: true` — without this, decisions discussed mid-conversation never reach disk and become unsearchable after context compaction.
+
+### Relevance to Software Factory
+
+QMD validates Napkin's anti-RAG thesis at scale: BM25 + signals beats pure vector for curated knowledge. The 96% token savings is the strongest quantitative evidence that search architecture matters more than model choice for agent memory retrieval.
+
+For coding agents, QMD could index:
+- Repository documentation and decision logs
+- Past agent run transcripts (post-distillation)
+- Architecture decision records
+- CI/CD configuration and error patterns
+
+---
+
+## The Obsidian-as-State-Layer Pattern
+
+The 2026 Obsidian + AI agent community has independently converged on patterns that validate the agent memory research:
+
+### Core Principle
+
+> "Treat AI sessions as stateless workers and the vault as the persistent state layer."
+
+### Vault Structure for AI Orientation
+
+```
+000-Rules/           ← Meta: rules, decisions log, TODO, index
+Working-Context/     ← One file per active project (current state + open questions)
+{domain}/            ← Domain-specific atomic notes
+Templates/           ← Extraction schemas per domain
+Handoffs/            ← Session closure summaries
+```
+
+### Session Protocols
+
+**Session Start** (eliminate "re-orientation tax"):
+1. Read vault navigation (MOCs/indexes)
+2. Read active project state files
+3. Read domain-specific context
+
+**Session Close** (handoff protocol):
+1. Write structured summary: completed work, items for review, deferred tasks, next steps
+2. Update project state files
+3. Auto-commit to Git
+
+### Context Pollution Prevention
+
+The #1 production failure mode. Solutions:
+- **Lightweight index notes** — cherry-pick context, don't accumulate randomly
+- **Staged memory retrieval** — inject project state file → selectively reference linked notes → never load full vault
+- **`<ai-suggestion>` tags** — mark all AI-generated content, require human approval before tag removal
+- **Daily template simplicity** — overloaded templates create signal/noise problems; focused fields perform better
+
+### Production Gotchas
+
+| Issue | Fix |
+|-------|-----|
+| Spaces in vault name | Use hyphens (indexing breaks with spaces) |
+| Obsidian API ~75% success rate | Fallback logic for critical workflows |
+| "Rabbit hole" token drain | Bounded context windows, cost monitoring |
+| Obsidian Sync + .Claude dirs | Isolate Claude work in separate directory |
+| CLAUDE.md goes stale | Periodic: "Compare notes to CLAUDE.md, update conventions" |
+| Context window fills → silent compression | Fresh session at 50% capacity |
+
+Sources: [Obsidian Forum: Vault Design for AI](https://forum.obsidian.md/t/design-your-vault-for-ai-orientation-not-just-human-navigation/112010), [Obsidian CLI 70,000x savings](https://prokopov.me/posts/obsidian-cli-changes-everything-for-ai-agents/), [Axton Liu workflows](https://www.axtonliu.ai/newsletters/ai-2/posts/obsidian-claude-code-workflows), [QMD fix guide](https://www.josecasanova.com/blog/openclaw-qmd-memory)
+
+---
+
 ## Sources
 
 - [Napkin (Livshitz) — Blog post](https://michaellivs.com/blog/building-napkin-memory-system-for-agents)
@@ -371,3 +474,8 @@ Napkin Liv's architecture maps almost perfectly to OpenClaw's existing structure
 - [hmem](https://github.com/hmem-ai/hmem) — Hierarchical 5-level SQLite memory
 - [Engram](https://github.com/engram-ai/engram) — MCP server, intelligence at read time
 - [Memori](https://github.com/memori-ai/memori) — Rust, hybrid search + decay scoring
+- [QMD](https://github.com/tobi/qmd) — 16K stars, Tobi Lütke, BM25 + vector + LLM re-ranking, all local
+- [QMD 96% token savings](https://x.com/andrarchy/status/2015783856087929254) — Andrew Levine benchmark
+- [Obsidian CLI 70,000x cheaper](https://prokopov.me/posts/obsidian-cli-changes-everything-for-ai-agents/) — Obsidian index vs grep
+- [QMD OpenClaw integration](https://www.josecasanova.com/blog/openclaw-qmd-memory) — Configuration guide
+- [Obsidian vault for AI](https://forum.obsidian.md/t/design-your-vault-for-ai-orientation-not-just-human-navigation/112010) — Community patterns

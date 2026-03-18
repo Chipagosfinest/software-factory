@@ -144,7 +144,7 @@ Scale: ████ best-in-class  ███░ strong  ██░░ partial  �
 
 ## Agent Topology Patterns
 
-Eight topology types observed across production and research systems:
+Nine topology types observed across production and research systems:
 
 ```
   ONE-SHOT TREE          PIPELINE              ORG CHART
@@ -176,16 +176,18 @@ Eight topology types observed across production and research systems:
 
 **8th: Deterministic Workflow Graph** (Fabro) — Human defines execution as a Graphviz DOT graph with branching, loops, parallelism, and approval gates. CSS-like stylesheets route steps to models. The only topology where *humans define the exact path* — agents execute, not decide.
 
+**9th: Spec-Driven Session Controller** (GSD 2) — TypeScript CLI that controls agent sessions via a deterministic state machine reading `.gsd/` files. Milestone → Slice → Task hierarchy with fresh 200K-token context per task. Git worktree isolation, crash recovery, stuck loop detection. 2.1K stars. The transition from "prompt frameworks" to "agent session controllers."
+
 ```
   THE AUTONOMY SPECTRUM
 
   Prescriptive ◄─────────────────────────────────────────► Autonomous
 
-  Fabro        Pipeline    Org Chart    Sequential    One-Shot    Ratchet
-  (human       (fixed      (delegated   Multi-Agent   (dispatch   (agent
-   graph)       stages)     hierarchy)   (roles)        + forget)   decides)
-                                                                      │
-                                                          Dynamic DAG ┘
+  GSD 2   Fabro    Pipeline    Org Chart    Sequential    One-Shot    Ratchet
+  (spec    (human   (fixed      (delegated   Multi-Agent   (dispatch   (agent
+   hier.)   graph)   stages)     hierarchy)   (roles)        + forget)   decides)
+                                                                          │
+                                                              Dynamic DAG ┘
 ```
 
 [Full topology diagrams + 6 combo architectures + build profiles →](docs/potent-combos.md)
@@ -371,7 +373,7 @@ Seven principles extracted from studying all 10 systems:
 | [Sandbox Architecture 2026](docs/sandbox-architecture-2026.md) | Weng Jialin, Rivet, GKE, Northflank | Two patterns (agent-in-sandbox vs sandbox-as-tool), warm pools, universal HTTP adapter, enterprise 3-tier arch |
 | [SWE-bench Ecosystem](docs/swe-bench-ecosystem.md) | Princeton, METR, Scale AI | 7 variants, leaderboard gaming, METR 19% slowdown paradox |
 | [MCP Ecosystem](docs/mcp-ecosystem-deep-dive.md) | Anthropic, Microsoft | Protocol spec, 81K stars, tool poisoning, MCPBench (64% accuracy) |
-| [Agent Memory Systems](docs/agent-memory-systems.md) | Napkin, Mem0, Letta, hmem | Progressive disclosure, BM25 vs vector, memory security |
+| [Agent Memory Systems](docs/agent-memory-systems.md) | Napkin, Mem0, Letta, hmem, QMD | Progressive disclosure, BM25 vs vector, memory security, QMD 96% token savings, Obsidian-as-state-layer |
 
 ### Infrastructure & Coordination
 
@@ -415,7 +417,7 @@ Seven principles extracted from studying all 10 systems:
 
 **Production Systems:** [Spotify Honk Pt 1](https://engineering.atspotify.com/2025/11/spotifys-background-coding-agent-part-1) | [Pt 2](https://engineering.atspotify.com/2025/11/context-engineering-background-coding-agents-part-2) | [Pt 3](https://engineering.atspotify.com/2025/12/feedback-loops-background-coding-agents-part-3) | [Honk at QCon London 2026 (InfoQ)](https://www.infoq.com/news/2026/03/spotify-honk-rewrite/) | [Ramp Inspect](https://builders.ramp.com/post/why-we-built-our-background-agent) | [Stripe Minions Pt 1](https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents) | [Pt 2](https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents-part-2) | [ByteByteGo Analysis](https://blog.bytebytego.com/p/how-stripes-minions-ship-1300-prs) | [SitePoint Deconstruction](https://www.sitepoint.com/stripe-minions-architecture-explained/)
 
-**Frameworks:** [Deep Agents](https://github.com/langchain-ai/deepagents) | [Open SWE](https://github.com/langchain-ai/open-swe) | [Open SWE Launch (Mar 17)](https://blog.langchain.com/open-swe-an-open-source-framework-for-internal-coding-agents/) | [OpenAI Symphony](https://github.com/openai/symphony) | [codex-planr](https://github.com/regenrek/codex-planr) | [sandbox-agent](https://github.com/rivet-dev/sandbox-agent) | [Autoresearch](https://github.com/karpathy/autoresearch) | [AutoResearchClaw](https://github.com/aiming-lab/AutoResearchClaw) | [pi-autoresearch](https://github.com/davebcn87/pi-autoresearch) | [QMD](https://github.com/tobi/qmd) | [Paperclip](https://github.com/paperclipai/paperclip) | [Agent Orchestrator](https://github.com/ComposioHQ/agent-orchestrator) | [Fabro](https://github.com/fabro-sh/fabro) | [Executor](https://github.com/RhysSullivan/executor)
+**Frameworks:** [Deep Agents](https://github.com/langchain-ai/deepagents) | [Open SWE](https://github.com/langchain-ai/open-swe) | [Open SWE Launch (Mar 17)](https://blog.langchain.com/open-swe-an-open-source-framework-for-internal-coding-agents/) | [OpenAI Symphony](https://github.com/openai/symphony) | [codex-planr](https://github.com/regenrek/codex-planr) | [sandbox-agent](https://github.com/rivet-dev/sandbox-agent) | [Autoresearch](https://github.com/karpathy/autoresearch) | [AutoResearchClaw](https://github.com/aiming-lab/AutoResearchClaw) | [pi-autoresearch](https://github.com/davebcn87/pi-autoresearch) | [QMD](https://github.com/tobi/qmd) | [Paperclip](https://github.com/paperclipai/paperclip) | [Agent Orchestrator](https://github.com/ComposioHQ/agent-orchestrator) | [Fabro](https://github.com/fabro-sh/fabro) | [GSD 2](https://github.com/gsd-build/gsd-2) | [Executor](https://github.com/RhysSullivan/executor)
 
 **Industry Data:** [Anthropic 2026 Agentic Coding Trends](https://resources.anthropic.com/hubfs/2026%20Agentic%20Coding%20Trends%20Report.pdf) | [State of Agent Engineering 2026](https://www.langchain.com/state-of-agent-engineering) | [VentureBeat](https://venturebeat.com/orchestration/langchains-ceo-argues-that-better-models-alone-wont-get-your-ai-agent-to) | [Agent Sandbox Architecture](https://wengjialin.com/blog/agent-sandbox/) | [Spotify Devs Stop Coding (TechCrunch)](https://techcrunch.com/2026/02/12/spotify-says-its-best-developers-havent-written-a-line-of-code-since-december-thanks-to-ai/) | [Karpathy Collaborative Agents (Fortune)](https://fortune.com/2026/03/17/andrej-karpathy-loop-autonomous-ai-agents-future/) | [Shopify Liquid PR #2056 (Lütke autoresearch loop)](https://github.com/Shopify/liquid/pull/2056)
 

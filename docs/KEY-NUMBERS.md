@@ -36,6 +36,9 @@
 | ~500 MCP tools | Stripe Toolshed, curated to ~15 per task | [Enterprise Adoption](enterprise-adoption.md) |
 | 64% accuracy | MCPBench benchmark for MCP tool use | [MCP Ecosystem](mcp-ecosystem-deep-dive.md) |
 | 81K GitHub stars | MCP protocol adoption metric | [MCP Ecosystem](mcp-ecosystem-deep-dive.md) |
+| 96% token savings | QMD vs grep for 600+ note Obsidian vault (15K → ~500 tokens) | [Agent Memory Systems](agent-memory-systems.md) |
+| 70,000x cheaper | Obsidian CLI vs grep for orphan detection (7M → 100 tokens) | [Agent Memory Systems](agent-memory-systems.md) |
+| 16K stars | QMD (Tobi Lütke) — local BM25 + vector + LLM re-ranking | [Agent Memory Systems](agent-memory-systems.md) |
 
 ## Cost & Economics
 
@@ -87,6 +90,11 @@
 | 23 stages, 8 phases | AutoResearchClaw full idea-to-paper pipeline | [Autoresearch](autoresearch.md) |
 | 2.2K stars | pi-autoresearch extension (productized autoresearch pattern) | [Autoresearch](autoresearch.md) |
 | 625 stars | Executor (code-as-tool-calling, RhysSullivan) | [MCP Ecosystem](mcp-ecosystem-deep-dive.md) |
+| 67% vs 17% accept rate | GPT-5.4 vs Codex-Spark autoresearch proposal acceptance (0xSero/SarahXC) | [Autoresearch](autoresearch.md) |
+| 100+ iterations | 0xSero/SarahXC autoresearch experiments across 2 setups, 12h on H100 | [Autoresearch](autoresearch.md) |
+| 2.1K stars | GSD 2 — spec-driven agent session controller | [Potent Combos](potent-combos.md), [Coding Agents Landscape](coding-agents-landscape.md) |
+| 1,393 commits | GSD 2 maturity (v2.29) | [Potent Combos](potent-combos.md) |
+| 200K tokens | GSD 2 fresh context window per task | [Potent Combos](potent-combos.md) |
 
 ## Multi-Agent Topology Research
 
