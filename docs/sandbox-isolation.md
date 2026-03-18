@@ -95,6 +95,11 @@ Cloud-based development environments that spin up fully configured workspaces di
 
 Gitpod Classic was discontinued October 15, 2025; the platform rebranded to **Ona**. Provides ephemeral cloud workspaces with AI coding assistant integration. Supports Dev Container specs. **Ona Agents** provide AI-driven automation within workspaces.
 
+In a January 2026 article, Ona argues that organizations should **not build their own coding agent sandboxes**, identifying hidden complexity that teams underestimate: strong isolation boundaries, real development environments (shell, CLIs, package managers), identity/credential management, and comprehensive audit trails. They critique common approaches: **containers** share a host kernel making them a poor isolation primitive, **CI runners** are designed for ephemeral jobs not long-running stateful workloads, **Kubernetes** expects predictable services not disruption-intolerant agents, and **microVMs** gain performance but sacrifice interoperability and operational tooling.
+
+Sources:
+- [Don't Build a Coding Agent Sandbox (Ona)](https://ona.com/stories/dont-build-a-coding-agent-sandbox)
+
 ### DevPod
 
 An **open-source, client-only tool** that creates reproducible dev environments without server-side infrastructure. Works with multiple cloud providers. Best for teams that want to control their own infrastructure. Does not provide managed sandboxing — it is a provisioning tool, not an isolation tool.
@@ -428,30 +433,34 @@ Stripe's devboxes are **dedicated EC2 instances** (more expensive than container
 13. **Docker + E2B**: [Building the Future of Trusted AI](https://www.docker.com/blog/docker-e2b-building-the-future-of-trusted-ai/)
 14. **Coder Agent Boundaries**: [Your Agents Need Boundaries](https://coder.com/blog/launch-dec-2025-agent-boundaries)
 
+### Build vs Buy
+
+15. **Ona**: [Don't Build a Coding Agent Sandbox Yourself](https://ona.com/stories/dont-build-a-coding-agent-sandbox)
+
 ### Security & Isolation Guides
 
-15. **NVIDIA**: [Practical Security Guidance for Sandboxing Agentic Workflows](https://developer.nvidia.com/blog/practical-security-guidance-for-sandboxing-agentic-workflows-and-managing-execution-risk/)
-16. **Northflank**: [How to Sandbox AI Agents in 2026](https://northflank.com/blog/how-to-sandbox-ai-agents)
-17. **INNOQ**: [I Sandboxed My Coding Agents. Now I Control Their Network.](https://www.innoq.com/en/blog/2026/03/dev-sandbox-network/)
+16. **NVIDIA**: [Practical Security Guidance for Sandboxing Agentic Workflows](https://developer.nvidia.com/blog/practical-security-guidance-for-sandboxing-agentic-workflows-and-managing-execution-risk/)
+17. **Northflank**: [How to Sandbox AI Agents in 2026](https://northflank.com/blog/how-to-sandbox-ai-agents)
+18. **INNOQ**: [I Sandboxed My Coding Agents. Now I Control Their Network.](https://www.innoq.com/en/blog/2026/03/dev-sandbox-network/)
 
 ### Git Worktrees for AI Agents
 
-18. **Nick Mitchinson**: [Using Git Worktrees for Multi-Feature Development with AI Agents](https://www.nrmitchi.com/2025/10/using-git-worktrees-for-multi-feature-development-with-ai-agents/)
-19. **Nx Blog**: [How Git Worktrees Changed My AI Agent Workflow](https://nx.dev/blog/git-worktrees-ai-agents)
-20. **Agent Interviews**: [Parallel AI Coding with Git Worktrees](https://docs.agentinterviews.com/blog/parallel-ai-coding-with-gitworktrees/)
+19. **Nick Mitchinson**: [Using Git Worktrees for Multi-Feature Development with AI Agents](https://www.nrmitchi.com/2025/10/using-git-worktrees-for-multi-feature-development-with-ai-agents/)
+20. **Nx Blog**: [How Git Worktrees Changed My AI Agent Workflow](https://nx.dev/blog/git-worktrees-ai-agents)
+21. **Agent Interviews**: [Parallel AI Coding with Git Worktrees](https://docs.agentinterviews.com/blog/parallel-ai-coding-with-gitworktrees/)
 
 ### Open-Source Tools
 
-21. **AgentFS**: [agentfs.ai](https://www.agentfs.ai/)
-22. **code-on-incus**: [GitHub](https://github.com/mensfeld/code-on-incus)
-23. **sandbox-agent (Rivet)**: [GitHub](https://github.com/rivet-dev/sandbox-agent)
-24. **awesome-sandbox**: [GitHub](https://github.com/restyler/awesome-sandbox)
-25. **OpenHands**: [openhands.dev](https://openhands.dev/)
+22. **AgentFS**: [agentfs.ai](https://www.agentfs.ai/)
+23. **code-on-incus**: [GitHub](https://github.com/mensfeld/code-on-incus)
+24. **sandbox-agent (Rivet)**: [GitHub](https://github.com/rivet-dev/sandbox-agent)
+25. **awesome-sandbox**: [GitHub](https://github.com/restyler/awesome-sandbox)
+26. **OpenHands**: [openhands.dev](https://openhands.dev/)
 
 ### Comparisons & Surveys
 
-26. **Modal**: [Top AI Code Sandbox Products in 2025](https://modal.com/blog/top-code-agent-sandbox-products)
-27. **Better Stack**: [11 Best Sandbox Runners in 2026](https://betterstack.com/community/comparisons/best-sandbox-runners/)
-28. **Northflank**: [Best Code Execution Sandbox for AI Agents in 2026](https://northflank.com/blog/best-code-execution-sandbox-for-ai-agents)
-29. **Lifo**: [AI Sandbox Comparison 2026: E2B vs Lifo vs Daytona](https://lifo.sh/blog/ai-sandbox-comparison-2026)
-30. **Ry Walker**: [AI Agent Sandboxes Compared](https://rywalker.com/research/ai-agent-sandboxes)
+27. **Modal**: [Top AI Code Sandbox Products in 2025](https://modal.com/blog/top-code-agent-sandbox-products)
+28. **Better Stack**: [11 Best Sandbox Runners in 2026](https://betterstack.com/community/comparisons/best-sandbox-runners/)
+29. **Northflank**: [Best Code Execution Sandbox for AI Agents in 2026](https://northflank.com/blog/best-code-execution-sandbox-for-ai-agents)
+30. **Lifo**: [AI Sandbox Comparison 2026: E2B vs Lifo vs Daytona](https://lifo.sh/blog/ai-sandbox-comparison-2026)
+31. **Ry Walker**: [AI Agent Sandboxes Compared](https://rywalker.com/research/ai-agent-sandboxes)
