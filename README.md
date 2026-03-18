@@ -115,13 +115,14 @@ Scale: ████ best-in-class  ███░ strong  ██░░ partial  �
 
 | Competency | OpenAI | Spotify | Stripe | Deep Agents | Karpathy | QMD | Paperclip | Composio |
 |---|---|---|---|---|---|---|---|---|
-| Context engineering | ███░ | ████ | ███░ | ██░░ | █░░░ | ░░░░ | ░░░░ | █░░░ |
+| Context engineering | ███░ | ████ | ███░ | ███░ | █░░░ | ░░░░ | ░░░░ | █░░░ |
 | Middleware/composition | ░░░░ | ░░░░ | ░░░░ | ████ | ░░░░ | ░░░░ | ░░░░ | ████ |
-| Sandbox isolation | ██░░ | ████ | ████ | ░░░░ | █░░░ | ░░░░ | ░░░░ | ███░ |
+| Sandbox isolation | ██░░ | ████ | ████ | ███░ | █░░░ | ░░░░ | ░░░░ | ███░ |
 | Verification loops | ███░ | ████ | ████ | ███░ | ████ | ░░░░ | ░░░░ | ███░ |
-| LLM judge | ░░░░ | ████ | ██░░ | ░░░░ | ░░░░ | ░░░░ | ░░░░ | ░░░░ |
+| Planning tools | ██░░ | ░░░░ | ░░░░ | ████ | ░░░░ | ░░░░ | ░░░░ | ██░░ |
+| LLM judge | ░░░░ | ████ | ██░░ | ██░░ | ░░░░ | ░░░░ | ░░░░ | ░░░░ |
 | Cost control | ██░░ | █░░░ | ██░░ | ░░░░ | ░░░░ | ░░░░ | ████ | ██░░ |
-| Fleet management | ░░░░ | ░░░░ | ██░░ | ██░░ | ░░░░ | ░░░░ | ████ | ████ |
+| Fleet management | ░░░░ | ░░░░ | ██░░ | ███░ | ░░░░ | ░░░░ | ████ | ████ |
 | Knowledge search | ░░░░ | ░░░░ | ░░░░ | ░░░░ | ░░░░ | ████ | ░░░░ | ░░░░ |
 
 [Full 25-dimension matrix →](docs/competency-graph.md)

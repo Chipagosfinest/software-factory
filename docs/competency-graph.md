@@ -1,6 +1,6 @@
 # Competency Graph — Research Sources
 
-*Last updated: March 16, 2026*
+*Last updated: March 18, 2026*
 
 Maps what each research source is best at, where they overlap, and how they compose into Software Factory.
 
@@ -12,36 +12,44 @@ Scale: `████` = best-in-class, `███░` = strong, `██░░` =
 
 ### Core Research Sources
 
-| Competency | OpenAI Harness | Spotify Honk | Ramp Inspect | Stripe Minions | Deep Agents | Karpathy Auto | QMD | Paperclip |
-|---|---|---|---|---|---|---|---|---|
-| **Agent Internals** | | | | | | | | |
-| Context engineering | ███░ | ████ | ██░░ | ███░ | ██░░ | █░░░ | ░░░░ | ░░░░ |
-| Middleware composition | ░░░░ | ░░░░ | ░░░░ | ░░░░ | ████ | ░░░░ | ░░░░ | ░░░░ |
-| Sub-agent delegation | █░░░ | ░░░░ | ░░░░ | ░░░░ | ████ | ░░░░ | ░░░░ | ░░░░ |
-| Context summarization | ░░░░ | ░░░░ | ░░░░ | ░░░░ | ████ | ░░░░ | ░░░░ | ░░░░ |
-| Prompt/skills design | ████ | ███░ | ░░░░ | ███░ | ███░ | ██░░ | ░░░░ | ░░░░ |
-| **Execution** | | | | | | | | |
-| Sandbox isolation | ██░░ | ████ | ████ | ████ | ░░░░ | █░░░ | ░░░░ | ░░░░ |
-| Warm pools / fast start | ░░░░ | ███░ | ████ | ████ | ░░░░ | ░░░░ | ░░░░ | ░░░░ |
-| Verification loops | ███░ | ████ | ██░░ | ████ | ░░░░ | ████ | ░░░░ | ░░░░ |
-| LLM judge / diff validation | ░░░░ | ████ | ░░░░ | ██░░ | ░░░░ | ░░░░ | ░░░░ | ░░░░ |
-| Autonomous loop design | ██░░ | ███░ | ██░░ | ███░ | ░░░░ | ████ | ░░░░ | ░░░░ |
-| **Governance** | | | | | | | | |
-| Cost control / budgets | ██░░ | █░░░ | █░░░ | ██░░ | ░░░░ | ░░░░ | ░░░░ | ████ |
-| Approval gates | █░░░ | ███░ | ██░░ | ██░░ | ░░░░ | ░░░░ | ░░░░ | ████ |
-| Audit / compliance | ██░░ | ██░░ | ██░░ | ███░ | ░░░░ | ░░░░ | ░░░░ | ████ |
-| Config versioning / rollback | ░░░░ | ░░░░ | ░░░░ | ░░░░ | ░░░░ | ░░░░ | ░░░░ | ████ |
-| Kill switch / safety | ██░░ | ██░░ | ░░░░ | ██░░ | ░░░░ | ░░░░ | ░░░░ | ███░ |
-| **Fleet Management** | | | | | | | | |
-| Multi-agent coordination | ░░░░ | ░░░░ | ██░░ | ██░░ | ██░░ | ░░░░ | ░░░░ | ████ |
-| Task assignment / locks | ░░░░ | ░░░░ | █░░░ | █░░░ | ░░░░ | ░░░░ | ░░░░ | ████ |
-| Agent health monitoring | ░░░░ | ██░░ | ██░░ | ██░░ | ░░░░ | █░░░ | ░░░░ | ████ |
-| Run persistence / transcripts | ░░░░ | ██░░ | ███░ | ██░░ | ░░░░ | ██░░ | ░░░░ | ████ |
-| Observability UI | ░░░░ | ██░░ | ███░ | ██░░ | ░░░░ | ░░░░ | ░░░░ | ████ |
-| **Knowledge** | | | | | | | | |
-| Knowledge search | ░░░░ | ░░░░ | ░░░░ | ░░░░ | ░░░░ | ░░░░ | ████ | ░░░░ |
-| Codebase understanding | ████ | ███░ | ░░░░ | ███░ | ░░░░ | ░░░░ | ██░░ | ░░░░ |
-| Learning / fine-tuning | ░░░░ | ░░░░ | ░░░░ | ░░░░ | ░░░░ | ████ | ░░░░ | ░░░░ |
+| Competency | OpenAI Harness | Spotify Honk | Ramp Inspect | Stripe Minions | Deep Agents / Open SWE | Karpathy Auto | QMD | Paperclip | Composio |
+|---|---|---|---|---|---|---|---|---|---|
+| **Agent Internals** | | | | | | | | | |
+| Context engineering | ███░ | ████ | ██░░ | ███░ | ███░ | █░░░ | ░░░░ | ░░░░ | █░░░ |
+| Middleware composition | ░░░░ | ░░░░ | ░░░░ | ░░░░ | ████ | ░░░░ | ░░░░ | ░░░░ | ████ |
+| Sub-agent delegation | █░░░ | ░░░░ | ░░░░ | ░░░░ | ████ | ░░░░ | ░░░░ | ░░░░ | ██░░ |
+| Context summarization | ░░░░ | ░░░░ | ░░░░ | ░░░░ | ████ | ░░░░ | ░░░░ | ░░░░ | ░░░░ |
+| Prompt/skills design | ████ | ███░ | ░░░░ | ███░ | ███░ | ██░░ | ░░░░ | ░░░░ | █░░░ |
+| Planning tools | ██░░ | ░░░░ | ░░░░ | ░░░░ | ████ | ░░░░ | ░░░░ | ░░░░ | ██░░ |
+| **Execution** | | | | | | | | | |
+| Sandbox isolation | ██░░ | ████ | ████ | ████ | ███░ | █░░░ | ░░░░ | ░░░░ | ███░ |
+| Warm pools / fast start | ░░░░ | ███░ | ████ | ████ | ░░░░ | ░░░░ | ░░░░ | ░░░░ | ░░░░ |
+| Verification loops | ███░ | ████ | ██░░ | ████ | ███░ | ████ | ░░░░ | ░░░░ | ███░ |
+| LLM judge / diff validation | ░░░░ | ████ | ░░░░ | ██░░ | ██░░ | ░░░░ | ░░░░ | ░░░░ | ░░░░ |
+| Loop detection | ░░░░ | ██░░ | ░░░░ | ██░░ | ████ | ███░ | ░░░░ | ░░░░ | ░░░░ |
+| Autonomous loop design | ██░░ | ███░ | ██░░ | ███░ | ██░░ | ████ | ░░░░ | ░░░░ | ██░░ |
+| **Governance** | | | | | | | | | |
+| Cost control / budgets | ██░░ | █░░░ | █░░░ | ██░░ | ░░░░ | ░░░░ | ░░░░ | ████ | ██░░ |
+| Approval gates | █░░░ | ███░ | ██░░ | ██░░ | ██░░ | ░░░░ | ░░░░ | ████ | ░░░░ |
+| Audit / compliance | ██░░ | ██░░ | ██░░ | ███░ | ░░░░ | ░░░░ | ░░░░ | ████ | ██░░ |
+| Config versioning / rollback | ░░░░ | ░░░░ | ░░░░ | ░░░░ | ░░░░ | ░░░░ | ░░░░ | ████ | ░░░░ |
+| Kill switch / safety | ██░░ | ██░░ | ░░░░ | ██░░ | ░░░░ | ░░░░ | ░░░░ | ███░ | ░░░░ |
+| **Fleet Management** | | | | | | | | | |
+| Multi-agent coordination | ░░░░ | ░░░░ | ██░░ | ██░░ | ███░ | ░░░░ | ░░░░ | ████ | ████ |
+| Task assignment / locks | ░░░░ | ░░░░ | █░░░ | █░░░ | ░░░░ | ░░░░ | ░░░░ | ████ | ████ |
+| Agent health monitoring | ░░░░ | ██░░ | ██░░ | ██░░ | ░░░░ | █░░░ | ░░░░ | ████ | ████ |
+| Run persistence / transcripts | ░░░░ | ██░░ | ███░ | ██░░ | ░░░░ | ██░░ | ░░░░ | ████ | ██░░ |
+| Observability UI | ░░░░ | ██░░ | ███░ | ██░░ | ░░░░ | ░░░░ | ░░░░ | ████ | ████ |
+| **Knowledge** | | | | | | | | | |
+| Knowledge search | ░░░░ | ░░░░ | ░░░░ | ░░░░ | ░░░░ | ░░░░ | ████ | ░░░░ | ░░░░ |
+| Codebase understanding | ████ | ███░ | ░░░░ | ███░ | ██░░ | ░░░░ | ██░░ | ░░░░ | █░░░ |
+| Learning / fine-tuning | ░░░░ | ░░░░ | ░░░░ | ░░░░ | ░░░░ | ████ | ░░░░ | ░░░░ | ░░░░ |
+
+**Key changes (March 18, 2026):**
+- Deep Agents column updated to "Deep Agents / Open SWE" reflecting harness engineering gains (52.8→66.5% Terminal Bench)
+- Added Composio column (plugin architecture, fleet management, 15-state lifecycle)
+- Deep Agents verification/sandbox scores upgraded based on Open SWE v0.4 (Daytona sandboxes) and self-verification middleware
+- Added "Planning tools" and "Loop detection" competency rows
 
 ### Extended Tools (March 2026)
 
@@ -121,6 +129,14 @@ Ramp Inspect  ←→  Stripe Minions
   Warm pools, snapshots  400+ MCP tools
   Multiplayer sessions   Per-dir rules
   Modal sandboxes        Devbox philosophy
+
+Deep Agents  ←→  Composio
+  AGENT INTELLIGENCE     AGENT MANAGEMENT
+  (one smart agent)      (many agents, any kind)
+  write_todos planning   Plugin-based 8-slot arch
+  Self-verification      LLM task decomposition
+  Loop detection MW      15-state session lifecycle
+  Reasoning sandwich     Fingerprinted review dispatch
 ```
 
 ---
@@ -159,7 +175,7 @@ Phase 3: General-Purpose Factory (THEN)
 
 ## Strategic Takeaway
 
-**No single source covers the full stack.** Software Factory needs all eight, but at different times:
+**No single source covers the full stack.** Software Factory needs all nine core sources, but at different times:
 
 | Priority | Source | Why Now |
 |----------|--------|---------|
