@@ -7,3 +7,8 @@ dist/
 output/
 tmp/
 .workspaces/
+
+# SQLite WAL/SHM files (created by better-sqlite3 in WAL mode)
+:memory:*
+*-shm
+*-wal

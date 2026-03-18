@@ -1,4 +1,10 @@
 import 'dotenv/config'
+import { validateStartupConfig } from './core/startup-checks.js'
+
+// Fail fast on missing config — silent failures at runtime are the worst
+// kind of bug in autonomous systems. Crash early with a clear message.
+validateStartupConfig()
+
 import { serve } from '@hono/node-server'
 import { Hono } from 'hono'
 import { router } from './router.js'
@@ -111,6 +117,15 @@ app.post('/orchestrator/stop', (c) => {
   stopOrchestrator()
   return c.json({ status: 'stopped' })
 })
+
+// Run data retention on startup (prunes records older than 90 days)
+import { pruneOldRecords } from './core/retention.js'
+try {
+  const { deleted } = pruneOldRecords()
+  if (deleted > 0) console.log(`[startup] Pruned ${deleted} old records`)
+} catch (err) {
+  console.warn('[startup] Retention pruning failed:', err instanceof Error ? err.message : err)
+}
 
 const port = parseInt(process.env.PORT || '3847')
 

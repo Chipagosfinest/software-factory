@@ -75,15 +75,9 @@ export async function chatJson<T>(request: LLMRequest & { eventId?: string; agen
 
   const response = await chat({ ...request, messages: messagesWithJsonInstruction })
 
-  // Track cost
-  recordCost({
-    eventId: request.eventId,
-    agentType: request.agentType,
-    model: response.model,
-    promptTokens: response.usage.promptTokens,
-    completionTokens: response.usage.completionTokens,
-    costUsd: response.costUsd,
-  })
+  // NOTE: cost is already recorded inside chat() — do NOT record again here.
+  // Double-recording was inflating cost tracking by 2× for all chatJson() callers
+  // (every cron agent uses chatJson). Fixed 2026-03-14.
 
   // Parse JSON, stripping markdown fences if present
   let jsonStr = response.content.trim()

@@ -78,3 +78,48 @@ Every agent follows the same lifecycle:
 4. **Cost caps** — hard limit on LLM spend per agent run ($2 default)
 5. **Timeout** — agent runs killed after 5 minutes
 6. **Audit everything** — every action logged with timestamp, agent ID, event ID
+
+## Anti-Pattern Rules
+
+These rules prevent the failure modes we've seen in high-velocity autonomous codebases.
+The pre-commit hook (`scripts/pre-commit-guard.sh`) enforces the critical ones automatically.
+
+### Shell Command Safety
+- **NEVER use `execSync()` with template literals or string interpolation**
+- **ALWAYS use `execFileSync('cmd', ['arg1', 'arg2'])` with array arguments**
+- String interpolation in shell commands = command injection. Pre-commit hook blocks this.
+
+### Error Handling
+- **NEVER use empty `catch {}` blocks** — always log or rethrow
+- Silent failures compound into invisible bugs that take days to surface.
+- Acceptable: `catch { /* expected when X doesn't exist */ }` with a comment explaining WHY
+
+### File Size Discipline
+- **No file over 400 lines.** If it's growing past 400, split it.
+- Mega-files become untestable and unnavigable. Pre-commit hook warns at 400 lines.
+
+### Cost Control Discipline
+- **Every LLM call MUST go through `src/core/llm.ts`** — no direct API calls
+- **Budget checks MUST be enforced, not advisory** — `checkGlobalDailyBudget()` returns `allowed: false` and the caller MUST stop
+- **Never fire automated responses to cost alerts without approval gates** — this creates infinite cost loops (alert → spawn agent → more cost → more alerts)
+
+### Code Duplication
+- **Define utility functions ONCE, export from a single location**
+- Before writing a utility, search if it already exists
+
+### Test Quality
+- **Tests must test project code, not language builtins**
+- **No assertion-free tests** — every `it()` block needs at least one `expect()`
+- **Test the actual module, not a local copy**
+- **Don't pad test counts** — 45 real tests > 900 fake tests
+
+### Network Security
+- **Never use `Access-Control-Allow-Origin: *`** — restrict to specific origins
+- **Never accept arbitrary commands over HTTP** — allowlist operations
+- **Auth tokens in headers, not URL query params** — URLs leak to logs and referers
+- **Bind to 127.0.0.1 explicitly** for local-only servers
+
+### Config Safety
+- **All required env vars validated at startup** (`src/core/startup-checks.ts`)
+- **Never store secrets in config files** — use env vars or OS keychain
+- **One config system, not two** — pick one and use it everywhere

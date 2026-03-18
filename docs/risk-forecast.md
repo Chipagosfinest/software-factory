@@ -53,8 +53,8 @@ Each task retries up to 2×. Convergence detection prevents identical-error retr
 **Redis dependency (P1 — Day 1)**
 BullMQ queue, worker, cron, orchestrator all depend on Redis. If not running, server starts but no agents execute. Health endpoint should verify Redis connection.
 
-**Missing env vars (P1 — Day 1)**
-No startup validation. Missing `OPENROUTER_API_KEY` = every agent fails silently. Add required env var checks before server listens.
+**Missing env vars — FIXED (was P1)**
+~~No startup validation.~~ Added `src/core/startup-checks.ts` — validates required env vars on startup, crashes with clear message if missing. (Fixed 2026-03-14)
 
 **GitHub rate limiting (P1 — Week 1)**
 `buildRepoContext()` makes 4-6 API calls per task. At burst rates, GitHub returns 403. Circuit breaker catches this but doesn't read `x-ratelimit-remaining` headers for proactive backoff.
@@ -65,8 +65,8 @@ No startup validation. Missing `OPENROUTER_API_KEY` = every agent fails silently
 **No workspace sandboxing (P2 — structural)**
 Agents have full filesystem access in worktrees. LLM-as-Judge pattern provides some protection, but no true isolation. Docker sandboxes are the long-term fix (disabled, awaiting infra).
 
-**SQLite table growth (P3 — Month 1)**
-~300 rows/day, 9K/month, ~50MB/year. Add retention cron to prune >90 day records.
+**SQLite table growth — FIXED (was P3)**
+~~Add retention cron to prune >90 day records.~~ Added `src/core/retention.ts` — prunes records older than 90 days on every startup. (Fixed 2026-03-14)
 
 **defaultBranch hardcoded to 'main' (P3 — Week 1)**
 Repos using `master` or custom default branches will fail on worktree creation. Query GitHub API or make configurable.
@@ -121,6 +121,34 @@ Set up alerts for these before going live:
 - [ ] GitHub rate limit remaining < 100
 - [ ] Worktree count exceeds `MAX_CONCURRENT_WORKSPACES`
 - [ ] Consecutive tick failures > 0 (early warning)
+
+## Lessons from External Codebase Audit (2026-03-14)
+
+Audited a high-velocity autonomous agent codebase (~65K lines, 30+ commits/day) and found systemic failures. Applied defensive measures here:
+
+| Anti-Pattern Observed | Our Mitigation |
+|----------------------|----------------|
+| `execSync` with string interpolation (20+ injection vectors) | All git ops use `execFileSync` with arrays. Pre-commit hook blocks `execSync` + template literals. |
+| 100+ empty `catch {}` blocks | Pre-commit hook warns. CLAUDE.md prohibits without explanation comment. |
+| Budget limits generated but never enforced | `checkGlobalDailyBudget()` returns `allowed: false`, `runner.ts` STOPS execution. |
+| Cost feedback loop (alert → spawn agent → more cost → more alerts) | No automated agent spawning in response to cost alerts. Requires human approval. |
+| ~950 "tests" that mostly test language builtins | 45 real tests. CLAUDE.md explicitly prohibits padding test counts. |
+| Utility functions copy-pasted 12× with inconsistent signatures | Utilities defined once in `src/core/`, exported. CLAUDE.md prohibits duplication. |
+| 5,000+ line files | 400-line file size limit. Pre-commit hook warns. Largest file today: 371 lines. |
+| Private keys stored as plaintext JSON | Secrets only in env vars. No config file storage. |
+| CORS `*` on auth endpoints | Pre-commit hook blocks. CLAUDE.md prohibits. |
+| Automated reviewer can't score 4,000-line PRs | Keep PRs small enough to review. Linear issues scope work. |
+
+**Key insight**: Velocity without governance produces debt faster than value. Linear integration enforces the governance loop: issue → branch → PR → review → merge.
+
+### Additional fixes applied (2026-03-14)
+
+| # | Issue | Fix |
+|---|-------|-----|
+| 17 | `chatJson()` double-recording costs (2× inflation) | P0 | Removed duplicate `recordCost()` call in `chatJson()` |
+| 18 | No startup validation for required env vars | P1 | Added `src/core/startup-checks.ts`, crashes on missing config |
+| 19 | SQLite unbounded growth | P3 | Added `src/core/retention.ts`, prunes >90 day records on startup |
+| 20 | No pre-commit quality gates | P1 | Added `scripts/pre-commit-guard.sh`, blocks injection patterns + secrets |
 
 ## First Deploy Checklist
 
