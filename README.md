@@ -1,10 +1,23 @@
 # Autonomous Coding Agents: Research Corpus
 
-*Last updated: March 18, 2026 | 27 research documents | 10+ production systems studied*
+*Last updated: March 18, 2026 | 33 documents | 10+ production systems studied*
 
 > How do you build agents that ship code while humans sleep?
 >
 > This repo collects patterns from 10+ production systems (Stripe, Spotify, OpenAI, Ramp, LangChain, Karpathy) and distills them into reusable architectural primitives.
+
+## Start Here
+
+Pick your goal, follow the path:
+
+| Goal | Reading Path |
+|------|-------------|
+| **"I want the big picture"** | This README → [AGENTS.md](AGENTS.md) → [Potent Combos](docs/potent-combos.md) |
+| **"I'm building an agent system"** | [Harness Engineering (OpenAI)](docs/harness-engineering.md) → [Deep Agents](docs/deep-agents.md) → [Potent Combos](docs/potent-combos.md) |
+| **"I need to deploy agents safely"** | [Agent Safety & Cost Control](docs/agent-safety-cost-control.md) → [Sandbox Architecture](docs/sandbox-architecture-2026.md) → [Enterprise Adoption](docs/enterprise-adoption.md) |
+| **"I'm evaluating the market"** | [Coding Agents Landscape](docs/coding-agents-landscape.md) → [Competitive Analysis](docs/competitive-analysis.md) → [SWE-bench Ecosystem](docs/swe-bench-ecosystem.md) |
+| **"Just give me the numbers"** | [KEY-NUMBERS.md](docs/KEY-NUMBERS.md) |
+| **"I'm an agent parsing this repo"** | [AGENTS.md](AGENTS.md) → [docs/index.json](docs/index.json) |
 
 ```
                     THE QUESTION THIS RESEARCH ANSWERS
@@ -348,11 +361,29 @@ Seven principles extracted from studying all 10 systems:
 
 | Document | Source | Key Patterns |
 |----------|--------|-------------|
-| [Potent Combos + Build Profiles](docs/potent-combos.md) | All sources | 5 topologies, 6 combos, 6 build profiles, decision flowchart, anti-patterns |
+| [Potent Combos + Build Profiles](docs/potent-combos.md) | All sources | 6 topologies, 6 combos, 6 build profiles, decision flowchart, anti-patterns |
 | [Competency Graph](docs/competency-graph.md) | All sources | 25-dimension matrix, complementary pairs, phase adoption map |
 | [GitHub Ecosystem](docs/github-ecosystem.md) | GitHub | Agent HQ, Agentic Workflows, Copilot Agent, MCP servers |
 | [Dev Tools Stack](docs/dev-tools-stack.md) | Multiple | Linear Agent API, PagerDuty, Sentry, CI/CD at $42/mo |
 | [Obsidian Knowledge](docs/obsidian-knowledge.md) | Obsidian/QMD | MCP servers, integration patterns, knowledge stores |
+
+### Reference
+
+| Document | Purpose |
+|----------|---------|
+| [AGENTS.md](AGENTS.md) | Agent navigation map — "if you need X, read Y" |
+| [Key Numbers](docs/KEY-NUMBERS.md) | Every quantitative finding in one place |
+| [Glossary](docs/GLOSSARY.md) | Canonical definitions for ~40 research terms |
+| [Open Questions](docs/OPEN-QUESTIONS.md) | Contradictions, unknowns, and the frontier |
+| [Doc Index](docs/index.json) | Machine-parseable metadata for all docs |
+
+### Internal (Software Factory Project)
+
+| Document | Purpose |
+|----------|---------|
+| [Roadmap](docs/roadmap.md) | Build phases: core → harness → general-purpose |
+| [Risk Forecast](docs/risk-forecast.md) | First-30-days operational risks and fixes |
+| [Codebase Status](docs/codebase-status.md) | Implementation progress (75-80% as of March 8) |
 
 ---
 
