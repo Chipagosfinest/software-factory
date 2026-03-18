@@ -1,5 +1,7 @@
 # Autonomous Coding Agents: Research Corpus
 
+*Last updated: March 18, 2026 | 26 research documents | 10+ production systems studied*
+
 > How do you build agents that ship code while humans sleep?
 >
 > This repo collects patterns from 10+ production systems (Stripe, Spotify, OpenAI, Ramp, LangChain, Karpathy) and distills them into reusable architectural primitives.
@@ -147,6 +149,39 @@ Five topology types observed across production systems:
 ```
 
 [Full topology diagrams + 6 combo architectures →](docs/potent-combos.md)
+
+---
+
+## Which Architecture Fits Your Team?
+
+Six combos mapped to six build profiles — pick the right topology for your constraints:
+
+```
+  ┌─────────────────────────────────────────────────────────────────────┐
+  │                                                                     │
+  │  SOLO HACKER ($50/mo)                                              │
+  │  → Combo 5: Copilot + Ratchet. One-shot tree. No fleet overhead.   │
+  │                                                                     │
+  │  STARTUP 5-20 ($500/mo)                                            │
+  │  → Combo 5 + 3: Copilot + Knowledge + CI Debug pipeline.           │
+  │                                                                     │
+  │  GROWTH 20-100 ($5K/mo)                                            │
+  │  → Combo 1 + 3 + 5 + 6: Deep Agents + Paperclip fleet + Linear.   │
+  │    Org Chart topology. Budget controls. Dashboard.                  │
+  │                                                                     │
+  │  ENTERPRISE 100+ ($50K/mo)                                         │
+  │  → Full Mega-Topology. All combos. Compliance. Audit. SSO.         │
+  │                                                                     │
+  │  RESEARCH / ML (variable)                                          │
+  │  → Combo 2: Verified Ratchet. Optimize one metric forever.         │
+  │                                                                     │
+  │  OPEN SOURCE ($50/mo)                                              │
+  │  → Combo 5 + 3: Copilot triage + CI debug. Read-only defaults.    │
+  │                                                                     │
+  └─────────────────────────────────────────────────────────────────────┘
+```
+
+[Full build profiles + decision flowchart →](docs/potent-combos.md#5-build-profile--topology-selector)
 
 ---
 
@@ -301,7 +336,7 @@ Seven principles extracted from studying all 10 systems:
 
 | Document | Source | Key Patterns |
 |----------|--------|-------------|
-| [Potent Combos](docs/potent-combos.md) | All sources | 5 topology types, 6 high-synergy combos, anti-patterns |
+| [Potent Combos + Build Profiles](docs/potent-combos.md) | All sources | 5 topologies, 6 combos, 6 build profiles, decision flowchart, anti-patterns |
 | [Competency Graph](docs/competency-graph.md) | All sources | 25-dimension matrix, complementary pairs, phase adoption map |
 | [GitHub Ecosystem](docs/github-ecosystem.md) | GitHub | Agent HQ, Agentic Workflows, Copilot Agent, MCP servers |
 | [Dev Tools Stack](docs/dev-tools-stack.md) | Multiple | Linear Agent API, PagerDuty, Sentry, CI/CD at $42/mo |
