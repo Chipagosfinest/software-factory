@@ -583,6 +583,251 @@ Topologies and practices that empirically degrade agent performance.
 
 ---
 
+## 5. Build Profile → Topology Selector
+
+Which combo fits which type of project? Use this matrix to pick your architecture.
+
+---
+
+### Build Profiles
+
+```
+  ┌─────────────────────────────────────────────────────────────────────────┐
+  │                        BUILD PROFILES                                   │
+  │                                                                         │
+  │  SOLO HACKER          STARTUP (5-20)       GROWTH (20-100)             │
+  │  ────────────         ──────────────       ──────────────              │
+  │  1 dev, many repos    Small team, fast     Multi-team, process        │
+  │  Max autonomy         Ship > governance    Governance > speed          │
+  │  Budget: $50/mo       Budget: $500/mo      Budget: $5K/mo             │
+  │                                                                         │
+  │  ENTERPRISE (100+)    RESEARCH/ML          OPEN SOURCE                 │
+  │  ────────────────     ──────────────       ──────────────              │
+  │  Compliance-first     Experiment-heavy     Community PRs              │
+  │  Audit everything     Optimize metrics     Contributor safety         │
+  │  Budget: $50K/mo      Budget: variable     Budget: $0-200/mo          │
+  └─────────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+### Profile → Combo Match Matrix
+
+```
+                     │Solo  │Start │Growth│Enter │Rsrch │OSS
+                     │Hacker│up    │      │prise │/ML   │
+  ───────────────────┼──────┼──────┼──────┼──────┼──────┼─────
+  Combo 1            │      │      │      │      │      │
+  Deep Agents +      │  ░░  │  ██  │  ████│  ████│  ██  │  ░░
+  Paperclip Fleet    │      │      │      │      │      │
+  ───────────────────┼──────┼──────┼──────┼──────┼──────┼─────
+  Combo 2            │      │      │      │      │      │
+  Spotify Verify +   │  ██  │  ██  │  ███ │  ███ │  ████│  ██
+  Karpathy Ratchet   │      │      │      │      │      │
+  ───────────────────┼──────┼──────┼──────┼──────┼──────┼─────
+  Combo 3            │      │      │      │      │      │
+  QMD Knowledge +    │  ░░  │  ██  │  ████│  ████│  ██  │  ███
+  OpenAI Harness     │      │      │      │      │      │
+  ───────────────────┼──────┼──────┼──────┼──────┼──────┼─────
+  Combo 4            │      │      │      │      │      │
+  Stripe Tools +     │  ░░  │  ░░  │  ██  │  ████│  ░░  │  ░░
+  Ramp Warm Pools    │      │      │      │      │      │
+  ───────────────────┼──────┼──────┼──────┼──────┼──────┼─────
+  Combo 5            │      │      │      │      │      │
+  Copilot Native +   │  ████│  ████│  ████│  ███ │  ░░  │  ████
+  Background Agents  │      │      │      │      │      │
+  ───────────────────┼──────┼──────┼──────┼──────┼──────┼─────
+  Combo 6            │      │      │      │      │      │
+  Linear + Paperclip │  ░░  │  ██  │  ████│  ████│  ░░  │  ░░
+  + Full SDLC        │      │      │      │      │      │
+
+  Scale: ████ ideal fit  ███ strong  ██ partial  ░░ overkill or insufficient
+```
+
+---
+
+### Recommended Stack Per Profile
+
+#### Solo Hacker
+
+```
+  You need: Maximum output, minimal setup, cost under $50/mo
+
+  ┌───────────────────────────────────────────────────┐
+  │  PRIMARY: Combo 5 — Copilot Native + Background   │
+  │                                                     │
+  │  GitHub Issues ──▶ Copilot Agent ──▶ PR             │
+  │       │                                             │
+  │       └──(complex)──▶ Claude Code / Codex ──▶ PR   │
+  │                                                     │
+  │  ADD: Combo 2 (Ratchet) for prompt optimization    │
+  │  SKIP: Fleet management, dashboards, warm pools    │
+  └───────────────────────────────────────────────────┘
+
+  Topology: One-Shot Tree (simple) + Ratchet (optimization)
+  Why: No coordination overhead. Each task = one agent = one PR.
+  Cost: Copilot Pro ($19) + API calls (~$30/mo)
+```
+
+#### Startup (5-20 engineers)
+
+```
+  You need: Speed + basic governance, CI debug, PR review
+
+  ┌───────────────────────────────────────────────────┐
+  │  PRIMARY: Combo 5 — Copilot + Background Agents   │
+  │  ADD: Combo 3 — Knowledge + Harness               │
+  │                                                     │
+  │  GitHub Issues ──▶ Copilot ──▶ PR (simple)         │
+  │       │                                             │
+  │       └──▶ CI Debugger (Pipeline topology)          │
+  │       └──▶ PR Reviewer (Pipeline topology)          │
+  │       └──▶ Security Patcher (One-Shot Tree)         │
+  │                                                     │
+  │  AGENTS.md + QMD search = agents find context       │
+  │  SKIP: Fleet dashboards, warm pools, org chart      │
+  └───────────────────────────────────────────────────┘
+
+  Topology: Pipeline (CI/review) + One-Shot Tree (patches)
+  Why: Pipeline catches quality issues. Tree handles volume.
+  Cost: ~$200-500/mo in API calls
+```
+
+#### Growth (20-100 engineers)
+
+```
+  You need: Governance, cost control, multi-repo, observability
+
+  ┌───────────────────────────────────────────────────┐
+  │  PRIMARY: Combo 1 — Deep Agents + Paperclip       │
+  │  ADD: Combo 3 — Knowledge + Harness               │
+  │  ADD: Combo 5 — Copilot as first tier              │
+  │  ADD: Combo 6 — Linear integration for full SDLC   │
+  │                                                     │
+  │  Linear ──▶ Paperclip (budget + locks) ──▶ Agents  │
+  │                    │                                │
+  │        ┌───────────┼───────────┐                    │
+  │        ▼           ▼           ▼                    │
+  │    CI Debug    PR Review   Feature Build            │
+  │   (Pipeline)  (Pipeline)  (Org Chart)               │
+  │        │           │           │                    │
+  │        └───────────┼───────────┘                    │
+  │                    ▼                                │
+  │              Dashboard (React)                      │
+  │              Audit trail (SQLite)                   │
+  │              Budget reports ($X/team/month)          │
+  └───────────────────────────────────────────────────┘
+
+  Topology: Org Chart (governance) + Pipeline (quality)
+  Why: Budget controls prevent runaway. Dashboard = visibility.
+  Cost: ~$2-5K/mo
+```
+
+#### Enterprise (100+ engineers)
+
+```
+  You need: Compliance, audit, blast radius isolation, SSO
+
+  ┌───────────────────────────────────────────────────┐
+  │  ALL COMBOS — Full Mega-Topology                   │
+  │                                                     │
+  │  Combo 4: Stripe Tools + Warm Pools (latency)      │
+  │  Combo 1: Deep Agents + Fleet (orchestration)      │
+  │  Combo 3: Knowledge + Harness (context)            │
+  │  Combo 6: Full SDLC pipeline                       │
+  │  Combo 5: Copilot as simple-task tier               │
+  │                                                     │
+  │  ADDITIONAL REQUIREMENTS:                           │
+  │  • Per-team budget allocation (Org Chart topology)  │
+  │  • SOC2 audit trail on every agent action           │
+  │  • Approval gates for sensitive repos               │
+  │  • Role-based tool access (per-dir .minions.toml)   │
+  │  • Incident response SLA integration                │
+  └───────────────────────────────────────────────────┘
+
+  Topology: Full Mega-Topology (see § 3)
+  Why: Compliance requires every layer.
+  Cost: $20-50K/mo
+```
+
+#### Research / ML
+
+```
+  You need: Run experiments forever, single-metric optimization
+
+  ┌───────────────────────────────────────────────────┐
+  │  PRIMARY: Combo 2 — Verified Ratchet               │
+  │                                                     │
+  │  ┌──────────────── RATCHET LOOP ──────────────┐    │
+  │  │  Read → Modify → Commit → Run → Evaluate   │    │
+  │  │       ↑                          │          │    │
+  │  │       │    ┌─────────────────────┘          │    │
+  │  │       │    ▼                                │    │
+  │  │       │  Improved? ──yes──▶ KEEP (advance)  │    │
+  │  │       │      │                              │    │
+  │  │       └──────┘ no ──▶ RESET (git revert)    │    │
+  │  └─────────────────────────────────────────────┘    │
+  │                                                     │
+  │  + Spotify verification for quality gates            │
+  │  + QMD for paper/doc retrieval                       │
+  │  SKIP: Fleet management, SDLC, warm pools           │
+  └───────────────────────────────────────────────────┘
+
+  Topology: Ratchet (primary) + Pipeline (verification)
+  Why: Clear metric + infinite patience = overnight results.
+  Cost: Variable — set hard budget cap per experiment
+```
+
+#### Open Source Maintainer
+
+```
+  You need: Triage PRs, auto-fix CI, security patches, be nice
+
+  ┌───────────────────────────────────────────────────┐
+  │  PRIMARY: Combo 5 — Copilot + Background           │
+  │  ADD: Combo 3 — Knowledge retrieval                 │
+  │                                                     │
+  │  External PR ──▶ Copilot Review ──▶ Comment         │
+  │  Dependabot ───▶ Security Patcher ──▶ Auto-PR       │
+  │  CI Failure ───▶ CI Debugger ──▶ Fix commit         │
+  │                                                     │
+  │  CRITICAL CONSTRAINTS:                              │
+  │  • Read-only by default (never push to contributor  │
+  │    branches without permission)                      │
+  │  • Friendly tone in all comments                    │
+  │  • Label-based opt-in (contributors choose)         │
+  │  SKIP: Fleet management, budgets, warm pools        │
+  └───────────────────────────────────────────────────┘
+
+  Topology: One-Shot Tree (triage) + Pipeline (review)
+  Why: Volume handling + safety. Never break contributor trust.
+  Cost: Copilot Pro + ~$50/mo API
+```
+
+---
+
+### Decision Flowchart
+
+```
+  START: What's your primary constraint?
+    │
+    ├── "Budget" ──▶ Solo Hacker stack (Combo 5 + Ratchet)
+    │
+    ├── "Speed" ──▶ Startup stack (Combo 5 + 3)
+    │
+    ├── "Governance" ──▶ How many engineers?
+    │       │
+    │       ├── <100 ──▶ Growth stack (Combo 1 + 3 + 5 + 6)
+    │       │
+    │       └── >100 ──▶ Enterprise stack (Full Mega-Topology)
+    │
+    ├── "Optimization" ──▶ Research stack (Combo 2 + QMD)
+    │
+    └── "Community" ──▶ OSS stack (Combo 5 + 3, read-only defaults)
+```
+
+---
+
 ## Sources
 
 - [Stripe Minions Part 1](https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents) — One-shot agents, 1,300 PRs/week, max 2 retries
