@@ -144,7 +144,7 @@ Scale: ████ best-in-class  ███░ strong  ██░░ partial  �
 
 ## Agent Topology Patterns
 
-Seven topology types observed across production and research systems:
+Eight topology types observed across production and research systems:
 
 ```
   ONE-SHOT TREE          PIPELINE              ORG CHART
@@ -173,6 +173,20 @@ Seven topology types observed across production and research systems:
 **Key distinction:** Pipeline = same agent, sequential stages. Sequential Multi-Agent = different specialized agents, each with distinct prompts and tools. The Planner never writes code; the Programmer never reviews.
 
 **7th: Dynamic Topology Evolution** (AgentConductor) — An RL-trained orchestrator generates task-specific DAG topologies in YAML. Easy tasks get sparse graphs; hard tasks get dense multi-agent networks. +14.6% on APPS with 68% token cost reduction.
+
+**8th: Deterministic Workflow Graph** (Fabro) — Human defines execution as a Graphviz DOT graph with branching, loops, parallelism, and approval gates. CSS-like stylesheets route steps to models. The only topology where *humans define the exact path* — agents execute, not decide.
+
+```
+  THE AUTONOMY SPECTRUM
+
+  Prescriptive ◄─────────────────────────────────────────► Autonomous
+
+  Fabro        Pipeline    Org Chart    Sequential    One-Shot    Ratchet
+  (human       (fixed      (delegated   Multi-Agent   (dispatch   (agent
+   graph)       stages)     hierarchy)   (roles)        + forget)   decides)
+                                                                      │
+                                                          Dynamic DAG ┘
+```
 
 [Full topology diagrams + 6 combo architectures + build profiles →](docs/potent-combos.md)
 
@@ -369,7 +383,7 @@ Seven principles extracted from studying all 10 systems:
 
 | Document | Source | Key Patterns |
 |----------|--------|-------------|
-| [Potent Combos + Build Profiles](docs/potent-combos.md) | All sources | 6 topologies, 6 combos, 6 build profiles, decision flowchart, anti-patterns |
+| [Potent Combos + Build Profiles](docs/potent-combos.md) | All sources | 8 topologies, 6 combos, 6 build profiles, decision flowchart, anti-patterns |
 | [Competency Graph](docs/competency-graph.md) | All sources | 25-dimension matrix, complementary pairs, phase adoption map |
 | [GitHub Ecosystem](docs/github-ecosystem.md) | GitHub | Agent HQ, Agentic Workflows, Copilot Agent, MCP servers |
 | [Dev Tools Stack](docs/dev-tools-stack.md) | Multiple | Linear Agent API, PagerDuty, Sentry, CI/CD at $42/mo |

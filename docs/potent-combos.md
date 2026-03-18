@@ -8,7 +8,7 @@ High-synergy system combinations and topology patterns for autonomous coding age
 
 ## 1. Agent Topology Types
 
-Seven topology types observed across production and research agent systems. ASCII diagrams inspired by Manu Cornet's org chart comic — because how you wire agents matters more than how smart they are.
+Eight topology types observed across production and research agent systems. ASCII diagrams inspired by Manu Cornet's org chart comic — because how you wire agents matters more than how smart they are.
 
 ---
 
@@ -269,6 +269,83 @@ Seven topology types observed across production and research agent systems. ASCI
 **Software Factory fit:** Future research direction. Our current topologies are static (pipeline, one-shot tree). AgentConductor's approach could dynamically select between them based on task difficulty — simple CI fixes get one-shot, complex feature work gets sequential multi-agent.
 
 **Source:** [AgentConductor (arXiv 2602.17100)](https://huggingface.co/papers/2602.17100)
+
+---
+
+### Deterministic Workflow Graph (Fabro)
+
+```
+       ┌────────────────── HUMAN-DEFINED GRAPH ──────────────────┐
+       │                                                          │
+       │   graph workflow {                                       │
+       │     lint -> test -> implement -> review -> merge         │
+       │     implement -> {sandbox, typecheck} [parallel]         │
+       │     review -> implement [loop, max: 2]                   │
+       │     review -> HUMAN_GATE [approval]                      │
+       │   }                                                      │
+       │                                                          │
+       │   styles {                                               │
+       │     implement { model: opus; sandbox: daytona }          │
+       │     review    { model: sonnet; readonly: true }          │
+       │     lint      { model: haiku; timeout: 30s }             │
+       │   }                                                      │
+       │                                                          │
+       │   ┌────┐  ┌────┐  ┌───────────┐  ┌──────┐  ┌─────┐    │
+       │   │lint│─▶│test│─▶│implement  │─▶│review│─▶│merge│    │
+       │   └────┘  └────┘  │  ┌─────┐  │  └──┬───┘  └─────┘    │
+       │                    │  │sand-│  │     │ fail              │
+       │                    │  │box  │  │◀────┘ (max 2)          │
+       │                    │  └─────┘  │                         │
+       │                    └───────────┘                         │
+       │                                                          │
+       │   Git checkpoint at every node ──▶ full audit trail     │
+       └──────────────────────────────────────────────────────────┘
+```
+
+**Data flow:** Human defines a Graphviz DOT graph with branching, loops, parallelism, and approval gates. Agents execute each node. CSS-like "stylesheets" route steps to appropriate models (Opus for implementation, Haiku for linting). Git commits at every stage create checkpoints.
+
+**Control flow:** Prescriptive — the graph is the spec. Unlike every other topology where agents have execution autonomy, Fabro agents follow the exact path defined by the human. Loop-back is bounded (e.g., `max: 2` retries on review rejection). Human gates pause execution for approval at configured steps.
+
+**Failure mode:** Graph rigidity. If a task requires a step not in the graph, it can't be handled. The human must update the graph definition. Trades flexibility for reproducibility.
+
+**How it differs from other topologies:**
+- vs **Pipeline** (Spotify): Pipeline is the same agent through sequential stages. Fabro is different models per node, human-defined branching, and loops.
+- vs **Sequential Multi-Agent** (Open SWE): Open SWE agents have autonomy within their role. Fabro agents execute exactly what the graph says.
+- vs **AgentConductor**: AgentConductor generates topologies dynamically via RL. Fabro graphs are static, human-authored artifacts. The bet: for known workflows, human-defined beats AI-generated.
+
+**Best use case:** Teams with well-understood, repeatable processes (CI/CD pipelines, migration playbooks, security audit checklists). The workflow graph encodes tribal knowledge as version-controlled code.
+
+**Software Factory fit:** Could replace our static agent dispatch with graph-defined workflows. Instead of a single agent type per webhook event, define `ci-failure.dot` and `security-patch.dot` workflow graphs with multi-step execution, model routing, and approval gates.
+
+**Source:** [Fabro (GitHub)](https://github.com/fabro-sh/fabro) | [@brynary announcement](https://x.com/brynary/status/2033901199603241012)
+
+---
+
+### Topology Comparison Matrix
+
+| Topology | Control | Agents | Who Decides Execution Path | Best Metric |
+|----------|---------|--------|---------------------------|-------------|
+| **One-Shot Tree** | Static | Independent | Dispatcher (fire-and-forget) | 1,300 PRs/week (Stripe) |
+| **Pipeline** | Sequential | Same agent, stages | Hardcoded pipeline order | ~25% veto catch rate (Spotify) |
+| **Org Chart** | Hierarchical | Specialized teams | Parent delegates to children | $50 budget enforcement (Paperclip) |
+| **Mesh** | Peer-to-peer | Shared state | Agents discover work independently | <2s startup (Ramp) |
+| **Ratchet** | Self-directed | Solo | Agent picks what to try next | ~100 experiments/night (Karpathy) |
+| **Sequential Multi-Agent** | Hand-off | Specialized per stage | Fixed role sequence | +13.7pp harness-only (LangChain) |
+| **Dynamic DAG** | RL-generated | Variable per task | RL orchestrator creates topology | +14.6% on APPS (AgentConductor) |
+| **Deterministic Graph** | Prescriptive | Per-node routing | Human-authored DOT graph | Reproducible, auditable (Fabro) |
+
+**The autonomy spectrum:**
+
+```
+  Prescriptive ◄──────────────────────────────────────────────► Autonomous
+
+  Fabro        Pipeline    Org Chart    Seq. Multi    One-Shot    Ratchet
+  (human       (fixed      (delegated   (role-based   (dispatch   (agent
+   graph)       stages)     hierarchy)   autonomy)     + forget)   decides)
+                                                                    │
+                                                        Dynamic DAG ┘
+                                                        (RL picks topology)
+```
 
 ---
 
@@ -607,6 +684,10 @@ Legend:
   Paperclip ──────── Budgets, task locks, heartbeats, dashboard
   Composio ───────── Plugin architecture, LLM task decomposition
   AgentConductor ── RL-trained dynamic topology generation (arXiv)
+  Fabro ────────── Deterministic workflow graphs, Daytona sandboxes
+  Slate/RLM ────── Swarm-native code-environment orchestration
+  Executor ─────── Code-as-tool-calling MCP bridge
+  AutoResClaw ──── Full research pipeline (extends autoresearch)
   [+] = added from LangChain harness engineering research (Mar 2026)
 ```
 
@@ -972,3 +1053,9 @@ Which combo fits which type of project? Use this matrix to pick your architectur
 - [The Emerging Harness Engineering Playbook (Ignorance.ai)](https://www.ignorance.ai/p/the-emerging-harness-engineering) — Third-party analysis
 - [Agentic Coding Trends Implementation Guide (Hugging Face)](https://huggingface.co/blog/Svngoku/agentic-coding-trends-2026) — Technical patterns reference
 - [Azure AI Agent Design Patterns (Microsoft Learn)](https://learn.microsoft.com/en-us/azure/architecture/ai-ml/guide/ai-agent-design-patterns) — Enterprise orchestration patterns
+- [Fabro: Dark Software Factory (GitHub)](https://github.com/fabro-sh/fabro) — Deterministic workflow graphs, CSS-like model routing, Daytona sandboxes
+- [Slate/RLM: Swarm-Native Agents (@realmcore_)](https://x.com/realmcore_/status/2032146316730778004) — Code-environment orchestration, hive mind subagent threads, auto model selection
+- [Executor: Code-as-Tool-Calling (GitHub)](https://github.com/RhysSullivan/executor) — Agents write TypeScript to discover tools, MCP bridge, QuickJS/SES/Deno sandboxes
+- [AutoResearchClaw: Full Research Pipeline (GitHub)](https://github.com/aiming-lab/AutoResearchClaw) — 23-stage idea-to-paper pipeline, MetaClaw cross-run learning (+18.3%)
+- [pi-autoresearch: Productized Extension (GitHub)](https://github.com/davebcn87/pi-autoresearch) — Visual dashboard, persistent JSONL state, quality gates
+- [Shopify Liquid PR #2056 (Lütke autoresearch loop)](https://github.com/Shopify/liquid/pull/2056) — 53% faster parsing via ~120 autonomous iterations
