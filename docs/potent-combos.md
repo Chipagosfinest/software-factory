@@ -1,14 +1,14 @@
 # Potent Combos & Agent Topology Patterns
 
-*Last updated: March 16, 2026*
+*Last updated: March 18, 2026*
 
-High-synergy system combinations and topology patterns for Software Factory. Maps how eight research sources compose into architectures greater than the sum of their parts.
+High-synergy system combinations and topology patterns for autonomous coding agents. Maps how ten research sources compose into architectures greater than the sum of their parts.
 
 ---
 
 ## 1. Agent Topology Types
 
-Five topology types observed across production agent systems. ASCII diagrams inspired by Manu Cornet's org chart comic — because how you wire agents matters more than how smart they are.
+Six topology types observed across production agent systems. ASCII diagrams inspired by Manu Cornet's org chart comic — because how you wire agents matters more than how smart they are.
 
 ---
 
@@ -181,6 +181,45 @@ Five topology types observed across production agent systems. ASCII diagrams ins
 **Best use case:** Optimization problems with a clear, measurable objective. Performance tuning, prompt optimization, configuration search, ML training. Any problem where "did the number go up?" is the entire evaluation.
 
 **Software Factory fit:** Applicable to prompt engineering for our agents (optimize verification accuracy), configuration tuning (find optimal retry/timeout settings), and autonomous codebase improvement (does test coverage increase? does build time decrease?).
+
+---
+
+### Sequential Multi-Agent (LangChain Open SWE)
+
+```
+  ┌──────────┐     ┌──────────┐     ┌──────────┐     ┌──────────┐
+  │ MANAGER  │────▶│ PLANNER  │────▶│PROGRAMMER│────▶│ REVIEWER │
+  │          │     │          │     │          │     │          │
+  │ Route    │     │ Research │     │ Code in  │     │ Quality  │
+  │ task     │     │ codebase │     │ sandbox  │     │ check    │
+  │ Init     │     │ Make plan│     │ Run tests│     │          │
+  │ state    │     │          │     │          │     │          │
+  └──────────┘     └──────────┘     └──────────┘     └──────────┘
+                        │                                  │
+                   Human reviews              ┌────────────┘
+                   plan (mandatory)            │ FAIL
+                                               ▼
+                                          Back to Programmer
+                                          (iterate until pass)
+```
+
+**Data flow:** Sequential hand-off between specialized agents. Each agent has a distinct role and sees only its predecessor's output. The Manager initializes, the Planner researches and creates an execution plan, the Programmer implements in a sandbox, and the Reviewer validates quality.
+
+**Control flow:** Linear with one feedback loop: Reviewer can reject back to Programmer. Human-in-the-loop at the plan stage (mandatory by default). "Double texting" allows mid-session feedback without restart.
+
+**Failure mode:** Plan quality bottleneck — if the Planner creates a poor plan, the Programmer builds the wrong thing. The mandatory human plan review catches this but adds latency.
+
+**How it differs from Pipeline:** The Pipeline (Spotify) uses the *same agent* through sequential stages (parse → reason → fix → verify). Sequential Multi-Agent uses *different specialized agents* with distinct system prompts, tools, and reasoning modes. The Planner never writes code; the Programmer never reviews.
+
+**Best use case:** Complex feature implementation requiring codebase research before coding. Tasks where plan quality determines success (architectural changes, large refactors, cross-module features). LangChain's Open SWE is a top contributor to its own repo using this pattern.
+
+**Key data points:**
+- LangChain: deepagents-cli scored 66.5% on Terminal Bench 2.0 (Top 5) using this architecture
+- Harness-only changes produced a 13.7pp gain without changing the model
+- Daytona sandboxes provide isolated execution per run
+- LangGraph Platform handles autoscaling across hundreds of concurrent runs
+
+**Source:** [Open SWE](https://github.com/langchain-ai/open-swe) | [Harness Engineering Blog](https://blog.langchain.com/improving-deep-agents-with-harness-engineering/)
 
 ---
 
@@ -459,14 +498,17 @@ How all eight research sources compose into the full architecture.
 ║  │ CostTrackingMW       │                    │                            ║
 ║  │ AuditMiddleware      │         ┌──────────┼──────────┬────────┐      ║
 ║  │ SummarizationMW      │         ▼          ▼          ▼        ▼      ║
-║  └──────────────────────┘    ┌────────┐ ┌────────┐ ┌────────┐ ┌────┐   ║
-║                              │   PR   │ │   CI   │ │Security│ │More│   ║
-║  Per-Agent Middleware:       │ Review │ │ Debug  │ │ Patch  │ │... │   ║
-║  ┌──────────────────────┐    │        │ │        │ │        │ │    │   ║
-║  │ + GitHubReviewMW     │    │Pipeline│ │Pipeline│ │One-Shot│ │    │   ║
-║  │ + CILogParserMW      │    │topology│ │topology│ │Tree    │ │    │   ║
-║  │ + CVEFeedMW          │    │        │ │        │ │        │ │    │   ║
-║  └──────────────────────┘    └───┬────┘ └───┬────┘ └───┬────┘ └──┬─┘   ║
+║  │ LoopDetectionMW  [+] │    ┌────────┐ ┌────────┐ ┌────────┐ ┌────┐   ║
+║  │ PreCompletionMW  [+] │    │   PR   │ │   CI   │ │Security│ │Feat│   ║
+║  └──────────────────────┘    │ Review │ │ Debug  │ │ Patch  │ │Build│  ║
+║                              │        │ │        │ │        │ │    │   ║
+║  Per-Agent Middleware:       │Pipeline│ │Pipeline│ │One-Shot│ │Seq. │   ║
+║  ┌──────────────────────┐    │topology│ │topology│ │Tree    │ │Multi│   ║
+║  │ + GitHubReviewMW     │    │        │ │        │ │        │ │Agent│   ║
+║  │ + CILogParserMW      │    └───┬────┘ └───┬────┘ └───┬────┘ └──┬─┘   ║
+║  │ + CVEFeedMW          │        │          │          │         │      ║
+║  │ + LocalContextMW [+] │        │          │          │         │      ║
+║  └──────────────────────┘        │          │          │         │      ║
 ║                                  │          │          │         │      ║
 ║  EXECUTION (Spotify + Ramp + Stripe)        │          │         │      ║
 ║  ───────────────────────────────────────────┼──────────┼─────────┘      ║
@@ -511,8 +553,11 @@ Legend:
   Karpathy Auto ──── NEVER STOP loop, git checkpoints, convergence
   OpenAI Harness ─── AGENTS.md, layered docs, linter-as-teacher
   Deep Agents ────── Middleware pipelines, sub-agents, summarization
+  Open SWE ───────── Manager→Planner→Programmer→Reviewer pipeline
   QMD ────────────── Hybrid search, knowledge retrieval
   Paperclip ──────── Budgets, task locks, heartbeats, dashboard
+  Composio ───────── Plugin architecture, LLM task decomposition
+  [+] = added from LangChain harness engineering research (Mar 2026)
 ```
 
 ---

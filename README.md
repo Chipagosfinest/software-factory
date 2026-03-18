@@ -131,7 +131,7 @@ Scale: ████ best-in-class  ███░ strong  ██░░ partial  �
 
 ## Agent Topology Patterns
 
-Five topology types observed across production systems:
+Six topology types observed across production systems:
 
 ```
   ONE-SHOT TREE          PIPELINE              ORG CHART
@@ -144,20 +144,22 @@ Five topology types observed across production systems:
    PR1  PR2  PR3                              [d][d][q] [s]
 
 
-  MESH                   RATCHET
-  (Ramp: multiplayer)    (Karpathy: git memory)
+  MESH                   RATCHET              SEQUENTIAL MULTI-AGENT
+  (Ramp: multiplayer)    (Karpathy: git mem)  (Open SWE: plan→code→review)
 
-    [A] ←→ [B]           ┌─────────────────┐
-     ↕  ╲╱  ↕            │ Read → Modify → │
-    shared state          │ Commit → Run →  │
-     ↕  ╱╲  ↕            │ Improved? ──────│
-    [C] ←→ [D]           │  yes: keep      │
-        ↕                 │  no:  reset     │
-     [Human]              │ LOOP FOREVER    │
-                          └─────────────────┘
+    [A] ←→ [B]           ┌───────────────┐    [Mgr]→[Plan]→[Code]→[Review]
+     ↕  ╲╱  ↕            │ Read→Modify→  │       │              ↑    │
+    shared state          │ Commit→Run→   │    human           └────┘
+     ↕  ╱╲  ↕            │ Improved?─────│    approves        (iterate)
+    [C] ←→ [D]           │  yes: keep    │    plan
+        ↕                 │  no:  reset   │
+     [Human]              │ LOOP FOREVER  │
+                          └───────────────┘
 ```
 
-[Full topology diagrams + 6 combo architectures →](docs/potent-combos.md)
+**Key distinction:** Pipeline = same agent, sequential stages. Sequential Multi-Agent = different specialized agents, each with distinct prompts and tools. The Planner never writes code; the Programmer never reviews.
+
+[Full topology diagrams + 6 combo architectures + build profiles →](docs/potent-combos.md)
 
 ---
 
