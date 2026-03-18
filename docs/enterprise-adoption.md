@@ -28,7 +28,7 @@
 | Rakuten | Agentic coding patterns | Production | Time-to-market: 24 days to 5 days (79% reduction) |
 | TELUS | AI coding tools | 13,000+ custom solutions | 30% faster shipping, 500K hours saved |
 | Zapier | AI agents | 800+ agents deployed | 89% AI adoption across organization |
-| Coinbase | Cursor + background agents | All engineers | Single engineers refactored codebases in days vs months |
+| Coinbase | Cloudbot (internal agent) | All engineers | Agent councils + auto-merge, cloud sandboxes, Slack-first invocation |
 | Shopify | AI coding tools | CEO using directly | CEO Lutke hit 2,000 GitHub contributions in early 2026 |
 
 ---

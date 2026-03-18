@@ -1,6 +1,6 @@
 # Autonomous Coding Agents: Research Corpus
 
-*Last updated: March 18, 2026 | 26 research documents | 10+ production systems studied*
+*Last updated: March 18, 2026 | 27 research documents | 10+ production systems studied*
 
 > How do you build agents that ship code while humans sleep?
 >
@@ -35,6 +35,14 @@ The harness — not the model — determines agent quality.
   │  BM25 pre-filtering reduces hallucination 22-37%               │
   │  85% perf degradation with large tool spaces (scope to ~20)    │
   │  "Reasoning sandwich": high→low→high saves tokens + time      │
+  │  Sandboxing reduces agent stalls by 40% (Cursor)               │
+  │                                                                 │
+  │  Anthropic 2026 Report:                                        │
+  │  • 78% of sessions now do multi-file edits (was 34% in 2025)  │
+  │  • 47 tool calls per session average                           │
+  │  • 89% acceptance rate with diff summaries (62% without)       │
+  │  • Context engineering reduces errors by 40%                    │
+  │  • 2-4x faster feature delivery (plan → production)            │
   │                                                                 │
   │  ✓  Describe END STATE, not step-by-step instructions          │
   │  ✓  State PRECONDITIONS — tell agent when NOT to act           │
@@ -328,6 +336,7 @@ Seven principles extracted from studying all 10 systems:
 | [Context Engineering](docs/context-engineering.md) | Spotify, OpenAI, Anthropic | Observation masking, AGENTS.md (60K repos), tool sprawl, dynamic assembly |
 | [Agent Safety & Cost Control](docs/agent-safety-cost-control.md) | Stripe, OWASP, Microsoft | Kill switches, approval gates, blast radius, $400M cloud leak |
 | [Sandbox Isolation](docs/sandbox-isolation.md) | Spotify, Stripe, Ramp, E2B | Containers, VMs, warm pools, git worktrees, network isolation |
+| [Sandbox Architecture 2026](docs/sandbox-architecture-2026.md) | Weng Jialin, Rivet, GKE, Northflank | Two patterns (agent-in-sandbox vs sandbox-as-tool), warm pools, universal HTTP adapter, enterprise 3-tier arch |
 | [SWE-bench Ecosystem](docs/swe-bench-ecosystem.md) | Princeton, METR, Scale AI | 7 variants, leaderboard gaming, METR 19% slowdown paradox |
 | [MCP Ecosystem](docs/mcp-ecosystem-deep-dive.md) | Anthropic, Microsoft | Protocol spec, 81K stars, tool poisoning, MCPBench (64% accuracy) |
 | [Agent Memory Systems](docs/agent-memory-systems.md) | Napkin, Mem0, Letta, hmem | Progressive disclosure, BM25 vs vector, memory security |
@@ -350,9 +359,11 @@ Seven principles extracted from studying all 10 systems:
 
 **Production Systems:** [Spotify Honk Pt 1](https://engineering.atspotify.com/2025/11/spotifys-background-coding-agent-part-1) | [Pt 2](https://engineering.atspotify.com/2025/11/context-engineering-background-coding-agents-part-2) | [Pt 3](https://engineering.atspotify.com/2025/12/feedback-loops-background-coding-agents-part-3) | [Ramp Inspect](https://builders.ramp.com/post/why-we-built-our-background-agent) | [Stripe Minions Pt 1](https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents) | [Pt 2](https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents-part-2)
 
-**Frameworks:** [Deep Agents](https://github.com/langchain-ai/deepagents) | [Open SWE](https://github.com/langchain-ai/open-swe) | [codex-planr](https://github.com/regenrek/codex-planr) | [Autoresearch](https://github.com/karpathy/autoresearch) | [QMD](https://github.com/tobi/qmd) | [Paperclip](https://github.com/paperclipai/paperclip) | [Agent Orchestrator](https://github.com/ComposioHQ/agent-orchestrator)
+**Frameworks:** [Deep Agents](https://github.com/langchain-ai/deepagents) | [Open SWE](https://github.com/langchain-ai/open-swe) | [codex-planr](https://github.com/regenrek/codex-planr) | [sandbox-agent](https://github.com/rivet-dev/sandbox-agent) | [Autoresearch](https://github.com/karpathy/autoresearch) | [QMD](https://github.com/tobi/qmd) | [Paperclip](https://github.com/paperclipai/paperclip) | [Agent Orchestrator](https://github.com/ComposioHQ/agent-orchestrator)
 
-**Industry Data:** [State of Agent Engineering 2026](https://www.langchain.com/state-of-agent-engineering) | [VentureBeat](https://venturebeat.com/orchestration/langchains-ceo-argues-that-better-models-alone-wont-get-your-ai-agent-to) | [Anthropic Agentic Coding Trends](https://resources.anthropic.com/hubfs/2026%20Agentic%20Coding%20Trends%20Report.pdf)
+**Industry Data:** [Anthropic 2026 Agentic Coding Trends](https://resources.anthropic.com/hubfs/2026%20Agentic%20Coding%20Trends%20Report.pdf) | [State of Agent Engineering 2026](https://www.langchain.com/state-of-agent-engineering) | [VentureBeat](https://venturebeat.com/orchestration/langchains-ceo-argues-that-better-models-alone-wont-get-your-ai-agent-to) | [Agent Sandbox Architecture](https://wengjialin.com/blog/agent-sandbox/)
+
+**Verification:** [Spec-Driven Verification](https://agent-wars.com/news/2026-03-14-spec-driven-verification-claude-code-agents) | [Agent-as-a-Judge Survey](https://arxiv.org/pdf/2601.05111)
 
 **Community:** [Emerging Harness Playbook](https://www.ignorance.ai/p/the-emerging-harness-engineering) | [background-agents.com](https://background-agents.com) | [Interrupt 2026](https://interrupt.langchain.com/) (May 13-14, SF)
 
