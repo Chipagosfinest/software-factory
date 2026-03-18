@@ -410,3 +410,6 @@ Our unique position: the only platform combining incident response, security pat
 - [CodeRabbit](https://www.coderabbit.ai/) -- Product
 - [Ellipsis](https://www.ellipsis.dev/) -- Product
 - [Blitzy](https://blitzy.com/) -- Product
+- [Ona Automations: Proactive Background Agents](https://ona.com/stories/ona-automations-proactive-background-agents) -- Background agent platform
+- [A Visual Guide to Self-Driving Codebases (Ona)](https://ona.com/stories/visual-guide-self-driving-codebases) -- Agent infrastructure taxonomy
+- [AI Agent Automations That Keep Your Codebase Healthy (Ona)](https://ona.com/stories/codebase-health-automations) -- Automated maintenance agents

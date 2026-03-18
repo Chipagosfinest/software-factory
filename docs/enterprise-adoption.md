@@ -426,3 +426,5 @@ The companies succeeding with agentic coding are not the ones with the best AI m
 - [Faros AI: AI Productivity Paradox](https://www.faros.ai/blog/ai-software-engineering) -- Analysis
 - [Context Engineering (Martin Fowler)](https://martinfowler.com/articles/exploring-gen-ai/context-engineering-coding-agents.html) -- Patterns
 - [5 Agentic Trends (The New Stack)](https://thenewstack.io/5-key-trends-shaping-agentic-development-in-2026/) -- Trends
+- [The Enterprise Agent Problem Claude Code Wasn't Built to Solve (Ona)](https://ona.com/stories/enterprise-agent-problem) -- Enterprise governance gaps in thin agent harnesses
+- [AI Agent Automations That Keep Your Codebase Healthy (Ona)](https://ona.com/stories/codebase-health-automations) -- Automated CVE remediation, stale PR cleanup, dead code removal, docs maintenance
