@@ -8,7 +8,7 @@ High-synergy system combinations and topology patterns for autonomous coding age
 
 ## 1. Agent Topology Types
 
-Six topology types observed across production agent systems. ASCII diagrams inspired by Manu Cornet's org chart comic — because how you wire agents matters more than how smart they are.
+Seven topology types observed across production and research agent systems. ASCII diagrams inspired by Manu Cornet's org chart comic — because how you wire agents matters more than how smart they are.
 
 ---
 
@@ -34,9 +34,11 @@ Six topology types observed across production agent systems. ASCII diagrams insp
 
 **Failure mode:** An agent fails silently — max 2 CI retries then discard. Siblings are unaffected. Partial success is the norm (Stripe reports ~70% first-pass success on CI repair).
 
-**Best use case:** High-volume, independent tasks where partial success is acceptable. Stripe processes 1,300 PRs/week this way. Each task must be completable in a single attempt with no inter-agent dependencies.
+**Best use case:** High-volume, independent tasks where partial success is acceptable. Stripe processes 1,300 PRs/week this way (zero human-written code). Each task must be completable in a single attempt with no inter-agent dependencies.
 
 **Software Factory fit:** Current CI Debugger and Security Patcher agents already operate this way. One event, one agent, one PR.
+
+**Update (Mar 2026):** Stripe's Minions are now a heavily modified fork of Block's open-source [Goose](https://github.com/block/goose) agent. Each Minion runs on a "devbox" — a standardized AWS EC2 instance from a warm pool provisioned in <10s, pre-loaded with Stripe's full source tree, warmed Bazel and type-checking caches. ByteByteGo published a [detailed architecture breakdown](https://blog.bytebytego.com/p/how-stripes-minions-ship-1300-prs). SitePoint's [deconstruction](https://www.sitepoint.com/stripe-minions-architecture-explained/) confirms the fully unattended model: engineer sends Slack message → agent delivers finished PR.
 
 ---
 
@@ -62,6 +64,8 @@ Six topology types observed across production agent systems. ASCII diagrams insp
 **Best use case:** Tasks requiring multi-step reasoning with quality gates. CI failure diagnosis, PR review with iterative improvement, incident root cause analysis.
 
 **Software Factory fit:** Our CI Debugger already follows this pattern: parse failure logs, local verification, agent reasoning, sandbox fix, LLM judge validation.
+
+**Update (Mar 2026):** At [QCon London 2026](https://www.infoq.com/news/2026/03/spotify-honk-rewrite/), Spotify revealed Honk's velocity jumped from 1,000 merged PRs per 3 months → **1,000 PRs every 10 days**. Key architecture change: runtime separation — agent runtime is decoupled from verification runtime. Honk pushes branches to GitHub, triggers builds via a verification service that abstracts CI, and only creates PRs after full validation. Spotify also found LLM-as-judge was too restrictive early on; as models improved, verification steps in prompts proved sufficient without explicit judging. The new bottleneck is **PR review capacity**, not code generation. Spotify CEO confirmed best developers "have not written a single line of code since December" (TechCrunch, Feb 2026). Slack integration enables "code from anywhere" — engineers fix bugs from their phone.
 
 ---
 
@@ -98,6 +102,8 @@ Six topology types observed across production agent systems. ASCII diagrams insp
 **Best use case:** Large-scale operations requiring governance, cost control, and audit trails. Multi-team organizations where different agents have different permission levels and budget limits.
 
 **Software Factory fit:** Phase 3 target. Our orchestrator dispatches agents flat today; Paperclip's org chart model adds the governance layer needed for multi-repo, multi-team deployment.
+
+**Update (Mar 2026):** Paperclip hit [14.2K GitHub stars in its first week](https://paperclip.ing/). Now positioned as "open-source orchestration for zero-human companies." Upcoming Clipmart marketplace will offer pre-built company templates (content agencies, trading desks, dev shops) downloadable with one click. Task checkout and budget enforcement are now atomic operations.
 
 ---
 
@@ -182,6 +188,8 @@ Six topology types observed across production agent systems. ASCII diagrams insp
 
 **Software Factory fit:** Applicable to prompt engineering for our agents (optimize verification accuracy), configuration tuning (find optimal retry/timeout settings), and autonomous codebase improvement (does test coverage increase? does build time decrease?).
 
+**Update (Mar 2026):** Karpathy's autoresearch completed [700 experiments in 2 days](https://fortune.com/2026/03/17/andrej-karpathy-loop-autonomous-ai-agents-future/), discovering 20 optimizations that yielded 11% training speedup on a larger model. Shopify CEO Tobias Lütke ran it overnight: 37 experiments, **19% performance gain**. Karpathy's next vision: "asynchronously massively collaborative agents" (SETI@home-style) — not emulating one PhD student, but an entire research community. Says the remaining scaling work is "just engineering."
+
 ---
 
 ### Sequential Multi-Agent (LangChain Open SWE)
@@ -220,6 +228,47 @@ Six topology types observed across production agent systems. ASCII diagrams insp
 - LangGraph Platform handles autoscaling across hundreds of concurrent runs
 
 **Source:** [Open SWE](https://github.com/langchain-ai/open-swe) | [Harness Engineering Blog](https://blog.langchain.com/improving-deep-agents-with-harness-engineering/)
+
+**Update (Mar 2026):** Open SWE officially released Mar 17, 2026 ([announcement](https://blog.langchain.com/open-swe-an-open-source-framework-for-internal-coding-agents/)). Ships with ~15 curated tools (shell, web, Git, Linear, Slack). Defaults to Claude Opus 4 but supports any LLM. Captures patterns from Stripe Minions, Ramp Inspect, and Coinbase Cloudbot. Deep Agents [formally released](https://www.marktechpost.com/2026/03/15/langchain-releases-deep-agents-a-structured-runtime-for-planning-memory-and-context-isolation-in-multi-step-ai-agents/) as a structured runtime with planning, memory, and context isolation for multi-step agents.
+
+---
+
+### Emerging: Dynamic Topology Evolution (AgentConductor)
+
+```
+       ┌────────────────── TOPOLOGY GENERATOR ──────────────────┐
+       │                                                         │
+       │  ┌───────────────┐     ┌────────────────────────────┐  │
+       │  │  Orchestrator │────▶│   YAML Topology (DAG)      │  │
+       │  │  (RL-trained, │     │                            │  │
+       │  │   3B params)  │     │  step 1: [analyzer,planner]│  │
+       │  └───────────────┘     │  step 2: [coder]           │  │
+       │         ▲              │  step 3: [tester]          │  │
+       │         │              └─────────────┬──────────────┘  │
+       │    execution                         ▼                  │
+       │    feedback             ┌────────────────────┐         │
+       │         │               │  Execute topology  │         │
+       │         └───────────────│  (parallel layers)  │         │
+       │                         └────────────────────┘         │
+       │                                                         │
+       │  Density scales with difficulty:                        │
+       │    Easy:   ≤4 nodes/turn (sparse)                      │
+       │    Medium: ≤7 nodes/turn                               │
+       │    Hard:   ≤10 nodes/turn (dense)                      │
+       └─────────────────────────────────────────────────────────┘
+```
+
+**Data flow:** An RL-trained orchestrator generates task-specific agent topologies as structured YAML. The topology is a layered DAG — agents within a layer execute in parallel, cross-layer dependencies enable information flow. After execution, results feed back to the orchestrator, which evolves the topology over multiple turns.
+
+**Control flow:** Fully dynamic. Unlike all other topologies which are statically defined, AgentConductor generates a new topology per task based on inferred difficulty. Easy problems get sparse graphs; hard problems get dense multi-agent networks. GRPO reinforcement learning trains the orchestrator to balance accuracy vs. cost.
+
+**Performance:** State-of-the-art on competition-level code generation. 58.8% on APPS (+14.6% over MetaGPT), 46.3% on LiveCodeBench. **68% token cost reduction** vs strongest baseline through difficulty-aware density control. Uses only a 3B parameter orchestrator model.
+
+**Best use case:** Complex code generation requiring variable levels of collaboration. The key insight is that *one topology doesn't fit all tasks* — simple tasks waste resources with complex agent networks, while hard tasks need dense coordination.
+
+**Software Factory fit:** Future research direction. Our current topologies are static (pipeline, one-shot tree). AgentConductor's approach could dynamically select between them based on task difficulty — simple CI fixes get one-shot, complex feature work gets sequential multi-agent.
+
+**Source:** [AgentConductor (arXiv 2602.17100)](https://huggingface.co/papers/2602.17100)
 
 ---
 
@@ -557,6 +606,7 @@ Legend:
   QMD ────────────── Hybrid search, knowledge retrieval
   Paperclip ──────── Budgets, task locks, heartbeats, dashboard
   Composio ───────── Plugin architecture, LLM task decomposition
+  AgentConductor ── RL-trained dynamic topology generation (arXiv)
   [+] = added from LangChain harness engineering research (Mar 2026)
 ```
 
@@ -875,6 +925,8 @@ Which combo fits which type of project? Use this matrix to pick your architectur
 
 ## Sources
 
+### Original Sources (Core Research)
+
 - [Stripe Minions Part 1](https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents) — One-shot agents, 1,300 PRs/week, max 2 retries
 - [Stripe Minions Part 2](https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents-part-2) — 400 MCP tools, per-dir rules, devbox isolation
 - [Spotify Honk Part 1](https://engineering.atspotify.com/2025/11/spotifys-background-coding-agent-part-1) — K8s containers, verification loops
@@ -883,13 +935,40 @@ Which combo fits which type of project? Use this matrix to pick your architectur
 - [Ramp Inspect](https://builders.ramp.com/post/why-we-built-our-background-agent) — Warm pools, Modal sandboxes, multiplayer sessions
 - [OpenAI Harness Engineering](https://openai.com/index/harness-engineering/) — AGENTS.md, layered architecture, background GC agents
 - [OpenAI Unlocking the Codex Harness](https://openai.com/index/unlocking-the-codex-harness/) — App server, per-worktree observability
+- [OpenAI Unrolling the Codex Agent Loop](https://openai.com/index/unrolling-the-codex-agent-loop/) — Agent loop internals
 - [Deep Agents (LangChain)](https://github.com/langchain-ai/deepagents) — Middleware pipelines, sub-agents, context summarization
+- [Open SWE (LangChain)](https://github.com/langchain-ai/open-swe) — Open-source framework for internal coding agents
+- [LangChain Harness Engineering Blog](https://blog.langchain.com/improving-deep-agents-with-harness-engineering/) — 52.8→66.5% Terminal Bench, harness-only gains
+- [Harrison Chase @ Sequoia](https://sequoiacap.com/podcast/context-engineering-our-way-to-long-horizon-agents-langchains-harrison-chase/) — Context vs harness engineering distinction
 - [Karpathy Autoresearch](https://github.com/karpathy/autoresearch) — NEVER STOP loop, git checkpoints, convergence
 - [QMD (Tobi Lutke)](https://github.com/tobi/qmd) — BM25 + vector + LLM reranking, MCP server
 - [Paperclip AI](https://github.com/paperclipai/paperclip) — Fleet orchestration, budgets, task locks, heartbeats, React dashboard
 - [GitHub Copilot Coding Agent](https://github.blog/news-insights/product-news/github-copilot-meet-the-new-coding-agent/) — Issue-to-PR, CI repair, custom agents
 - [Copilot Agentic Code Review](https://github.blog/changelog/2026-03-05-copilot-code-review-now-runs-on-an-agentic-architecture/) — March 2026 GA
-- [More Agents Is All You Need (Google/MIT)](https://arxiv.org/abs/2402.05120) — Multi-agent scaling limits
-- [Gorilla: LLM Connected with Massive APIs (Microsoft Research)](https://arxiv.org/abs/2305.15334) — Tool space performance degradation
-- [The Emerging Harness Engineering Playbook](https://www.ignorance.ai/p/the-emerging-harness-engineering) — Third-party analysis
 - [Anthropic 2026 Agentic Coding Trends Report](https://resources.anthropic.com/hubfs/2026%20Agentic%20Coding%20Trends%20Report.pdf)
+
+### Research Papers
+
+- [AgentConductor: Topology Evolution for Multi-Agent Code Generation (arXiv 2602.17100)](https://huggingface.co/papers/2602.17100) — RL-optimized dynamic DAG topologies, +14.6% on APPS, 68% token cost reduction
+- [More Agents Is All You Need (Google/MIT, arXiv 2402.05120)](https://arxiv.org/abs/2402.05120) — Multi-agent scaling limits, accuracy threshold at 45%
+- [Gorilla: LLM Connected with Massive APIs (Microsoft, arXiv 2305.15334)](https://arxiv.org/abs/2305.15334) — Tool space performance degradation beyond ~20 tools
+- [Agent-as-a-Judge Survey (arXiv 2601.05111)](https://arxiv.org/pdf/2601.05111) — Agentic evaluation landscape. LLM-as-Judge alone detects ~45% of errors; combined with deterministic tools reaches 94%
+- [LLM-as-a-Judge for Software Engineering (arXiv 2510.24367)](https://arxiv.org/pdf/2510.24367) — Code-specific evaluation patterns
+
+### New Sources (March 2026 Update)
+
+- [Spotify Honk at QCon London 2026 (InfoQ)](https://www.infoq.com/news/2026/03/spotify-honk-rewrite/) — 1,000 PRs/10 days, runtime separation, Slack integration, standardization strategy
+- [Spotify Devs Haven't Written Code Since December (TechCrunch)](https://techcrunch.com/2026/02/12/spotify-says-its-best-developers-havent-written-a-line-of-code-since-december-thanks-to-ai/) — CEO confirmation
+- [Stripe Minions Architecture (ByteByteGo)](https://blog.bytebytego.com/p/how-stripes-minions-ship-1300-prs) — Detailed architecture breakdown
+- [Stripe Minions Architecture (SitePoint)](https://www.sitepoint.com/stripe-minions-architecture-explained/) — Devbox warm pool, Goose fork
+- [OpenAI Symphony Framework (GitHub)](https://github.com/openai/symphony) — Elixir-based agent orchestration, open-sourced Mar 2026
+- [Martin Fowler / Birgitta Böckeler: Harness Engineering](https://martinfowler.com/articles/exploring-gen-ai/harness-engineering.html) — Three categories: context engineering, architectural constraints, garbage collection. 5 months of serious work, not quick fixes
+- [Open SWE Launch (LangChain Blog, Mar 17)](https://blog.langchain.com/open-swe-an-open-source-framework-for-internal-coding-agents/) — ~15 curated tools, Claude Opus 4 default
+- [Deep Agents Formal Release (MarkTechPost, Mar 15)](https://www.marktechpost.com/2026/03/15/langchain-releases-deep-agents-a-structured-runtime-for-planning-memory-and-context-isolation-in-multi-step-ai-agents/) — Structured runtime for multi-step agents
+- [Karpathy Autoresearch: Massively Collaborative Vision (Fortune, Mar 17)](https://fortune.com/2026/03/17/andrej-karpathy-loop-autonomous-ai-agents-future/) — 700 experiments/2 days, SETI@home-style agent swarms
+- [Ryan Carson: Code Factory + $2M Seed (Freeplay Blog)](https://freeplay.ai/blog/real-talk-on-building-coding-agents-a-conversation-with-amp-s-builder-in-residence-ryan-carson) — Untangle built solo with agents, Amp Builder-in-Residence
+- [Paperclip: Zero-Human Companies (paperclip.ing)](https://paperclip.ing/) — 14.2K stars in first week, Clipmart marketplace coming
+- [VS Code Multi-Agent Orchestration (Visual Studio Magazine)](https://visualstudiomagazine.com/articles/2026/02/09/hands-on-with-new-multi-agent-orchestration-in-vs-code.aspx) — VS Code 1.109 multi-agent features
+- [The Emerging Harness Engineering Playbook (Ignorance.ai)](https://www.ignorance.ai/p/the-emerging-harness-engineering) — Third-party analysis
+- [Agentic Coding Trends Implementation Guide (Hugging Face)](https://huggingface.co/blog/Svngoku/agentic-coding-trends-2026) — Technical patterns reference
+- [Azure AI Agent Design Patterns (Microsoft Learn)](https://learn.microsoft.com/en-us/azure/architecture/ai-ml/guide/ai-agent-design-patterns) — Enterprise orchestration patterns

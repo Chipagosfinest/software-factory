@@ -64,8 +64,12 @@ Paperclip and Composio show fleet management for ~10 agents. Carson runs 10 para
 
 ### Emerging Patterns
 - **Kernel-level enforcement** — Ona's Veto system enforces agent constraints at the OS level, not via LLM self-policing. Early but significant shift from prompt-based governance to system-level controls.
-- **Agent-as-a-Judge** — Using agents to evaluate other agents. Survey paper (arXiv 2601.05111) maps the landscape. Could replace human review at scale.
+- **Agent-as-a-Judge** — Using agents to evaluate other agents. Survey paper (arXiv 2601.05111) maps the landscape. LLM-as-Judge alone detects ~45% of errors; combined with deterministic tools reaches 94%. Could replace human review at scale.
 - **MCP standardization** — 81K stars and growing. If MCP wins (likely), tool interoperability becomes a solved problem and the differentiator shifts entirely to harness quality.
+- **Dynamic topology evolution** — AgentConductor (arXiv 2602.17100) uses RL to generate task-specific agent DAGs. +14.6% accuracy with 68% cost reduction vs static topologies. Suggests the future isn't picking *one* topology but generating the right one per task.
+- **PR review as bottleneck** — Spotify's QCon talk confirms code generation is no longer the bottleneck — PR review capacity is. Multiple teams exploring auto-merge for documentation and low-risk changes.
+- **Martin Fowler's harness engineering taxonomy** — Three categories (context engineering, architectural constraints, garbage collection) now provide a shared vocabulary. Böckeler estimates 5 months of serious harness work needed, not quick fixes.
+- **Symphony open-sourced** — OpenAI released the Elixir-based framework publicly (Mar 2026). Fault-tolerant supervision trees, Linear polling, "Proof of Work" (CI passes + walkthroughs) before merge.
 
 ### Risks to Current Assumptions
 - **Model capabilities may leapfrog harness engineering.** If a model ships that can reliably self-plan, self-verify, and self-scope, much of the harness infrastructure becomes unnecessary. Current evidence says we're far from this, but it's the existential risk to the "harness > model" thesis.

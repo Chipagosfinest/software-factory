@@ -144,7 +144,7 @@ Scale: ████ best-in-class  ███░ strong  ██░░ partial  �
 
 ## Agent Topology Patterns
 
-Six topology types observed across production systems:
+Seven topology types observed across production and research systems:
 
 ```
   ONE-SHOT TREE          PIPELINE              ORG CHART
@@ -171,6 +171,8 @@ Six topology types observed across production systems:
 ```
 
 **Key distinction:** Pipeline = same agent, sequential stages. Sequential Multi-Agent = different specialized agents, each with distinct prompts and tools. The Planner never writes code; the Programmer never reviews.
+
+**7th: Dynamic Topology Evolution** (AgentConductor) — An RL-trained orchestrator generates task-specific DAG topologies in YAML. Easy tasks get sparse graphs; hard tasks get dense multi-agent networks. +14.6% on APPS with 68% token cost reduction.
 
 [Full topology diagrams + 6 combo architectures + build profiles →](docs/potent-combos.md)
 
@@ -395,13 +397,15 @@ Seven principles extracted from studying all 10 systems:
 
 ## References
 
-**Harness Engineering:** [OpenAI](https://openai.com/index/harness-engineering/) | [Unlocking Codex](https://openai.com/index/unlocking-the-codex-harness/) | [Codex Agent Loop](https://openai.com/index/unrolling-the-codex-agent-loop/) | [LangChain Blog](https://blog.langchain.com/improving-deep-agents-with-harness-engineering/) | [Harrison Chase @ Sequoia](https://sequoiacap.com/podcast/context-engineering-our-way-to-long-horizon-agents-langchains-harrison-chase/)
+**Harness Engineering:** [OpenAI](https://openai.com/index/harness-engineering/) | [Unlocking Codex](https://openai.com/index/unlocking-the-codex-harness/) | [Codex Agent Loop](https://openai.com/index/unrolling-the-codex-agent-loop/) | [LangChain Blog](https://blog.langchain.com/improving-deep-agents-with-harness-engineering/) | [Harrison Chase @ Sequoia](https://sequoiacap.com/podcast/context-engineering-our-way-to-long-horizon-agents-langchains-harrison-chase/) | [Martin Fowler / Böckeler](https://martinfowler.com/articles/exploring-gen-ai/harness-engineering.html)
 
-**Production Systems:** [Spotify Honk Pt 1](https://engineering.atspotify.com/2025/11/spotifys-background-coding-agent-part-1) | [Pt 2](https://engineering.atspotify.com/2025/11/context-engineering-background-coding-agents-part-2) | [Pt 3](https://engineering.atspotify.com/2025/12/feedback-loops-background-coding-agents-part-3) | [Ramp Inspect](https://builders.ramp.com/post/why-we-built-our-background-agent) | [Stripe Minions Pt 1](https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents) | [Pt 2](https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents-part-2)
+**Production Systems:** [Spotify Honk Pt 1](https://engineering.atspotify.com/2025/11/spotifys-background-coding-agent-part-1) | [Pt 2](https://engineering.atspotify.com/2025/11/context-engineering-background-coding-agents-part-2) | [Pt 3](https://engineering.atspotify.com/2025/12/feedback-loops-background-coding-agents-part-3) | [Honk at QCon London 2026 (InfoQ)](https://www.infoq.com/news/2026/03/spotify-honk-rewrite/) | [Ramp Inspect](https://builders.ramp.com/post/why-we-built-our-background-agent) | [Stripe Minions Pt 1](https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents) | [Pt 2](https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents-part-2) | [ByteByteGo Analysis](https://blog.bytebytego.com/p/how-stripes-minions-ship-1300-prs) | [SitePoint Deconstruction](https://www.sitepoint.com/stripe-minions-architecture-explained/)
 
-**Frameworks:** [Deep Agents](https://github.com/langchain-ai/deepagents) | [Open SWE](https://github.com/langchain-ai/open-swe) | [codex-planr](https://github.com/regenrek/codex-planr) | [sandbox-agent](https://github.com/rivet-dev/sandbox-agent) | [Autoresearch](https://github.com/karpathy/autoresearch) | [QMD](https://github.com/tobi/qmd) | [Paperclip](https://github.com/paperclipai/paperclip) | [Agent Orchestrator](https://github.com/ComposioHQ/agent-orchestrator)
+**Frameworks:** [Deep Agents](https://github.com/langchain-ai/deepagents) | [Open SWE](https://github.com/langchain-ai/open-swe) | [Open SWE Launch (Mar 17)](https://blog.langchain.com/open-swe-an-open-source-framework-for-internal-coding-agents/) | [OpenAI Symphony](https://github.com/openai/symphony) | [codex-planr](https://github.com/regenrek/codex-planr) | [sandbox-agent](https://github.com/rivet-dev/sandbox-agent) | [Autoresearch](https://github.com/karpathy/autoresearch) | [QMD](https://github.com/tobi/qmd) | [Paperclip](https://github.com/paperclipai/paperclip) | [Agent Orchestrator](https://github.com/ComposioHQ/agent-orchestrator)
 
-**Industry Data:** [Anthropic 2026 Agentic Coding Trends](https://resources.anthropic.com/hubfs/2026%20Agentic%20Coding%20Trends%20Report.pdf) | [State of Agent Engineering 2026](https://www.langchain.com/state-of-agent-engineering) | [VentureBeat](https://venturebeat.com/orchestration/langchains-ceo-argues-that-better-models-alone-wont-get-your-ai-agent-to) | [Agent Sandbox Architecture](https://wengjialin.com/blog/agent-sandbox/)
+**Industry Data:** [Anthropic 2026 Agentic Coding Trends](https://resources.anthropic.com/hubfs/2026%20Agentic%20Coding%20Trends%20Report.pdf) | [State of Agent Engineering 2026](https://www.langchain.com/state-of-agent-engineering) | [VentureBeat](https://venturebeat.com/orchestration/langchains-ceo-argues-that-better-models-alone-wont-get-your-ai-agent-to) | [Agent Sandbox Architecture](https://wengjialin.com/blog/agent-sandbox/) | [Spotify Devs Stop Coding (TechCrunch)](https://techcrunch.com/2026/02/12/spotify-says-its-best-developers-havent-written-a-line-of-code-since-december-thanks-to-ai/) | [Karpathy Collaborative Agents (Fortune)](https://fortune.com/2026/03/17/andrej-karpathy-loop-autonomous-ai-agents-future/)
+
+**Research Papers:** [AgentConductor (arXiv 2602.17100)](https://huggingface.co/papers/2602.17100) | [Agent-as-a-Judge Survey (arXiv 2601.05111)](https://arxiv.org/pdf/2601.05111) | [LLM-as-Judge for SWE (arXiv 2510.24367)](https://arxiv.org/pdf/2510.24367) | [More Agents Is All You Need (Google/MIT)](https://arxiv.org/abs/2402.05120) | [Gorilla Tool Scaling (Microsoft)](https://arxiv.org/abs/2305.15334)
 
 **Security:** [Claude Code Sandbox Escape (Ona)](https://ona.com/stories/how-claude-code-escapes-its-own-denylist-and-sandbox) | [Veto: Kernel-Level Enforcement (Ona)](https://ona.com/stories/introducing-veto-security-for-the-next-era-of-software) | [Don't Build Your Own Sandbox (Ona)](https://ona.com/stories/dont-build-a-coding-agent-sandbox)
 
@@ -409,7 +413,7 @@ Seven principles extracted from studying all 10 systems:
 
 **Agent Infrastructure:** [TigerFS](https://tigerfs.io/) | [Postgres for Agents (Tiger Data)](https://www.tigerdata.com/blog/postgres-for-agents) | [AgentFS (Turso)](https://github.com/tursodatabase/agentfs) | [Disaggregated AgentFS (Penberg)](https://penberg.org/blog/disaggregated-agentfs.html) | [Agent Interfaces 2026 (Arize)](https://arize.com/blog/agent-interfaces-in-2026-filesystem-vs-api-vs-database-what-actually-works/)
 
-**Community:** [Emerging Harness Playbook](https://www.ignorance.ai/p/the-emerging-harness-engineering) | [background-agents.com](https://background-agents.com) | [Interrupt 2026](https://interrupt.langchain.com/) (May 13-14, SF)
+**Community:** [Emerging Harness Playbook](https://www.ignorance.ai/p/the-emerging-harness-engineering) | [background-agents.com](https://background-agents.com) | [Interrupt 2026](https://interrupt.langchain.com/) (May 13-14, SF) | [Carson Code Factory (Freeplay)](https://freeplay.ai/blog/real-talk-on-building-coding-agents-a-conversation-with-amp-s-builder-in-residence-ryan-carson) | [Azure Agent Design Patterns (Microsoft)](https://learn.microsoft.com/en-us/azure/architecture/ai-ml/guide/ai-agent-design-patterns)
 
 ---
 

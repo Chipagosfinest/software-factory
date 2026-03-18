@@ -74,8 +74,23 @@
 | 79% time reduction | Rakuten: 24 days → 5 days time-to-market | [Enterprise Adoption](enterprise-adoption.md) |
 | 30% faster shipping | TELUS with AI coding tools | [Enterprise Adoption](enterprise-adoption.md) |
 | 500K hours saved | TELUS across 13,000+ custom solutions | [Enterprise Adoption](enterprise-adoption.md) |
+| 1,000 PRs / 10 days | Spotify Honk current velocity (was 1,000/3mo) | [Potent Combos](potent-combos.md) |
 | ~100 experiments overnight | Karpathy autoresearch output | [Autoresearch](autoresearch.md) |
+| 700 experiments / 2 days | Karpathy autoresearch scaled run, 20 optimizations found | [Potent Combos](potent-combos.md) |
+| 19% performance gain | Shopify CEO using autoresearch overnight (37 experiments) | [Potent Combos](potent-combos.md) |
+| 11% training speedup | Karpathy's 20 tweaks applied to larger LM | [Potent Combos](potent-combos.md) |
 | 10 parallel agents | Carson Symphony max concurrency | [Symphony + Carson](symphony-carson.md) |
+| 14.2K stars in 1 week | Paperclip AI GitHub traction | [Potent Combos](potent-combos.md) |
+
+## Multi-Agent Topology Research
+
+| Number | What It Means | Source Doc |
+|--------|---------------|-----------|
+| 58.8% pass@1 | AgentConductor on APPS (+14.6% over MetaGPT) | [Potent Combos](potent-combos.md) |
+| 68% token reduction | AgentConductor vs strongest baseline | [Potent Combos](potent-combos.md) |
+| 3B params | AgentConductor orchestrator model (vs 32B for competitors) | [Potent Combos](potent-combos.md) |
+| ~45% error detection | LLM-as-Judge alone; 94% combined with deterministic tools | [Potent Combos](potent-combos.md) |
+| 79% false positive rate | LLM judge for code correctness without grounding (Spotify) | [Potent Combos](potent-combos.md) |
 
 ## Anti-Pattern Thresholds
 
