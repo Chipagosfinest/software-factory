@@ -1,7 +1,7 @@
 {
   "version": 1,
   "generated": "2026-03-18",
-  "docCount": 33,
+  "docCount": 34,
   "docs": [
     {
       "id": "harness-engineering",
@@ -321,6 +321,17 @@
       "lastUpdated": "2026-03-18",
       "keyNumbers": [],
       "relatedDocs": []
+    },
+    {
+      "id": "agent-filesystems",
+      "title": "Agent Filesystems",
+      "path": "docs/agent-filesystems.md",
+      "category": "deep-dive",
+      "tags": ["tigerfs", "agentfs", "turso", "tiger-data", "fuse", "nfs", "database-as-directory", "multi-agent-coordination", "task-queues", "version-history", "postgres"],
+      "sources": ["tigerfs.io", "turso/agentfs", "tiger-data", "arize"],
+      "lastUpdated": "2026-03-18",
+      "keyNumbers": ["110K+ IOPS (Tiger Fluid Storage)", "0 production deployments at scale"],
+      "relatedDocs": ["sandbox-isolation", "sandbox-architecture-2026", "agent-memory-systems", "dev-tools-stack"]
     },
     {
       "id": "roadmap",

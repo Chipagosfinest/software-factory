@@ -48,6 +48,9 @@ SWE-bench Pro vs Verified shows a massive gap (~46% vs ~81%), suggesting contami
 ### Does Agent Memory Work at Scale?
 Every memory system studied (Napkin, Mem0, Letta, hmem) is early-stage. None has been tested at the scale of Stripe's 1,300 PRs/week or Spotify's 650/month. Will memory systems help or hurt at that volume? Will stale memories poison future runs?
 
+### Do Agent Filesystems Beat Message Queues for Coordination?
+TigerFS and AgentFS propose filesystem interfaces to databases for multi-agent coordination — atomic `mv` as task claiming, shared directories as knowledge bases. The thesis: agents already know files, so stop teaching them APIs. But no production system at scale (Stripe, Spotify) has published results using this pattern. Is the FUSE/NFS overhead acceptable for high-throughput agent workloads? Does the "filesystem is the API" pattern hold when you need complex queries, not just file reads? Early-stage, but if validated, it could simplify the BullMQ/Redis/Postgres stack that most agent systems currently rely on.
+
 ### What Governance Scales Beyond 10 Agents?
 Paperclip and Composio show fleet management for ~10 agents. Carson runs 10 parallel. But no one has published patterns for 100+ concurrent agents with shared state. What governance patterns emerge at that scale? Do circuit breakers cascade? Do budget caps need dynamic adjustment?
 

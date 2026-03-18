@@ -1,6 +1,6 @@
 # Autonomous Coding Agents: Research Corpus
 
-*Last updated: March 18, 2026 | 33 documents | 10+ production systems studied*
+*Last updated: March 18, 2026 | 34 documents | 10+ production systems studied*
 
 > How do you build agents that ship code while humans sleep?
 >
@@ -357,6 +357,12 @@ Seven principles extracted from studying all 10 systems:
 | [MCP Ecosystem](docs/mcp-ecosystem-deep-dive.md) | Anthropic, Microsoft | Protocol spec, 81K stars, tool poisoning, MCPBench (64% accuracy) |
 | [Agent Memory Systems](docs/agent-memory-systems.md) | Napkin, Mem0, Letta, hmem | Progressive disclosure, BM25 vs vector, memory security |
 
+### Infrastructure & Coordination
+
+| Document | Source | Key Patterns |
+|----------|--------|-------------|
+| [Agent Filesystems](docs/agent-filesystems.md) | TigerFS, AgentFS (Turso), Tiger Data, Arize | Database-as-directory, atomic task queues via `mv`, version history, multi-agent shared state |
+
 ### Architecture & Patterns
 
 | Document | Source | Key Patterns |
@@ -400,6 +406,8 @@ Seven principles extracted from studying all 10 systems:
 **Security:** [Claude Code Sandbox Escape (Ona)](https://ona.com/stories/how-claude-code-escapes-its-own-denylist-and-sandbox) | [Veto: Kernel-Level Enforcement (Ona)](https://ona.com/stories/introducing-veto-security-for-the-next-era-of-software) | [Don't Build Your Own Sandbox (Ona)](https://ona.com/stories/dont-build-a-coding-agent-sandbox)
 
 **Verification:** [Spec-Driven Verification](https://agent-wars.com/news/2026-03-14-spec-driven-verification-claude-code-agents) | [Agent-as-a-Judge Survey](https://arxiv.org/pdf/2601.05111)
+
+**Agent Infrastructure:** [TigerFS](https://tigerfs.io/) | [Postgres for Agents (Tiger Data)](https://www.tigerdata.com/blog/postgres-for-agents) | [AgentFS (Turso)](https://github.com/tursodatabase/agentfs) | [Disaggregated AgentFS (Penberg)](https://penberg.org/blog/disaggregated-agentfs.html) | [Agent Interfaces 2026 (Arize)](https://arize.com/blog/agent-interfaces-in-2026-filesystem-vs-api-vs-database-what-actually-works/)
 
 **Community:** [Emerging Harness Playbook](https://www.ignorance.ai/p/the-emerging-harness-engineering) | [background-agents.com](https://background-agents.com) | [Interrupt 2026](https://interrupt.langchain.com/) (May 13-14, SF)
 
