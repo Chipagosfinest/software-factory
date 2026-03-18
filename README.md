@@ -257,7 +257,7 @@ Nine production systems and open-source frameworks inform this design:
 | **Spotify** | [Honk](https://engineering.atspotify.com/2025/11/spotifys-background-coding-agent-part-1) | 1,500+ merged PRs, 50% automated | K8s containers + verification loops + LLM judge |
 | **Ramp** | [Inspect](https://builders.ramp.com/post/why-we-built-our-background-agent) | 30% of all PRs | Modal sandboxes, warm pools, multiplayer sessions |
 | **Stripe** | [Minions](https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents) | 1,300 PRs/week | Goose fork + devboxes + 400 MCP tools, max 2 CI retries |
-| **LangChain** | [Deep Agents](https://github.com/langchain-ai/deepagents) | 10.9k stars, Claude Code-inspired | Middleware pipelines + sub-agent delegation + context summarization |
+| **LangChain** | [Deep Agents](https://github.com/langchain-ai/deepagents) / [Open SWE](https://github.com/langchain-ai/open-swe) | 52.8→66.5% Terminal Bench (harness-only) | Middleware pipelines, self-verification loops, loop detection, reasoning sandwich, trace analysis, `write_todos` planning, Manager→Planner→Programmer→Reviewer pipeline |
 | **Karpathy** | [Autoresearch](https://github.com/karpathy/autoresearch) | ~100 experiments overnight | NEVER STOP loop, single-metric acceptance, fixed time budgets |
 | **Tobi Lutke** | [QMD](https://github.com/tobi/qmd) | Local-first knowledge search | Hybrid search (BM25 + vector + LLM reranking), MCP server |
 | **Paperclip** | [paperclipai/paperclip](https://github.com/paperclipai/paperclip) | 26.7k★ agent orchestration | Per-agent budgets, task checkout locks, heartbeat health, React dashboard |
@@ -339,9 +339,11 @@ The single biggest lever for agent quality (from Spotify Part 2):
   │                                                                 │
   │  Key findings:                                                  │
   │  • Same model scores 17pts apart in different harnesses        │
+  │  • LangChain: 13.7pp gain on Terminal Bench via harness-only   │
   │  • Observation masking: 52% cheaper, 2.6% higher solve rates   │
   │  • BM25 pre-filtering reduces hallucination 22-37%             │
   │  • 85% perf degradation with large tool spaces (scope to ~20)  │
+  │  • "Reasoning sandwich": high→low→high saves tokens + time    │
   │                                                                 │
   └─────────────────────────────────────────────────────────────────┘
 ```
@@ -470,6 +472,13 @@ npm run dev
 |----------|--------|-------------|
 | [Symphony + Carson Code Factory](docs/symphony-carson.md) | Ryan Carson (@ryancarson) | 6 bugs filed from phone, resolved in parallel — Symphony (Elixir) + Codex + Linear + GitHub. Ralph loop origin. Role inversion thesis. |
 
+### Harness Engineering & Planning
+
+| Document | Source | Key Patterns |
+|----------|--------|-------------|
+| [Harness Engineering: LangChain Deep Agents](docs/harness-engineering-langchain.md) | LangChain, Harrison Chase | 52.8→66.5% on Terminal Bench via harness-only changes; self-verification loops, loop detection middleware, reasoning sandwich, trace analysis, `write_todos` planning tool |
+| [codex-planr](docs/codex-planr.md) | regenrek | Repo-local plan/fix/review workflow; honest `current.json` status tracking, Git-diff-based review, zero-dependency markdown skills |
+
 ### Deep-Dive Topics
 
 | Document | Source | Key Patterns |
@@ -511,11 +520,13 @@ npm run dev
 
 **Production Systems:** [Spotify Honk Pt 1](https://engineering.atspotify.com/2025/11/spotifys-background-coding-agent-part-1) | [Pt 2](https://engineering.atspotify.com/2025/11/context-engineering-background-coding-agents-part-2) | [Pt 3](https://engineering.atspotify.com/2025/12/feedback-loops-background-coding-agents-part-3) | [Ramp Inspect](https://builders.ramp.com/post/why-we-built-our-background-agent) | [Stripe Minions Pt 1](https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents) | [Pt 2](https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents-part-2)
 
-**Frameworks:** [Deep Agents](https://github.com/langchain-ai/deepagents) | [Deep Agents Docs](https://docs.langchain.com/oss/python/deepagents/overview) | [Autoresearch](https://github.com/karpathy/autoresearch) | [QMD](https://github.com/tobi/qmd) | [Paperclip](https://github.com/paperclipai/paperclip) | [Agent Orchestrator](https://github.com/ComposioHQ/agent-orchestrator)
+**Frameworks:** [Deep Agents](https://github.com/langchain-ai/deepagents) | [Open SWE](https://github.com/langchain-ai/open-swe) | [Harness Engineering Blog](https://blog.langchain.com/improving-deep-agents-with-harness-engineering/) | [codex-planr](https://github.com/regenrek/codex-planr) | [Autoresearch](https://github.com/karpathy/autoresearch) | [QMD](https://github.com/tobi/qmd) | [Paperclip](https://github.com/paperclipai/paperclip) | [Agent Orchestrator](https://github.com/ComposioHQ/agent-orchestrator)
 
 **Extended Tools:** [Linear Agent API](https://linear.app/developers/agents) | [GitHub Agentic Workflows](https://github.blog/ai-and-ml/automate-repository-tasks-with-github-agentic-workflows/) | [Devin](https://devin.ai) | [Factory.ai](https://factory.ai)
 
-**Community:** [Emerging Harness Playbook](https://www.ignorance.ai/p/the-emerging-harness-engineering) | [background-agents.com](https://background-agents.com) | [Anthropic 2026 Agentic Coding Trends](https://resources.anthropic.com/hubfs/2026%20Agentic%20Coding%20Trends%20Report.pdf)
+**Research:** [Harrison Chase @ Sequoia: Context Engineering](https://sequoiacap.com/podcast/context-engineering-our-way-to-long-horizon-agents-langchains-harrison-chase/) | [State of Agent Engineering 2026](https://www.langchain.com/state-of-agent-engineering) | [VentureBeat: Models alone won't get agents to production](https://venturebeat.com/orchestration/langchains-ceo-argues-that-better-models-alone-wont-get-your-ai-agent-to)
+
+**Community:** [Emerging Harness Playbook](https://www.ignorance.ai/p/the-emerging-harness-engineering) | [background-agents.com](https://background-agents.com) | [Anthropic 2026 Agentic Coding Trends](https://resources.anthropic.com/hubfs/2026%20Agentic%20Coding%20Trends%20Report.pdf) | [Interrupt 2026](https://interrupt.langchain.com/) (May 13-14, SF)
 
 ---
 
