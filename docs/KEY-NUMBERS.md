@@ -92,6 +92,12 @@
 | 625 stars | Executor (code-as-tool-calling, RhysSullivan) | [MCP Ecosystem](mcp-ecosystem-deep-dive.md) |
 | 67% vs 17% accept rate | GPT-5.4 vs Codex-Spark autoresearch proposal acceptance (0xSero/SarahXC) | [Autoresearch](autoresearch.md) |
 | 100+ iterations | 0xSero/SarahXC autoresearch experiments across 2 setups, 12h on H100 | [Autoresearch](autoresearch.md) |
+| 97% API cost reduction | Joe McCann: X API costs via one pi-autoresearch loop | [Autoresearch](autoresearch.md) |
+| 10x rendering speedup | Kaspars Dancis: canvas rendering engine via pi-autoresearch (hours) | [Autoresearch](autoresearch.md) |
+| 1,377 stars | pi-autoresearch ecosystem adoption (8 days after Karpathy open-source) | [Autoresearch](autoresearch.md) |
+| 701 stars | autoresearch-mlx (Apple Silicon port, M4 Max: val_bpb 2.667→1.294) | [Autoresearch](autoresearch.md) |
+| 608 stars | autokernel (GPU CUDA/Triton optimization, ~40 exp/hr) | [Autoresearch](autoresearch.md) |
+| 6 ecosystem forks | Active autoresearch derivatives in 8 days (pi, mlx, kernel, agents, factory, ports) | [Autoresearch](autoresearch.md) |
 | 2.1K stars | GSD 2 — spec-driven agent session controller | [Potent Combos](potent-combos.md), [Coding Agents Landscape](coding-agents-landscape.md) |
 | 1,393 commits | GSD 2 maturity (v2.29) | [Potent Combos](potent-combos.md) |
 | 200K tokens | GSD 2 fresh context window per task | [Potent Combos](potent-combos.md) |

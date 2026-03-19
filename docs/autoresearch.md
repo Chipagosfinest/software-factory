@@ -2,7 +2,7 @@
 
 **Source:** [karpathy/autoresearch](https://github.com/karpathy/autoresearch) — MIT, March 2026
 
-Karpathy's framework for autonomous overnight research. While built for ML training, the agent loop patterns are universally applicable to any iterative autonomous work.
+Karpathy's framework for autonomous overnight research. While built for ML training, the agent loop patterns are universally applicable to any iterative autonomous work. As of March 19, 2026, the autoresearch pattern has become a **general-purpose primitive** — applied to API cost optimization (97% reduction), canvas rendering (10x speedup), baseball biomechanics, GPU kernel optimization, and more.
 
 ---
 
@@ -153,7 +153,83 @@ pi install https://github.com/davebcn87/pi-autoresearch
 - **Quality gates**: Optional `autoresearch.checks.sh` runs correctness checks (tests, lint, types) after successful benchmarks
 - **Flexible metrics**: Any optimization target — test speed, bundle size, build times, Lighthouse scores, training loss
 
+**What it adds over raw autoresearch:**
+- **Confidence scoring**: MAD-based (Median Absolute Deviation) noise floor estimation — green (≥2.0x, likely real), yellow (1.0-2.0x, marginal), red (<1.0x, within noise). Advisory signal to the agent on whether an improvement is statistically meaningful.
+- **Backpressure checks**: Optional `autoresearch.checks.sh` runs correctness gates (tests, lint, types) after successful benchmarks. Prevents optimization regressions — agent can't speed up a function by breaking it.
+- **Session persistence**: `autoresearch.jsonl` + `autoresearch.md` survive agent restarts and context resets. A fresh agent reads both files and resumes exactly where the predecessor stopped.
+- **Configurable limits**: `autoresearch.config.json` with `maxIterations` (stop after N experiments) and `workingDir` override.
+
 **The pattern generalizes:** The extension/skill separation mirrors Deep Agents' middleware/sub-agent split. One infrastructure serves unlimited optimization domains. Session persistence in human-readable files (JSONL + MD) means a fresh agent can resume exactly where a predecessor left off — solving the "context window death" problem for long-running optimization.
+
+---
+
+## The Autoresearch Ecosystem (March 19, 2026)
+
+Eight days after Karpathy's open-source release, autoresearch has become a general-purpose primitive with an active ecosystem of forks and applications:
+
+### Ecosystem Map
+
+```
+  CORE
+  ├── karpathy/autoresearch          Original. GPU training. ~12 exp/hr.
+  ├── autoresearch-mlx (701 stars)   Apple Silicon port. M4 Max: val_bpb 2.667→1.294 overnight.
+  └── pi-autoresearch (1,377 stars)  Domain-agnostic. Persistent sessions. Dashboard UI.
+
+  SPECIALIZED
+  ├── autokernel (608 stars)         GPU CUDA/Triton kernel optimization. ~40 exp/hr. AMD ROCm.
+  ├── autoresearch-agents (72 stars) Harrison Chase — agents optimizing agents via eval scores.
+  └── agent-factory (70 stars)       Reddit/HN → overnight agent deployment. 20+ agents live.
+
+  PORTS
+  ├── Kyle Boddy (Driveline)         Claude Code skills + bash loops. Baseball biomechanics.
+  └── Various                        Claude Code plugin ports in development.
+```
+
+**Source:** [Autoresearch Became a Primitive (paddo.dev)](https://paddo.dev/blog/autoresearch-ecosystem/)
+
+### Real-World Results Beyond ML
+
+The critical finding: the ratchet loop works for **any measurable optimization target**, not just neural network training.
+
+| Who | Domain | Result | How |
+|-----|--------|--------|-----|
+| **Joe McCann** (Asymmetric) | X/Twitter API cost | **97% cost reduction** in one loop | pi-autoresearch on API call patterns |
+| **Kaspars Dancis** | Canvas rendering engine | **10x improvement** on slowest test in hours | pi-autoresearch, cherry-picked ideas |
+| **Karpathy** | GPT-2 training | 700 experiments → 20 improvements → **11% faster** | Original autoresearch |
+| **Shopify (Lütke)** | Liquid Ruby parser | 37 experiments → **19% perf** with half model size | autoresearch on production code |
+| **Shopify (Lütke)** | Liquid parse+render | ~120 iterations → **53% faster**, **61% fewer allocs** | [PR #2056](https://github.com/Shopify/liquid/pull/2056) |
+| **Kyle Boddy** (Driveline) | Baseball biomechanics | Fastball velocity prediction | Claude Code port with OpenBiomechanics data |
+| **autokernel** | GPU kernels | ~40 experiments/hour | Triton/CUDA optimization, AMD ROCm support |
+| **autoresearch-mlx** | Apple Silicon training | M4 Max: val_bpb 2.667 → 1.294 | MLX framework, overnight run |
+
+**Key insight from Dancis:** "it did take some shortcuts that degraded rendering quality, it also came up with several great ideas that were easy to cherry [pick]." This validates the **cherry-pick pattern** — humans select good ideas from the ratchet's output rather than blindly merging everything. The Goodhart's Law risk (agent optimizes the metric, not the intent) is real but manageable with human review.
+
+**Key insight from McCann:** The 97% API cost reduction demonstrates the pattern's applicability to **infrastructure optimization** — request batching, caching strategies, payload optimization, endpoint selection. McCann is the founder of NodeSource (exited 2019), ex-Microsoft Senior Director (Cloud+AI), and runs Asymmetric (backed by a16z). Technical credibility is real.
+
+### Domain Application Examples
+
+| Domain | Metric | Typical Command | Who's Done It |
+|--------|--------|-----------------|---------------|
+| API cost | $/request (↓) | Run test suite, measure API spend | Joe McCann (97% reduction) |
+| Render perf | ms/frame (↓) | Run benchmark suite | Kaspars Dancis (10x) |
+| Test speed | seconds (↓) | `pnpm test` | pi-autoresearch docs |
+| Bundle size | KB (↓) | `pnpm build && du -sb dist` | pi-autoresearch docs |
+| Build speed | seconds (↓) | `pnpm build` | pi-autoresearch docs |
+| Lighthouse | perf score (↑) | `lighthouse http://localhost:3000` | pi-autoresearch docs |
+| LLM training | val_bpb (↓) | `uv run train.py` | Karpathy, Lütke |
+| GPU kernels | GFLOPS (↑) | Triton kernel benchmark | autokernel |
+| Biomechanics | prediction accuracy (↑) | Statistical model | Kyle Boddy |
+
+### Why This Matters for Software Factory
+
+The autoresearch primitive solves a class of problems we face:
+1. **Prompt optimization** — loop on agent accuracy metrics until prompts converge
+2. **CI build speed** — ratchet on build time, keep optimizations
+3. **Cost optimization** — ratchet on $/operation for LLM calls, API calls, compute
+4. **Test coverage** — ratchet on coverage %, keep additions that pass
+5. **Performance tuning** — ratchet on latency/throughput for any endpoint
+
+The pi-autoresearch confidence scoring (MAD-based noise detection) is the key innovation for production use — it distinguishes real improvements from measurement noise.
 
 ---
 
@@ -396,12 +472,32 @@ This is the **first quantitative failure analysis** of autoresearch in productio
 
 ## Resources
 
+### Core
 - [karpathy/autoresearch](https://github.com/karpathy/autoresearch) — Source code
 - [Karpathy's 630-line Script Ran 50 Experiments Overnight](https://thenewstack.io/karpathy-autonomous-experiment-loop/) — The New Stack analysis
 - [700 Autonomous Changes in 2 Days](https://github.com/karpathy/autoresearch#results) — Production results and transferred improvements
+- [Karpathy Collaborative Agents (Fortune)](https://fortune.com/2026/03/17/andrej-karpathy-loop-autonomous-ai-agents-future/) — Vision for "massively collaborative agents"
+
+### Ecosystem
+- [davebcn87/pi-autoresearch](https://github.com/davebcn87/pi-autoresearch) — Domain-agnostic autoresearch with persistent sessions, confidence scoring, dashboard
+- [Autoresearch Became a Primitive (paddo.dev)](https://paddo.dev/blog/autoresearch-ecosystem/) — Ecosystem analysis 8 days after open-source
+- [autoresearch: Karpathy's Self-Improving Agent Pattern (mager.co)](https://www.mager.co/blog/2026-03-14-autoresearch-pattern/) — Universal application pattern analysis
+- [How Autoresearch Will Change SLM Adoption (philschmid.de)](https://www.philschmid.de/autoresearch) — ML-specific deep dive with Shopify results
+
+### Real-World Results
+- [Joe McCann: 97% API cost reduction](https://x.com/joemccann/status/2034470072191000612) — X API optimization via pi-autoresearch
+- [Kaspars Dancis: 10x canvas rendering improvement](https://x.com/KasparsDancis/status/2034481488356413883) — pi-autoresearch with cherry-pick pattern
+- [Kyle Boddy: Baseball biomechanics](https://x.com/drivelinekyle/status/2032242254035992610) — Claude Code port with OpenBiomechanics data
+- [Alex Volkov: "This is the new benchmarking"](https://x.com/altryne/status/2032236372178976827) — Tobi open-sourced autoresearch plugin
+- [Shopify Liquid PR #2056](https://github.com/Shopify/liquid/pull/2056) — 53% faster parse+render, 61% fewer allocations
+- [Shopify Liquid performance (Simon Willison)](https://simonwillison.net/2026/Mar/13/liquid/) — Analysis of Lütke's autoresearch results
+- [Pi-Autoresearch on Hacker News](https://news.ycombinator.com/item?id=47358215) — Community discussion
+
+### Extended Pipeline
 - [aiming-lab/AutoResearchClaw](https://github.com/aiming-lab/AutoResearchClaw) — Full pipeline: idea to conference paper
 - [@DataChaz announcement](https://x.com/DataChaz/status/2033584901858202073) — "The wildest open-source project I've seen this month"
+
+### Failure Analysis
 - [codex-autoresearch-harness](https://github.com/SarahXC/codex-autoresearch-harness) — SarahXC's Codex wrapper for autoresearch
 - [reap-expert-swap](https://github.com/0xSero/reap-expert-swap/) — 0xSero's MoE inference optimization experiments
 - [0xSero failure analysis](https://x.com/0xSero/status/2034393884604637358) — "Don't trust your agents" — 100+ iterations, 6 failure modes
-- [davebcn87/pi-autoresearch](https://github.com/davebcn87/pi-autoresearch) — Productized autoresearch as pi extension

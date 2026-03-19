@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "generated": "2026-03-18",
-  "docCount": 34,
+  "generated": "2026-03-19",
+  "docCount": 35,
   "docs": [
     {
       "id": "harness-engineering",
@@ -112,6 +112,17 @@
       "lastUpdated": "2026-03-16",
       "keyNumbers": [],
       "relatedDocs": ["harness-engineering-langchain", "deep-agents"]
+    },
+    {
+      "id": "background-agents-open-inspect",
+      "title": "Background Agents (Open-Inspect)",
+      "path": "docs/background-agents-open-inspect.md",
+      "category": "core-systems",
+      "tags": ["mesh-topology", "multiplayer", "modal-sandboxes", "cloudflare-durable-objects", "cron-automations", "warm-pools", "open-source"],
+      "sources": ["ColeMurray/background-agents"],
+      "lastUpdated": "2026-03-19",
+      "keyNumbers": ["1,111 stars", "MIT license", "3-tier architecture (Cloudflare + Modal + Next.js)"],
+      "relatedDocs": ["sandbox-isolation", "sandbox-architecture-2026", "potent-combos", "agent-orchestrator"]
     },
     {
       "id": "competitive-analysis",
