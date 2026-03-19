@@ -26,7 +26,7 @@ Sources:
 
 ### Ramp Inspect (Modal Containers)
 
-Ramp built **Inspect**, an internal background coding agent that now writes **~30% of all merged PRs** at the company. It runs on **Modal Sandboxes** — each session gets a full-stack development environment containing Postgres, Redis, Temporal, RabbitMQ, and every service an engineer would have locally.
+Ramp built **Inspect**, an internal background coding agent that now writes **~50% of all merged PRs** at the company. It runs on **Modal Sandboxes** — each session gets a full-stack development environment containing Postgres, Redis, Temporal, RabbitMQ, and every service an engineer would have locally.
 
 **Architecture details:**
 - Each Inspect session runs in a **dedicated Modal Sandbox** with the full dev stack.

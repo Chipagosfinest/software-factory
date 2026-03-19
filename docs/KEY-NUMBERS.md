@@ -94,7 +94,7 @@
 | 100+ iterations | 0xSero/SarahXC autoresearch experiments across 2 setups, 12h on H100 | [Autoresearch](autoresearch.md) |
 | 97% API cost reduction | Joe McCann: X API costs via one pi-autoresearch loop | [Autoresearch](autoresearch.md) |
 | 10x rendering speedup | Kaspars Dancis: canvas rendering engine via pi-autoresearch (hours) | [Autoresearch](autoresearch.md) |
-| 1,377 stars | pi-autoresearch ecosystem adoption (8 days after Karpathy open-source) | [Autoresearch](autoresearch.md) |
+| 2.2K stars | pi-autoresearch ecosystem adoption (grew from 1,377 at 8 days to 2.2K) | [Autoresearch](autoresearch.md) |
 | 701 stars | autoresearch-mlx (Apple Silicon port, M4 Max: val_bpb 2.667→1.294) | [Autoresearch](autoresearch.md) |
 | 608 stars | autokernel (GPU CUDA/Triton optimization, ~40 exp/hr) | [Autoresearch](autoresearch.md) |
 | 6 ecosystem forks | Active autoresearch derivatives in 8 days (pi, mlx, kernel, agents, factory, ports) | [Autoresearch](autoresearch.md) |

@@ -35,6 +35,7 @@
 | How does Spotify verify agent output with LLM judges? | [Sandbox Isolation](docs/sandbox-isolation.md) (Honk section) |
 | How does Stripe process 1,300 PRs/week? | [Sandbox Isolation](docs/sandbox-isolation.md) (Minions section) |
 | How does Ramp get sandboxes to start in seconds? | [Sandbox Isolation](docs/sandbox-isolation.md) (Inspect section) |
+| How does Open-Inspect clone Ramp's architecture? | [Background Agents (Open-Inspect)](docs/background-agents-open-inspect.md) |
 | What are the two sandbox architecture patterns? | [Sandbox Architecture 2026](docs/sandbox-architecture-2026.md) |
 | How do I manage a fleet of agents? | [Paperclip](docs/paperclip.md) + [Agent Orchestrator](docs/agent-orchestrator.md) |
 | How do I orchestrate with state machines and worktrees? | [Orchestrator](docs/orchestrator.md) |
@@ -75,7 +76,7 @@
 ## For Agents Consuming This Repo
 
 1. Parse [docs/index.json](docs/index.json) to find relevant docs by category/tags
-2. Read only what's relevant — don't load all 29 docs
+2. Read only what's relevant — don't load all 34 docs
 3. Numbers are consolidated in [KEY-NUMBERS.md](docs/KEY-NUMBERS.md) — no need to grep
 4. Term definitions are in [GLOSSARY.md](docs/GLOSSARY.md) — use canonical meanings
 

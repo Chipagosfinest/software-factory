@@ -17,7 +17,7 @@ Our closest competitor is **Factory.ai** (agent-native SDLC platform). Devin is 
 ### Devin (Cognition)
 - **Model**: Task-based autonomous agent — you give it a ticket, it builds the feature
 - **Pricing**: $20/mo Core (pay-per-ACU), $500/mo Team (250 ACUs), Enterprise custom
-- **Strengths**: Interactive planning, codebase fine-tuning, Devin Search/Wiki, mobile support, Nubank case study (8x efficiency, 20x cost savings on migrations)
+- **Strengths**: Interactive planning, codebase fine-tuning, Devin Search/Wiki, mobile support, Nubank case study (12x efficiency, 20x cost savings on migrations)
 - **Weaknesses**: No incident response, no merge conflict resolution, no knowledge graph, expensive at scale, long execution times on complex tasks
 - **Key Features**: Code migration, data engineering, bug resolution, performance optimization
 - **Integrations**: GitHub, Slack, Teams, Linear, Jira, AWS, Stripe, 20+ MCP servers

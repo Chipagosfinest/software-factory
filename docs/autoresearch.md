@@ -149,17 +149,13 @@ pi install https://github.com/davebcn87/pi-autoresearch
 
 **What it adds over raw autoresearch:**
 - **Visual monitoring**: Status widget, expandable dashboard (`Ctrl+X`), fullscreen overlay (`Ctrl+Shift+X`)
-- **Persistent state**: Append-only `autoresearch.jsonl` + living `autoresearch.md` survive context resets and agent restarts
-- **Quality gates**: Optional `autoresearch.checks.sh` runs correctness checks (tests, lint, types) after successful benchmarks
+- **Persistent state**: Append-only `autoresearch.jsonl` + living `autoresearch.md` survive context resets and agent restarts. A fresh agent reads both files and resumes exactly where the predecessor stopped — solving the "context window death" problem.
+- **Quality gates**: Optional `autoresearch.checks.sh` runs correctness gates (tests, lint, types) after successful benchmarks. Prevents optimization regressions — agent can't speed up a function by breaking it.
 - **Flexible metrics**: Any optimization target — test speed, bundle size, build times, Lighthouse scores, training loss
-
-**What it adds over raw autoresearch:**
 - **Confidence scoring**: MAD-based (Median Absolute Deviation) noise floor estimation — green (≥2.0x, likely real), yellow (1.0-2.0x, marginal), red (<1.0x, within noise). Advisory signal to the agent on whether an improvement is statistically meaningful.
-- **Backpressure checks**: Optional `autoresearch.checks.sh` runs correctness gates (tests, lint, types) after successful benchmarks. Prevents optimization regressions — agent can't speed up a function by breaking it.
-- **Session persistence**: `autoresearch.jsonl` + `autoresearch.md` survive agent restarts and context resets. A fresh agent reads both files and resumes exactly where the predecessor stopped.
 - **Configurable limits**: `autoresearch.config.json` with `maxIterations` (stop after N experiments) and `workingDir` override.
 
-**The pattern generalizes:** The extension/skill separation mirrors Deep Agents' middleware/sub-agent split. One infrastructure serves unlimited optimization domains. Session persistence in human-readable files (JSONL + MD) means a fresh agent can resume exactly where a predecessor left off — solving the "context window death" problem for long-running optimization.
+**The pattern generalizes:** The extension/skill separation mirrors Deep Agents' middleware/sub-agent split. One infrastructure serves unlimited optimization domains.
 
 ---
 
@@ -173,7 +169,7 @@ Eight days after Karpathy's open-source release, autoresearch has become a gener
   CORE
   ├── karpathy/autoresearch          Original. GPU training. ~12 exp/hr.
   ├── autoresearch-mlx (701 stars)   Apple Silicon port. M4 Max: val_bpb 2.667→1.294 overnight.
-  └── pi-autoresearch (1,377 stars)  Domain-agnostic. Persistent sessions. Dashboard UI.
+  └── pi-autoresearch (2.2K stars)   Domain-agnostic. Persistent sessions. Dashboard UI.
 
   SPECIALIZED
   ├── autokernel (608 stars)         GPU CUDA/Triton kernel optimization. ~40 exp/hr. AMD ROCm.
@@ -196,7 +192,7 @@ The critical finding: the ratchet loop works for **any measurable optimization t
 | **Joe McCann** (Asymmetric) | X/Twitter API cost | **97% cost reduction** in one loop | pi-autoresearch on API call patterns |
 | **Kaspars Dancis** | Canvas rendering engine | **10x improvement** on slowest test in hours | pi-autoresearch, cherry-picked ideas |
 | **Karpathy** | GPT-2 training | 700 experiments → 20 improvements → **11% faster** | Original autoresearch |
-| **Shopify (Lütke)** | Liquid Ruby parser | 37 experiments → **19% perf** with half model size | autoresearch on production code |
+| **Shopify (Lütke)** | Liquid Ruby parser | 37 experiments → **19% performance gain** | autoresearch on production code |
 | **Shopify (Lütke)** | Liquid parse+render | ~120 iterations → **53% faster**, **61% fewer allocs** | [PR #2056](https://github.com/Shopify/liquid/pull/2056) |
 | **Kyle Boddy** (Driveline) | Baseball biomechanics | Fastball velocity prediction | Claude Code port with OpenBiomechanics data |
 | **autokernel** | GPU kernels | ~40 experiments/hour | Triton/CUDA optimization, AMD ROCm support |

@@ -1,8 +1,8 @@
 # Potent Combos & Agent Topology Patterns
 
-*Last updated: March 18, 2026*
+*Last updated: March 19, 2026*
 
-High-synergy system combinations and topology patterns for autonomous coding agents. Maps how ten research sources compose into architectures greater than the sum of their parts.
+High-synergy system combinations and topology patterns for autonomous coding agents. Maps how eleven research sources compose into architectures greater than the sum of their parts.
 
 ---
 
@@ -107,7 +107,7 @@ Nine topology types observed across production and research agent systems. ASCII
 
 ---
 
-### Mesh (Ramp Inspect)
+### Mesh (Ramp Inspect + Open-Inspect)
 
 ```
         ┌────────┐       ┌────────┐
@@ -141,6 +141,8 @@ Nine topology types observed across production and research agent systems. ASCII
 **Best use case:** Collaborative tasks where multiple perspectives improve quality simultaneously. Code review + implementation happening in parallel. Human-in-the-loop sessions where context must be shared in real-time.
 
 **Software Factory fit:** Future pattern for complex incident response — SRE agent, log analysis agent, and fix agent working on the same live issue concurrently. Requires shared workspace infrastructure we don't have yet (Phase 3).
+
+**Open-source implementation:** [Open-Inspect](https://github.com/ColeMurray/background-agents) (1.1K stars, MIT) is an open-source clone of Ramp's Inspect architecture. Uses Cloudflare Durable Objects as the control plane and Modal containers as the data plane. Adds cron-driven automations with auto-pause after 3 consecutive failures, per-user git attribution in multiplayer sessions, and filesystem snapshots for near-instant (<2s) sandbox startup. See [full doc →](background-agents-open-inspect.md).
 
 ---
 
@@ -374,7 +376,7 @@ Nine topology types observed across production and research agent systems. ASCII
 | **One-Shot Tree** | Static | Independent | Dispatcher (fire-and-forget) | 1,300 PRs/week (Stripe) |
 | **Pipeline** | Sequential | Same agent, stages | Hardcoded pipeline order | ~25% veto catch rate (Spotify) |
 | **Org Chart** | Hierarchical | Specialized teams | Parent delegates to children | $50 budget enforcement (Paperclip) |
-| **Mesh** | Peer-to-peer | Shared state | Agents discover work independently | <2s startup (Ramp) |
+| **Mesh** | Peer-to-peer | Shared state | Agents discover work independently | <2s startup (Ramp, Open-Inspect) |
 | **Ratchet** | Self-directed | Solo | Agent picks what to try next | ~100 experiments/night (Karpathy) |
 | **Sequential Multi-Agent** | Hand-off | Specialized per stage | Fixed role sequence | +13.7pp harness-only (LangChain) |
 | **Dynamic DAG** | RL-generated | Variable per task | RL orchestrator creates topology | +14.6% on APPS (AgentConductor) |
@@ -386,12 +388,12 @@ Nine topology types observed across production and research agent systems. ASCII
 ```
   Prescriptive ◄──────────────────────────────────────────────► Autonomous
 
-  GSD 2   Fabro    Pipeline    Org Chart    Seq. Multi    One-Shot    Ratchet
-  (spec    (human   (fixed      (delegated   (role-based   (dispatch   (agent
-   hier.)   graph)   stages)     hierarchy)   autonomy)     + forget)   decides)
-                                                                         │
-                                                             Dynamic DAG ┘
-                                                             (RL picks topology)
+  GSD 2   Fabro    Pipeline    Org Chart   Mesh   Seq. Multi    One-Shot    Ratchet
+  (spec    (human   (fixed      (delegated  (shared  (role-based   (dispatch   (agent
+   hier.)   graph)   stages)     hierarchy)  state)   autonomy)     + forget)   decides)
+                                                                                  │
+                                                                      Dynamic DAG ┘
+                                                                      (RL picks topology)
 ```
 
 ---
@@ -515,11 +517,11 @@ Six high-synergy combinations. Each creates emergent capability that neither sys
 
 ---
 
-### Combo 4: Stripe Tools + Ramp Speed — 400 MCP Tools with Warm Pool Execution
+### Combo 4: Stripe Tools + Ramp Speed — ~500 MCP Tools with Warm Pool Execution
 
-**What combines:** Stripe's 400+ MCP tool ecosystem (per-dir rules, devbox isolation, deterministic pre-fetch) with Ramp's warm pool execution (pre-built snapshots, <2s startup, multiplayer sessions).
+**What combines:** Stripe's ~500 MCP tool ecosystem (per-dir rules, devbox isolation, deterministic pre-fetch) with Ramp's warm pool execution (pre-built snapshots, <2s startup, multiplayer sessions).
 
-**What emerges:** A *broad-capability agent* (400 tools) that *starts instantly* (warm pools) without the cold-start penalty. Stripe's tools are powerful but each agent boots fresh. Ramp's pools are fast but with limited tools. Combined: agents start in seconds with the full tool suite pre-loaded.
+**What emerges:** A *broad-capability agent* (~500 tools) that *starts instantly* (warm pools) without the cold-start penalty. Stripe's tools are powerful but each agent boots fresh. Ramp's pools are fast but with limited tools. Combined: agents start in seconds with the full tool suite pre-loaded.
 
 ```
 ┌──────── Warm Pool (Ramp) ────────────────────────────────────┐
@@ -547,7 +549,7 @@ Six high-synergy combinations. Each creates emergent capability that neither sys
 
 **Software Factory example:** An incident fires at 3 AM. The agent starts in <2s from a warm snapshot (not 30s cold boot), already has PagerDuty MCP, GitHub MCP, Datadog MCP, and Slack MCP pre-loaded. It reads the alert, queries metrics, identifies the failing deploy, rolls back, posts to Slack, and opens a fix PR — all without tool initialization latency. The per-dir rules ensure the agent only sees tools relevant to the affected service.
 
-**Key caveat:** Microsoft Research found 85% performance degradation with large tool spaces. The per-dir rules from Stripe are essential — don't give an agent 400 tools at once. Scope to ~20 per task via `.minions.toml` equivalent.
+**Key caveat:** Microsoft Research found 85% performance degradation with large tool spaces. The per-dir rules from Stripe are essential — don't give an agent ~500 tools at once. Scope to ~20 per task via `.minions.toml` equivalent.
 
 ---
 
@@ -729,6 +731,7 @@ Legend:
   Open SWE ───────── Manager→Planner→Programmer→Reviewer pipeline
   QMD ────────────── Hybrid search, knowledge retrieval
   Paperclip ──────── Budgets, task locks, heartbeats, dashboard
+  Open-Inspect ───── Multiplayer sessions, CF Durable Objects + Modal, cron automations
   Composio ───────── Plugin architecture, LLM task decomposition
   AgentConductor ── RL-trained dynamic topology generation (arXiv)
   Fabro ────────── Deterministic workflow graphs, Daytona sandboxes
@@ -1057,7 +1060,7 @@ Which combo fits which type of project? Use this matrix to pick your architectur
 ### Original Sources (Core Research)
 
 - [Stripe Minions Part 1](https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents) — One-shot agents, 1,300 PRs/week, max 2 retries
-- [Stripe Minions Part 2](https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents-part-2) — 400 MCP tools, per-dir rules, devbox isolation
+- [Stripe Minions Part 2](https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents-part-2) — ~500 MCP tools (Toolshed), per-dir rules, devbox isolation
 - [Spotify Honk Part 1](https://engineering.atspotify.com/2025/11/spotifys-background-coding-agent-part-1) — K8s containers, verification loops
 - [Spotify Honk Part 2](https://engineering.atspotify.com/2025/11/context-engineering-background-coding-agents-part-2) — Context engineering
 - [Spotify Honk Part 3](https://engineering.atspotify.com/2025/12/feedback-loops-background-coding-agents-part-3) — LLM judge, 25% veto rate, false positive findings

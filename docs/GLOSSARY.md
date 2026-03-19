@@ -40,6 +40,10 @@ The finding that LLM reliability decreases with longer inputs, even on simple ta
 Detecting when an agent is stuck in a loop producing the same error. Triggers circuit breaker. Used by Spotify (pipeline stall detection) and Deep Agents (trace analysis skill).
 → [Harness Engineering (LangChain)](harness-engineering-langchain.md), [Potent Combos](potent-combos.md)
 
+### Durable Object (Cloudflare)
+A Cloudflare Workers primitive that provides per-session isolation with embedded SQLite and WebSocket hub. Used by Open-Inspect as the control plane for multiplayer agent sessions.
+→ [Background Agents (Open-Inspect)](background-agents-open-inspect.md)
+
 ### Devbox
 Isolated VM (typically EC2) pre-warmed with the full codebase, services, and build caches. Stripe's Minions inherit developer devboxes — originally built for humans. Spin up in ~10 seconds.
 → [Enterprise Adoption](enterprise-adoption.md), [Sandbox Isolation](sandbox-isolation.md)
@@ -64,9 +68,17 @@ A JSON-based gate file (`executor_gate.json`) that stops all agent execution wit
 A secondary LLM call that reviews agent output before submission. Spotify's Honk uses this with a ~25% veto rate, catching scope creep and phantom fixes.
 → [Potent Combos](potent-combos.md), [Sandbox Isolation](sandbox-isolation.md)
 
+### Mesh Topology
+Peer-to-peer agent architecture where multiple agents (and humans) share state through a common workspace. No central coordinator — agents discover work via shared filesystem. Ramp Inspect pioneered this with Modal snapshots; Open-Inspect is the open-source clone.
+→ [Potent Combos](potent-combos.md), [Background Agents (Open-Inspect)](background-agents-open-inspect.md)
+
 ### Middleware Pipeline
 Composable agent behavior through stacked middleware layers (e.g., TodoList → Filesystem → SubAgent → Summarization → Skills → HumanInTheLoop). Each transforms the request/response independently. Deep Agents' core pattern.
 → [Deep Agents](deep-agents.md)
+
+### Multiplayer Session
+A shared agent workspace where multiple humans and bots participate simultaneously. Features real-time event streaming, per-user prompt attribution in git commits, and sequential prompt processing (FIFO queue). Pioneered by Ramp Inspect, open-sourced by Open-Inspect.
+→ [Background Agents (Open-Inspect)](background-agents-open-inspect.md)
 
 ### Observation Masking
 Replacing old tool outputs with placeholders while keeping reasoning and actions. 52% cheaper, +2.6% solve rate vs raw context. From JetBrains "Complexity Trap" paper (NeurIPS 2025).

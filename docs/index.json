@@ -1,7 +1,7 @@
 {
   "version": 1,
   "generated": "2026-03-19",
-  "docCount": 35,
+  "docCount": 34,
   "docs": [
     {
       "id": "harness-engineering",
@@ -253,7 +253,7 @@
       "tags": ["topologies", "one-shot-tree", "pipeline", "org-chart", "mesh", "ratchet", "sequential-multi-agent", "build-profiles", "anti-patterns"],
       "sources": ["all"],
       "lastUpdated": "2026-03-18",
-      "keyNumbers": ["6 topologies", "6 combos", "6 build profiles"],
+      "keyNumbers": ["9 topologies", "6 combos", "6 build profiles"],
       "relatedDocs": ["competency-graph", "enterprise-adoption", "agent-safety-cost-control"]
     },
     {

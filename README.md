@@ -1,6 +1,6 @@
 # Autonomous Coding Agents: Research Corpus
 
-*Last updated: March 19, 2026 | 35 documents | 11+ production systems studied*
+*Last updated: March 19, 2026 | 34 documents | 11+ production systems studied*
 
 > How do you build agents that ship code while humans sleep?
 >
@@ -16,6 +16,7 @@ Pick your goal, follow the path:
 | **"I'm building an agent system"** | [Harness Engineering (OpenAI)](docs/harness-engineering.md) → [Deep Agents](docs/deep-agents.md) → [Potent Combos](docs/potent-combos.md) |
 | **"I need to deploy agents safely"** | [Agent Safety & Cost Control](docs/agent-safety-cost-control.md) → [Sandbox Architecture](docs/sandbox-architecture-2026.md) → [Enterprise Adoption](docs/enterprise-adoption.md) |
 | **"I'm evaluating the market"** | [Coding Agents Landscape](docs/coding-agents-landscape.md) → [Competitive Analysis](docs/competitive-analysis.md) → [SWE-bench Ecosystem](docs/swe-bench-ecosystem.md) |
+| **"I need agent memory/knowledge"** | [Agent Memory Systems](docs/agent-memory-systems.md) → [QMD](docs/qmd.md) → [Obsidian Knowledge](docs/obsidian-knowledge.md) |
 | **"Just give me the numbers"** | [KEY-NUMBERS.md](docs/KEY-NUMBERS.md) |
 | **"I'm an agent parsing this repo"** | [AGENTS.md](AGENTS.md) → [docs/index.json](docs/index.json) |
 
@@ -70,7 +71,7 @@ The harness — not the model — determines agent quality.
 
 ## Research Sources
 
-Ten production systems and open-source frameworks, organized by what they teach:
+Eleven production systems and open-source frameworks, organized by what they teach:
 
 ```
   ┌──────────────────────────────────────────────────────────────────────┐
@@ -108,7 +109,7 @@ Ten production systems and open-source frameworks, organized by what they teach:
   │  │ Inspect  │                                                       │
   │  │ (Murray) │                                                       │
   │  │ CF+Modal │                                                       │
-  │  │Multiplyer│                                                       │
+  │  │Multiplayr│                                                       │
   │  │ Snapshot │                                                       │
   │  └──────────┘                                                       │
   └──────────────────────────────────────────────────────────────────────┘
@@ -118,8 +119,8 @@ Ten production systems and open-source frameworks, organized by what they teach:
 |--------|--------|--------|-------------|
 | **OpenAI** | [Harness Engineering](https://openai.com/index/harness-engineering/) | ~1M lines, 0 hand-written, 3.5 PRs/eng/day | AGENTS.md as map, layered architecture, background GC agents |
 | **Spotify** | [Honk](https://engineering.atspotify.com/2025/11/spotifys-background-coding-agent-part-1) | 1,500+ merged PRs, 50% automated | K8s containers + verification loops + LLM judge (~25% veto rate) |
-| **Ramp** | [Inspect](https://builders.ramp.com/post/why-we-built-our-background-agent) | 30% of all PRs | Modal sandboxes, warm pools, multiplayer sessions |
-| **Stripe** | [Minions](https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents) | 1,300 PRs/week | Goose fork + devboxes + 400 MCP tools, max 2 CI retries |
+| **Ramp** | [Inspect](https://builders.ramp.com/post/why-we-built-our-background-agent) | ~50% of merged PRs | Modal sandboxes, warm pools, multiplayer sessions |
+| **Stripe** | [Minions](https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents) | 1,300 PRs/week | Goose fork + devboxes + ~500 MCP tools, max 2 CI retries |
 | **LangChain** | [Deep Agents](https://github.com/langchain-ai/deepagents) / [Open SWE](https://github.com/langchain-ai/open-swe) | 52.8→66.5% Terminal Bench (harness-only) | Self-verification, loop detection, reasoning sandwich, Manager→Planner→Programmer→Reviewer |
 | **Karpathy** | [Autoresearch](https://github.com/karpathy/autoresearch) | ~100 experiments overnight | NEVER STOP loop, single-metric acceptance, fixed time budgets |
 | **Lutke** | [QMD](https://github.com/tobi/qmd) | Local-first knowledge search | Hybrid search (BM25 + vector + LLM reranking), MCP server |
@@ -197,11 +198,11 @@ Nine topology types observed across production and research systems:
 
   Prescriptive ◄─────────────────────────────────────────► Autonomous
 
-  GSD 2   Fabro    Pipeline    Org Chart    Sequential    One-Shot    Ratchet
-  (spec    (human   (fixed      (delegated   Multi-Agent   (dispatch   (agent
-   hier.)   graph)   stages)     hierarchy)   (roles)        + forget)   decides)
-                                                                          │
-                                                              Dynamic DAG ┘
+  GSD 2   Fabro    Pipeline    Org Chart   Mesh   Sequential    One-Shot    Ratchet
+  (spec    (human   (fixed      (delegated  (shared  Multi-Agent   (dispatch   (agent
+   hier.)   graph)   stages)     hierarchy)  state)   (roles)        + forget)   decides)
+                                                                                   │
+                                                                       Dynamic DAG ┘
 ```
 
 [Full topology diagrams + 6 combo architectures + build profiles →](docs/potent-combos.md)
@@ -221,7 +222,7 @@ Every system that ships code autonomously in production, categorized by deployme
   │  │                                                                        │ │
   │  │  Stripe Minions     1,300 PRs/wk   One-Shot Tree   Goose + devboxes  │ │
   │  │  Spotify Honk       1,000 PRs/10d  Pipeline        K8s + LLM judge   │ │
-  │  │  Ramp Inspect       30% of PRs     Mesh            Modal + multiplayer│ │
+  │  │  Ramp Inspect       ~50% of PRs    Mesh            Modal + multiplayer│ │
   │  │  OpenAI Internal    3.5 PRs/eng/d  Layered         AGENTS.md + GC    │ │
   │  │  Uber AI            84% adoption   Hybrid          Multi-model fleet  │ │
   │  │  Shopify AI         0→2K commits   Ratchet-hybrid  CEO-driven culture │ │
@@ -346,7 +347,7 @@ Six combos mapped to six build profiles — pick the right topology for your con
 
 ## Governance Patterns
 
-What separates "autonomous" from "uncontrolled" — extracted from all 10 sources:
+What separates "autonomous" from "uncontrolled" — extracted from all 11 sources:
 
 ```
   ┌─────────────────────────── GOVERNANCE LAYER ───────────────────────────┐
@@ -442,7 +443,7 @@ Ryan Carson proved it live: filed 6 bugs from his phone at the doctor's office. 
 
 ## Patterns That Work
 
-Seven principles extracted from studying all 10 systems:
+Seven principles extracted from studying all 11 systems:
 
 1. **PRs are the review gate** — every agent action produces a PR. Nothing merges without human approval.
 2. **Constraints over instructions** — tell agents what NOT to do. Negative constraints outperform step-by-step guides.
@@ -476,7 +477,7 @@ Seven principles extracted from studying all 10 systems:
 | Document | Source | Key Patterns |
 |----------|--------|-------------|
 | [Competitive Analysis](docs/competitive-analysis.md) | — | Feature matrix across 6 products |
-| [Devin + Factory.ai](docs/devin-factory.md) | Devin, Factory.ai | Architecture, pricing, Nubank 8x, EY 5000 engineers |
+| [Devin + Factory.ai](docs/devin-factory.md) | Devin, Factory.ai | Architecture, pricing, Nubank 12x, EY 5000 engineers |
 | [Coding Agents Landscape](docs/coding-agents-landscape.md) | 12+ tools | Claude Code, Codex, Cursor, OpenHands, Aider, Cline, Amazon Q |
 | [Enterprise Adoption](docs/enterprise-adoption.md) | 14 companies | Uber, Anthropic, OpenAI, Spotify, Shopify, Microsoft, Goldman Sachs |
 | [Symphony + Carson](docs/symphony-carson.md) | Ryan Carson | Live code factory demo, role inversion thesis |
@@ -503,7 +504,7 @@ Seven principles extracted from studying all 10 systems:
 
 | Document | Source | Key Patterns |
 |----------|--------|-------------|
-| [Potent Combos + Build Profiles](docs/potent-combos.md) | All sources | 8 topologies, 6 combos, 6 build profiles, decision flowchart, anti-patterns |
+| [Potent Combos + Build Profiles](docs/potent-combos.md) | All sources | 9 topologies, 6 combos, 6 build profiles, decision flowchart, anti-patterns |
 | [Competency Graph](docs/competency-graph.md) | All sources | 25-dimension matrix, complementary pairs, phase adoption map |
 | [GitHub Ecosystem](docs/github-ecosystem.md) | GitHub | Agent HQ, Agentic Workflows, Copilot Agent, MCP servers |
 | [Dev Tools Stack](docs/dev-tools-stack.md) | Multiple | Linear Agent API, PagerDuty, Sentry, CI/CD at $42/mo |
