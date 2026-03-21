@@ -1,6 +1,6 @@
 # Competitive Analysis — Software Factory vs. Market
 
-*Last updated: March 8, 2026*
+*Last updated: March 21, 2026*
 
 ---
 
@@ -47,15 +47,25 @@ Our closest competitor is **Factory.ai** (agent-native SDLC platform). Devin is 
 - **Key Features**: Full application generation, requirements→design→code pipeline
 - **Website**: https://blitzy.com
 
-### Paperclip AI
-- **Model**: Open-source agent orchestration platform — "the company layer" for autonomous agents
-- **Pricing**: Free (MIT license), self-hosted
-- **Stars**: 26.7k GitHub stars, 3.5k forks (March 2026)
-- **Strengths**: Per-agent monthly budgets, task checkout locks, heartbeat health monitoring, React dashboard with live WebSocket transcripts, config versioning with rollback, multi-tenancy, OpenClaw native adapter
-- **Weaknesses**: No agent implementation (orchestration only), no knowledge graph, no context engineering, no verification loops, no LLM judge
-- **Key Features**: Fleet coordination, approval gates, run transcript persistence, org charts
-- **Relationship to Us**: Complementary — Paperclip orchestrates fleets of agents, we build the individual agents. Their budget + transcript + dashboard patterns are directly adoptable.
-- **Website**: https://github.com/paperclipai/paperclip
+### Paperclip (NEW — March 2026)
+- **Model**: "Zero-human company" orchestration — org charts for AI agents
+- **Pricing**: Free, open-source (MIT), self-hosted
+- **Strengths**: 24K+ GitHub stars in 2 weeks, BYOA (any agent runtime), goal alignment (mission→project→task hierarchy), multi-company isolation, cost governance with per-agent budgets, ClipMart marketplace (coming), beautiful React UI dashboard
+- **Weaknesses**: No agent runtimes of its own (orchestration only), no CI/CD integration, no incident response, no knowledge graph, early-stage (v2026.318.0), no verification loops or LLM judge
+- **Key Features**: Org charts, heartbeat monitoring, goal alignment, multi-company support, audit trails, SKILLS.md for agent context
+- **Positioning**: "If OpenClaw is an employee, Paperclip is the company." Orchestration layer, not an agent builder.
+- **Website**: https://paperclip.ing | [GitHub](https://github.com/paperclipai/paperclip)
+- **Stack**: Node.js, React, embedded PostgreSQL, TypeScript (96.8%)
+- **Relevance**: **HIGH** — directly addresses the "agent command center" gap Karpathy described (Mar 2, 2026). Could serve as our orchestration UI or be a competitor if they add CI/CD and verification.
+
+### LangSmith Fleet (NEW — March 2026)
+- **Model**: Centralized enterprise agent management hub
+- **Pricing**: Part of LangSmith (enterprise tiers)
+- **Strengths**: LangChain ecosystem, enterprise cross-team collaboration, end-to-end agent lifecycle (build/use/manage)
+- **Weaknesses**: Enterprise-only, closed-source, LangChain dependency
+- **Key Features**: Fleet-wide agent management, rebranded from Agent Builder
+- **Website**: LangChain blog
+- **Relevance**: MEDIUM — enterprise play, different market than our self-hosted approach
 
 ### Other Notable Players
 
@@ -69,28 +79,30 @@ Our closest competitor is **Factory.ai** (agent-native SDLC platform). Devin is 
 | **Amazon Q** | AWS AI coding assistant | /dev, /doc, /review agents — enterprise-only, AWS-locked |
 | **Augment Code (Intent)** | macOS multi-agent workspace | Spec-driven coordination, mandatory approval gates |
 | **Replit Agent** | Browser-based autonomous agent | Greenfield web apps, not production maintenance |
+| **JetBrains Junie CLI** | Standalone coding agent + Air platform | "Shadow Tech Debt" framing, structural code awareness, vendor-neutral |
+| **Orbit (trine.dev)** | Multi-agent harness | Scout→Worker→Verifier pattern, "power drill not architect" philosophy |
 
 ---
 
 ## Feature Comparison Matrix
 
-| Capability | Software Factory | Devin | Factory.ai | Copilot Agent | Blitzy | Paperclip |
+| Capability | Software Factory | Devin | Factory.ai | Copilot Agent | Paperclip | Blitzy |
 |---|---|---|---|---|---|---|
-| **PR Review** | ✅ Core agent | ✅ | ✅ | ✅ Agentic (GA) | ❌ | ❌ (orchestration only) |
+| **PR Review** | ✅ Core agent | ✅ | ✅ | ✅ Agentic (GA) | ❌ | ❌ |
 | **CI Debugging** | ✅ Shift-left + LLM judge | ✅ | ✅ Self-healing | ✅ Repair agent | ❌ | ❌ |
 | **Security Patching** | ✅ CVE auto-patch | ❌ Manual | ⚠️ Limited | ✅ Secret/dep scanning | ❌ | ❌ |
 | **Incident Response** | ✅ PagerDuty→RCA→fix PR | ❌ | ⚠️ Slack triage only | ❌ | ❌ | ❌ |
 | **Merge Conflicts** | ✅ Dedicated agent | ❌ | ❌ | ❌ | ❌ | ❌ |
-| **Feature Building** | ❌ Not yet | ✅ Core use case | ✅ | ✅ Issue→PR | ✅ Core use case | ❌ |
+| **Feature Building** | ❌ Not yet | ✅ Core use case | ✅ | ✅ Issue→PR | ⚠️ Via agents | ✅ Core use case |
 | **Knowledge Graph** | ✅ ProductRank integration | ❌ | ❌ | ❌ | ❌ | ❌ |
-| **Fleet Orchestration** | ⚠️ Basic (reconciler) | ❌ | ⚠️ Internal | ❌ | ❌ | ✅ Core product |
-| **Per-Agent Budgets** | ⚠️ Per-run only | ❌ | ⚠️ Token billing | ❌ | ❌ | ✅ Monthly + throttle |
-| **Web Dashboard** | ❌ | ✅ Web IDE | ✅ | ❌ | ❌ | ✅ React + WebSocket |
-| **Run Transcripts** | ⚠️ Audit log only | ✅ | ✅ | ❌ | ❌ | ✅ Persistent + searchable |
-| **IDE Integration** | ❌ | ✅ Web IDE | ✅ VS Code/JetBrains/Vim | ✅ VS Code native | ❌ | ❌ |
-| **Self-hosted** | ✅ Your infra | ❌ SaaS only | ⚠️ VPC option | ❌ GitHub-native | ❌ SaaS only | ✅ MIT license |
-| **Cost Governance** | ✅ $2/run caps, audit | ❌ Flat pricing | ⚠️ Token billing | ❌ Subscription | ❌ | ✅ Best-in-class |
-| **Open Source** | Private (could open) | ❌ | ❌ | ❌ | ❌ | ✅ MIT |
+| **Agent Orchestration** | ⚠️ Queue-based | ❌ Single | ⚠️ Internal | ❌ Single | ✅ Org charts + goals | ❌ Swarm |
+| **Multi-Agent Fleet** | ⚠️ BullMQ dispatch | ❌ | ⚠️ Internal | ❌ | ✅ BYOA, heartbeats | ✅ 3000 agents |
+| **Cost Governance** | ✅ $2/run caps, audit | ❌ Flat pricing | ⚠️ Token billing | ❌ Subscription | ✅ Per-agent budgets | ❌ |
+| **Goal Alignment** | ❌ | ❌ | ❌ | ❌ | ✅ Mission→Project→Task | ❌ |
+| **Dashboard/UI** | ❌ CLI only | ✅ Web IDE | ✅ IDE plugins | ✅ VS Code native | ✅ React dashboard | ❌ |
+| **Self-hosted** | ✅ Your infra | ❌ SaaS only | ⚠️ VPC option | ❌ GitHub-native | ✅ MIT, self-hosted | ❌ SaaS only |
+| **Open Source** | Private (could open) | ❌ | ❌ | ❌ | ✅ MIT | ❌ |
+| **Verification Loops** | ✅ LLM judge + CI | ❌ | ⚠️ | ⚠️ | ❌ | ❌ |
 
 ---
 
@@ -155,13 +167,28 @@ Full control over data, models, and infrastructure. Critical for Visa/enterprise
                           │                    Software Factory ────┤
                           │                    + Knowledge Graph ───┤
                           │                    + Visa Commerce ─────┤
+
+     Agent Orchestration ──────────────────────── Agent Execution
+           │                                          │
+  Paperclip ──────┤                                   │
+  LangSmith Fleet ┤                                   │
+                   │                Software Factory ──┤
+                   │                Factory.ai ────────┤
+                   │                Devin ─────────────┤
 ```
+
+**Two axes of competition now:**
+
+1. **Feature building vs. production maintenance** — We're on the maintenance side. Devin/Blitzy on the feature side.
+2. **Agent orchestration vs. agent execution** — Paperclip is pure orchestration (no agents of its own). We're pure execution (no dashboard). The overlap opportunity is clear.
 
 **We don't compete with Devin head-on.** Devin is "hire an AI engineer." We're "autonomous DevOps/SRE that keeps production running while humans sleep."
 
-**Our wedge:** Incident response + security patching + knowledge graph. Then expand left into feature building (P0 gap above).
+**We don't compete with Paperclip head-on either.** Paperclip is "the company" (org charts, goals, budgets). We're "the factory floor" (agents, verification, governance). They're complementary — Paperclip could orchestrate Software Factory agents.
 
-**The moat:** ProductRank knowledge graph + Visa commerce integration. Nobody else has domain-specific intelligence feeding into their agents.
+**Our wedge:** Incident response + security patching + knowledge graph + verification loops. Then expand into orchestration UI (or integrate Paperclip).
+
+**The moat:** ProductRank knowledge graph + Visa commerce integration + verification/governance layer. Nobody else has domain-specific intelligence AND quality enforcement feeding into their agents. Paperclip has governance but no verification. Factory.ai has agents but no knowledge graph.
 
 ---
 
@@ -183,7 +210,9 @@ Full control over data, models, and infrastructure. Critical for Visa/enterprise
 3. **The knowledge graph is our moat** — no competitor has domain intelligence
 4. **Self-hosted + cost governance = enterprise story** — critical for Visa
 5. **Don't chase IDE integration yet** — focus on background agents first (our strength)
-6. **Factory.ai is the real competitor** — not Devin. Watch their enterprise expansion closely.
+6. **Factory.ai is the real competitor** — not Devin. Watch their enterprise expansion closely
+7. **Paperclip is a complement, not a threat** — evaluate as orchestration UI layer. Their 24K-star growth validates the "agent command center" category Karpathy called for. Our verification loops + knowledge graph are what they lack.
+8. **Verification loops are our unique differentiator** — no competitor (including Paperclip) has LLM judge + bounded CI retries + shift-left patterns. This is the gap the industry is waking up to (JetBrains "Shadow Tech Debt", SWE-CI benchmark).
 
 ---
 
@@ -198,3 +227,10 @@ Full control over data, models, and infrastructure. Critical for Visa/enterprise
 - [Factory.ai Pricing via Orb](https://www.withorb.com/case-studies/factory) — Billing model
 - [Devin Alternatives Roundups](https://www.taskade.com/blog/devin-ai-alternatives) — Taskade, PlayCode, ClickUp, Augment Code
 - [Anthropic 2026 Agentic Coding Trends Report](https://resources.anthropic.com/hubfs/2026%20Agentic%20Coding%20Trends%20Report.pdf)
+- [Paperclip](https://paperclip.ing/) — Open-source agent orchestration, 24K+ GitHub stars
+- [Paperclip GitHub](https://github.com/paperclipai/paperclip) — MIT, TypeScript, Node.js + React
+- [eWeek — Meet Paperclip](https://www.eweek.com/news/meet-paperclip-openclaw-ai-company-tool/) — "The Tool Turning OpenClaw Agents Into an AI Company"
+- [LangSmith Fleet announcement](https://aitoolly.com/ai-news/article/2026-03-20-langchain-rebrands-agent-builder-to-langsmith-fleet-a-centralized-enterprise-agent-management-platfo) — LangChain rebrand
+- [JetBrains Junie CLI + Air](https://thenewstack.io/jetbrains-names-the-debt-ai-agents-leave-behind/) — "Shadow Tech Debt" framing
+- [Orbit — 7 Agents Across 3 Repos](https://blog.trine.dev/posts/2026-03-08-orbit-ai-agents/) — Multi-agent harness patterns
+- [Zylos — AI Agent Fleet Management](https://zylos.ai/research/2026-02-19-ai-agent-fleet-management) — Market sizing, enterprise platforms

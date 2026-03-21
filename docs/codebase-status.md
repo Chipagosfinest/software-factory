@@ -1,4 +1,4 @@
-# Codebase Status — March 8, 2026
+# Codebase Status — March 21, 2026
 
 ## Overall: 75-80% Complete (~4,950 LoC)
 
@@ -76,6 +76,17 @@
 - Executor gate kill switch without redeploying
 - TypeScript strict mode throughout
 
+## Key Research Findings (March 21, 2026)
+
+New research compiled in `docs/karpathy-software-factory-thesis.md` directly validates our architecture:
+
+- **Hooks > Instructions** — 20+ Claude Code GitHub issues prove CLAUDE.md rules are read then violated. Only hooks (`exit 2`) mechanically enforce. Our governance layer (executor gate, LLM judge, verification loops) is the right approach.
+- **75% of agents break working code** over time (Alibaba SWE-CI). Our LLM judge + bounded retries (max 2 CI rounds) mitigates this.
+- **AI PRs have 1.7x more issues** than human PRs (CodeRabbit, 470 PRs). Our PR reviewer agent needs to catch these patterns.
+- **3 focused workers > 10 parallel** (OptinAmpOut production fleet). Validates our scoped-agent approach over swarm patterns.
+- **JetBrains coined "Shadow Tech Debt"** — architecture-blind code from agents. Our context builder pre-hydrating repo structure is the mitigation.
+- **Paperclip** (24K+ stars, MIT) launched as open-source orchestration for "zero-human companies" — direct competitor/complement. See competitive-analysis.md.
+
 ## Recommended Next Steps
 
 1. **Deploy core agents to a staging repo** — PR review + CI debug are immediately valuable
@@ -83,3 +94,5 @@
 3. **Add real data sources** to tool discovery (GitHub trending API, RSS)
 4. **Add verification calls** to drift detector (GitHub archive status, npm deprecation)
 5. **Build Feature Builder agent** — biggest competitive gap (see competitive-analysis.md)
+6. **Add code quality verifier** to agent pipeline — AST complexity, duplication detection, style linting (new, from thesis research)
+7. **Evaluate Paperclip integration** — could serve as our orchestration UI layer
