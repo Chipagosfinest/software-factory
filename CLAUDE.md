@@ -1,125 +1,118 @@
-# Software Factory — Agent Instructions
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 ## What This Is
 
-Software Factory is an agent-native platform that autonomously handles software delivery tasks: PR review, CI debugging, security patching, incident response, and merge conflict resolution. It runs as a webhook server that receives GitHub events and dispatches them to specialized agents.
+Software Factory is an agent-native platform that autonomously handles software delivery tasks: PR review, CI debugging, security patching, incident response, and merge conflict resolution. It receives GitHub webhooks and Linear issues, dispatches them to specialized agents, and outputs PRs/comments. Humans review before merge.
+
+The `docs/` directory is a **research corpus** (34 documents on autonomous coding agents from Stripe, Spotify, Ramp, LangChain, etc.), not project documentation. Don't confuse research docs with implementation docs.
+
+## Commands
+
+```bash
+npm run dev          # Start dev server with hot reload (tsx watch, port 3847)
+npm run build        # TypeScript compilation (tsc → dist/)
+npm run start        # Run compiled output (node dist/index.js)
+npm test             # Run all tests (vitest)
+npx vitest run src/__tests__/core.test.ts          # Run single test file
+npx vitest run -t "circuit breaker"                # Run tests matching name
+npm run tunnel       # Expose local server via localtunnel (for GitHub webhooks)
+```
+
+**Prerequisites**: Redis running locally for BullMQ queue (`REDIS_URL=redis://localhost:6379`). Server starts without Redis but cron scheduler will fail.
+
+**Pre-commit guard**: Install with `cp scripts/pre-commit-guard.sh .git/hooks/pre-commit && chmod +x .git/hooks/pre-commit`
 
 ## Architecture
 
-### Event Flow
+### Two Execution Paths
+
+The system has two independent ways work enters the pipeline:
+
+**Path 1: Webhook-driven** (reactive)
 ```
-Webhook/Cron/Alert -> Event Router -> Agent -> Sandbox -> GitHub API -> PR/Comment
+GitHub Webhook → POST /webhook/github → EventRouter → BullMQ Queue → Worker → Agent Runner → GitHub API
 ```
+Triggers: PR opened/updated, CI failure, Dependabot alert. The `EventRouter` (`src/router.ts`) maps GitHub events to agent types, skipping bot PRs, draft PRs, and `skip-review` labels.
 
-Every agent action produces a PR or comment. Nothing is pushed directly to main. Humans review before merge.
+**Path 2: Orchestrator-driven** (proactive, Symphony-style)
+```
+Linear Issue (label: factory:auto) → Orchestrator Poll → Reconciler → Workspace (git worktree) → BullMQ Queue → Agent Runner → GitHub API
+```
+Disabled by default (`ORCHESTRATOR_ENABLED=false`). Polls Linear every 30s, creates isolated git worktrees per task, manages a state machine: `unclaimed → claimed → running → completed/retry_queued/failed`. Auto-stops after 5 consecutive failures. Convergence detection prevents retrying identical errors.
 
-### Key Components
+Both paths converge at the BullMQ queue and share the same Agent Runner.
 
-- **Event Router** (`src/router.ts`) — Normalizes webhooks into typed events, dispatches to agents
-- **Agents** (`src/agents/`) — Specialized agents for each task type
-- **Sandbox** (`src/core/sandbox.ts`) — Isolated execution environments per agent run
-- **GitHub Client** (`src/core/github.ts`) — Authenticated GitHub API operations
-- **Context Builder** (`src/core/context.ts`) — Builds repo context for agent reasoning
-- **Governance** (`src/core/governance.ts`) — Audit logging, permissions, blast radius controls
+### Safety Layers (checked in order)
 
-### Agent Pattern
+Every agent run passes through these gates before any LLM call:
 
-Every agent follows the same lifecycle:
-1. Receive typed event with full context
-2. Build repo context (file tree, recent changes, relevant code)
-3. Reason about the problem (LLM call with constraints)
-4. Execute solution in sandbox (code changes, test runs)
-5. Output via GitHub API (PR, review comment, check annotation)
-6. Log everything to audit trail
+1. **Global Daily Budget** (`src/core/budget-guard.ts`) — Hard cap across all agents (default $20/day). Warns at 80%.
+2. **Executor Gate** (`src/core/executor-gate.ts`) — Kill switch via `executor_gate.json`. Can disable all agents or specific ones. File is read on every check (no restart needed).
+3. **Per-Agent Governance** (`src/core/governance.ts`) — Per-agent-type permissions: allowed/blocked file patterns, max files/lines changed, cost limit ($2 default), PR creation rights. PR reviewer can approve but not create PRs. Security agent can only touch lockfiles.
+4. **Circuit Breaker** (`src/core/circuit-breaker.ts`) — Per-API (OpenRouter, GitHub, Linear). Opens after 3 consecutive failures, half-open test after 60s. All LLM calls go through `withCircuitBreaker()`.
+5. **Timeout** — Agent runs race against `perms.timeoutMs` (default 300s).
 
 ### Agent Types
 
-| Agent | Webhook Trigger | Output |
-|-------|----------------|--------|
-| PR Reviewer | `pull_request.opened`, `pull_request.synchronize` | Review comments, approval/changes requested |
-| CI Debugger | `check_suite.completed` (conclusion: failure) | Diagnosis comment + fix PR on a new branch |
-| Security Patcher | `dependabot_alert.created`, CVE cron | Patch PR with explanation |
-| Incident Responder | PagerDuty webhook, custom alert | RCA comment + fix PR |
-| Merge Resolver | `pull_request` with conflict label | Resolution commit pushed to PR branch |
+Two categories with different permission profiles:
 
-## Tech Stack
+**Webhook agents** (can modify repos):
+- `pr-reviewer` — Review comments + approve/request changes. Cannot create PRs.
+- `ci-debugger` — Diagnose failures + create fix PRs. Max 10 files, 200 lines.
+- `security` — Patch vulnerabilities. Restricted to lockfiles only.
+- `incident` — RCA + fix PRs. Max 10 files, 200 lines.
+- `merge-resolver` — Resolve conflicts. Max 20 files, 500 lines.
 
-- **Runtime**: Node.js + TypeScript
-- **Server**: Hono (lightweight, fast)
-- **LLM**: OpenRouter (model-agnostic — Claude, GPT, Gemini, DeepSeek)
-- **GitHub**: Octokit + GitHub App authentication
-- **Sandbox**: Docker containers per agent run
-- **Queue**: BullMQ + Redis for event processing
-- **Storage**: SQLite for audit logs and agent state
+**Cron agents** (read-only, data pipeline):
+- `tool-discovery`, `signal-harvester`, `drift-detector`, `backfill`, `integration-tester`
+- These agents have `blockedFilePatterns: ['**/*']` — they cannot modify any files.
+- Lower cost limits ($0.50–$1.50). Use cheaper models (Gemini Flash) by default.
 
-## Development Guidelines
+### Key Internals
 
-- Keep agents stateless — all context comes from the event + repo
-- Every agent must have a governance check before executing
-- All LLM calls go through a central client with cost tracking
-- Never push directly to main — always create PRs
-- Test agents against real repos in a sandbox org
-- Log every LLM call, every GitHub API call, every file change
+- **LLM Client** (`src/core/llm.ts`) — All LLM calls route through OpenRouter. `chat()` for raw calls, `chatJson<T>()` for structured output. Cost is estimated per-call and recorded to SQLite. Model selection is per-agent-type with env var overrides.
+- **Database** (`src/core/db.ts`) — SQLite with WAL mode. Schema auto-migrates on first `getDb()` call. Tables: `agent_runs`, `audit_log`, `cost_tracking`, `cron_job_state`, `pipeline_run_log`, `orchestrator_tasks`.
+- **Agent Prompts** — Markdown files in `src/agents/prompts/*.md`, loaded by each agent handler.
+- **Workspace Isolation** (`src/orchestrator/workspace.ts`) — Git worktrees for orchestrator tasks. Repo allowlist enforced. Max concurrent workspaces (default 5). Credentials stripped from stored remotes after clone.
+- **Workflow Config** — Target repos can place a `WORKFLOW.md` with YAML front matter to configure which agents run, model overrides, timeouts, and retry counts. Parsed with hot-reload (mtime check).
+- **Task State Machine** (`src/orchestrator/state.ts`) — Enforces valid transitions. Exponential backoff on retry (30s → 2m → 8m → 30m → 2h cap with jitter).
 
-## File Conventions
+### HTTP Endpoints
 
-- Source code in `src/`
-- Agent implementations in `src/agents/`
-- Core infrastructure in `src/core/`
-- Type definitions in `src/types.ts`
-- Tests alongside source files as `*.test.ts`
-- Config in root (`tsconfig.json`, `.env`, etc.)
-
-## Safety Rules
-
-1. **No force pushes** — ever, under any circumstances
-2. **No direct main commits** — everything through PRs
-3. **Blast radius limits** — agents can only touch files relevant to their task
-4. **Cost caps** — hard limit on LLM spend per agent run ($2 default)
-5. **Timeout** — agent runs killed after 5 minutes
-6. **Audit everything** — every action logged with timestamp, agent ID, event ID
+| Endpoint | Method | Purpose |
+|----------|--------|---------|
+| `/webhook/github` | POST | GitHub webhook receiver (signature-verified) |
+| `/trigger/:agent` | POST | Manual agent trigger |
+| `/cron/:agent/trigger` | POST | Manual cron trigger |
+| `/audit` | GET | Audit log (query: `?limit=50`) |
+| `/runs` | GET | Agent run history |
+| `/costs` | GET | Cost summary |
+| `/graph/metrics` | GET | Flywheel metrics (requires Supabase) |
+| `/orchestrator/status` | GET | Orchestrator state + metrics |
+| `/orchestrator/start` | POST | Start orchestrator loop |
+| `/orchestrator/stop` | POST | Stop orchestrator loop |
 
 ## Anti-Pattern Rules
 
-These rules prevent the failure modes we've seen in high-velocity autonomous codebases.
-The pre-commit hook (`scripts/pre-commit-guard.sh`) enforces the critical ones automatically.
+Enforced by pre-commit hook (`scripts/pre-commit-guard.sh`):
 
-### Shell Command Safety
-- **NEVER use `execSync()` with template literals or string interpolation**
-- **ALWAYS use `execFileSync('cmd', ['arg1', 'arg2'])` with array arguments**
-- String interpolation in shell commands = command injection. Pre-commit hook blocks this.
+1. **No `execSync()` with template literals** — command injection. Use `execFileSync('cmd', ['arg1', 'arg2'])` with array args.
+2. **No empty `catch {}` blocks** — silent failures compound. Always log or rethrow. Comment why if intentionally empty.
+3. **No hardcoded secrets** — hook scans for `sk-`, `lin_api_`, `ghp_`, `xoxb-`, `AIza` patterns.
+4. **No CORS wildcards** — `Access-Control-Allow-Origin: *` blocked.
+5. **No files over 400 lines** — warning only, not blocking.
 
-### Error Handling
-- **NEVER use empty `catch {}` blocks** — always log or rethrow
-- Silent failures compound into invisible bugs that take days to surface.
-- Acceptable: `catch { /* expected when X doesn't exist */ }` with a comment explaining WHY
+Additional rules (not hook-enforced):
+- **All LLM calls through `src/core/llm.ts`** — no direct OpenAI/OpenRouter imports elsewhere.
+- **Budget checks are hard gates** — when `checkGlobalDailyBudget()` returns `allowed: false`, stop. Don't skip or log-and-continue.
+- **No automated responses to cost alerts** — creates infinite cost loops.
+- **Auth tokens in headers, not URL params** — URLs leak to logs.
+- **`chatJson()` does NOT double-record costs** — `chat()` already records. Fixed after a 2x inflation bug (2026-03-14).
 
-### File Size Discipline
-- **No file over 400 lines.** If it's growing past 400, split it.
-- Mega-files become untestable and unnavigable. Pre-commit hook warns at 400 lines.
+## Testing
 
-### Cost Control Discipline
-- **Every LLM call MUST go through `src/core/llm.ts`** — no direct API calls
-- **Budget checks MUST be enforced, not advisory** — `checkGlobalDailyBudget()` returns `allowed: false` and the caller MUST stop
-- **Never fire automated responses to cost alerts without approval gates** — this creates infinite cost loops (alert → spawn agent → more cost → more alerts)
+Tests in `src/__tests__/` using Vitest. Test files: `core.test.ts` (webhook verification, executor gate, circuit breaker), `router.test.ts` (event routing), `orchestrator.test.ts` (state machine, reconciler), `workflow.test.ts` (WORKFLOW.md parsing). Fixtures in `src/__tests__/fixtures/`.
 
-### Code Duplication
-- **Define utility functions ONCE, export from a single location**
-- Before writing a utility, search if it already exists
-
-### Test Quality
-- **Tests must test project code, not language builtins**
-- **No assertion-free tests** — every `it()` block needs at least one `expect()`
-- **Test the actual module, not a local copy**
-- **Don't pad test counts** — 45 real tests > 900 fake tests
-
-### Network Security
-- **Never use `Access-Control-Allow-Origin: *`** — restrict to specific origins
-- **Never accept arbitrary commands over HTTP** — allowlist operations
-- **Auth tokens in headers, not URL query params** — URLs leak to logs and referers
-- **Bind to 127.0.0.1 explicitly** for local-only servers
-
-### Config Safety
-- **All required env vars validated at startup** (`src/core/startup-checks.ts`)
-- **Never store secrets in config files** — use env vars or OS keychain
-- **One config system, not two** — pick one and use it everywhere
+Tests don't require Redis or external services — they test pure logic (state machines, routing, config parsing, circuit breaker behavior).
