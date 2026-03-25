@@ -2,7 +2,7 @@
 
 *Last updated: March 24, 2026*
 
-Cloudflare's Dynamic Workers use V8 isolates instead of containers for AI agent code execution. Millisecond startup, megabytes of memory, and a "Code Mode" pattern that replaces sequential tool calls with single generated functions.
+Cloudflare's Dynamic Workers use V8 isolates instead of containers for AI agent code execution. Millisecond startup, megabytes of memory, and a "Code Mode" pattern that replaces sequential tool calls with single generated functions. The Cloudflare API has 2,500+ endpoints; Code Mode collapses them to 2 tools and ~1,000 tokens (99.9% reduction from 1.17M tokens).
 
 ---
 
@@ -78,23 +78,91 @@ Cloudflare's Dynamic Workers use V8 isolates instead of containers for AI agent 
 
 ## Code Mode: The Key Pattern
 
+*Source: [Cloudflare Blog: Code Mode MCP](https://blog.cloudflare.com/code-mode-mcp/)*
+
+### The Problem
+
+The Cloudflare API has **2,500+ endpoints**. A traditional MCP implementation exposing each as a tool would require **1.17 million tokens** — more than the entire context window of any foundation model. Even with dynamic tool search (like Claude Code uses), each matched tool still consumes tokens.
+
+### The Solution: Two Tools, ~1,000 Tokens
+
+The entire API surface is collapsed to two functions:
+
+1. **`search()`** — Accepts JavaScript code that queries the OpenAPI specification. Agents write code to filter endpoints by product, path, tags, or metadata without loading the full spec into context. The spec object has all `$refs` pre-resolved for direct schema traversal.
+
+2. **`execute()`** — Accepts JavaScript code that makes authenticated API calls via `cloudflare.request()`, handles pagination, chains operations, and processes responses.
+
+Both execute within a Dynamic Worker isolate — V8 sandbox, no filesystem, disabled external fetches by default.
+
+**Token economics:**
+| Approach | Tokens Required | Tools in Context |
+|----------|----------------|-----------------|
+| Full MCP (1 tool per endpoint) | 1,170,000 | 2,500+ |
+| Dynamic tool search | ~10,000-50,000 | Varies per query |
+| **Code Mode** | **~1,000** | **2** |
+
+**99.9% token reduction. Fixed cost regardless of API size.**
+
+### Practical Example: DDoS Protection
+
+The article demonstrates protecting an origin from DDoS:
+
+**Step 1 — Discovery**: Agent calls `search()` with JS that filters for WAF/ruleset endpoints:
+```
+2,500+ endpoints → ~10 relevant ones (agent never sees the other 2,490)
+```
+
+**Step 2 — Action**: Agent calls `execute()` with JS that:
+- Checks existing rulesets
+- Inspects DDoS L7 and WAF configs
+- Chains multiple API calls in one execution
+
+**Result: 4 tool calls total** instead of dozens in traditional MCP.
+
+### Traditional vs Code Mode Flow
+
 Traditional agent tool use:
 ```
 LLM → tool_call(search_dns) → result → LLM → tool_call(create_record) → result → LLM → tool_call(verify) → result
 ```
 **3 LLM round-trips, 3 tool descriptions in context, high token cost.**
 
-Code Mode with Dynamic Workers:
+Code Mode:
 ```
 LLM → generates single TypeScript function that chains search → create → verify → result
 ```
 **1 LLM call, 1 execution, agent writes the orchestration logic itself.**
 
-Cloudflare's MCP server exposes their **entire API with just 2 tools and under 1,000 tokens**:
-1. A "code mode" tool that accepts generated TypeScript
-2. A "describe API" tool for discovery
+### Comparison to Alternative Approaches
 
-vs. traditional MCP: one tool per API operation (hundreds of tools, thousands of tokens in context).
+| Approach | Example | Tradeoff |
+|----------|---------|----------|
+| **Client-side Code Mode** | Goose, Anthropic Claude SDK | Requires secure sandbox on client side |
+| **CLI-based** | OpenClaw, Moltworker | Self-documenting but broader attack surface than isolates |
+| **Dynamic tool search** | Claude Code | Reduces context but each matched tool still costs tokens; requires maintained search functions |
+| **Server-side Code Mode** | **Cloudflare MCP** | Fixed token cost, progressive discovery, but JS/TS only |
+
+**Notable: Cloudflare explicitly categorizes OpenClaw as a "CLI-based approach"** alongside Goose and Anthropic's SDK.
+
+### Progressive Discovery
+
+Agents explore API capabilities through code execution, not by scanning tool descriptions:
+- No pre-loading documentation
+- Agent writes queries against the OpenAPI spec
+- Only relevant schemas enter the context
+- API can grow to 10,000+ endpoints with zero token cost increase
+
+### MCP Server Portals (Future)
+
+Cloudflare is building **MCP Server Portals** — compose multiple MCP servers behind a unified gateway, applying Code Mode patterns across heterogeneous services. Same fixed-token footprint regardless of how many services sit behind the portal.
+
+**This is the "API gateway for agents" concept.** One search + execute interface across all services.
+
+### OAuth 2.1 Integration
+
+Uses Workers OAuth Provider to downscope tokens to user-approved permissions. Supports both:
+- **OAuth-based user authorization** (interactive)
+- **API token management** (CI/CD scenarios)
 
 ### Loader API
 
@@ -170,16 +238,30 @@ Cloudflare recommends TypeScript RPC interfaces for agent-to-API communication i
 - Large dependency trees
 - Need to run existing codebases unmodified
 
-### The "Code Mode" Implication
+### The "Code Mode" Implication for Agent Architecture
 
-Code Mode challenges the assumption that agents need many granular tools. Instead:
+Code Mode challenges a foundational assumption: that agents need many granular tools. The alternative:
 - Give the agent a **code execution sandbox** and an **API description**
 - Let it **write a program** that accomplishes the task
 - Execute the program in one shot
 
-This is conceptually what Software Factory's agents already do (generate code, run in sandbox, output PR), but applied to tool use itself. An agent that writes a function to chain 5 API calls is more efficient than an agent that makes 5 sequential tool calls.
+This is conceptually what Software Factory's agents already do (generate code, run in sandbox, output PR), but applied to **tool use itself**. An agent that writes a function to chain 5 API calls is more efficient than an agent that makes 5 sequential tool calls.
 
-**Potential application**: Software Factory agents could generate TypeScript "task scripts" that combine multiple GitHub API operations into a single execution, reducing LLM round-trips and token cost.
+**Concrete applications for Software Factory:**
+1. **GitHub API agent**: Instead of `tool_call(list_prs)` → `tool_call(get_diff)` → `tool_call(post_review)`, agent generates one script that does all three
+2. **OpenClaw exec tool**: Could adopt search+execute pattern — agent discovers available commands then writes a multi-step bash script
+3. **MCP Server Portals pattern**: Software Factory's multi-service integration (GitHub + Linear + Datadog) could use a unified search+execute gateway instead of separate tool definitions per service
+
+### The MCP Scaling Problem (Quantified)
+
+| API Surface | Traditional MCP Tokens | Code Mode Tokens | Savings |
+|-------------|----------------------|-------------------|---------|
+| 100 endpoints | ~47,000 | ~1,000 | 97.9% |
+| 500 endpoints | ~234,000 | ~1,000 | 99.6% |
+| 2,500 endpoints | ~1,170,000 | ~1,000 | 99.9% |
+| 10,000 endpoints | ~4,680,000 | ~1,000 | 99.98% |
+
+**Token cost is O(1) with Code Mode vs O(n) with traditional MCP.** As the number of services an agent can interact with grows, the gap becomes unbridgeable.
 
 ---
 
@@ -190,3 +272,5 @@ This is conceptually what Software Factory's agents already do (generate code, r
 3. **State across invocations**: Cold storage between runs means rebuilding context. How does this compare to persistent containers?
 4. **Debugging**: When agent-generated code fails inside an isolate, what observability exists?
 5. **Hybrid model**: Could you use isolates for fast triage + containers for deep debugging/reproduction?
+6. **Error recovery**: When agent-generated code fails mid-execution in Code Mode, how does it recover? Traditional tool calls let the LLM see each result and adjust. Code Mode is all-or-nothing.
+7. **MCP Server Portals**: When composing multiple APIs behind one gateway, how does the agent discover which service has the capability it needs? Does search() scale across heterogeneous specs?
