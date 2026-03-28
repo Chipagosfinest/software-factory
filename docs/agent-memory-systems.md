@@ -1,6 +1,6 @@
 # Agent Memory Systems — Research Deep-Dive
 
-*Last updated: March 16, 2026*
+*Last updated: March 27, 2026*
 
 How autonomous coding agents remember, learn, and avoid repeating mistakes across sessions.
 
@@ -38,6 +38,27 @@ The 2025-2026 landscape shows two fundamentally different bets on how to solve t
 **Stack**: TypeScript, MiniSearch (BM25), sql.js, zero external APIs
 **Built for**: `pi` coding agent (Mario Zechner's platform)
 **Public announcement**: [March 16, 2026](https://x.com/micLivs/status/2033605835092312491) — "a knowledge base that doubles as an agent memory layer, ultra fast, completely sidestepping vector search"
+
+### HotpotQA Benchmark (March 27, 2026)
+
+Hard numbers on multi-hop question answering (250 questions, seed 42):
+
+```
+┌──────────────┬──────────┬──────────┐
+│ System       │ Recall   │ Answer F1│
+├──────────────┼──────────┼──────────┤
+│ Napkin (BM25)│ 99.8%    │ 79.6%    │
+│ Ori          │ 90.0%    │ 41.0%    │
+│ Mem0         │ 29.0%    │ 19.0%    │
+└──────────────┴──────────┴──────────┘
+```
+
+- Model: **Haiku 4.5** — cheapest Claude tier
+- No embeddings, no vector DB, no cloud
+- Reproducible: `npx tsx bench/hotpotqa-eval.ts --n 250 --seed 42`
+- Source: [@micLivs March 27, 2026](https://x.com/micLivs)
+
+This is the strongest public evidence that BM25 + progressive disclosure beats vector search for agent memory retrieval. Napkin achieved near-perfect recall while Mem0 (the most popular vector-based agent memory) scored under 30%.
 
 ### The Anti-RAG Bet
 
@@ -465,6 +486,7 @@ Sources: [Obsidian Forum: Vault Design for AI](https://forum.obsidian.md/t/desig
 
 ## Sources
 
+- [Napkin HotpotQA benchmark](https://x.com/micLivs) — 99.8% recall vs 29% Mem0, March 27 2026
 - [Napkin (Livshitz) — Blog post](https://michaellivs.com/blog/building-napkin-memory-system-for-agents)
 - [Napkin (Livshitz) — GitHub](https://github.com/Michaelliv/napkin) — MIT, TypeScript
 - [Napkin (Chen) — GitHub](https://github.com/blader/napkin) — MIT, Claude Code skill
