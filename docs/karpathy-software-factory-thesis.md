@@ -378,6 +378,51 @@ Sources:
 
 ---
 
+## LLM Knowledge Bases (Apr 2, 2026)
+
+Karpathy described his workflow for using LLMs to build personal knowledge bases — directly relevant to how this repo operates.
+
+Source: [X post](https://x.com/karpathy/status/2039805659525644595)
+
+### The Pattern
+
+```
+raw/ (source documents) → LLM "compiles" → wiki/ (.md files) → Q&A + enhancement loop
+```
+
+| Stage | What Happens |
+|-------|-------------|
+| **Ingest** | Index articles, papers, repos, datasets, images into `raw/`. Obsidian Web Clipper for web→md. Download images locally for LLM reference. |
+| **Compile** | LLM incrementally builds a wiki: summaries, backlinks, concept articles, cross-links. LLM owns the wiki — you rarely edit manually. |
+| **IDE** | Obsidian as frontend. Marp plugin for slides. View raw data, compiled wiki, and derived visualizations. |
+| **Q&A** | At ~100 articles / ~400K words, ask complex questions. No fancy RAG needed — LLM auto-maintains index files and brief summaries. |
+| **Output** | Render markdown, slides (Marp), matplotlib images. File outputs back into wiki. Explorations always "add up." |
+| **Linting** | LLM health checks: find inconsistencies, impute missing data (web search), suggest new article candidates. |
+| **Tools** | Vibe-coded search engine (web UI + CLI for LLM tool use on larger queries). |
+
+> "I think there is room here for an incredible new product instead of a hacky collection of scripts." — Karpathy
+
+### Obsidian Founder's Response: Vault Separation
+
+Steph Ango (Obsidian founder) responded with a critical operational insight:
+
+> "Keep your personal vault clean and create a messy vault for your agents."
+
+Key principles:
+- **Contamination risk**: Mixing agent-created and human-created artifacts makes your personal vault unreliable as a representation of *your* thoughts
+- **Source traceability**: Personal vault content should have known origins. Agent-generated content often can't be sourced.
+- **Tool degradation**: Search, bases, quick switcher, backlinks, graph — all stop being scoped to *your* knowledge when flooded with agent artifacts
+- **Graduation pattern**: Only bring agent-generated artifacts into your primary vault once they've proven useful
+
+### Implications for Software Factory
+
+1. **This repo IS the agent-facing vault.** `docs/` is the "messy vault" where agents compile research. The pattern matches exactly: `raw/` → agent-compiled wiki → Q&A loop.
+2. **The graduation pattern applies to our roadmap.** Research that proves actionable (e.g., the instruction compliance crisis → hooks architecture) graduates into code. Research that stays informational stays in docs.
+3. **Knowledge base as product.** Karpathy explicitly says "there is room for an incredible new product." Software Factory's docs/ directory is a working prototype of this — agent-compiled, LLM-queryable, incrementally enhanced.
+4. **Scale threshold: ~400K words before needing RAG.** Our thesis doc alone is ~7K words. At current growth rate, we have significant headroom before needing vector search over the wiki.
+
+---
+
 ## Sources
 
 ### Karpathy Primary Sources
@@ -391,6 +436,10 @@ Sources:
 - [Quasa — AI Agents Transform Programming](https://quasa.io/media/karpathy-s-observation-ai-agents-transform-programming-from-coding-to-orchestration) (Mar 9, 2026)
 - [Walseth AI — Agent Command Center](https://walseth.ai/blog/karpathy-command-center) (Mar 15, 2026)
 - [Economic Times — Karpathy no longer writes code](https://economictimes.indiatimes.com/tech/artificial-intelligence/ai-researcher-andrej-karpathy-no-longer-writes-code-spends-hours-directing-ai-agents/articleshow/129716812.cms) (Mar 21, 2026)
+
+### LLM Knowledge Bases
+- [Karpathy — LLM Knowledge Bases](https://x.com/karpathy/status/2039805659525644595) (Apr 2, 2026)
+- Steph Ango (Obsidian founder) — Vault separation response (Apr 2, 2026)
 
 ### Code Quality & Technical Debt
 - [JetBrains — Shadow Tech Debt](https://thenewstack.io/jetbrains-names-the-debt-ai-agents-leave-behind/) (Mar 11, 2026)
