@@ -238,18 +238,6 @@ Both paths converge at the BullMQ queue and share the same Agent Runner.
 | **Incident Responder** | PagerDuty / custom alert | RCA + fix PR | Max 10 files, 200 lines |
 | **Merge Resolver** | PR with conflict label | Conflict resolution commit | Max 20 files, 500 lines |
 
-### Cron Agents (read-only data pipeline)
-
-| Agent | Schedule | Purpose | Cost |
-|-------|----------|---------|------|
-| **Tool Discovery** | Daily 3 AM | Find new developer tools via LLM | ~$1.50/day |
-| **Signal Harvester** | Daily 2 AM | Refresh GitHub stars, npm downloads | Free |
-| **Drift Detector** | Daily 4 AM | Detect deprecated/archived tools | ~$0.50/day |
-| **Backfill** | Daily 1 AM | Enrich incomplete product profiles | ~$3.00/day |
-| **Integration Tester** | Weekly (disabled) | Verify integrations in Docker | Free |
-
-Cron agents have `blockedFilePatterns: ['**/*']` — they cannot modify any files. Lower cost limits. Use cheaper models (Gemini Flash) by default.
-
 ---
 
 ## Safety & Governance
@@ -364,22 +352,72 @@ npm run dev
 ## References
 
 ### Production Systems
-- [Spotify Honk Part 1](https://engineering.atspotify.com/2025/11/spotifys-background-coding-agent-part-1) — 1,500+ PRs, containerized K8s execution
-- [Spotify Honk Part 2](https://engineering.atspotify.com/2025/11/context-engineering-background-coding-agents-part-2) — Context engineering, Claude Code as top agent
-- [Spotify Honk Part 3](https://engineering.atspotify.com/2025/12/feedback-loops-background-coding-agents-part-3) — Verification loops, LLM judge (~25% veto rate)
-- [Ramp Inspect](https://builders.ramp.com/post/why-we-built-our-background-agent) — 30% of PRs, Modal sandboxes, warm pools
-- [Stripe Minions Part 1](https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents) — 1,300 PRs/week, 400+ MCP tools
-- [Stripe Minions Part 2](https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents-part-2) — Devboxes, conditional rules, max 2 CI retries
 
-### Research
-- [Karpathy Software Factory Thesis](docs/karpathy-software-factory-thesis.md) — Code quality findings, instruction compliance crisis, fleet management
-- [Alibaba SWE-CI Benchmark](https://arxiv.org/abs/2504.08057) — 75% of agents break working code over consecutive PRs
-- [AgentConductor](https://huggingface.co/papers/2602.17100) — RL-generated dynamic topologies, +14.6% on APPS, 68% cost reduction
+| System | Scale | Key Insight |
+|--------|-------|-------------|
+| [Stripe Minions](https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents) | 1,300 PRs/week | One-shot tree topology, 400+ MCP tools, warm EC2 instances |
+| [Stripe Minions Part 2](https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents-part-2) | Zero human-written code | Devboxes, conditional rules, max 2 CI retries |
+| [Spotify Honk Part 1](https://engineering.atspotify.com/2025/11/spotifys-background-coding-agent-part-1) | 650+ PRs/month | Containerized K8s fleet management |
+| [Spotify Honk Part 2](https://engineering.atspotify.com/2025/11/context-engineering-background-coding-agents-part-2) | 60-90% time savings | Context engineering, Claude Code as top agent |
+| [Spotify Honk Part 3](https://engineering.atspotify.com/2025/12/feedback-loops-background-coding-agents-part-3) | ~25% veto rate | Verification loops, LLM judge |
+| [Ramp Inspect](https://builders.ramp.com/post/why-we-built-our-background-agent) | ~50% of merged PRs | Modal snapshot-based warm pools |
+| [Ramp on Modal](https://modal.com/blog/how-ramp-built-a-full-context-background-coding-agent-on-modal) | 1,000 Datadog monitors | Self-maintaining code, auto-generated monitoring |
+| [OpenAI Harness Engineering](https://openai.com/index/harness-engineering/) | 1M lines, 1,500 PRs | Environment-first architecture, 3.5 PRs/engineer/day |
+| [Nubank + Devin](https://building.nubank.com/enhancing-engineering-workflows-with-ai-a-real-world-experience/) | 100K data class migrations | 12x efficiency, 20x cost savings with fine-tuned Devin |
+| [Coinbase Cloudbot](https://www.coinbase.com/blog/Tools-for-Developer-Productivity-at-Coinbase) | Internal platform | Cloud sandboxes, Slack-first invocation, agent councils |
+
+### Architecture & Patterns
+
+- [LangChain Harness Engineering](https://blog.langchain.com/improving-deep-agents-with-harness-engineering/) — Harness-only improvements: 52.8% → 66.5% on Terminal Bench 2.0 without model changes
+- [LangChain Deep Agents](https://github.com/langchain-ai/deepagents) — Middleware composition, planning tool, sub-agent delegation, filesystem backend
+- [Context Engineering (Martin Fowler)](https://martinfowler.com/articles/exploring-gen-ai/context-engineering-coding-agents.html) — Dynamic context assembly vs static prompts
+- [Context Rot (Chroma Research)](https://research.trychroma.com/context-rot) — How context degrades over agent turns
+- [Cloudflare Dynamic Workers](https://blog.cloudflare.com/dynamic-workers/) — V8 isolates, Code Mode collapses 2,500+ APIs to ~1,000 tokens
+- [Sandbox Architecture (Weng Jialin)](https://wengjialin.com/blog/agent-sandbox/) — Agent-inside vs sandbox-as-tool patterns
+- [Sandbox Comparison (Northflank)](https://northflank.com/blog/best-sandboxes-for-coding-agents) — Side-by-side comparison of agent sandbox platforms
+- [Agent Filesystems (Arize)](https://arize.com/blog/agent-interfaces-in-2026-filesystem-vs-api-vs-database-what-actually-works/) — Filesystem vs API vs database interfaces for agents
+- [Composio Agent Orchestrator](https://github.com/ComposioHQ/agent-orchestrator) — Fleet management with plugin-based architecture (4.5K stars)
+- [Paperclip](https://github.com/paperclipai/paperclip) — Org-chart orchestration with budgets, governance, live monitoring (26.7K stars)
+
+### Research & Benchmarks
+
+- [SWE-bench (ICLR 2024)](https://arxiv.org/abs/2310.06770) — 2,294 real GitHub issues, baseline evaluation standard
+- [SWE-bench Pro (Scale AI)](https://arxiv.org/abs/2509.16941) — 1,865 long-horizon tasks across Python, Go, TypeScript, JavaScript
+- [SWE-bench Multimodal](https://arxiv.org/abs/2410.03859) — 617 visual UI/diagram tasks, only ~12% solved by top systems
+- [Alibaba SWE-CI](https://arxiv.org/abs/2504.08057) — 75% of agents break working code over consecutive PRs
+- [AgentConductor](https://huggingface.co/papers/2602.17100) — RL-generated dynamic DAG topologies, +14.6% on APPS, 68% cost reduction
+- [Building Effective AI Coding Agents](https://arxiv.org/abs/2603.05344) — Deep patterns for agent harness design
+- [Agent-as-a-Judge Survey](https://arxiv.org/pdf/2601.05111) — LLM judge alone catches ~45% of errors, combined with deterministic tools reaches 94%
+- [LLM Code Reviewers](https://arxiv.org/abs/2603.00539) — Evaluates judge reliability for code review
+- [Anthropic 2026 Agentic Coding Trends](https://resources.anthropic.com/hubfs/2026%20Agentic%20Coding%20Trends%20Report.pdf) — Context engineering, tool use patterns, error reduction metrics
+
+### Platforms & Ecosystems
+
+- [Model Context Protocol (MCP)](https://github.com/modelcontextprotocol/specification) — Open standard for connecting AI to external tools (MIT, 7.5K stars)
+- [AGENTS.md Standard](https://agents.md/) — Open protocol for making repos agent-friendly
+- [GitHub Agent HQ](https://github.blog/news-insights/company-news/welcome-home-agents/) — Multi-agent orchestration, Agentic Workflows, Copilot Coding Agent
+- [Linear Agent API](https://linear.app/) — Agent-first project management (Developer Preview, March 2026)
+- [Open-Inspect](https://github.com/ColeMurray/background-agents) — Open-source background agent system, Cloudflare Workers + Modal
 - [background-agents.com](https://background-agents.com) — Industry overview of background agent platforms
+
+### Agent Memory & Knowledge
+
+- [Karpathy Autoresearch](https://github.com/karpathy/autoresearch) — Overnight research loop: prepare → train → evaluate → accept/reject
+- [QMD (Tobi Lutke)](https://github.com/tobi/qmd) — Hybrid search (BM25 + vector + LLM reranking) with MCP server (16K stars)
+- [Napkin](https://github.com/Michaelliv/napkin) — Progressive disclosure memory, BM25, sql.js, 99.8% recall on HotpotQA
+- [TigerFS](https://tigerfs.io) — Mount databases as POSIX directories for transactional multi-agent state
+- [AgentFS (Turso)](https://github.com/tursodatabase/agentfs) — Database-as-directory for agent workspaces
+
+### Strategy & Cost
+
+- [Karpathy Software Factory Thesis](docs/karpathy-software-factory-thesis.md) — Code quality findings, instruction compliance crisis, fleet management
+- [Agent Pricing Analysis (Cosine)](https://cosine.sh/blog/ai-coding-agent-pricing-task-vs-token) — Per-run vs token-based vs task-based pricing models
+- [FinOps for Agentic AI](https://analyticsweek.com/finops-for-agentic-ai-cloud-cost-2026/) — $400M collective cloud leak estimate
+- [Stripe Walls > Models](https://www.anup.io/stripes-coding-agents-the-walls-matter-more-than-the-model/) — Why governance matters more than model capability
 
 ### Research Corpus
 
-The `docs/` directory contains 34 research documents covering: sandbox architectures, agent memory systems, harness engineering, context engineering, agent topologies, competitive landscape, and more. See [AGENTS.md](AGENTS.md) for a navigable index.
+The `docs/` directory contains 34 research documents covering sandbox architectures, agent memory systems, harness engineering, context engineering, agent topologies, competitive landscape, and more. See [AGENTS.md](AGENTS.md) for a navigable index.
 
 ---
 
