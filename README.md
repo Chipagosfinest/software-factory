@@ -20,81 +20,192 @@ Three companies have proven this pattern at scale:
 
 ---
 
+## Agent Topologies
+
+Nine topology types observed across production and research systems. How you wire agents matters more than how smart they are. This implementation uses a **Pipeline** topology with elements of **One-Shot Tree** for independent tasks.
+
+### One-Shot Tree (Stripe Minions)
+
+```
+                    ┌─────────┐
+                    │ Dispatch │
+                    └────┬────┘
+               ┌─────────┼─────────┐
+               ▼         ▼         ▼
+          ┌────────┐ ┌────────┐ ┌────────┐
+          │Agent A │ │Agent B │ │Agent C │
+          │(fix)   │ │(fix)   │ │(fix)   │
+          └───┬────┘ └───┬────┘ └───┬────┘
+              ▼          ▼          ▼
+           [PR #1]    [PR #2]    [PR #3]
+```
+
+Fire-and-forget. Dispatch fans out issues to independent agents. Each agent receives full context, produces one PR, and dies. No iteration, no feedback between siblings. Stripe processes 1,300 PRs/week this way. Partial success is the norm (~70% first-pass success on CI repair).
+
+### Pipeline (Spotify Honk)
+
+```
+  ┌───────┐    ┌────────┐    ┌───────┐    ┌────────┐    ┌───────┐
+  │ Parse │───▶│ Reason │───▶│  Fix  │───▶│ Verify │───▶│ Judge │
+  │  logs │    │  about  │    │  code │    │ (tests)│    │(LLM)  │
+  └───────┘    └────────┘    └───────┘    └────────┘    └───────┘
+                                               │              │
+                                               │   ✗ veto     │
+                                               ◀──────────────┘
+                                          (max 2 retries)
+```
+
+Linear with one feedback loop. Each stage transforms output and passes it forward. Judge can veto back to Fix (max 2 iterations). Spotify reports ~25% veto rate, catching scope creep and phantom fixes. Convergence detection stops the loop if the same error repeats.
+
+### Org Chart (Paperclip)
+
+```
+                 ┌──────────────┐
+                 │     CEO      │
+                 │ (Orchestrator)│
+                 │  Budget: $50 │
+                 └──────┬───────┘
+              ┌─────────┼─────────────┐
+              ▼         ▼             ▼
+        ┌──────────┐ ┌──────────┐ ┌──────────┐
+        │ Eng Lead │ │ QA Lead  │ │ Ops Lead │
+        │ $20 budg │ │ $15 budg │ │ $15 budg │
+        └────┬─────┘ └────┬─────┘ └────┬─────┘
+          ┌──┴──┐      ┌──┴──┐      ┌──┴──┐
+          ▼     ▼      ▼     ▼      ▼     ▼
+        [dev] [dev]  [qa]  [qa]  [sre] [sre]
+```
+
+Hierarchical delegation. Parent assigns tasks to children, children report upward. Budget flows down — each level gets a sub-allocation. Coordination overhead: messages traverse the hierarchy.
+
+### Mesh (Ramp Inspect)
+
+```
+        ┌────────┐       ┌────────┐
+        │Agent A │◀─────▶│Agent B │
+        │(review)│       │(fix)   │
+        └───┬────┘       └───┬────┘
+            │    ╲       ╱   │
+            │     ╲     ╱    │
+            │   shared state │
+            │     ╱     ╲    │
+            │    ╱       ╲   │
+        ┌───┴────┐       ┌───┴────┐
+        │Agent C │◀─────▶│Agent D │
+        │(test)  │       │(deploy)│
+        └────────┘       └────────┘
+```
+
+Peer-to-peer. Agents share state through a common workspace. No central coordinator. Warm pools mean agents spin up in <2s from snapshots. Humans can join live sessions and co-edit.
+
+### Ratchet (Karpathy Autoresearch)
+
+```
+       ┌──────────────────────────────────────────┐
+       │            NEVER STOP LOOP                │
+       │                                           │
+       │  ┌──────┐    ┌──────┐    ┌───────┐       │
+       │  │ Read │───▶│Modify│───▶│Commit │       │
+       │  │state │    │ code │    │(git)  │       │
+       │  └──────┘    └──────┘    └───┬───┘       │
+       │                              ▼           │
+       │                        ┌──────────┐      │
+       │                        │   Run    │      │
+       │                        │experiment│      │
+       │                        └────┬─────┘      │
+       │                             ▼            │
+       │                      ┌────────────┐      │
+       │               ┌──yes─┤ Improved?  ├─no─┐ │
+       │               ▼      └────────────┘    ▼ │
+       │          ┌─────────┐            ┌────────┐│
+       │          │  KEEP   │            │ RESET  ││
+       │          │(advance │            │(git    ││
+       │          │ branch) │            │ reset) ││
+       │          └────┬────┘            └───┬────┘│
+       │               └────────┬────────────┘    │
+       │                        ▼                  │
+       │                   LOOP BACK               │
+       └──────────────────────────────────────────┘
+            ~12 experiments/hour
+            ~100 experiments overnight
+            git history = full audit trail
+```
+
+Self-directed with no external coordinator. One binary metric (improved / not improved) eliminates ambiguity. Karpathy completed 700 experiments in 2 days, discovering 20 optimizations yielding 11% training speedup. Shopify ran it overnight: 37 experiments, 19% performance gain.
+
+### Sequential Multi-Agent (LangChain Open SWE)
+
+```
+  ┌──────────┐     ┌──────────┐     ┌──────────┐     ┌──────────┐
+  │ MANAGER  │────▶│ PLANNER  │────▶│PROGRAMMER│────▶│ REVIEWER │
+  │          │     │          │     │          │     │          │
+  │ Route    │     │ Research │     │ Code in  │     │ Quality  │
+  │ task     │     │ codebase │     │ sandbox  │     │ check    │
+  └──────────┘     └──────────┘     └──────────┘     └──────────┘
+```
+
+Different specialized agents with distinct roles. Unlike Pipeline (same agent through stages), each agent has its own system prompt, tools, and reasoning mode. The Planner never writes code; the Programmer never reviews. Harness-only changes produced +13.7pp gain without changing the model.
+
+### Deterministic Workflow Graph (Fabro)
+
+```
+   graph workflow {
+     lint -> test -> implement -> review -> merge
+     implement -> {sandbox, typecheck} [parallel]
+     review -> implement [loop, max: 2]
+     review -> HUMAN_GATE [approval]
+   }
+```
+
+Human defines a DOT graph with branching, loops, parallelism, and approval gates. CSS-like stylesheets route steps to appropriate models (Opus for implementation, Haiku for linting). Git commits at every stage create checkpoints. Trades flexibility for reproducibility.
+
+### Topology Comparison
+
+| Topology | Control | Who Decides Path | Best Metric |
+|----------|---------|-----------------|-------------|
+| **One-Shot Tree** | Static | Dispatcher (fire-and-forget) | 1,300 PRs/week (Stripe) |
+| **Pipeline** | Sequential | Hardcoded pipeline order | ~25% veto catch rate (Spotify) |
+| **Org Chart** | Hierarchical | Parent delegates to children | $50 budget enforcement (Paperclip) |
+| **Mesh** | Peer-to-peer | Agents discover work independently | <2s startup (Ramp) |
+| **Ratchet** | Self-directed | Agent picks what to try next | ~100 experiments/night (Karpathy) |
+| **Sequential Multi-Agent** | Hand-off | Fixed role sequence | +13.7pp harness-only (LangChain) |
+| **Dynamic DAG** | RL-generated | RL orchestrator creates topology | +14.6% on APPS (AgentConductor) |
+| **Deterministic Graph** | Prescriptive | Human-authored DOT graph | Reproducible, auditable (Fabro) |
+
+**The autonomy spectrum:**
+
+```
+  Prescriptive ◄──────────────────────────────────────────────► Autonomous
+
+  Fabro      Pipeline    Org Chart    Mesh    Seq. Multi    One-Shot    Ratchet
+  (human     (fixed      (delegated   (shared  (role-based   (dispatch   (agent
+   graph)     stages)     hierarchy)   state)   autonomy)     + forget)   decides)
+```
+
+Full topology analysis with combos, anti-patterns, and build profiles: [`docs/potent-combos.md`](docs/potent-combos.md)
+
+---
+
 ## Architecture
 
-```mermaid
-graph TB
-    subgraph Entry["Entry Points"]
-        GH["GitHub Webhooks<br/>PR opened, CI failed,<br/>Dependabot alert"]
-        CRON["Cron Scheduler<br/>Daily/Weekly"]
-        LIN["Linear Issues<br/>Orchestrator-driven"]
-    end
-
-    subgraph Router["Event Router"]
-        ER["src/router.ts<br/>Normalize + Classify + Dispatch"]
-    end
-
-    subgraph Queue["Job Queue"]
-        BULL["BullMQ + Redis<br/>Rate limiting, dead letter"]
-    end
-
-    subgraph Governance["Governance Layer"]
-        GATE["Executor Gate<br/>Kill switch"]
-        BUDGET["Budget Guard<br/>$2/run cap"]
-        CB["Circuit Breaker<br/>Auto-disable on failure"]
-        AUDIT["Audit Log<br/>SQLite"]
-    end
-
-    subgraph Agents["Webhook Agents"]
-        PR["PR Reviewer"]
-        CI["CI Debugger"]
-        SEC["Security Patcher"]
-        INC["Incident Responder"]
-        MRG["Merge Resolver"]
-    end
-
-    subgraph CronAgents["Cron Agents"]
-        DISC["Tool Discovery"]
-        SIG["Signal Harvester"]
-        DRIFT["Drift Detector"]
-        BACK["Backfill"]
-        INT["Integration Tester"]
-    end
-
-    subgraph Verification["Verification"]
-        VERIFY["Build + Test + Lint"]
-        JUDGE["LLM Judge<br/>Scope + quality check"]
-    end
-
-    subgraph Output["Output"]
-        GHAPI["GitHub API<br/>PRs, comments"]
-        DB["Database<br/>Signals, validations"]
-    end
-
-    GH --> ER
-    CRON --> ER
-    LIN --> ER
-    ER --> BULL
-    BULL --> GATE
-    GATE --> BUDGET
-    BUDGET --> Agents
-    BUDGET --> CronAgents
-    Agents --> VERIFY
-    VERIFY --> JUDGE
-    JUDGE --> GHAPI
-    CronAgents --> DB
-    CB --> GATE
-    Agents --> AUDIT
-    CronAgents --> AUDIT
-
-    style Entry fill:#1a1a2e,stroke:#e94560,color:#fff
-    style Router fill:#16213e,stroke:#0f3460,color:#fff
-    style Queue fill:#16213e,stroke:#0f3460,color:#fff
-    style Governance fill:#1a1a2e,stroke:#e94560,color:#fff
-    style Agents fill:#0f3460,stroke:#53a8b6,color:#fff
-    style CronAgents fill:#0f3460,stroke:#53a8b6,color:#fff
-    style Verification fill:#1a1a2e,stroke:#e94560,color:#fff
-    style Output fill:#16213e,stroke:#0f3460,color:#fff
+```
+GitHub Webhooks / Cron / Linear Issues
+              │
+        Event Router (src/router.ts)
+              │
+     ┌────────┼────────┬──────────┬──────────┐
+     │        │        │          │          │
+  PR Review  CI Debug  Security  Incident  Merge
+   Agent      Agent    Agent     Agent     Agent
+     │        │        │          │          │
+     └────────┴────────┴──────────┴──────────┘
+              │                   │
+        Governance Layer    GitHub API
+       (gate → budget →    (PRs/comments)
+        breaker → timeout)
+              │
+        Human Review Gate
+       (all output = PRs)
 ```
 
 ### Two Execution Paths
@@ -112,65 +223,6 @@ Linear Issue → Orchestrator Poll → Reconciler → Workspace (git worktree) �
 Disabled by default. Polls Linear every 30s, creates isolated git worktrees per task, manages a state machine with exponential backoff and convergence detection.
 
 Both paths converge at the BullMQ queue and share the same Agent Runner.
-
----
-
-## Agent Lifecycle
-
-Every agent follows the same lifecycle:
-
-```mermaid
-stateDiagram-v2
-    [*] --> EventReceived: Webhook / Cron / Alert
-
-    EventReceived --> GovernanceCheck: Normalize event
-
-    state GovernanceCheck {
-        [*] --> Permissions: Check executor gate
-        Permissions --> BudgetCheck: Allowed?
-        BudgetCheck --> [*]: Under cap?
-    }
-
-    GovernanceCheck --> ContextBuild: Passed
-
-    state ContextBuild {
-        [*] --> FileTree: Read repo structure
-        FileTree --> RecentChanges: Git log / diff
-        RecentChanges --> RelevantCode: Scope to affected files
-        RelevantCode --> [*]
-    }
-
-    ContextBuild --> AgentReasoning: Full context ready
-
-    state AgentReasoning {
-        [*] --> LLMCall: Analyze problem
-        LLMCall --> GenerateFix: Produce code changes
-        GenerateFix --> [*]
-    }
-
-    AgentReasoning --> Verification: Changes generated
-
-    state Verification {
-        [*] --> LocalChecks: Lint + format
-        LocalChecks --> TestExecution: Build + test in sandbox
-        TestExecution --> LLMJudge: Passes? Scope check
-        LLMJudge --> Retry: Veto? (max 2 retries)
-        Retry --> LocalChecks: Try again
-        LLMJudge --> Approved: Looks good
-        Approved --> [*]
-    }
-
-    Verification --> Output: Verified
-
-    state Output {
-        [*] --> CreatePR: Open PR with explanation
-        CreatePR --> AuditLog: Log all actions
-        AuditLog --> [*]
-    }
-
-    Output --> HumanReview: PR ready
-    HumanReview --> [*]: Merge or reject
-```
 
 ---
 
@@ -212,57 +264,36 @@ Five layers checked in order on every agent run:
 
 ---
 
-## Verification Architecture
+## Verification
 
-The quality problem is industry-wide. Alibaba's SWE-CI benchmark shows 75% of agents break working code. AI PRs have 1.7x more issues than human PRs (CodeRabbit, 470 PRs). Three layers of verification address this:
+The quality problem is industry-wide. Alibaba's SWE-CI benchmark shows 75% of agents break working code. AI PRs have 1.7x more issues than human PRs (CodeRabbit, 470 PRs). Three layers address this:
 
-```mermaid
-flowchart TD
-    CODE["Agent generates code"] --> DET
-
-    subgraph DET["Layer 1: Deterministic Checks (free, fast)"]
-        AST["AST complexity"]
-        DUP["Duplication detection"]
-        LINT["Style linting"]
-        TYPE["Type checking"]
-    end
-
-    DET -->|All pass| TEST
-
-    subgraph TEST["Layer 2: Test Execution (hard gate)"]
-        BUILD["Build succeeds?"]
-        UNIT["Unit tests pass?"]
-        INTEG["Integration tests pass?"]
-    end
-
-    TEST -->|All pass| LLM
-
-    subgraph LLM["Layer 3: LLM-as-Judge (soft signal)"]
-        SCOPE["Scope check: stayed on task?"]
-        READ["Readability assessment"]
-        ARCH["Architecture coherence"]
-    end
-
-    LLM -->|Pass| PR["Open PR for human review"]
-    LLM -->|Veto| RETRY{"Retry count"}
-    TEST -->|Fail| RETRY
-    DET -->|Fail| AUTOFIX["Auto-fix if possible"]
-    AUTOFIX --> DET
-
-    RETRY -->|"< 2"| CODE
-    RETRY -->|">= 2"| FLAG["Flag for human with diagnosis"]
-
-    style DET fill:#16213e,stroke:#53a8b6,color:#fff
-    style TEST fill:#0f3460,stroke:#53a8b6,color:#fff
-    style LLM fill:#1a1a2e,stroke:#e94560,color:#fff
-    style PR fill:#27ae60,color:#fff
-    style FLAG fill:#f39c12,color:#fff
+```
+  Agent generates code
+         │
+  ┌──────▼──────────────────────────────────────────┐
+  │  Layer 1: Deterministic Checks (free, fast)      │
+  │  AST complexity, duplication, linting, types     │
+  └──────┬──────────────────────────────────────────┘
+         │ all pass
+  ┌──────▼──────────────────────────────────────────┐
+  │  Layer 2: Test Execution (hard gate)             │
+  │  Build succeeds? Unit tests pass?                │
+  └──────┬──────────────────────────────────────────┘
+         │ all pass
+  ┌──────▼──────────────────────────────────────────┐
+  │  Layer 3: LLM-as-Judge (soft signal)             │
+  │  Scope check, readability, architecture          │
+  └──────┬──────────────────────────────────────────┘
+         │
+    pass ├──────▶ Open PR for human review
+         │
+    veto ├──▶ retry (max 2) ──▶ flag for human
 ```
 
-**Why three layers?**
 - Layer 1 catches 60%+ of issues for free
 - Layer 2 is the hard gate — if it doesn't build/test, it doesn't ship
-- Layer 3 catches subtle quality issues (scope creep, readability) that deterministic tools miss
+- Layer 3 catches subtle quality issues (scope creep, readability)
 - Goodhart's Law risk: agents optimized for LLM judge approval will game the metric — hard constraints are the real gate
 
 ---
@@ -316,81 +347,17 @@ cp .env.example .env
 npm run dev
 ```
 
-For webhook development:
-```bash
-npm run tunnel  # Exposes localhost:3847 via localtunnel
-```
-
 ---
 
 ## Design Principles
 
 1. **PRs are the review gate** — Every agent action produces a PR or comment. Nothing merges without human approval.
-
-2. **Hooks over instructions** — CLAUDE.md rules get violated. Only hooks that `exit 2` mechanically enforce constraints. The governance layer (executor gate, LLM judge, verification loops) implements this.
-
-3. **Bounded blast radius** — Each agent operates on scoped files with cost caps. A security agent can't refactor your auth system.
-
-4. **Shift feedback left** — Catch errors locally before expensive CI. Local lint in <5s, then CI only if local passes. Max 2 CI retry rounds.
-
-5. **Verification loops, not hope** — Agents must call verifiers before opening PRs. Verifiers are black boxes to the agent. LLM judge catches scope creep.
-
-6. **Cattle, not pets** — Every sandbox is identical and disposable. Pre-warmed from a pool, torn down after use. No persistent agent state.
-
-7. **3 focused workers > 10 parallel** — Production fleet data shows focused, scoped agents outperform swarm patterns. Each agent handles one task type well.
-
----
-
-## Project Structure
-
-```
-src/
-  index.ts                    # Webhook server (Hono)
-  router.ts                   # Event normalization + agent dispatch
-  types.ts                    # Shared type definitions
-  agents/
-    pr-reviewer.ts            # PR review agent
-    ci-debugger.ts            # CI failure investigation + fix
-    security.ts               # CVE/dependency patching
-    incident.ts               # Production incident response
-    merge.ts                  # Merge conflict resolution
-    runner.ts                 # Agent execution harness
-    judge.ts                  # LLM judge (diff validation)
-    prompts/                  # Agent system prompts (markdown)
-    cron/                     # Data pipeline agents
-      tool-discovery.ts
-      signal-harvester.ts
-      drift-detector.ts
-      backfill.ts
-      integration-tester.ts
-  core/
-    budget-guard.ts           # Per-agent cost tracking + caps
-    circuit-breaker.ts        # Failure detection + auto-disable
-    context.ts                # Repo context builder
-    db.ts                     # SQLite audit log + migrations
-    executor-gate.ts          # Kill switch
-    flywheel.ts               # Product confidence scoring
-    github.ts                 # GitHub API client
-    governance.ts             # Permissions + blast radius
-    llm.ts                    # OpenRouter client with cost tracking
-    redis.ts                  # Shared Redis connection config
-    retention.ts              # Data retention (90-day prune)
-    scheduler.ts              # Cron schedule management
-    startup-checks.ts         # Fail-fast config validation
-    supabase.ts               # External DB connection
-    webhook.ts                # GitHub webhook signature verification
-  orchestrator/
-    orchestrator.ts           # Symphony-style reconciliation loop
-    reconciler.ts             # Task lifecycle management
-    state.ts                  # State machine with backoff
-    workspace.ts              # Git worktree isolation
-    workflow.ts               # WORKFLOW.md config parser
-    linear.ts                 # Linear API client
-  queue/
-    queue.ts                  # BullMQ job definitions
-    worker.ts                 # BullMQ worker processing
-docs/                         # Research corpus (34 documents)
-```
+2. **Hooks over instructions** — CLAUDE.md rules get violated. Only hooks that `exit 2` mechanically enforce constraints.
+3. **Bounded blast radius** — Each agent operates on scoped files with cost caps.
+4. **Shift feedback left** — Catch errors locally before expensive CI. Max 2 CI retry rounds.
+5. **Verification loops, not hope** — Agents must call verifiers before opening PRs. LLM judge catches scope creep.
+6. **Cattle, not pets** — Every sandbox is identical and disposable. No persistent agent state.
+7. **3 focused workers > 10 parallel** — Focused, scoped agents outperform swarm patterns.
 
 ---
 
@@ -405,13 +372,14 @@ docs/                         # Research corpus (34 documents)
 - [Stripe Minions Part 2](https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents-part-2) — Devboxes, conditional rules, max 2 CI retries
 
 ### Research
-- [Karpathy Software Factory Thesis](docs/karpathy-software-factory-thesis.md) — Code quality findings, instruction compliance crisis, fleet management patterns
+- [Karpathy Software Factory Thesis](docs/karpathy-software-factory-thesis.md) — Code quality findings, instruction compliance crisis, fleet management
 - [Alibaba SWE-CI Benchmark](https://arxiv.org/abs/2504.08057) — 75% of agents break working code over consecutive PRs
+- [AgentConductor](https://huggingface.co/papers/2602.17100) — RL-generated dynamic topologies, +14.6% on APPS, 68% cost reduction
 - [background-agents.com](https://background-agents.com) — Industry overview of background agent platforms
 
 ### Research Corpus
 
-The `docs/` directory contains 34 research documents covering: sandbox architectures, agent memory systems, harness engineering, context engineering, agent filesystems, competitive landscape, enterprise adoption, and more. See [AGENTS.md](AGENTS.md) for a navigable index.
+The `docs/` directory contains 34 research documents covering: sandbox architectures, agent memory systems, harness engineering, context engineering, agent topologies, competitive landscape, and more. See [AGENTS.md](AGENTS.md) for a navigable index.
 
 ---
 
