@@ -4,24 +4,6 @@ import { readFileSync } from 'fs'
 import { withCircuitBreaker } from './circuit-breaker.js'
 import type { RepoRef } from '../types.js'
 
-let _appOctokit: Octokit | null = null
-
-function getAppOctokit(): Octokit {
-  if (!_appOctokit) {
-    const appId = process.env.GITHUB_APP_ID
-    const privateKeyPath = process.env.GITHUB_PRIVATE_KEY_PATH
-    if (!appId || !privateKeyPath) {
-      throw new Error('GITHUB_APP_ID and GITHUB_PRIVATE_KEY_PATH required')
-    }
-    const privateKey = readFileSync(privateKeyPath, 'utf-8')
-    _appOctokit = new Octokit({
-      authStrategy: createAppAuth,
-      auth: { appId: parseInt(appId), privateKey },
-    })
-  }
-  return _appOctokit
-}
-
 async function getInstallationOctokit(installationId: number): Promise<Octokit> {
   const appId = process.env.GITHUB_APP_ID
   const privateKeyPath = process.env.GITHUB_PRIVATE_KEY_PATH

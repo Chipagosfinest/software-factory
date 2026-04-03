@@ -1,4 +1,4 @@
-import { execSync, execFileSync } from 'child_process'
+import { execFileSync } from 'child_process'
 import { existsSync, mkdirSync, rmSync, readdirSync } from 'fs'
 import { resolve, join } from 'path'
 import type { WorkspaceInfo, RepoRef } from '../types.js'

@@ -48,7 +48,7 @@ const handler: (event: FactoryEvent) => Promise<AgentResult> = async (event) => 
       .order('discovered_at', { ascending: true })
       .limit(15)
 
-    const slugs = (incomplete ?? []).map((p: any) => p.slug)
+    const slugs = (incomplete ?? []).map((p: { slug: string }) => p.slug)
 
     if (slugs.length === 0) {
       completePipelineRun(runId, 'success', 0, 0, 0)

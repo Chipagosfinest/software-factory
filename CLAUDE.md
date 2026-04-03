@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Software Factory is an agent-native platform that autonomously handles software delivery tasks: PR review, CI debugging, security patching, incident response, and merge conflict resolution. It receives GitHub webhooks and Linear issues, dispatches them to specialized agents, and outputs PRs/comments. Humans review before merge.
 
-The `docs/` directory is a **research corpus** (34 documents on autonomous coding agents from Stripe, Spotify, Ramp, LangChain, etc.), not project documentation. Don't confuse research docs with implementation docs.
+The `docs/` directory is a **research corpus** (34 documents on autonomous coding agents from Stripe, Spotify, Ramp, LangChain, etc.), not project documentation.
 
 ## Commands
 
@@ -78,6 +78,7 @@ Two categories with different permission profiles:
 - **Workspace Isolation** (`src/orchestrator/workspace.ts`) — Git worktrees for orchestrator tasks. Repo allowlist enforced. Max concurrent workspaces (default 5). Credentials stripped from stored remotes after clone.
 - **Workflow Config** — Target repos can place a `WORKFLOW.md` with YAML front matter to configure which agents run, model overrides, timeouts, and retry counts. Parsed with hot-reload (mtime check).
 - **Task State Machine** (`src/orchestrator/state.ts`) — Enforces valid transitions. Exponential backoff on retry (30s → 2m → 8m → 30m → 2h cap with jitter).
+- **Redis Config** (`src/core/redis.ts`) — Shared BullMQ connection config, imported by queue, worker, and scheduler.
 
 ### HTTP Endpoints
 

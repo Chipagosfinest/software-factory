@@ -19,7 +19,6 @@
     "bullmq": "^5.30.0",
     "dotenv": "^17.3.1",
     "hono": "^4.6.0",
-    "octokit": "^4.1.0",
     "openai": "^4.80.0"
   },
   "devDependencies": {

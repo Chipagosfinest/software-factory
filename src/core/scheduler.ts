@@ -1,14 +1,10 @@
-import { Queue, type JobsOptions } from 'bullmq'
+import { Queue } from 'bullmq'
 import type { AgentType } from '../types.js'
 import { router } from '../router.js'
 import { getDb } from './db.js'
+import { redisConnection } from './redis.js'
 
-const connection = {
-  host: new URL(process.env.REDIS_URL || 'redis://localhost:6379').hostname,
-  port: parseInt(new URL(process.env.REDIS_URL || 'redis://localhost:6379').port || '6379'),
-}
-
-const cronQueue = new Queue('software-factory-cron', { connection })
+const cronQueue = new Queue('software-factory-cron', { connection: redisConnection })
 
 interface CronJob {
   agentType: AgentType
@@ -78,7 +74,7 @@ export async function startCronScheduler(): Promise<void> {
         )
         .run(agentType)
     },
-    { connection, concurrency: 1 },
+    { connection: redisConnection, concurrency: 1 },
   )
 
   worker.on('failed', (job, err) => {

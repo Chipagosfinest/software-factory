@@ -37,7 +37,10 @@ export async function buildRepoContext(event: FactoryEvent): Promise<RepoContext
     const relevantPaths = files.map(f => f.filename).filter(f => !isBinaryPath(f))
 
     for (const path of relevantPaths) {
-      if (budgetUsed >= MAX_CONTEXT_BYTES) break
+      if (budgetUsed >= MAX_CONTEXT_BYTES) {
+        console.warn(`[context] Budget exhausted (${budgetUsed} bytes), skipping remaining ${relevantPaths.length - context.relevantFiles.length} files`)
+        break
+      }
       try {
         const content = await getFileContent(repo, path, pr.head.sha)
         const size = Buffer.byteLength(content)

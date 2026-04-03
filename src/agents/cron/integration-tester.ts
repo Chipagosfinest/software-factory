@@ -1,4 +1,4 @@
-import type { AgentResult, FactoryEvent, CronPayload } from '../../types.js'
+import type { AgentResult, FactoryEvent } from '../../types.js'
 import { startPipelineRun, completePipelineRun } from '../../core/budget-guard.js'
 import { recordAudit } from '../../core/db.js'
 

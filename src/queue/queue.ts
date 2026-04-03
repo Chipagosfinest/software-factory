@@ -1,12 +1,8 @@
 import { Queue } from 'bullmq'
 import type { FactoryEvent } from '../types.js'
+import { redisConnection } from '../core/redis.js'
 
-const connection = {
-  host: new URL(process.env.REDIS_URL || 'redis://localhost:6379').hostname,
-  port: parseInt(new URL(process.env.REDIS_URL || 'redis://localhost:6379').port || '6379'),
-}
-
-export const factoryQueue = new Queue<FactoryEvent>('software-factory', { connection })
+export const factoryQueue = new Queue<FactoryEvent>('software-factory', { connection: redisConnection })
 
 export async function enqueueEvent(event: FactoryEvent): Promise<string> {
   const job = await factoryQueue.add(event.type, event, {

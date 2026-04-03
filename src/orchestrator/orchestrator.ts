@@ -1,7 +1,6 @@
-import { fetchFactoryIssues, updateIssueState, addIssueComment, getTeamStates } from './linear.js'
+import { fetchFactoryIssues } from './linear.js'
 import { reconcile, completeTask, failTask } from './reconciler.js'
 import { getOrchestratorMetrics } from '../core/db.js'
-import { recordAudit } from '../core/db.js'
 
 interface OrchestratorOptions {
   pollIntervalMs: number     // How often to poll Linear (default: 30s)

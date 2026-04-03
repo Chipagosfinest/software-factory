@@ -1,10 +1,8 @@
 import type { AgentResult, FactoryEvent, CronPayload } from '../../types.js'
-import { checkBudget, startPipelineRun, completePipelineRun } from '../../core/budget-guard.js'
+import { startPipelineRun, completePipelineRun } from '../../core/budget-guard.js'
 import { getProductsNeedingReview, upsertSignal } from '../../core/supabase.js'
 import { updateConfidence } from '../../core/flywheel.js'
 import { recordAudit } from '../../core/db.js'
-
-const DAILY_BUDGET = 0 // Free APIs only — GitHub API, npm registry
 
 interface GitHubRepoInfo {
   stargazers_count: number
@@ -46,8 +44,8 @@ const handler: (event: FactoryEvent) => Promise<AgentResult> = async (event) => 
           await updateConfidence(product.slug, 'signals_verified', 0.3)
           itemsWritten++
         }
-      } catch {
-        // Skip this product if GitHub fetch fails
+      } catch (err) {
+        console.warn(`[signal-harvester] GitHub fetch failed for ${product.slug}: ${err instanceof Error ? err.message : err}`)
       }
 
       // Fetch npm downloads (free API)
@@ -58,8 +56,8 @@ const handler: (event: FactoryEvent) => Promise<AgentResult> = async (event) => 
           await upsertSignal(product.slug, 'npm_weekly_downloads', npm.downloads, 'npm')
           itemsWritten++
         }
-      } catch {
-        // Not an npm package or fetch failed
+      } catch (err) {
+        console.warn(`[signal-harvester] npm fetch failed for ${product.slug}: ${err instanceof Error ? err.message : err}`)
       }
     }
 

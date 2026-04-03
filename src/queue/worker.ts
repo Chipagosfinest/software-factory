@@ -3,11 +3,7 @@ import type { FactoryEvent } from '../types.js'
 import { runAgent } from '../agents/runner.js'
 import { isExecutionAllowed } from '../core/executor-gate.js'
 import { recordAudit } from '../core/db.js'
-
-const connection = {
-  host: new URL(process.env.REDIS_URL || 'redis://localhost:6379').hostname,
-  port: parseInt(new URL(process.env.REDIS_URL || 'redis://localhost:6379').port || '6379'),
-}
+import { redisConnection } from '../core/redis.js'
 
 async function processJob(job: Job<FactoryEvent>): Promise<void> {
   const event = job.data
@@ -33,7 +29,7 @@ export function startWorker(): Worker {
   if (_worker) return _worker
 
   _worker = new Worker<FactoryEvent>('software-factory', processJob, {
-    connection,
+    connection: redisConnection,
     concurrency: parseInt(process.env.WORKER_CONCURRENCY || '3'),
     limiter: {
       max: 10,
