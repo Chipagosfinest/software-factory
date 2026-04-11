@@ -1,8 +1,19 @@
 {
   "version": 1,
-  "generated": "2026-03-19",
-  "docCount": 34,
+  "generated": "2026-04-11",
+  "docCount": 35,
   "docs": [
+    {
+      "id": "latent-briefing-kv-compaction",
+      "title": "Latent Briefing: KV Cache Compaction for Multi-Agent Systems (Ramp Labs)",
+      "path": "docs/latent-briefing-kv-compaction.md",
+      "category": "research-papers",
+      "tags": ["kv-cache", "multi-agent", "rlm", "attention-matching", "token-efficiency", "orchestrator-worker"],
+      "sources": ["ramp-labs", "zweiger-am-2026", "zhang-rlm-2025"],
+      "lastUpdated": "2026-04-11",
+      "keyNumbers": ["+3pp accuracy", "42-57% worker token reduction", "~1.7s compaction overhead", "79% compression on hard tasks"],
+      "relatedDocs": ["context-engineering", "orchestrator", "harness-engineering", "ramp-self-maintaining-code"]
+    },
     {
       "id": "harness-engineering",
       "title": "Harness Engineering (OpenAI)",
