@@ -23,18 +23,35 @@
 
 ## Why Software Factories
 
-Three companies have proven the pattern at scale. All three converged on the same primitives: isolated sandboxes, PRs as review gates, humans review before merge.
+A dozen companies have proven the pattern at scale and published the receipts. All converged on the same primitives: isolated sandboxes, PRs as review gates, humans review before merge.
 
 | Company | System | Scale | Key Insight |
 |---------|--------|-------|-------------|
-| **Spotify** | [Honk](https://engineering.atspotify.com/2025/11/spotifys-background-coding-agent-part-1) | 1,500+ merged PRs, 50% of all PRs automated | Containerized K8s execution + verification loops + LLM judge |
-| **Ramp** | [Inspect](https://builders.ramp.com/post/why-we-built-our-background-agent) | ~50% of merged PRs | Modal snapshot warm pools, multiplayer sessions, filesystem snapshots |
-| **Stripe** | [Minions](https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents) | 1,300 PRs/week | Goose fork + isolated devboxes (10s spin-up) + 400 MCP tools |
-| **Coinbase** | [Forge](https://www.coinbase.com/blog/Tools-for-Developer-Productivity-at-Coinbase) *(renamed from Cloudbot)* | 5% of all merged PRs, 150h → 15h cycle time | Cloud sandboxes + Slack-first + agent councils |
+| **Uber** | [Minion / uReview / Autocover / Shepherd](https://newsletter.pragmaticengineer.com/p/how-uber-uses-ai-for-development) | 92% monthly eng adoption, 11% of PRs opened by agents, uReview analyzes 90% of ~65K weekly diffs, Autocover saved 21K dev-hours | Four-layer agent stack with specialized internal products |
+| **Cloudflare** | [Internal AI eng stack (self-hosted on their own products)](https://blog.cloudflare.com/internal-ai-engineering-stack/) | 93% R&D adoption, MRs grew 5,600 → 8,700/wk in 11 months, 51B+ tokens/mo | Dogfooding AI Gateway + Workers + Sandboxes as the platform |
+| **Meta** | [Capacity Efficiency AI / MetaMateCR / DevMate](https://engineering.fb.com/2026/04/16/developer-tools/capacity-efficiency-at-meta-how-unified-ai-agents-optimize-performance-at-hyperscale/) | MetaMateCR generates exact-match patches 68% of the time | Unified agent marketplace with MCP-layer tools shared across defense/offense agents |
+| **Anthropic** | [Claude Code dogfooding + Managed Agents](https://www.claude.com/blog/code-review) | 200% growth in output per engineer, substantive reviews 16% → 54%, 84% of 1000+ line PRs get findings | "Decouple brain from hands" harness thesis |
+| **LinkedIn** | [CAPT (Contextual Agent Playbooks & Tools)](https://www.linkedin.com/blog/engineering/ai/contextual-agent-playbooks-and-tools-how-linkedin-gave-ai-coding-agents-organizational-context) | 1,000+ engineers, 500+ playbooks, 70% triage time drop, 3x data workflows | Organizational context as the agent primitive |
+| **Stripe** | [Minions](https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents) | 1,300 PRs/week | Goose fork + devboxes (10s spin-up) + 400 MCP tools |
+| **Spotify** | [Honk](https://engineering.atspotify.com/2025/11/spotifys-background-coding-agent-part-1) | 1,500+ merged PRs, 50% of all PRs automated | Containerized K8s + verification loops + LLM judge |
+| **Ramp** | [Inspect](https://builders.ramp.com/post/why-we-built-our-background-agent) | ~50% of merged PRs | Modal snapshot warm pools + multiplayer sessions |
+| **Coinbase** | [Forge](https://www.coinbase.com/blog/Tools-for-Developer-Productivity-at-Coinbase) *(née Cloudbot)* | 5% of merged PRs, 150h → 15h cycle time | Cloud sandboxes + Slack-first + agent councils |
+| **Block** | [AI-Assisted Development at Block](https://engineering.block.xyz/blog/ai-assisted-development-at-block) | 95% eng adoption, Champions program (50 devs × 30% time) | AI-readiness architecture for 40K-file monorepo |
+| **DoorDash** | [Collaborative AI Ecosystem](https://careersatdoordash.com/blog/beyond-single-agents-doordash-building-collaborative-ai-ecosystem/) | 25K hrs saved via Alteryx automation alone | 4-stage progression: workflows → single agents → deep agents → swarms |
+| **Cognition** | [How Cognition Uses Devin to Build Devin](https://www.cognition-labs.com/blog/how-cognition-uses-devin-to-build-devin) | 659 Devin PRs merged/week (up from 154/week in 2025) | Agent-to-agent REST API triggers |
 | **Nubank** | [Devin deployment](https://building.nubank.com/enhancing-engineering-workflows-with-ai-a-real-world-experience/) | 100K data class migrations | 12x efficiency, 20x cost savings with fine-tuned Devin |
-| **OpenAI** | [Harness Engineering](https://openai.com/index/harness-engineering/) | 1M lines, 1,500 PRs | Environment-first architecture, 3.5 PRs/engineer/day |
+| **OpenAI** | [Harness Engineering](https://openai.com/index/harness-engineering/) | 1M lines, 1,500 PRs | Environment-first, 3.5 PRs/engineer/day |
+| **Airbnb** | [Large-scale test migration with LLMs](https://airbnb.tech/infrastructure/accelerating-large-scale-test-migration-with-llms/) | 3.5K files Enzyme → RTL in 6 weeks, 75% auto in 4 hrs, 97% after 4 days | Canonical batch migration harness pattern |
+| **Google** | [Jules — async coding agent](https://blog.google/technology/google-labs/jules) | 140K code improvements during beta | Ephemeral VM per task, GitHub-issue driven |
+| **Pinterest** | [MCP Ecosystem + Tricorder](https://medium.com/pinterest-engineering/building-an-mcp-ecosystem-at-pinterest-d881eb4c16f1) | 66K MCP invocations/mo, 844 MAUs | Central MCP registry + observability agent |
+| **Datadog** | [Bits AI SRE + Dev Agent](https://www.datadoghq.com/blog/engineering/bits-ai-eval-platform) | Observability-driven auto-PR | Eval platform for trusting autonomous agents at scale |
+| **Shopify** | [Roast framework](https://shopifyengineering.myshopify.com/blogs/engineering/introducing-roast) | Open-sourced Ruby DSL | Claude Code as a "CodingAgent" cog in structured workflows |
+| **Databricks** | [Genie Code](https://www.databricks.com/blog/introducing-genie-code) | 2x a leading coding agent on internal benchmarks | Data-specific coding agent with proactive prod monitoring |
+| **Vercel** | [AEO tracking for agents](https://vercel.com/blog/how-we-built-aeo-tracking-for-coding-agents) | — | Coding agents run in ephemeral Firecracker microVMs as probe fleet |
 
-**The convergent primitives:** isolated sandboxes, queue-based dispatch, PRs as review gates, verification loops, bounded retries, cost governance.
+**The convergent primitives:** isolated sandboxes, queue-based dispatch, PRs as review gates, verification loops, bounded retries, cost governance, MCP tool layer, organizational context injection.
+
+**Cross-company survey:** Ry Walker's [In-House Coding Agents: Build vs Buy](http://rywalker.com/research/in-house-coding-agents) (Feb 2026) aggregates many of these systems in one place — useful as a starting overview.
 
 ---
 
@@ -650,7 +667,40 @@ Sources: [GitHub](https://github.com/brexhq/CrabTrap) · [Brex Blog](https://www
 
 ## Research Corpus
 
-### Production Systems
+### Internal Engineering Deployments (recruiting-tool eng blogs)
+
+These are the first-person accounts from company engineering teams — the richest source of real numbers and architecture details. Tech companies publish these as recruiting signals, so the bylines are real engineers.
+
+**Tier 1 — Deep case studies with numbers:**
+
+- [Uber: uReview](https://blog.uber.com/blog/ureview/) — Multi-stage Commenter GenAI reviews 90% of ~65K weekly Phabricator diffs (Sonal Mahajan byline)
+- [Pragmatic Engineer: How Uber uses AI for development](https://newsletter.pragmaticengineer.com/p/how-uber-uses-ai-for-development) — Deep dive on Uber's 4-layer stack (Minion, Shepherd, uReview, Autocover)
+- [Cloudflare: The AI engineering stack we built internally](https://blog.cloudflare.com/internal-ai-engineering-stack/) — 93% R&D adoption, running on their own Workers/AI Gateway
+- [Meta: Capacity Efficiency at Meta — Unified AI Agents](https://engineering.fb.com/2026/04/16/developer-tools/capacity-efficiency-at-meta-how-unified-ai-agents-optimize-performance-at-hyperscale/) — Agent marketplace + FBDetect regression auto-fix
+- [Meta: MetaMateCR (IEEE TSE paper)](https://arxiv.org/pdf/2507.13499) — LargeLSFT generates exact-match patches 68% of the time
+- [Anthropic: Bringing Code Review to Claude Code](https://www.claude.com/blog/code-review) — Multi-agent parallel review; 16% → 54% of PRs get substantive comments
+- [Anthropic: Scaling Managed Agents — Decoupling brain from hands](https://www.anthropic.com/engineering/managed-agents) — Meta-harness thesis for long-horizon agents
+- [LinkedIn: CAPT — Contextual Agent Playbooks](https://www.linkedin.com/blog/engineering/ai/contextual-agent-playbooks-and-tools-how-linkedin-gave-ai-coding-agents-organizational-context) — 1,000+ engineers, 70% triage time drop (Ajay Prakash byline)
+- [Block: AI-Assisted Development at Block](https://engineering.block.xyz/blog/ai-assisted-development-at-block) — 95% eng adoption, Champions program (Angie Jones byline)
+
+**Tier 2 — Strong patterns + production numbers:**
+
+- [Airbnb: Accelerating Large-Scale Test Migration with LLMs](https://airbnb.tech/infrastructure/accelerating-large-scale-test-migration-with-llms/) — 3.5K files Enzyme → RTL in 6 weeks (the canonical batch migration harness post)
+- [Airbnb: GraphQL Data Mocking at Scale with LLMs](https://airbnb.tech/uncategorized/graphql-data-mocking-at-scale-with-llms-and-generatemock/) — Type-safe mock data inside the dev loop
+- [DoorDash: Beyond Single Agents — Collaborative AI Ecosystem](https://careersatdoordash.com/blog/beyond-single-agents-doordash-building-collaborative-ai-ecosystem/) — 4-stage progression: workflows → agents → deep agents → swarms
+- [Pinterest: Building an MCP Ecosystem](https://medium.com/pinterest-engineering/building-an-mcp-ecosystem-at-pinterest-d881eb4c16f1) — Central MCP registry + IDE/chat integrations
+- [Datadog: Bits AI Dev Agent](https://datadoghq.com/blog/bits-ai-dev-agent) — Observability-driven auto-PR agent
+- [Datadog: Real-world evaluation platform for SRE agents](https://www.datadoghq.com/blog/engineering/bits-ai-eval-platform) — The "how do we trust it" post
+- [Shopify: Introducing Roast](https://shopifyengineering.myshopify.com/blogs/engineering/introducing-roast) — Structured AI workflows in Ruby, open-sourced
+- [Databricks: Introducing Genie Code](https://www.databricks.com/blog/introducing-genie-code) — Data-specific coding agent
+- [Cognition: How Cognition Uses Devin to Build Devin](https://www.cognition-labs.com/blog/how-cognition-uses-devin-to-build-devin) — 659 Devin PRs merged in one week
+- [Google: Jules async coding agent](https://blog.google/technology/google-labs/jules) — Ephemeral VM per task, GitHub-issue driven
+- [Vercel: AEO tracking for coding agents](https://vercel.com/blog/how-we-built-aeo-tracking-for-coding-agents) — Agents in ephemeral Firecracker microVMs
+- [Figma: Agents Meet the Figma Canvas](https://www.figma.com/blog/the-figma-canvas-is-now-open-to-agents) — Design canvas as a tool for coding agents
+- [GitHub: Mission Control](https://github.blog/ai-and-ml/github-copilot/how-to-orchestrate-agents-using-mission-control/) — Fleet-orchestration UI for Copilot cloud agent
+- [Ry Walker: In-House Coding Agents — Build vs Buy](http://rywalker.com/research/in-house-coding-agents) — Cross-company survey aggregating many of the above
+
+### Production Systems (agent frameworks + case studies)
 
 | System | Scale | Key Insight |
 |--------|-------|-------------|
