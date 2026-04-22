@@ -9,15 +9,16 @@
 ## Table of Contents
 
 1. [Why Software Factories](#why-software-factories)
-2. [The Autonomy Spectrum](#the-autonomy-spectrum)
-3. [Topology Walkthroughs](#topology-walkthroughs) — 10 patterns, side by side
+2. [Design Dimensions](#design-dimensions-not-a-single-spectrum)
+3. [Topology Walkthroughs](#topology-walkthroughs) — 9 patterns, side by side
 4. [Choosing a Topology](#choosing-a-topology) — decision matrix by problem shape
-5. [Reference Implementation](#reference-implementation) — architecture, agents, safety layers
-6. [Verification & Quality](#verification--quality)
-7. [Context Engineering](#context-engineering)
-8. [Agent Security](#agent-security) — emerging category (CrabTrap, OpenShell, etc.)
-9. [Research Corpus](#research-corpus) — production systems, papers, platforms
-10. [License](#license)
+6. [What Doesn't Work (Failure Modes)](#what-doesnt-work-failure-modes)
+7. [Reference Implementation](#reference-implementation) — architecture, agents, safety layers
+8. [Verification & Quality](#verification--quality)
+9. [Context Engineering](#context-engineering)
+10. [Agent Security](#agent-security) — emerging category (CrabTrap, OpenShell, etc.)
+11. [Research Corpus](#research-corpus) — production systems, papers, platforms
+12. [License](#license)
 
 ---
 
@@ -29,17 +30,17 @@ A dozen companies have proven the pattern at scale and published the receipts. A
 |---------|--------|-------|-------------|
 | **Uber** | [Minion / uReview / Autocover / Shepherd](https://newsletter.pragmaticengineer.com/p/how-uber-uses-ai-for-development) | 92% monthly eng adoption, 11% of PRs opened by agents, uReview analyzes 90% of ~65K weekly diffs, Autocover saved 21K dev-hours | Four-layer agent stack with specialized internal products |
 | **Cloudflare** | [Internal AI eng stack (self-hosted on their own products)](https://blog.cloudflare.com/internal-ai-engineering-stack/) | 93% R&D adoption, MRs grew 5,600 → 8,700/wk in 11 months, 51B+ tokens/mo | Dogfooding AI Gateway + Workers + Sandboxes as the platform |
-| **Meta** | [Capacity Efficiency AI / MetaMateCR / DevMate](https://engineering.fb.com/2026/04/16/developer-tools/capacity-efficiency-at-meta-how-unified-ai-agents-optimize-performance-at-hyperscale/) | MetaMateCR generates exact-match patches 68% of the time | Unified agent marketplace with MCP-layer tools shared across defense/offense agents |
+| **Meta** | [Capacity Efficiency AI](https://engineering.fb.com/2026/04/16/developer-tools/capacity-efficiency-at-meta-how-unified-ai-agents-optimize-performance-at-hyperscale/) + [MetaMateCR paper](https://arxiv.org/pdf/2507.13499) | Capacity AI compressed ~10hr investigations to ~30min, recovered hundreds of megawatts; separate MetaMateCR paper reports ~68% exact-match patches | Unified agent marketplace with MCP-layer tools shared across defense/offense agents |
 | **Anthropic** | [Claude Code dogfooding + Managed Agents](https://www.claude.com/blog/code-review) | 200% growth in output per engineer, substantive reviews 16% → 54%, 84% of 1000+ line PRs get findings | "Decouple brain from hands" harness thesis |
 | **LinkedIn** | [CAPT (Contextual Agent Playbooks & Tools)](https://www.linkedin.com/blog/engineering/ai/contextual-agent-playbooks-and-tools-how-linkedin-gave-ai-coding-agents-organizational-context) | 1,000+ engineers, 500+ playbooks, 70% triage time drop, 3x data workflows | Organizational context as the agent primitive |
 | **Stripe** | [Minions](https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents) | 1,300 PRs/week | Goose fork + devboxes (10s spin-up) + 400 MCP tools |
-| **Spotify** | [Honk](https://engineering.atspotify.com/2025/11/spotifys-background-coding-agent-part-1) | 1,500+ merged PRs, 50% of all PRs automated | Containerized K8s + verification loops + LLM judge |
+| **Spotify** | [Honk](https://engineering.atspotify.com/2025/11/spotifys-background-coding-agent-part-1) | 1,500+ AI-generated PRs from Honk; separately, their Fleet Management org reports automating ~50% of internal PRs across all tooling | Containerized K8s + verification loops + LLM judge |
 | **Ramp** | [Inspect](https://builders.ramp.com/post/why-we-built-our-background-agent) | ~50% of merged PRs | Modal snapshot warm pools + multiplayer sessions |
 | **Coinbase** | [Forge](https://www.coinbase.com/blog/Tools-for-Developer-Productivity-at-Coinbase) *(née Cloudbot)* | 5% of merged PRs, 150h → 15h cycle time | Cloud sandboxes + Slack-first + agent councils |
 | **Block** | [AI-Assisted Development at Block](https://engineering.block.xyz/blog/ai-assisted-development-at-block) | 95% eng adoption, Champions program (50 devs × 30% time) | AI-readiness architecture for 40K-file monorepo |
 | **DoorDash** | [Collaborative AI Ecosystem](https://careersatdoordash.com/blog/beyond-single-agents-doordash-building-collaborative-ai-ecosystem/) | 25K hrs saved via Alteryx automation alone | 4-stage progression: workflows → single agents → deep agents → swarms |
-| **Cognition** | [How Cognition Uses Devin to Build Devin](https://www.cognition-labs.com/blog/how-cognition-uses-devin-to-build-devin) | 659 Devin PRs merged/week (up from 154/week in 2025) | Agent-to-agent REST API triggers |
-| **Nubank** | [Devin deployment](https://building.nubank.com/enhancing-engineering-workflows-with-ai-a-real-world-experience/) | 100K data class migrations | 12x efficiency, 20x cost savings with fine-tuned Devin |
+| **Cognition** | [How Cognition Uses Devin to Build Devin](https://www.cognition-labs.com/blog/how-cognition-uses-devin-to-build-devin) | Hundreds of Devin PRs merged per week internally *(vendor-reported)* | Agent-to-agent REST API triggers |
+| **Nubank** | [Devin deployment](https://building.nubank.com/enhancing-engineering-workflows-with-ai-a-real-world-experience/) | 100K data class migrations; 12x efficiency claimed *(vendor-reported via Cognition case study)* | Fine-tuned Devin on the Nubank codebase |
 | **OpenAI** | [Harness Engineering](https://openai.com/index/harness-engineering/) | 1M lines, 1,500 PRs | Environment-first, 3.5 PRs/engineer/day |
 | **Airbnb** | [Large-scale test migration with LLMs](https://airbnb.tech/infrastructure/accelerating-large-scale-test-migration-with-llms/) | 3.5K files Enzyme → RTL in 6 weeks, 75% auto in 4 hrs, 97% after 4 days | Canonical batch migration harness pattern |
 | **Google** | [Jules — async coding agent](https://blog.google/technology/google-labs/jules) | 140K code improvements during beta | Ephemeral VM per task, GitHub-issue driven |
@@ -55,36 +56,31 @@ A dozen companies have proven the pattern at scale and published the receipts. A
 
 ---
 
-## The Autonomy Spectrum
+## Design Dimensions (Not a Single Spectrum)
 
-Agent systems exist on a spectrum from **prescriptive** (human dictates every step) to **autonomous** (agent decides its own path). Neither extreme wins universally — the right point on the spectrum depends on task shape, risk tolerance, and verification cost.
+Earlier versions of this doc collapsed these into one axis labeled "prescriptive ↔ autonomous." That framing is wrong — it conflates at least four independent dimensions. When picking a topology, score your problem on each:
 
-```
-  Prescriptive ◄──────────────────────────────────────────────► Autonomous
+| Dimension | Low | High |
+|-----------|-----|------|
+| **Workflow determinism** | Agent decides path (Ratchet, One-Shot Tree) | Path is a hardcoded graph (Deterministic Graph, Pipeline) |
+| **Delegation structure** | Flat / peer (Mesh, One-Shot Tree) | Hierarchical (Org Chart, Hierarchical Mesh) |
+| **State coupling** | Isolated per-agent (One-Shot Tree) | Shared workspace (Mesh) |
+| **Search / retry freedom** | Single-shot (One-Shot Tree) | Unbounded loops (Ratchet) |
 
-  Fabro       Pipeline    Org Chart    Mesh     Seq. Multi    One-Shot    Ratchet
-  (human      (fixed       (delegated   (shared  (role-based   (dispatch   (agent
-   graph)     stages)      hierarchy)   state)   autonomy)     + forget)   decides)
+A system can be high on determinism but flat on delegation (Deterministic Graph), or flat on delegation but high on state coupling (Mesh). Org Chart and One-Shot Tree both have low search freedom but sit at opposite poles on delegation structure. There is no clean linear ordering — pick the topology whose dimensional profile matches your problem.
 
-  ▲                                                                          ▲
-  │                                                                          │
-  Deterministic. Auditable.                              Self-directed. Emergent.
-  Reproducible. Rigid.                                   Adaptive. Unpredictable.
-  Good for: regulated domains,                           Good for: research, exploration,
-  well-understood workflows.                             long-horizon optimization.
-```
-
-**The tradeoff curve:**
-- **Leftward** → higher reproducibility, lower variance, easier to audit, harder to adapt to novel inputs
-- **Rightward** → higher adaptability, captures tacit knowledge, more token burn, harder to verify
-
-**What decides your position:** (1) how well-defined the task is, (2) how expensive failures are, (3) how much verification costs. Static workflows win when tasks repeat and failures are expensive; autonomous loops win when the search space is huge and verification is cheap.
+**Heuristic for scoring your problem:**
+- **Task well-defined?** → higher workflow determinism wins
+- **Failures expensive?** → lower search freedom, higher determinism
+- **Verification cheap?** → higher search freedom is affordable
+- **Multi-disciplinary work?** → hierarchical delegation helps
+- **Humans join mid-flight?** → shared state coupling is required
 
 ---
 
 ## Topology Walkthroughs
 
-Ten topology patterns observed across production and research systems, each with tradeoffs, pros/cons, and suitability guidance.
+Nine topology patterns observed across production and research systems, each with tradeoffs, pros/cons, and suitability guidance. A tenth pattern — the *Tiered Gate* (deterministic fast path + LLM slow path) — is orthogonal to topology (it's a decision/verification pattern that composes inside any topology), so it's covered in [Verification & Quality](#verification--quality) and [Agent Security](#agent-security).
 
 ---
 
@@ -109,7 +105,7 @@ Ten topology patterns observed across production and research systems, each with
 | Pros | Cons |
 |------|------|
 | Massively parallel — scales horizontally | No cross-agent learning |
-| Simple failure model (each agent is independent) | Partial success is the norm (~70% first-pass) |
+| Simple failure model (each agent is independent) | Partial success is the norm — expect first-pass failures |
 | Easy to cost-cap per agent | Wasted work on failures — agent re-does context |
 | No coordination overhead | Can't handle tasks requiring iteration |
 
@@ -138,13 +134,13 @@ Ten topology patterns observed across production and research systems, each with
 | Pros | Cons |
 |------|------|
 | Deterministic stages — easy to debug | Sequential → throughput limited |
-| LLM judge catches scope creep (~25% veto rate) | Judge can become Goodhart's law target |
+| LLM judge catches scope creep and phantom fixes (Spotify Honk reports a meaningful veto rate) | Judge can become Goodhart's law target |
 | Bounded retries prevent runaway cost | Rigid — can't skip stages |
 | Each stage can be optimized independently | Single point of failure at judge |
 
 - **When to use:** Well-understood task types with a clear success signal (CI debug, security patches, incident response)
 - **When NOT to use:** Novel problem shapes, greenfield feature building, tasks with ambiguous "done" criteria
-- **Production example:** Spotify Honk — ~25% veto catch rate
+- **Production example:** Spotify Honk (Part 3 reports judge catching a meaningful share of scope-creep / phantom-fix attempts)
 - **Key metric:** First-pass merge rate + veto catch rate
 
 ---
@@ -207,7 +203,7 @@ Ten topology patterns observed across production and research systems, each with
 | Pros | Cons |
 |------|------|
 | No orchestrator bottleneck | Race conditions on shared state |
-| Warm pools → instant spin-up (<2s) | Hard to reason about global behavior |
+| Warm pools → fast spin-up (seconds, not minutes) | Hard to reason about global behavior |
 | Humans join mid-session | Debugging requires distributed tracing |
 | Good fit for interactive workflows | Requires robust snapshot/merge primitives |
 
@@ -356,51 +352,7 @@ Ten topology patterns observed across production and research systems, each with
 
 ---
 
-### 9. Tiered Gate — Fast Path + Slow Path (Brex CrabTrap, Verification Loops)
-
-```
-                Incoming request / generated code
-                            │
-                            ▼
-                ┌────────────────────────┐
-                │  Layer 1: Static rules │  (microseconds, free)
-                │  Deterministic match   │
-                └───────┬────────────────┘
-                        │
-                ┌───────┴────────┐
-                ▼                ▼
-             MATCH           NO MATCH (long tail, ~3%)
-                │                │
-          ALLOW/DENY             ▼
-          (return)    ┌────────────────────────┐
-                      │  Layer 2: LLM judge    │  (seconds, $$$)
-                      │  Probabilistic eval    │
-                      │  w/ natural-lang policy│
-                      └───────┬────────────────┘
-                              ▼
-                       ALLOW / DENY + reason
-```
-
-**How it works:** Deterministic rules handle the 97%+ of predictable cases at microsecond latency. LLM judge is the probabilistic fallback for the novel long tail. Rules compile to cached regexes; LLM receives structured JSON context with anti-injection hardening (escaped payloads, size caps).
-
-| Pros | Cons |
-|------|------|
-| Bulk of traffic gets deterministic guarantees | LLM layer is fundamentally probabilistic |
-| LLM only fires on <3% of requests → low latency overhead | Prompt injection of the judge is an open concern |
-| Natural-language policy → easier to author than 1000s of rules | "LLM securing LLM" — circular trust argument |
-| Audit trail → traffic-derived policies beat hand-written | Body/header truncation can hide attacks |
-| Policy evolves as you observe real traffic | Can't provide mathematical security proofs |
-
-- **When to use:** High-volume systems where most traffic is predictable but the long tail is impossible to enumerate (agent network security, code quality gates, content moderation)
-- **When NOT to use:** Mission-critical domains demanding mathematical guarantees (defense, safety-critical healthcare), low-volume systems where static rules cover 100%
-- **Production example:** Brex CrabTrap (agent network security), Spotify Honk (code quality verification), this repo's 3-layer verification loop
-- **Key metric:** Static-rule hit rate (higher = lower cost + lower latency) × false-negative rate on LLM layer
-
-**Cross-domain applicability:** This pattern generalizes beyond security. Any time you have a deterministic-vs-probabilistic verification choice, tiered gates win over pure-LLM or pure-rule approaches. See [Agent Security](#agent-security) for the network instantiation and [Verification & Quality](#verification--quality) for the code-quality instantiation.
-
----
-
-### 10. Hierarchical Mesh (OpenAI Symphony-style / Cloudflare Mesh)
+### 9. Hierarchical Mesh (OpenAI Symphony-style / Cloudflare Mesh)
 
 ```
                     ┌──────────────┐
@@ -456,7 +408,6 @@ Match the topology to the problem shape. Three key questions: **(1) is the task 
 | Feature building requiring planning + coding + review | **Sequential Multi-Agent** | Role specialization, scoped prompts |
 | Heterogeneous task mix at scale | **Dynamic DAG** | Topology adapts per task |
 | Regulated/compliance-critical workflows | **Deterministic Graph** | Full audit + reproducibility |
-| High-volume filtering where 97% is predictable but 3% is novel | **Tiered Gate** | Fast path free + LLM catches long tail |
 | Long-running distributed deployments | **Hierarchical Mesh** | State reconciliation + convergence |
 
 ### Anti-Patterns
@@ -469,7 +420,6 @@ Match the topology to the problem shape. Three key questions: **(1) is the task 
 | Mesh for audited workflows | Shared state is hard to reconstruct post-hoc |
 | Ratchet with multi-objective metrics | No binary accept/reject → no ratcheting |
 | Dynamic DAG at small task volume | Training cost exceeds savings |
-| Tiered Gate for mathematically-provable safety | LLM layer is fundamentally probabilistic |
 
 ### Combining Topologies
 
@@ -479,14 +429,26 @@ Production systems rarely use one topology — they compose. Common combos:
 - **Mesh + Ratchet**: Agents mesh during the day, individual agents ratchet overnight *(Shopify autoresearch pattern)*
 - **Deterministic Graph + Sequential Multi-Agent**: Graph defines the sequence, agents specialize within each node *(common in enterprise SDLC)*
 - **Hierarchical Mesh + Pipeline**: Orchestrator reconciles, each agent runs a pipeline *(OpenAI Symphony-style)*
-- **Pipeline + Tiered Gate**: Pipeline at each stage uses a tiered gate (deterministic checks → LLM judge) *(Spotify Honk's verification, this repo's 3-layer quality loop)*
-- **One-Shot Tree + Tiered Gate**: Fan-out agents, each request they emit passes through a tiered gate for safety *(Brex CrabTrap in front of OpenClaw fleet)*
+- **Pipeline + Tiered Gate verification**: Pipeline at each stage uses a deterministic-first / LLM-fallback verifier *(Spotify Honk's verification, this repo's 3-layer quality loop)*
+- **One-Shot Tree + Tiered Gate security**: Fan-out agents, each request they emit passes through a deterministic-first / LLM-fallback security gate *(Brex CrabTrap in front of a fleet)*
 
 See [`docs/potent-combos.md`](docs/potent-combos.md) for the full combinatorial analysis.
 
 ---
 
-## Reference Implementation
+## What Doesn't Work (Failure Modes)
+
+The corpus above over-indexes on successes because companies only publish wins. Honest failure patterns to know about:
+
+- **Devin critique (Answer.AI, 2025)** — [Analysis of Devin's actual completion rate](https://www.answer.ai/posts/2025-01-08-devin.html) on real tasks (well below marketing claims). Key lesson: vendor-reported agent benchmarks routinely don't reproduce.
+- **Alibaba SWE-CI benchmark** — 75% of agents break working code across consecutive PRs. Quality regresses over agent-turns.
+- **Klarna's AI customer service walkback (2024)** — Klarna reversed its "AI replaces 700 agents" story quietly by rehiring humans; widely cited as a cautionary tale for over-optimistic agent deployment.
+- **CodeRabbit analysis of 470 AI PRs** — AI PRs have 1.7x more issues than human PRs; visible quality lag.
+- **LLM judge gaming / Goodhart's law** — Agents optimized to satisfy an LLM judge will game readability without substance; why tests must remain the hard gate.
+- **Context rot** — [Chroma Research](https://research.trychroma.com/context-rot) shows context quality degrades over agent turns; long-horizon agents need active summarization or reset.
+- **Ona escape / veto bypass patterns** — Agents finding ways around verification gates (commit bypassing, ignoring lint with comments, etc.); covered in [`docs/`](docs/) corpus notes.
+
+If your topology choice has no theory of failure, it's not a real design — it's optimism.
 
 The codebase in this repo implements a **Pipeline topology with One-Shot Tree dispatch** — GitHub webhooks fan out to independent agents, each runs through parse → reason → fix → verify → judge.
 
@@ -592,12 +554,14 @@ The quality problem is industry-wide. Alibaba's SWE-CI benchmark shows 75% of ag
     veto ├──▶ retry (max 2) ──▶ flag for human
 ```
 
-- **Layer 1** catches 60%+ of issues for free
+- **Layer 1** is the cheap filter — static analysis catches a large class of issues without any LLM call
 - **Layer 2** is the hard gate — if it doesn't build/test, it doesn't ship
 - **Layer 3** catches subtle quality issues (scope creep, readability)
 - **Goodhart's Law risk:** agents optimized for LLM judge approval will game the metric — hard constraints are the real gate
 
-**Latest benchmark (April 2026):** [Claude Opus 4.7 took the SWE-bench Verified crown at 87.6%](https://www.marc0.dev/en/leaderboard), ahead of GPT-5.3-Codex (85.0%) and Gemini 3.1 Pro (80.6%).
+**The Tiered Gate pattern.** Layers 1→3 form a *deterministic fast path + LLM slow path* — the same shape Brex CrabTrap uses for network security. Static rules handle predictable cases cheaply; LLM judge handles the long tail. This is a verification pattern, not a topology: it composes inside any of the 9 topologies above.
+
+**Leaderboard:** See the [official SWE-bench leaderboard](https://www.swebench.com/) for current rankings. As of April 2026, the Verified split is dominated by Claude Opus 4.7, GPT-5.3-Codex, and Gemini 3.1 Pro (verify exact numbers at the official source — third-party aggregators often lag).
 
 ---
 
@@ -708,13 +672,12 @@ These are the first-person accounts from company engineering teams — the riche
 | [Stripe Minions Part 2](https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents-part-2) | Zero human-written code | Devboxes, conditional rules, max 2 CI retries |
 | [Spotify Honk Part 1](https://engineering.atspotify.com/2025/11/spotifys-background-coding-agent-part-1) | 650+ PRs/month | Containerized K8s fleet management |
 | [Spotify Honk Part 2](https://engineering.atspotify.com/2025/11/context-engineering-background-coding-agents-part-2) | 60-90% time savings | Context engineering, Claude Code as top agent |
-| [Spotify Honk Part 3](https://engineering.atspotify.com/2025/12/feedback-loops-background-coding-agents-part-3) | ~25% veto rate | Verification loops, LLM judge |
+| [Spotify Honk Part 3](https://engineering.atspotify.com/2025/12/feedback-loops-background-coding-agents-part-3) | Judge catches scope-creep / phantom fixes | Verification loops, LLM judge |
 | [Spotify x Anthropic (April 2026)](https://engineering.atspotify.com/2026/4/anthropic-agentic-development/) | Slack-@mention-driven | Backstage evolving to agent-first MCP platform |
 | [Ramp Inspect](https://builders.ramp.com/post/why-we-built-our-background-agent) | ~50% of merged PRs | Modal snapshot-based warm pools |
 | [Ramp on Modal](https://modal.com/blog/how-ramp-built-a-full-context-background-coding-agent-on-modal) | 1,000 Datadog monitors | Self-maintaining code, auto-generated monitoring |
 | [OpenAI Harness Engineering](https://openai.com/index/harness-engineering/) | 1M lines, 1,500 PRs | Environment-first, 3.5 PRs/engineer/day |
-| [OpenAI Codex App Server](https://openai.com/index/harness-engineering/) *(Feb 2026)* | — | Codex harness now a standalone app server |
-| [OpenAI Responses API + Computer Env](https://openai.com/index/harness-engineering/) *(Mar 2026)* | — | From model to agent: Responses API with full computer environment |
+| [OpenAI Codex follow-up posts](https://openai.com/research/) *(Feb–Mar 2026)* | — | Codex harness evolution: standalone app server + Responses API with computer environment (verify exact URLs on openai.com) |
 | [Nubank + Devin](https://building.nubank.com/enhancing-engineering-workflows-with-ai-a-real-world-experience/) | 100K migrations | 12x efficiency, 20x cost savings |
 | [Nubank Agent Infra](http://nubank.dev/) *(Mar 2026)* | 131M customers | Clojure-based internal agent infrastructure |
 | [Coinbase Forge (née Cloudbot)](https://www.coinbase.com/blog/Tools-for-Developer-Productivity-at-Coinbase) | 5% of merged PRs | 150h → 15h cycle time, agent councils |
@@ -734,17 +697,34 @@ These are the first-person accounts from company engineering teams — the riche
 - [Composio Agent Orchestrator](https://github.com/ComposioHQ/agent-orchestrator) — Fleet management with plugin-based architecture (4.5K stars)
 - [Paperclip](https://github.com/paperclipai/paperclip) — Org-chart orchestration, **57.4K stars** (April 2026), v2026.416.0
 
-### Research & Benchmarks
+### Research Foundations
 
+The papers that shaped how technical audiences think about coding agents. Missing any of these is a red flag.
+
+- [ReAct (Yao et al., 2022)](https://arxiv.org/abs/2210.03629) — Reasoning + acting interleaved; foundation of most modern agent loops
+- [Toolformer (Schick et al., 2023)](https://arxiv.org/abs/2302.04761) — LLMs self-teaching tool use
+- [SWE-agent (Yang et al., NeurIPS 2024)](https://arxiv.org/abs/2405.15793) — Agent-computer interface design; one of the first strong coding-agent harnesses
+- [OpenHands / CodeAct (Wang et al., 2024)](https://arxiv.org/abs/2407.16741) — Executable code as unified action space; open-source agent framework with 30K+ stars
 - [SWE-bench (ICLR 2024)](https://arxiv.org/abs/2310.06770) — 2,294 real GitHub issues, baseline eval standard
-- [SWE-bench Leaderboard (April 2026)](https://www.marc0.dev/en/leaderboard) — Claude Opus 4.7 #1 Verified (87.6%)
-- [SWE-bench Pro (Scale AI)](https://arxiv.org/abs/2509.16941) — 1,865 long-horizon tasks, Python/Go/TS/JS
+- [SWE-bench Official Leaderboard](https://www.swebench.com/) — Canonical source for current rankings
+- [SWE-bench Pro (Scale AI, 2025)](https://arxiv.org/abs/2509.16941) — 1,865 long-horizon tasks across Python, Go, TypeScript, JavaScript
 - [SWE-bench Multimodal](https://arxiv.org/abs/2410.03859) — 617 visual UI tasks, only ~12% solved by top systems
-- [Alibaba SWE-CI](https://arxiv.org/abs/2504.08057) — 75% of agents break working code over consecutive PRs
-- [AgentConductor](https://huggingface.co/papers/2602.17100) — RL-generated dynamic DAG, +14.6% on APPS, 68% cost reduction
-- [Agent-as-a-Judge Survey](https://arxiv.org/abs/2601.05111) — Taxonomy of agentic eval beyond LLM-as-a-Judge
-- [LLM Code Reviewers](https://arxiv.org/abs/2603.00539) — Evaluates judge reliability for code review
+- [Alibaba SWE-CI (2025)](https://arxiv.org/abs/2504.08057) — 75% of agents break working code across consecutive PRs
+- [Answer.AI Devin Critique (Jan 2025)](https://www.answer.ai/posts/2025-01-08-devin.html) — Independent teardown of Devin's actual completion rate on real tasks
 - [Anthropic 2026 Agentic Coding Trends](https://resources.anthropic.com/hubfs/2026%20Agentic%20Coding%20Trends%20Report.pdf) — Context engineering, tool use, error reduction metrics
+
+### IDE / Pair-Programming Agents
+
+These sit on a different axis from background agents — human-in-loop editors. Covered here because they shape how developers expect coding agents to feel.
+
+- [Cursor](https://cursor.com) — AI-native IDE, dominant category incumbent
+- [Windsurf](https://codeium.com/windsurf) — Cascade agent mode, Codeium successor IDE
+- [Cline](https://github.com/cline/cline) — Open-source VS Code autonomous assistant, Plan+Act modes
+- [Continue.dev](https://continue.dev) — Open-source IDE extensions (VS Code, JetBrains)
+- [JetBrains Junie + Air](https://www.jetbrains.com/junie/) — Standalone coding agent + structural code awareness
+- [Cognition Devin](https://devin.ai) — Cloud IDE with autonomous agent
+- [Factory.ai](https://factory.ai) — Droids across 6+ surfaces
+- [Replit Agent](https://replit.com) — Browser-based autonomous agent
 
 ### Platforms & Ecosystems
 
