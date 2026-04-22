@@ -111,7 +111,7 @@ Even Karpathy — who literally coined "agentic engineering" — can't get agent
 ### 3. The "Shrug Threshold" Is Real
 At some point, fighting for code quality costs more than accepting the mess. The factory model accepts this tradeoff: **velocity over aesthetics.** The question is where to draw the line.
 
-For our use case (ProductRank maintenance + Visa commerce), we probably need higher quality than Karpathy's personal projects. Production systems accumulate technical debt faster than personal repos.
+For production applications, we probably need higher quality than Karpathy's personal projects. Production systems accumulate technical debt faster than personal repos.
 
 ### 4. LLM-as-Judge for Quality Is Underexplored
 Karpathy says "we haven't picked the low hanging fruit yet" on using LLMs to judge code quality. Our LLM judge (Spotify pattern) currently checks scope — did the agent stay on task? Extending it to check quality (readability, duplication, complexity) is a natural evolution.

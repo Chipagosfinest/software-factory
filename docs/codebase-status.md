@@ -48,7 +48,7 @@
 
 ### P0 — Fix Before Shipping Cron Agents
 
-1. **Backfill agent schema mismatch** — writes to `products.category` instead of `stack_category`. Will corrupt ProductRank data.
+1. **Backfill agent schema mismatch** — writes to `products.category` instead of `stack_category`. Will corrupt production data.
 2. **Tool discovery has no real data sources** — LLM hallucinates trending tools. Needs GitHub API, ProductHunt, HN, RSS feeds.
 3. **Drift detector has no verification** — LLM claims tools are deprecated without checking GitHub archive status or npm deprecation flags.
 

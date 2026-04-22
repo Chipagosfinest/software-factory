@@ -582,7 +582,7 @@ Six high-synergy combinations. Each creates emergent capability that neither sys
 │  │ + RCA)   │  │ resolve) │  │ step fix)│  │ patch)   │    │
 │  └──────────┘  └──────────┘  └──────────┘  └──────────┘    │
 │                       │                                       │
-│              Knowledge Graph (ProductRank)                     │
+│              Knowledge Graph (domain intelligence)                     │
 │              Governance Layer ($2/run caps)                    │
 └───────────────────────────────────────────────────────────────┘
 ```
@@ -710,7 +710,7 @@ How all eight research sources compose into the full architecture.
 ║  │                         ▲                                        │    ║
 ║  │                    QMD Search (BM25 + vector + rerank)           │    ║
 ║  │                                                                  │    ║
-║  │  ProductRank Knowledge Graph (domain intelligence)               │    ║
+║  │  Domain Knowledge Graph (product intelligence)                   │    ║
 ║  └──────────────────────────────────────────────────────────────────┘    ║
 ║                                                                          ║
 ║  OUTPUT                                                                  ║

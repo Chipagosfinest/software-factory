@@ -94,7 +94,7 @@ Our closest competitor is **Factory.ai** (agent-native SDLC platform). Devin is 
 | **Incident Response** | ✅ PagerDuty→RCA→fix PR | ❌ | ⚠️ Slack triage only | ❌ | ❌ | ❌ |
 | **Merge Conflicts** | ✅ Dedicated agent | ❌ | ❌ | ❌ | ❌ | ❌ |
 | **Feature Building** | ❌ Not yet | ✅ Core use case | ✅ | ✅ Issue→PR | ⚠️ Via agents | ✅ Core use case |
-| **Knowledge Graph** | ✅ ProductRank integration | ❌ | ❌ | ❌ | ❌ | ❌ |
+| **Knowledge Graph** | ✅ Built-in | ❌ | ❌ | ❌ | ❌ | ❌ |
 | **Agent Orchestration** | ⚠️ Queue-based | ❌ Single | ⚠️ Internal | ❌ Single | ✅ Org charts + goals | ❌ Swarm |
 | **Multi-Agent Fleet** | ⚠️ BullMQ dispatch | ❌ | ⚠️ Internal | ❌ | ✅ BYOA, heartbeats | ✅ 3000 agents |
 | **Cost Governance** | ✅ $2/run caps, audit | ❌ Flat pricing | ⚠️ Token billing | ❌ Subscription | ✅ Per-agent budgets | ❌ |
@@ -115,7 +115,7 @@ Nobody else does PagerDuty alert → root cause analysis → fix PR. Factory.ai 
 No competitor has a dedicated merge conflict agent. This is a real pain point in active repos — merge conflicts block PRs and waste developer time.
 
 ### 3. Knowledge Graph Integration (Unique)
-Cron agents feeding ProductRank data are unique. No competitor ties autonomous dev agents to a product intelligence graph. This becomes the foundation for the Visa commerce platform.
+Cron agents feeding a knowledge graph are unique. No competitor ties autonomous dev agents to a product intelligence graph.
 
 ### 4. Cost Governance (Best-in-class)
 $2/run caps, 5-minute timeouts, per-agent cost tracking, audit trails, executor gate kill switch. Devin charges $500/mo flat. Factory bills by token with less transparency.
@@ -124,7 +124,7 @@ $2/run caps, 5-minute timeouts, per-agent cost tracking, audit trails, executor 
 Local verification → agent reasoning → LLM judge → bounded retries (max 2). Copilot has a simpler "repair agent." Our pipeline is modeled on Spotify Honk + Stripe Minions patterns.
 
 ### 6. Self-Hosted (Strategic)
-Full control over data, models, and infrastructure. Critical for Visa/enterprise deployment where SaaS isn't an option.
+Full control over data, models, and infrastructure. Critical for enterprise deployment where SaaS isn't an option.
 
 ---
 
@@ -166,7 +166,7 @@ Full control over data, models, and infrastructure. Critical for Visa/enterprise
                           │                                        │
                           │                    Software Factory ────┤
                           │                    + Knowledge Graph ───┤
-                          │                    + Visa Commerce ─────┤
+                          │                    + Domain Intelligence ┤
 
      Agent Orchestration ──────────────────────── Agent Execution
            │                                          │
@@ -188,7 +188,7 @@ Full control over data, models, and infrastructure. Critical for Visa/enterprise
 
 **Our wedge:** Incident response + security patching + knowledge graph + verification loops. Then expand into orchestration UI (or integrate Paperclip).
 
-**The moat:** ProductRank knowledge graph + Visa commerce integration + verification/governance layer. Nobody else has domain-specific intelligence AND quality enforcement feeding into their agents. Paperclip has governance but no verification. Factory.ai has agents but no knowledge graph.
+**The moat:** Knowledge graph + domain intelligence + verification/governance layer. Nobody else has domain-specific intelligence AND quality enforcement feeding into their agents. Paperclip has governance but no verification. Factory.ai has agents but no knowledge graph.
 
 ---
 
@@ -199,7 +199,7 @@ Full control over data, models, and infrastructure. Critical for Visa/enterprise
 | AI coding assistants | $15B+ by 2028 | Niche (maintenance/ops) |
 | DevOps automation | $8B by 2027 | Direct competitor |
 | Incident management | $3B by 2026 | Adjacent (PagerDuty→fix) |
-| Developer tool commerce | New category | First mover (Visa partnership) |
+| Developer tool commerce | New category | First mover |
 
 ---
 
@@ -208,7 +208,7 @@ Full control over data, models, and infrastructure. Critical for Visa/enterprise
 1. **Ship the 5 core agents NOW** — they're production-ready and differentiated
 2. **Add a Feature Builder agent** — this is the #1 gap vs. every competitor
 3. **The knowledge graph is our moat** — no competitor has domain intelligence
-4. **Self-hosted + cost governance = enterprise story** — critical for Visa
+4. **Self-hosted + cost governance = enterprise story** — critical for regulated industries
 5. **Don't chase IDE integration yet** — focus on background agents first (our strength)
 6. **Factory.ai is the real competitor** — not Devin. Watch their enterprise expansion closely
 7. **Paperclip is a complement, not a threat** — evaluate as orchestration UI layer. Their 24K-star growth validates the "agent command center" category Karpathy called for. Our verification loops + knowledge graph are what they lack.

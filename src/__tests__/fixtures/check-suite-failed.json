@@ -31,7 +31,7 @@
   "repository": {
     "name": "my-app",
     "owner": {
-      "login": "alecgutman"
+      "login": "example-user"
     },
     "default_branch": "main"
   },

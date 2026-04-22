@@ -121,7 +121,7 @@ Rebuilt on an agentic tool-calling architecture. Gathers broader repository cont
 - Can be requested from GitHub CLI
 - 60+ million code reviews completed as of March 2026
 
-**Relationship to Software Factory:** Competitive with our PR Reviewer agent. GitHub's agentic code review is free for Copilot subscribers and deeply integrated into the PR workflow. Our PR Reviewer's advantages: knowledge graph integration (ProductRank), customizable review criteria, LLM judge verification, and independence from the GitHub ecosystem.
+**Relationship to Software Factory:** Competitive with our PR Reviewer agent. GitHub's agentic code review is free for Copilot subscribers and deeply integrated into the PR workflow. Our PR Reviewer's advantages: knowledge graph integration, customizable review criteria, LLM judge verification, and independence from the GitHub ecosystem.
 
 Sources:
 - [Copilot Code Review Agentic Architecture](https://github.blog/changelog/2026-03-05-copilot-code-review-now-runs-on-an-agentic-architecture/)
@@ -336,7 +336,7 @@ Sources:
 |------------|-----------------|
 | Incident response (PagerDuty alert to fix PR) | Incident Responder agent |
 | Merge conflict resolution | Merge Resolver agent |
-| Knowledge graph integration (ProductRank) | Cron agents + competency graph |
+| Knowledge graph integration | Cron agents + competency graph |
 | Per-run cost caps and budget governance | Governance layer ($2/run default) |
 | LLM judge verification loops | CI Debugger with Spotify Honk pattern |
 

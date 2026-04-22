@@ -209,7 +209,7 @@ Notable: Agent Orchestrator has a `notifier-openclaw` plugin and a `DESIGN-OPENC
 Agent Orchestrator (fleet management)
   → notifier-openclaw plugin
     → OpenClaw Hub (Telegram notification)
-      → Alec reviews PRs from phone
+      → Developer reviews PRs from phone
 ```
 
 This mirrors Carson's workflow (file bugs from phone → agents resolve) but with AO managing the fleet and OpenClaw as the human interface.

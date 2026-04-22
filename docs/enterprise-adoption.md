@@ -386,7 +386,7 @@ The companies succeeding with agentic coding are not the ones with the best AI m
 
 3. **Self-hosted is a requirement**: 80% of Fortune 500 use AI agents, but many cannot use SaaS platforms for security-critical operations. Self-hosted is a genuine enterprise differentiator.
 
-4. **Knowledge graph is unique**: No enterprise deployment documented here integrates product intelligence into agent context. ProductRank is a genuine moat.
+4. **Knowledge graph is unique**: No enterprise deployment documented here integrates product intelligence into agent context. The knowledge graph is a genuine differentiator.
 
 ### Gaps We Need to Close
 

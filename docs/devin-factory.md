@@ -263,7 +263,7 @@ Factory co-created the AGENTS.md open standard -- a Markdown file at the repo ro
 | **Incident response** | No | Yes (Reliability Droid, Slack triage) | Yes (PagerDuty to RCA to fix PR) |
 | **Security patching** | No | Limited (DroidShield pre-commit) | Yes (CVE auto-patch) |
 | **Merge conflicts** | No | No | Yes (dedicated agent) |
-| **Knowledge graph** | No | No | Yes (ProductRank) |
+| **Knowledge graph** | No | No | Yes (built-in) |
 | **Feature building** | Yes (core use case) | Yes (core use case) | Not yet (P0 gap) |
 | **Self-hosted** | No (SaaS only) | VPC option for enterprise | Yes (full control) |
 | **Benchmark** | ~67% merge rate | #1 Terminal-Bench (58.75%) | N/A |
@@ -281,7 +281,7 @@ Factory co-created the AGENTS.md open standard -- a Markdown file at the repo ro
 
 1. **Incident response pipeline**: Nobody else does PagerDuty alert to RCA to fix PR end-to-end. Factory's Reliability Droid stops at triage.
 2. **Merge conflict resolution**: Neither has a dedicated agent for this.
-3. **Knowledge graph**: ProductRank integration is unique. No competitor ties dev agents to product intelligence.
+3. **Knowledge graph**: Domain intelligence integration is unique. No competitor ties dev agents to product intelligence.
 4. **Cost governance**: $2/run caps, 5-minute timeouts, per-agent cost tracking. Both competitors have unpredictable billing.
 5. **Self-hosted**: Full infrastructure control. Critical for regulated enterprises where SaaS is not an option.
 

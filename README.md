@@ -421,6 +421,43 @@ The `docs/` directory contains 34 research documents covering sandbox architectu
 
 ---
 
+## Agent Security
+
+Securing agents in production is an emerging challenge. As agents gain real credentials and make real API calls, the security surface expands beyond traditional guardrails.
+
+| System | Approach | Key Insight |
+|--------|----------|-------------|
+| [CrabTrap (Brex)](https://github.com/brexhq/CrabTrap) | HTTP/HTTPS proxy with LLM-as-a-judge | Transport-layer interception is framework-agnostic; static rules handle 97%+ of traffic, LLM judge handles the long tail |
+| [NVIDIA OpenShell](https://github.com/NVIDIA/OpenShell) | Docker sandbox with kernel-level isolation (Landlock, seccomp) | Controls *which* connections agents can open but doesn't inspect content. Complements CrabTrap. |
+| [Deconvolute](https://github.com/nichochar/deconvolute) | MCP session firewall inspecting tool calls | Protocol-specific (MCP only) vs transport-layer. Best for MCP-heavy architectures. |
+| [ClawShield](https://github.com/nichochar/ClawShield) | Security proxy with 5 specialized AI agents + YAML policy | PII redaction, prompt injection scanning, secrets detection. More defensive scanning. |
+| [Superserve](https://superserve.io) | Credential proxy injecting API keys at network level | Solves credential isolation, not request filtering. Complementary to CrabTrap. |
+
+### CrabTrap Deep Dive
+
+CrabTrap is an open-source HTTP/HTTPS forward proxy that sits between AI agents and external APIs. Built by Brex to secure their production agent deployments. Two-tier evaluation:
+
+1. **Static rules** — Deterministic URL pattern matching (prefix, exact, glob). Deny rules always win. Microsecond execution.
+2. **LLM-as-a-judge** — When no static rule matches, full request context goes to an LLM with a natural-language security policy. Returns structured ALLOW/DENY with reasoning.
+
+**Key production findings:**
+- Policies derived from observed traffic are surprisingly strong — better than hand-written rules
+- In production, the LLM judge fires on <3% of requests (static rules catch the rest)
+- The audit trail became a discovery tool for tightening agents themselves — removing wasted tools and request categories
+- Prompt injection defense: request payloads are JSON-encoded (not interpolated), headers capped at 4KB, bodies truncated at 16KB
+
+**Architecture:** Go (78.6%) + TypeScript (19.4%), MIT license, PostgreSQL audit trail, AWS Bedrock with Anthropic models for the judge, React admin dashboard for policy editing and eval replay.
+
+**What it doesn't do:** Not a WAF (outbound only), no human-in-the-loop approval queue, doesn't filter API responses, doesn't inspect WebSocket frames, fundamentally probabilistic on the LLM layer.
+
+Sources:
+- [GitHub Repo](https://github.com/brexhq/CrabTrap)
+- [Brex Blog](https://www.brex.com/journal/building-crabtrap-open-source)
+- [Landing Page + Demo](https://www.brex.com/crabtrap)
+- [HN Discussion](https://news.ycombinator.com/item?id=47850212)
+
+---
+
 ## License
 
-Private — not yet open source.
+MIT

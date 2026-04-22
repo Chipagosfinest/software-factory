@@ -160,7 +160,7 @@ Latent Briefing is one of several papers attacking the agent memory problem from
 - **[Attention Matching](https://arxiv.org/abs/2602.16284)** (Zweiger et al., 2026) — The base framework Latent Briefing extends.
 - **[Cartridges](https://arxiv.org/abs/2506.06266)** (Eyuboglu et al., 2025) — End-to-end gradient-optimized compact caches; minutes-to-hours per context, extreme quality, not agent-loop compatible.
 
-All of these require model-level access that Software Factory deliberately does not have. They are relevant if and when the architecture shifts to self-hosted inference (ProductRank might; Software Factory will not).
+All of these require model-level access that Software Factory deliberately does not have. They are relevant if and when the architecture shifts to self-hosted inference (a target application might; Software Factory will not).
 
 ---
 

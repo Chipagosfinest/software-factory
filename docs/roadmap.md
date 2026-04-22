@@ -4,18 +4,18 @@
 
 ---
 
-## Vision: Factory → Claws → Network
+## Vision: Factory → Quality → General-Purpose
 
 At its core, this is **container management running different automation tasks per system**. Each new system we onboard reuses the same infrastructure — isolated containers, cron schedules, verification loops, governance — just with different agents and different data. Every system we add compounds the value.
 
 ---
 
-## Phase 1: ProductRank Uptime + Graph Growth (NOW)
+## Phase 1: Application Uptime + Graph Growth (NOW)
 
-Stand up the factory to ensure ProductRank reliability. CI debugging catches regressions, PR review maintains code quality, security patching keeps dependencies clean. Cron agents grow the knowledge graph daily.
+Stand up the factory to ensure target application reliability. CI debugging catches regressions, PR review maintains code quality, security patching keeps dependencies clean. Cron agents grow the knowledge graph daily.
 
 **Containers:** 5 core agents (webhook-triggered) + 5 cron agents (scheduled)
-**Key metric:** ProductRank uptime + graph confidence scores trending toward 1.0
+**Key metric:** Application uptime + graph confidence scores trending toward 1.0
 
 ### Status
 - Core agents: ✅ Production-ready (PR review, CI debug, security, incident, merge)
@@ -65,7 +65,7 @@ Agent generates code
 
 ## Phase 2: General-Purpose Factory
 
-Extract patterns that work for ProductRank and make them reusable. Same container orchestration, same governance, same verification loops — different repos, different agents.
+Extract patterns that work for the initial application and make them reusable. Same container orchestration, same governance, same verification loops — different repos, different agents.
 
 **Containers:** Same core agents, parameterized per-repo
 **Key metric:** Time to onboard a new repo (target: <1 hour)
@@ -83,12 +83,12 @@ Two paths:
 
 ---
 
-## Phase 3: Visa Claws Reliability
+## Phase 3: Domain-Specific Applications
 
-Apply the factory to Visa's agentic commerce platform. Same agents that review PRs review transaction flows, same CI debugger diagnoses payment pipeline failures, same security patcher responds to PCI compliance alerts.
+Apply the factory to domain-specific platforms (commerce, fintech, healthcare). Same agents that review PRs review transaction flows, same CI debugger diagnoses pipeline failures, same security patcher responds to compliance alerts.
 
-**Containers:** Core agents + commerce-specific agents (transaction reviewer, compliance checker)
-**Key metric:** Mean time to detect + fix commerce pipeline issues
+**Containers:** Core agents + domain-specific agents (transaction reviewer, compliance checker)
+**Key metric:** Mean time to detect + fix domain pipeline issues
 
 ---
 
@@ -104,10 +104,10 @@ Deploy crawler agents that ensure we're always offering the best configurations,
 ## Architecture Reuse (Compounding)
 
 ```
-Phase 1:   ProductRank    → Build container orchestration + governance + verification
+Phase 1:   Target App     → Build container orchestration + governance + verification
 Phase 1.5: Quality Layer  → Add code quality verification (industry catching up to this need)
 Phase 2:   General        → Reuse for any repo (same infra, different agents)
-Phase 3:   Visa Claws     → Reuse for commerce (same infra, different domain)
+Phase 3:   Domain Apps    → Reuse for commerce/fintech (same infra, different domain)
 Phase 4:   Marketplace    → Reuse for data freshness (same infra, different targets)
 ```
 
@@ -119,14 +119,14 @@ Each phase adds ~2-5 new agent types but reuses 100% of:
 - Entry points (webhooks, cron, Slack, CLI)
 - Quality enforcement (AST checks, regression guard, hook-based constraints)
 
-| Component | ProductRank | Quality Layer | General | Visa Claws | Marketplace |
-|-----------|-------------|---------------|---------|------------|-------------|
+| Component | Target App | Quality Layer | General | Domain Apps | Marketplace |
+|-----------|------------|---------------|---------|-------------|-------------|
 | Event Router | GitHub webhooks | — | GitHub webhooks | Transaction events | Cron schedules |
 | Agents | PR review, CI debug, graph crons | Quality verifier, regression guard | PR review, CI debug, security | Transaction review, compliance | Price crawlers, API health |
-| Verification | LLM judge, CI retry | + AST checks, duplication, LLM quality judge | Same | + PCI compliance rules | + Rate limits, budget caps |
+| Verification | LLM judge, CI retry | + AST checks, duplication, LLM quality judge | Same | + Compliance rules | + Rate limits, budget caps |
 | Queue | Webhook + cron | Same | Same | Transaction processing | Crawl scheduling |
 | Audit Log | Agent actions | + Quality scores | Agent actions | Compliance trail | Data lineage |
-| Data Target | Knowledge graph (Supabase) | Code quality metrics | Target repo | Payment flows | Product catalog |
+| Data Target | Knowledge graph (Supabase) | Code quality metrics | Target repo | Domain flows | Product catalog |
 
 ---
 
