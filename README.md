@@ -10,7 +10,7 @@
 
 1. [Why Software Factories](#why-software-factories)
 2. [The Autonomy Spectrum](#the-autonomy-spectrum)
-3. [Topology Walkthroughs](#topology-walkthroughs) — 9 patterns, side by side
+3. [Topology Walkthroughs](#topology-walkthroughs) — 10 patterns, side by side
 4. [Choosing a Topology](#choosing-a-topology) — decision matrix by problem shape
 5. [Reference Implementation](#reference-implementation) — architecture, agents, safety layers
 6. [Verification & Quality](#verification--quality)
@@ -67,7 +67,7 @@ Agent systems exist on a spectrum from **prescriptive** (human dictates every st
 
 ## Topology Walkthroughs
 
-Nine topology patterns observed across production and research systems, each with tradeoffs, pros/cons, and suitability guidance.
+Ten topology patterns observed across production and research systems, each with tradeoffs, pros/cons, and suitability guidance.
 
 ---
 
@@ -339,7 +339,51 @@ Nine topology patterns observed across production and research systems, each wit
 
 ---
 
-### 9. Hierarchical Mesh (OpenAI Symphony-style / Cloudflare Mesh)
+### 9. Tiered Gate — Fast Path + Slow Path (Brex CrabTrap, Verification Loops)
+
+```
+                Incoming request / generated code
+                            │
+                            ▼
+                ┌────────────────────────┐
+                │  Layer 1: Static rules │  (microseconds, free)
+                │  Deterministic match   │
+                └───────┬────────────────┘
+                        │
+                ┌───────┴────────┐
+                ▼                ▼
+             MATCH           NO MATCH (long tail, ~3%)
+                │                │
+          ALLOW/DENY             ▼
+          (return)    ┌────────────────────────┐
+                      │  Layer 2: LLM judge    │  (seconds, $$$)
+                      │  Probabilistic eval    │
+                      │  w/ natural-lang policy│
+                      └───────┬────────────────┘
+                              ▼
+                       ALLOW / DENY + reason
+```
+
+**How it works:** Deterministic rules handle the 97%+ of predictable cases at microsecond latency. LLM judge is the probabilistic fallback for the novel long tail. Rules compile to cached regexes; LLM receives structured JSON context with anti-injection hardening (escaped payloads, size caps).
+
+| Pros | Cons |
+|------|------|
+| Bulk of traffic gets deterministic guarantees | LLM layer is fundamentally probabilistic |
+| LLM only fires on <3% of requests → low latency overhead | Prompt injection of the judge is an open concern |
+| Natural-language policy → easier to author than 1000s of rules | "LLM securing LLM" — circular trust argument |
+| Audit trail → traffic-derived policies beat hand-written | Body/header truncation can hide attacks |
+| Policy evolves as you observe real traffic | Can't provide mathematical security proofs |
+
+- **When to use:** High-volume systems where most traffic is predictable but the long tail is impossible to enumerate (agent network security, code quality gates, content moderation)
+- **When NOT to use:** Mission-critical domains demanding mathematical guarantees (defense, safety-critical healthcare), low-volume systems where static rules cover 100%
+- **Production example:** Brex CrabTrap (agent network security), Spotify Honk (code quality verification), this repo's 3-layer verification loop
+- **Key metric:** Static-rule hit rate (higher = lower cost + lower latency) × false-negative rate on LLM layer
+
+**Cross-domain applicability:** This pattern generalizes beyond security. Any time you have a deterministic-vs-probabilistic verification choice, tiered gates win over pure-LLM or pure-rule approaches. See [Agent Security](#agent-security) for the network instantiation and [Verification & Quality](#verification--quality) for the code-quality instantiation.
+
+---
+
+### 10. Hierarchical Mesh (OpenAI Symphony-style / Cloudflare Mesh)
 
 ```
                     ┌──────────────┐
@@ -395,6 +439,7 @@ Match the topology to the problem shape. Three key questions: **(1) is the task 
 | Feature building requiring planning + coding + review | **Sequential Multi-Agent** | Role specialization, scoped prompts |
 | Heterogeneous task mix at scale | **Dynamic DAG** | Topology adapts per task |
 | Regulated/compliance-critical workflows | **Deterministic Graph** | Full audit + reproducibility |
+| High-volume filtering where 97% is predictable but 3% is novel | **Tiered Gate** | Fast path free + LLM catches long tail |
 | Long-running distributed deployments | **Hierarchical Mesh** | State reconciliation + convergence |
 
 ### Anti-Patterns
@@ -407,6 +452,7 @@ Match the topology to the problem shape. Three key questions: **(1) is the task 
 | Mesh for audited workflows | Shared state is hard to reconstruct post-hoc |
 | Ratchet with multi-objective metrics | No binary accept/reject → no ratcheting |
 | Dynamic DAG at small task volume | Training cost exceeds savings |
+| Tiered Gate for mathematically-provable safety | LLM layer is fundamentally probabilistic |
 
 ### Combining Topologies
 
@@ -416,6 +462,8 @@ Production systems rarely use one topology — they compose. Common combos:
 - **Mesh + Ratchet**: Agents mesh during the day, individual agents ratchet overnight *(Shopify autoresearch pattern)*
 - **Deterministic Graph + Sequential Multi-Agent**: Graph defines the sequence, agents specialize within each node *(common in enterprise SDLC)*
 - **Hierarchical Mesh + Pipeline**: Orchestrator reconciles, each agent runs a pipeline *(OpenAI Symphony-style)*
+- **Pipeline + Tiered Gate**: Pipeline at each stage uses a tiered gate (deterministic checks → LLM judge) *(Spotify Honk's verification, this repo's 3-layer quality loop)*
+- **One-Shot Tree + Tiered Gate**: Fan-out agents, each request they emit passes through a tiered gate for safety *(Brex CrabTrap in front of OpenClaw fleet)*
 
 See [`docs/potent-combos.md`](docs/potent-combos.md) for the full combinatorial analysis.
 
