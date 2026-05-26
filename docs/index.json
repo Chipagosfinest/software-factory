@@ -1,7 +1,7 @@
 {
   "version": 1,
   "generated": "2026-04-11",
-  "docCount": 37,
+  "docCount": 38,
   "docs": [
     {
       "id": "latent-briefing-kv-compaction",
@@ -145,6 +145,17 @@
       "lastUpdated": "2026-05-26",
       "keyNumbers": ["932,791 agentic PRs", "96%+ agent-initiated collaborator PRs", "27.6% fully AI-generated PRs in Apr 2026", "500% landed PR increase"],
       "relatedDocs": ["background-agents-open-inspect", "coding-agents-landscape", "swe-bench-ecosystem", "repo-protection-tooling-comparison-2026-04-27"]
+    },
+    {
+      "id": "autonomous-codebase-post-merge-review-2026-05-26",
+      "title": "Autonomous Codebase Post-Merge Review",
+      "path": "docs/autonomous-codebase-post-merge-review-2026-05-26.md",
+      "category": "landscape",
+      "tags": ["multi-repo", "agent-teams", "repo-orchestration", "cloud-reference-architecture", "autonomy-levels", "governance"],
+      "sources": ["repoorch", "orch", "relay", "linear-agents", "gcp", "aws-samples", "temporal"],
+      "lastUpdated": "2026-05-26",
+      "keyNumbers": ["5 autonomy levels", "3 follow-up docs", "8 post-merge sources"],
+      "relatedDocs": ["autonomous-codebase-sprawl-2026-05-26", "background-agents-open-inspect", "orchestrator", "agent-orchestrator"]
     },
     {
       "id": "competitive-analysis",
