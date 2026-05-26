@@ -1,6 +1,6 @@
 # Background Agents (Open-Inspect)
 
-*Last updated: March 19, 2026 | Source: [ColeMurray/background-agents](https://github.com/ColeMurray/background-agents) | 1,111 stars | MIT*
+*Last updated: May 26, 2026 | Source: [ColeMurray/background-agents](https://github.com/ColeMurray/background-agents) | 1,524 stars | MIT*
 
 An open-source background coding agent system inspired by [Ramp's Inspect](https://builders.ramp.com/post/why-we-built-our-background-agent). Decouples developer presence from code execution — users submit prompts and retrieve results asynchronously.
 
@@ -10,15 +10,16 @@ An open-source background coding agent system inspired by [Ramp's Inspect](https
 
 | Metric | Value |
 |--------|-------|
-| Stars | 1,111 (as of Mar 2026) |
-| Language | TypeScript (78.6%), Python (18.0%), HCL (2.0%) |
+| Stars | 1,524 (as of May 26, 2026 Exa index) |
+| Forks | 232 |
+| Language | TypeScript (80.1%), Python (16.3%), HCL (1.9%) |
 | License | MIT |
 | Topology | Mesh (multiplayer sessions with shared sandbox state) |
 | Homepage | [backgroundagents.dev](https://backgroundagents.dev) |
-| Agent Runtime | OpenCode |
+| Agent Runtime | OpenCode, Claude, OpenAI Codex |
 | Control Plane | Cloudflare Workers + Durable Objects |
 | Data Plane | Modal (containerized sandboxes) |
-| Client | Next.js web, Slack bot, Chrome extension |
+| Client | Next.js web, Slack bot, GitHub bot, Linear bot |
 
 ---
 
@@ -62,7 +63,7 @@ Three-tier architecture separating session management from execution:
 | `web` | Next.js dashboard client |
 | `modal-infra` | Python sandbox infrastructure |
 | `slack-bot` | Slack integration (Cloudflare Worker + Hono) |
-| `github-bot` | GitHub PR review and mention handling |
+| `github-bot` | GitHub integration (auto-review, @mention) |
 | `linear-bot` | Linear webhook integration |
 
 ---
@@ -106,6 +107,8 @@ Cron-driven background sessions with reliability safeguards:
 - **Auto-pause after 3 consecutive failures** — prevents cascading cost
 - No concurrent runs — overlapping executions skipped
 - 90-minute session timeout
+- Sentry alerts and inbound webhooks can trigger sessions
+- Agents can spawn parallel child sessions in separate sandboxes with depth limits
 
 ### 4. Repository Lifecycle Scripts
 
@@ -119,7 +122,8 @@ Repos can define `.openinspect/setup.sh` and `.openinspect/start.sh`:
 | Provider | Models |
 |----------|--------|
 | Anthropic | Claude Haiku, Sonnet, Opus |
-| OpenAI | GPT 5.2, GPT 5.2 Codex, GPT 5.3 Codex |
+| OpenAI | Codex via ChatGPT subscription |
+| OpenCode | Zen / OpenCode runtime |
 
 OpenAI models integrate with ChatGPT subscriptions (no separate API keys).
 
@@ -176,8 +180,8 @@ Open-Inspect is explicitly modeled on Ramp's internal system. Key differences:
 | Control Plane | Custom (undisclosed) | Cloudflare Workers + Durable Objects |
 | Agent Runtime | Custom | OpenCode |
 | Multi-model | Unknown | Anthropic + OpenAI |
-| Automations | Not public | Cron scheduling with auto-pause |
-| Integrations | Slack | Slack + GitHub + Linear + Chrome extension |
+| Automations | Not public | Cron scheduling, Sentry alerts, webhooks, auto-pause |
+| Integrations | Slack | Slack + GitHub + Linear + web UI |
 | Security | Enterprise SSO | Single-tenant (SSO recommended) |
 | Deploy | SaaS | Self-hosted (Terraform + Vercel + Modal) |
 
@@ -194,6 +198,7 @@ Relevant patterns for Software Factory:
 4. **Prompt queuing** — sequential processing prevents context conflicts
 5. **Git identity per prompt author** — attribution in multi-user scenarios
 6. **Repository lifecycle scripts** — standardized setup/teardown
+7. **Sub-task spawning** — parent sessions dispatch parallel child sessions with separate branches
 
 ---
 

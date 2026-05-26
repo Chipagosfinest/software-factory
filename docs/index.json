@@ -1,7 +1,7 @@
 {
   "version": 1,
   "generated": "2026-04-11",
-  "docCount": 35,
+  "docCount": 37,
   "docs": [
     {
       "id": "latent-briefing-kv-compaction",
@@ -131,9 +131,20 @@
       "category": "core-systems",
       "tags": ["mesh-topology", "multiplayer", "modal-sandboxes", "cloudflare-durable-objects", "cron-automations", "warm-pools", "open-source"],
       "sources": ["ColeMurray/background-agents"],
-      "lastUpdated": "2026-03-19",
-      "keyNumbers": ["1,111 stars", "MIT license", "3-tier architecture (Cloudflare + Modal + Next.js)"],
+      "lastUpdated": "2026-05-26",
+      "keyNumbers": ["1,524 stars", "232 forks", "MIT license", "3-tier architecture (Cloudflare + Modal + Next.js)"],
       "relatedDocs": ["sandbox-isolation", "sandbox-architecture-2026", "potent-combos", "agent-orchestrator"]
+    },
+    {
+      "id": "autonomous-codebase-sprawl-2026-05-26",
+      "title": "Autonomous Codebase Sprawl",
+      "path": "docs/autonomous-codebase-sprawl-2026-05-26.md",
+      "category": "landscape",
+      "tags": ["background-agents", "software-factory", "autonomous-codebases", "symphony", "temporal", "agent-prs", "governance"],
+      "sources": ["background-agents", "openai-symphony", "aidev", "metr", "greptile", "temporal", "agent-substrate"],
+      "lastUpdated": "2026-05-26",
+      "keyNumbers": ["932,791 agentic PRs", "96%+ agent-initiated collaborator PRs", "27.6% fully AI-generated PRs in Apr 2026", "500% landed PR increase"],
+      "relatedDocs": ["background-agents-open-inspect", "coding-agents-landscape", "swe-bench-ecosystem", "repo-protection-tooling-comparison-2026-04-27"]
     },
     {
       "id": "competitive-analysis",
@@ -299,6 +310,17 @@
       "lastUpdated": "2026-03-16",
       "keyNumbers": ["$42/mo full stack"],
       "relatedDocs": ["github-ecosystem", "mcp-ecosystem-deep-dive"]
+    },
+    {
+      "id": "repo-protection-tooling-comparison-2026-04-27",
+      "title": "Repo Protection Tooling Comparison",
+      "path": "docs/repo-protection-tooling-comparison-2026-04-27.md",
+      "category": "architecture",
+      "tags": ["monitoring", "code-review", "security", "sentry", "checkly", "semgrep", "socket", "greptile", "coderabbit"],
+      "sources": ["productrank", "sentry", "checkly", "semgrep", "socket", "greptile", "coderabbit", "github", "factory-ai", "devin"],
+      "lastUpdated": "2026-04-27",
+      "keyNumbers": ["5 recommended tools", "30-day rollout", "20% accepted AI review finding target"],
+      "relatedDocs": ["dev-tools-stack", "competitive-analysis", "github-ecosystem", "codebase-status"]
     },
     {
       "id": "obsidian-knowledge",
