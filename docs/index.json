@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "generated": "2026-04-11",
-  "docCount": 38,
+  "generated": "2026-07-16",
+  "docCount": 40,
   "docs": [
     {
       "id": "latent-briefing-kv-compaction",
@@ -156,6 +156,28 @@
       "lastUpdated": "2026-05-26",
       "keyNumbers": ["5 autonomy levels", "3 follow-up docs", "8 post-merge sources"],
       "relatedDocs": ["autonomous-codebase-sprawl-2026-05-26", "background-agents-open-inspect", "orchestrator", "agent-orchestrator"]
+    },
+    {
+      "id": "software-factory-operations-2026-07-16",
+      "title": "Software Factory Operations: Review Backpressure, Evidence Contracts, and Earned Autonomy",
+      "path": "docs/software-factory-operations-2026-07-16.md",
+      "category": "architecture",
+      "tags": ["review-backpressure", "evidence-contract", "earned-autonomy", "least-privilege", "trajectory-evaluation", "maintainability", "admission-control"],
+      "sources": ["arxiv-2607.01904", "dotnet-blog", "microsoft-security", "cloud-security-alliance", "ai-sdlc", "prodcodebench", "ramp", "needle-in-the-repo", "agentlens"],
+      "lastUpdated": "2026-07-16",
+      "keyNumbers": ["802 developers", "196,212 PRs", "2.09x throughput", "2.0x reviewer load", "13.3% functional-pass structural-fail"],
+      "relatedDocs": ["autonomous-codebase-post-merge-review-2026-05-26", "agent-safety-cost-control", "swe-bench-ecosystem", "repo-protection-tooling-comparison-2026-04-27"]
+    },
+    {
+      "id": "production-case-studies-state-of-play-2026-07-16",
+      "title": "Production Coding-Agent Case Studies: State of Play",
+      "path": "docs/production-case-studies-state-of-play-2026-07-16.md",
+      "category": "landscape",
+      "tags": ["production-case-studies", "spotify", "shopify", "block", "doordash", "github", "openai", "pinterest", "datadog", "cognition", "evaluations"],
+      "sources": ["exa", "parallel", "primary-sources"],
+      "lastUpdated": "2026-07-16",
+      "keyNumbers": ["+76% Spotify PR frequency", "3,536 Shopify River PRs in 30 days", "~1,500 Block Builderbot PRs/week", "53.6% DoorDash weighted recall", "~30% SWE-Bench Pro tasks estimated broken"],
+      "relatedDocs": ["software-factory-operations-2026-07-16", "enterprise-adoption", "swe-bench-ecosystem", "codebase-status"]
     },
     {
       "id": "competitive-analysis",
@@ -351,7 +373,7 @@
       "category": "reference",
       "tags": ["quantitative", "metrics", "costs", "benchmarks"],
       "sources": ["all"],
-      "lastUpdated": "2026-03-18",
+      "lastUpdated": "2026-07-16",
       "keyNumbers": [],
       "relatedDocs": []
     },
@@ -373,7 +395,7 @@
       "category": "reference",
       "tags": ["contradictions", "unknowns", "frontier", "risks"],
       "sources": ["all"],
-      "lastUpdated": "2026-03-18",
+      "lastUpdated": "2026-07-16",
       "keyNumbers": [],
       "relatedDocs": []
     },
@@ -395,7 +417,7 @@
       "category": "internal",
       "tags": ["build-phases", "planning"],
       "sources": ["internal"],
-      "lastUpdated": "2026-03-16",
+      "lastUpdated": "2026-07-16",
       "keyNumbers": [],
       "relatedDocs": ["codebase-status", "risk-forecast"]
     },
@@ -417,8 +439,8 @@
       "category": "internal",
       "tags": ["implementation-progress", "completion-tracking"],
       "sources": ["internal"],
-      "lastUpdated": "2026-03-08",
-      "keyNumbers": ["75-80% complete", "~4,950 LoC"],
+      "lastUpdated": "2026-07-16",
+      "keyNumbers": ["5,240 TypeScript LoC", "45 unit tests", "1 effectful GitHub agent path", "0 live end-to-end factory runs"],
       "relatedDocs": ["roadmap", "risk-forecast"]
     }
   ],

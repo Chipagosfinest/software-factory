@@ -12,8 +12,8 @@
 | +13.7pp | Gain from harness engineering alone, no model changes | [Harness Engineering (LangChain)](harness-engineering-langchain.md) |
 | 53.9% vs 66.5% | xhigh reasoning everywhere vs. reasoning sandwich | [Harness Engineering (LangChain)](harness-engineering-langchain.md) |
 | 17pts apart | Same model, different harness (Spotify) | [Context Engineering](context-engineering.md) |
-| 80.9% | Claude Code on SWE-bench Verified | [Coding Agents Landscape](coding-agents-landscape.md) |
-| ~46% vs ~81% | Best model on SWE-bench Pro vs Verified (contamination gap) | [SWE-bench Ecosystem](swe-bench-ecosystem.md) |
+| 80.9% | Historical Claude Code score on SWE-bench Verified; OpenAI's July 2026 audit says Verified is no longer meaningful | [Production Case Studies](production-case-studies-state-of-play-2026-07-16.md) |
+| ~30% | SWE-Bench Pro tasks OpenAI estimates are broken after an agent-assisted, five-engineer audit | [Production Case Studies](production-case-studies-state-of-play-2026-07-16.md) |
 | 40% fewer stalls | Sandboxing eliminates per-command approval (Cursor data) | [Sandbox Architecture 2026](sandbox-architecture-2026.md) |
 | ~25% veto rate | Spotify LLM judge catches scope creep and phantom fixes | [Potent Combos](potent-combos.md) |
 | ~70% first-pass CI | Stripe agent success rate on CI repair | [Potent Combos](potent-combos.md) |
@@ -22,6 +22,14 @@
 | 2-4x faster delivery | Plan → production with agents (Anthropic 2026) | [README](../README.md) |
 | 1.75x more logic errors | AI-generated code vs human (CodeRabbit) | [Enterprise Adoption](enterprise-adoption.md) |
 | 2.74x more XSS vulns | AI-generated code vs human (CodeRabbit) | [Enterprise Adoption](enterprise-adoption.md) |
+| 2.09x throughput | Per-developer PR throughput at the April 2026 endpoint of an 802-developer longitudinal study | [Software Factory Operations](software-factory-operations-2026-07-16.md) |
+| 2.0x reviewer load | Per-reviewer load after PR volume grew 3.1x and reviewer population 1.5x | [Software Factory Operations](software-factory-operations-2026-07-16.md) |
+| 89% -> 68% | PRs receiving human review during the enterprise AI rollout | [Software Factory Operations](software-factory-operations-2026-07-16.md) |
+| ~19% -> ~84% | PRs receiving automated review during the same rollout | [Software Factory Operations](software-factory-operations-2026-07-16.md) |
+| 13.3% | Needle in the Repo outcomes that passed functional tests but failed a structural oracle (64/483) | [Software Factory Operations](software-factory-operations-2026-07-16.md) |
+| 36.2% average, 57.1% best | Maintainability-aware solve rate across 23 configurations in Needle in the Repo | [Software Factory Operations](software-factory-operations-2026-07-16.md) |
+| 53.6% weighted recall | DoorDash production scout+reviewer on 105 replay cases, finding 504 issues | [Production Case Studies](production-case-studies-state-of-play-2026-07-16.md) |
+| 73% vs 62% | Pinterest vanilla skill-invocation accuracy, Codex vs Claude, across a 100-test harness | [Production Case Studies](production-case-studies-state-of-play-2026-07-16.md) |
 
 ## Context & Token Management
 
@@ -63,7 +71,10 @@
 | 1,300 PRs/week | Stripe Minions throughput | [Enterprise Adoption](enterprise-adoption.md) |
 | 3.5 PRs/eng/day | OpenAI harness-built product | [Harness Engineering (OpenAI)](harness-engineering.md) |
 | ~1M lines, 0 hand-written | OpenAI product built entirely by agents | [Harness Engineering (OpenAI)](harness-engineering.md) |
-| 650+ PRs/month | Spotify Honk merged into production | [Enterprise Adoption](enterprise-adoption.md) |
+| +76% PR frequency | Spotify after broad AI-tool adoption; correlation, not a controlled causal estimate | [Production Case Studies](production-case-studies-state-of-play-2026-07-16.md) |
+| 240 PRs / ~10 weeks saved | Spotify Honk Part 4 automated standardized dataset migrations | [Production Case Studies](production-case-studies-state-of-play-2026-07-16.md) |
+| 3,536 merged PRs / 30 days | Shopify River-coauthored PRs | [Production Case Studies](production-case-studies-state-of-play-2026-07-16.md) |
+| ~1,500 merged PRs/week | Block Builderbot first-party claim, roughly 15% of production changes | [Production Case Studies](production-case-studies-state-of-play-2026-07-16.md) |
 | 84% of developers | Uber agentic coding adoption rate | [Enterprise Adoption](enterprise-adoption.md) |
 | 65-72% of code | AI-generated at Uber | [Enterprise Adoption](enterprise-adoption.md) |
 | 5,000+ engineers | EY on Factory.ai Droids | [Enterprise Adoption](enterprise-adoption.md) |

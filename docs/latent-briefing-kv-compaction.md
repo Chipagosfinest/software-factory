@@ -118,7 +118,7 @@ Instead of summarizing, extract keyword/phrase "keys" from the orchestrator's cu
 | Candidate | Why | File |
 |-----------|-----|------|
 | CI Debugger | Iterates on build failures, budget $2, max 2 retries → trajectory grows fast | [`src/agents/prompts/ci-debugger.md`](../src/agents/prompts/ci-debugger.md) |
-| Merge Resolver | Iterates on conflicts, max 20 files → longest trajectories in the system | [`src/agents/prompts/merge-resolver.md`](../src/agents/prompts/merge-resolver.md) |
+| Merge Resolver | Iterates on conflicts, max 20 files → longest trajectories in the system | [`src/agents/prompts/merge.md`](../src/agents/prompts/merge.md) |
 | Orchestrator loop | State-machine already has convergence detection → natural place for difficulty signal | [`src/orchestrator/state.ts`](../src/orchestrator/state.ts) |
 | LLM router | Single chokepoint for wrapping filter calls | [`src/core/llm.ts`](../src/core/llm.ts) |
 
