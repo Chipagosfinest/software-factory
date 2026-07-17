@@ -261,4 +261,3 @@ Run the next refresh when one of these happens:
 - a major public benchmark changes methodology or is retracted
 - one of the “no newer follow-up” companies publishes new scale or quality data
 - Software Factory implements proof bundles, admission control, or autonomy promotion and needs updated comparables
-
