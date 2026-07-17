@@ -4,6 +4,18 @@
 
 > **Core thesis:** Agents produce working but low-quality code, and instruction-based constraints (CLAUDE.md, AGENTS.md) don't enforce quality. The solution is programmatic verification — deterministic checks + LLM judge + bounded retries. How you wire the agents together matters more than how smart they are.
 
+### July 2026 State of Play
+
+| Surface | Current evidence |
+|---------|------------------|
+| Research corpus | 40 indexed documents, including a matched Exa/Parallel [production case-study refresh](docs/production-case-studies-state-of-play-2026-07-16.md) |
+| Reference prototype | 5,240 lines of TypeScript; strict build and 45 unit tests pass |
+| Effectful agent paths | PR reviewer posts GitHub reviews; CI, security, incident, and merge agents currently stop at proposed actions |
+| Orchestration | State machine and worktree helpers are unit-tested; no live end-to-end factory run has been demonstrated |
+| Operations | No checked-in CI workflow, deployment manifest, staging environment, or production observability |
+
+**Verdict:** this is a strong research corpus and a functioning reference prototype, not a production-ready autonomous factory. See [Codebase Status](docs/codebase-status.md) for the source-backed audit and [Software Factory Operations](docs/software-factory-operations-2026-07-16.md) for the path from prototype to governed production.
+
 ---
 
 ## Table of Contents
@@ -12,6 +24,7 @@
 2. [Design Dimensions](#design-dimensions-not-a-single-spectrum)
 3. [Topology Walkthroughs](#topology-walkthroughs) — 9 patterns, side by side
 4. [Choosing a Topology](#choosing-a-topology) — decision matrix by problem shape
+5. [Latest State of Play](#july-2026-state-of-play) — current research and implementation verdict
 6. [What Doesn't Work (Failure Modes)](#what-doesnt-work-failure-modes)
 7. [Reference Implementation](#reference-implementation) — architecture, agents, safety layers
 8. [Verification & Quality](#verification--quality)
@@ -451,7 +464,13 @@ The corpus above over-indexes on successes because companies only publish wins. 
 
 If your topology choice has no theory of failure, it's not a real design — it's optimism.
 
-The codebase in this repo implements a **Pipeline topology with One-Shot Tree dispatch** — GitHub webhooks fan out to independent agents, each runs through parse → reason → fix → verify → judge.
+---
+
+## Reference Implementation
+
+The codebase prototypes a **Pipeline topology with One-Shot Tree dispatch** — GitHub webhooks fan out to independent handlers that share governance, queueing, state, and model infrastructure.
+
+Only the PR-reviewer path currently completes its intended GitHub mutation. The other core agents return diagnoses and proposed actions but do not yet edit a workspace, commit, push, or open a PR. The diagram below is therefore the intended control flow, with the current effectful boundary called out explicitly.
 
 ### Architecture
 
@@ -471,26 +490,26 @@ GitHub Webhooks / Cron / Linear Issues
        (gate → budget →    (PRs/comments)
         breaker → timeout)
               │
-        Human Review Gate
-       (all output = PRs)
+       Human Review Gate
+      (target architecture)
 ```
 
 **Two execution paths:**
 
-1. **Webhook-driven (reactive)** — `GitHub Webhook → EventRouter → BullMQ → Worker → Agent → GitHub API`. Triggers: PR opened/updated, CI failure, Dependabot alert.
-2. **Orchestrator-driven (proactive)** — `Linear Issue → Orchestrator Poll → Reconciler → Workspace → BullMQ → Agent → GitHub API`. Symphony-style, disabled by default.
+1. **Webhook-driven (reactive)** — `GitHub Webhook → EventRouter → BullMQ → Worker → Agent`. The PR reviewer continues to the GitHub API; the other handlers currently stop at proposed actions.
+2. **Orchestrator-driven (proactive)** — `Linear Issue → Orchestrator Poll → Reconciler → Workspace → BullMQ → Agent`. Symphony-style and disabled by default; workspace mutation and PR finalization are not connected end to end.
 
 Both paths converge at the BullMQ queue and share the same Agent Runner.
 
 ### Agents
 
-| Agent | Trigger | Output | Constraints |
-|-------|---------|--------|-------------|
-| **PR Reviewer** | `pull_request.opened` / `synchronize` | Review comments + approve/request changes | Cannot create PRs |
-| **CI Debugger** | `check_suite.completed` (failure) | Diagnosis comment + fix PR | Max 10 files, 200 lines |
-| **Security Patcher** | `dependabot_alert.created` | Patch PR | Lockfiles only |
-| **Incident Responder** | PagerDuty / custom alert | RCA + fix PR | Max 10 files, 200 lines |
-| **Merge Resolver** | PR with conflict label | Conflict resolution commit | Max 20 files, 500 lines |
+| Agent | Current behavior | Missing effect |
+|-------|------------------|----------------|
+| **PR Reviewer** | Posts a GitHub review with approve/request-changes behavior | Live GitHub App integration test and invalid-line recovery |
+| **CI Debugger** | Returns a diagnosis and proposed commit/PR actions | Apply edits, run checks, commit, push, and open the PR |
+| **Security Patcher** | Returns a dependency assessment and proposed PR action | Apply the dependency change and create the PR |
+| **Incident Responder** | Returns an RCA and proposed hotfix actions | Execute and verify the hotfix |
+| **Merge Resolver** | Returns proposed conflict resolutions | Edit, test, commit, and push the resolution |
 
 ### Safety & Governance
 
@@ -515,7 +534,7 @@ Five layers checked in order on every agent run:
 | External DB | Supabase (PostgreSQL) | Signals, validations |
 | Sandbox | Docker / git worktrees | Isolated execution per agent |
 
-### Quick Start
+### Local Prototype
 
 ```bash
 git clone https://github.com/Chipagosfinest/software-factory.git
@@ -525,6 +544,8 @@ cp .env.example .env
 # Configure: GitHub App credentials, OpenRouter API key, Redis URL
 npm run dev
 ```
+
+Redis and external credentials are required for effectful paths. Before treating a run as production evidence, add a disposable-repository integration test and verify the complete workspace → checks → commit → push → draft-PR loop.
 
 ---
 
