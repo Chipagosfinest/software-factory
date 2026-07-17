@@ -46,12 +46,15 @@
 |----------|------|
 | How do I prevent runaway costs? | [Agent Safety & Cost Control](docs/agent-safety-cost-control.md) |
 | What approval patterns exist? | [Agent Safety & Cost Control](docs/agent-safety-cost-control.md) (Approval Gates) |
+| How do I prevent agent throughput from overwhelming review? | [Software Factory Operations](docs/software-factory-operations-2026-07-16.md) |
+| How should agents earn merge autonomy? | [Software Factory Operations](docs/software-factory-operations-2026-07-16.md) (Earned Autonomy Ladder) |
 | What topologies/combos fit my team size? | [Potent Combos](docs/potent-combos.md) (Build Profiles) |
 
 ### Evaluate the Market
 
 | Question | Read |
 |----------|------|
+| What are the latest production case studies and what changed? | [Production Case Studies: State of Play](docs/production-case-studies-state-of-play-2026-07-16.md) |
 | What tools exist and how do they compare? | [Coding Agents Landscape](docs/coding-agents-landscape.md) |
 | How are enterprises adopting agentic coding? | [Enterprise Adoption](docs/enterprise-adoption.md) |
 | How does Devin/Factory.ai compare to us? | [Competitive Analysis](docs/competitive-analysis.md) + [Devin + Factory.ai](docs/devin-factory.md) |
@@ -76,7 +79,7 @@
 ## For Agents Consuming This Repo
 
 1. Parse [docs/index.json](docs/index.json) to find relevant docs by category/tags
-2. Read only what's relevant — don't load all 34 docs
+2. Read only what's relevant — don't load all 40 indexed docs
 3. Numbers are consolidated in [KEY-NUMBERS.md](docs/KEY-NUMBERS.md) — no need to grep
 4. Term definitions are in [GLOSSARY.md](docs/GLOSSARY.md) — use canonical meanings
 
@@ -88,4 +91,4 @@
 |----------|---------|
 | [Roadmap](docs/roadmap.md) | Software Factory build phases |
 | [Risk Forecast](docs/risk-forecast.md) | First-30-days operational risks |
-| [Codebase Status](docs/codebase-status.md) | Implementation progress tracking |
+| [Codebase Status](docs/codebase-status.md) | Verified implementation state and production gaps |

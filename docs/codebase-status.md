@@ -1,98 +1,145 @@
-# Codebase Status — March 21, 2026
+# Codebase Status — July 16, 2026
 
-## Overall: 75-80% Complete (~4,950 LoC)
+## Verdict
 
----
+The repository is a strong research corpus plus a functioning TypeScript reference prototype. It is **not production-ready** and should not be described as 75–80% complete.
 
-## Production-Ready (Ship Now)
+The honest current state:
 
-| Component | File | Status |
-|-----------|------|--------|
-| HTTP Server | `src/index.ts` | ✅ Hono server, health checks, webhook/cron/manual endpoints, audit/cost/metrics APIs |
-| Event Router | `src/router.ts` | ✅ GitHub webhook mapping, draft filters, action guards |
-| Types | `src/types.ts` | ✅ Complete TypeScript definitions |
-| PR Reviewer | `src/agents/pr-reviewer.ts` | ✅ Review comments + approval with judge veto and retry |
-| CI Debugger | `src/agents/ci-debugger.ts` | ✅ Failure diagnosis + fix PR, shift-left pattern |
-| Security Patcher | `src/agents/security.ts` | ✅ CVE assessment + patch PR |
-| Incident Responder | `src/agents/incident.ts` | ✅ RCA + hotfix generation |
-| Merge Resolver | `src/agents/merge.ts` | ✅ Conflict resolution |
-| LLM Judge | `src/agents/judge.ts` | ✅ Output validation gate |
-| Agent Runner | `src/agents/runner.ts` | ✅ Orchestrator with executor gate, timeout, cost tracking |
-| GitHub Client | `src/core/github.ts` | ✅ Octokit + circuit breaker |
-| LLM Client | `src/core/llm.ts` | ✅ OpenRouter with cost tracking |
-| Governance | `src/core/governance.ts` | ✅ Permissions, audit, blast radius |
-| Circuit Breaker | `src/core/circuit-breaker.ts` | ✅ API resilience |
-| Database | `src/core/db.ts` | ✅ SQLite audit/cost logging |
-| Executor Gate | `src/core/executor-gate.ts` | ✅ Kill switch |
-| Context Builder | `src/core/context.ts` | ✅ Repo context (diffs, commits, CI logs) |
-| Webhook Verifier | `src/core/webhook.ts` | ✅ HMAC signature verification |
-| Queue | `src/queue/queue.ts` | ✅ BullMQ job definitions |
-| Worker | `src/queue/worker.ts` | ✅ BullMQ processor with error handling |
-| Prompts | `src/agents/prompts/*.md` | ✅ All 6 agent prompts complete |
+- 5,240 lines of TypeScript across 51 source/test files
+- 43 Markdown documents in `docs/` after this refresh
+- strict TypeScript build passes
+- 45 unit tests pass across four test files
+- no CI workflow, deploy manifest, container image, or staging deployment is checked into the repository
+- only the PR-reviewer path performs its intended GitHub write end to end
 
-## Partially Implemented (Needs Work)
+## Working and Tested
 
-| Component | File | Status | Gaps |
-|-----------|------|--------|------|
-| Tool Discovery | `src/agents/cron/tool-discovery.ts` | ⚠️ 60% | LLM-only — no GitHub/ProductHunt/HN API integration |
-| Signal Harvester | `src/agents/cron/signal-harvester.ts` | ⚠️ 80% | No slug validation, GitHub rate limit handling |
-| Drift Detector | `src/agents/cron/drift-detector.ts` | ⚠️ 70% | LLM hallucination risk — no actual deprecation API calls |
-| Backfill | `src/agents/cron/backfill.ts` | ⚠️ 75% | Writes to `products.category` — should be `stack_category` |
-| Integration Tester | `src/agents/cron/integration-tester.ts` | ❌ 0% | Skeleton only — waiting for Docker sandbox |
-| Budget Guard | `src/core/budget-guard.ts` | ⚠️ 60% | No monthly aggregation, no approaching-limit alerts |
-| Flywheel | `src/core/flywheel.ts` | ⚠️ 40% | No signal aggregation, no graduation logic |
-| Scheduler | `src/core/scheduler.ts` | ⚠️ 80% | No rotation scheduling, no catchup mode |
-| Supabase Client | `src/core/supabase.ts` | ⚠️ 90% | Works but references potentially wrong column names |
+| Area | Evidence | Status |
+|---|---|---|
+| Event routing | Webhook fixtures and router tests cover PR, failed check suite, Dependabot, and cron dispatch | Working at unit level |
+| PR reviewer | Builds context, validates actions, uses an LLM judge with one retry, and calls GitHub `createReview` | Effectful path exists |
+| SQLite state | Audit, cost, run, cron, and orchestrator records; database initialization tested | Working locally |
+| Budget controls | Per-agent daily checks plus a global daily cap | Implemented |
+| Executor gate | File-backed kill switch with unit coverage | Implemented |
+| Circuit breaker | Closed/open transitions and metrics have unit coverage | Implemented |
+| Orchestrator state machine | Task transitions, retry exhaustion, and convergence behavior covered by tests | Implemented at unit level |
+| Workflow configuration | `WORKFLOW.md` parsing and instruction extraction covered by tests | Implemented |
+| Workspace isolation | Git worktrees, allowlist option, concurrency cap, cleanup helpers | Implemented but not proven end to end |
 
-## Critical Issues
+## Effectful Gaps
 
-### P0 — Fix Before Shipping Cron Agents
+### Core agents
 
-1. **Backfill agent schema mismatch** — writes to `products.category` instead of `stack_category`. Will corrupt production data.
-2. **Tool discovery has no real data sources** — LLM hallucinates trending tools. Needs GitHub API, ProductHunt, HN, RSS feeds.
-3. **Drift detector has no verification** — LLM claims tools are deprecated without checking GitHub archive status or npm deprecation flags.
+| Agent | What it really does today | Missing for end-to-end operation |
+|---|---|---|
+| PR reviewer | Posts a GitHub review | Live integration test, invalid-line recovery, production auth/config proof |
+| CI debugger | Produces proposed `create_pr` and `push_commit` actions | Does not execute file writes, commit, push, or PR creation |
+| Security patcher | Produces an assessment and proposed PR action | Does not write a dependency change or create the PR |
+| Incident responder | Produces RCA and proposed hotfix actions | Does not execute the hotfix or create the PR |
+| Merge resolver | Produces proposed conflict resolutions | Does not edit, commit, push, or update a PR |
 
-### P1 — Fix Soon
+Workspace helpers for change detection, commit, and push exist but are not connected to these agent action paths.
 
-4. **No monthly cost aggregation** — budget-guard checks per-run but can't enforce monthly limits ($150/month cron budget).
-5. **Signal harvester doesn't validate slugs** — assumes product slug matches GitHub repo path. Silent failures for 30-50% of products.
-6. **Flywheel loop incomplete** — confidence deltas are hardcoded (+0.2, +0.3). No Bayesian updating or graduation criteria.
+### Orchestrator
 
-### P2 — Improve Later
+The Symphony-style layer can:
 
-7. **Scheduler has no rotation** — all cron agents run on fixed schedules. No round-robin across products.
-8. **No observability** — logs are console.log only. No metrics dashboards or alerting.
-9. **Integration tester disabled** — needs Docker sandbox implementation.
+- poll Linear
+- infer agent and repo from issue metadata
+- persist task state
+- create isolated worktrees
+- enqueue work
+- detect stalls and repeated failures
+- clean stale workspaces
 
----
+It is not yet a proven factory loop:
 
-## Architecture Strengths
+- orchestrated agents do not consistently consume the created workspace as their execution environment
+- proposed mutations are not applied to the worktree
+- commit/push/PR finalization is not connected
+- Linear state updates and review packets are incomplete
+- there is no live integration test against Linear, GitHub, Redis, and a disposable repo
 
-- Clean event-driven architecture (webhook → router → agent → GitHub API)
-- Every agent action produces a PR — humans review before merge
-- Cost governance with $2/run caps, 5-minute timeouts, audit trails
-- Circuit breaker pattern for API resilience
-- LLM judge validates agent output before posting (Spotify pattern)
-- Executor gate kill switch without redeploying
-- TypeScript strict mode throughout
+### Cron/data agents
 
-## Key Research Findings (March 21, 2026)
+| Component | Current blocker |
+|---|---|
+| Tool discovery | Still asks the LLM to invent current GitHub/Product Hunt/HN results; no live source retrieval |
+| Drift detector | Still relies on model training data; no GitHub/npm/site verification |
+| Backfill | Still writes `products.category`; the documented `stack_category` mismatch remains unresolved |
+| Signal harvester | Calls GitHub/npm directly but assumes a product slug is a repo/package identifier |
+| Flywheel | Confidence uses fixed additive deltas; no calibrated evidence model |
+| Integration tester | Explicitly disabled because Docker sandboxes are unavailable |
 
-New research compiled in `docs/karpathy-software-factory-thesis.md` directly validates our architecture:
+These agents should not run against production data.
 
-- **Hooks > Instructions** — 20+ Claude Code GitHub issues prove CLAUDE.md rules are read then violated. Only hooks (`exit 2`) mechanically enforce. Our governance layer (executor gate, LLM judge, verification loops) is the right approach.
-- **75% of agents break working code** over time (Alibaba SWE-CI). Our LLM judge + bounded retries (max 2 CI rounds) mitigates this.
-- **AI PRs have 1.7x more issues** than human PRs (CodeRabbit, 470 PRs). Our PR reviewer agent needs to catch these patterns.
-- **3 focused workers > 10 parallel** (OptinAmpOut production fleet). Validates our scoped-agent approach over swarm patterns.
-- **JetBrains coined "Shadow Tech Debt"** — architecture-blind code from agents. Our context builder pre-hydrating repo structure is the mitigation.
-- **Paperclip** (24K+ stars, MIT) launched as open-source orchestration for "zero-human companies" — direct competitor/complement. See competitive-analysis.md.
+## Security and Operations Gaps
 
-## Recommended Next Steps
+- `GITHUB_WEBHOOK_SECRET` is optional; when absent, signature verification is skipped.
+- `ALLOWED_REPOS` is optional and defaults to allowing any repository in development mode.
+- startup validation requires only OpenRouter even though effectful GitHub and queue paths need more configuration.
+- governance validates proposed actions but there is no single external enforcement layer for all tool calls.
+- logs are console-only; there is no structured tracing, alerting, or production dashboard.
+- no task-scoped credentials or durable proof bundle exists.
+- no review admission/backpressure metrics exist.
+- no 7/30-day revert, incident, or follow-up attribution exists.
 
-1. **Deploy core agents to a staging repo** — PR review + CI debug are immediately valuable
-2. **Fix backfill schema mismatch** before running cron agents
-3. **Add real data sources** to tool discovery (GitHub trending API, RSS)
-4. **Add verification calls** to drift detector (GitHub archive status, npm deprecation)
-5. **Build Feature Builder agent** — biggest competitive gap (see competitive-analysis.md)
-6. **Add code quality verifier** to agent pipeline — AST complexity, duplication detection, style linting (new, from thesis research)
-7. **Evaluate Paperclip integration** — could serve as our orchestration UI layer
+## Test and Verification Gaps
+
+- 45 unit tests pass, but no live GitHub App test exists.
+- no Redis/BullMQ integration test exists.
+- no Linear reconciliation integration test exists.
+- no disposable-repository mutation test exists.
+- no end-to-end PR creation/review/repair flow exists.
+- no agent quality/eval suite measures false positives, missed findings, skill invocation, or trajectory quality.
+- no deployment health check exists because there is no deployment configuration.
+
+## Current Product Shape
+
+The most defensible near-term product is:
+
+> A governed PR-review and task-orchestration control plane that admits work by risk, runs it in an isolated workspace, and requires proof before review.
+
+The current code proves parts of that shape, but the repository’s strongest asset today remains the research corpus.
+
+## P0: Required Before Any Production Claim
+
+1. Connect one mutation agent end to end: workspace → edit → deterministic checks → commit → push → draft PR.
+2. Make webhook verification, repo allowlisting, GitHub credentials, and Redis mandatory in production mode.
+3. Add a disposable-repository integration test for the full flow.
+4. Keep the cron/data agents disabled until live-source verification and schema correctness are fixed.
+5. Add structured proof bundles and required checks.
+6. Add review admission/backpressure metrics.
+7. Add CI and a real deploy/staging configuration with health verification.
+
+## P1: Factory Loop
+
+1. Bind orchestrator tasks to their worktree throughout execution.
+2. Finalize Linear state transitions and review packets.
+3. Add deterministic build/test commands from repo-specific workflow configuration.
+4. Add task-scoped credentials and per-tool enforcement.
+5. Track reverts, incidents, follow-up fixes, human takeover, and review time.
+6. Add automatic demotion and human-approved autonomy promotion by repo/task/risk cell.
+
+## P2: Research-to-Product
+
+1. Add skill-invocation regression tests modeled on Pinterest.
+2. Add replayable PR-review evals modeled on DoorDash DashBench.
+3. Add source-grounded test plans and annotated proof artifacts modeled on Cognition.
+4. Separate durable session state from disposable harness/sandbox execution modeled on Shopify Aquifer.
+5. Feed production telemetry into verification harnesses modeled on Datadog.
+
+## Verification Snapshot
+
+Verified locally on July 16, 2026:
+
+```text
+npm run build        pass
+npm test -- --run    45/45 tests pass
+docs/index.json      valid JSON; document count matches entries
+local Markdown links pass
+git diff --check     pass
+```
+
+This status is based on source and test inspection. No live external integration or deployment was exercised.

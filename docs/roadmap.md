@@ -1,6 +1,6 @@
 # Software Factory Roadmap
 
-*Updated: March 21, 2026*
+*Updated: July 16, 2026*
 
 ---
 
@@ -12,15 +12,19 @@ At its core, this is **container management running different automation tasks p
 
 ## Phase 1: Application Uptime + Graph Growth (NOW)
 
-Stand up the factory to ensure target application reliability. CI debugging catches regressions, PR review maintains code quality, security patching keeps dependencies clean. Cron agents grow the knowledge graph daily.
+Prove one governed factory loop end to end before expanding the agent fleet: admit a task, bind it to an isolated workspace, make a change, run deterministic verification, commit, push, and open a draft PR with a proof bundle.
 
-**Containers:** 5 core agents (webhook-triggered) + 5 cron agents (scheduled)
-**Key metric:** Application uptime + graph confidence scores trending toward 1.0
+**Current prototype:** 5 core agent handlers + 5 cron handlers, SQLite state, BullMQ queues, and a worktree orchestrator
+**Key metric:** Successful disposable-repository runs with complete proof bundles, followed by review time, revert rate, and incident rate
 
 ### Status
-- Core agents: ✅ Production-ready (PR review, CI debug, security, incident, merge)
-- Cron agents: ⚠️ 60-80% complete (see codebase-status.md for gaps)
-- P0 blockers: Backfill schema mismatch, tool discovery needs real data sources
+- PR reviewer: effectful GitHub review path exists; live integration proof is missing
+- CI, security, incident, and merge agents: produce proposed actions but do not apply, commit, push, or open PRs
+- Orchestrator: state machine and worktree helpers are unit-tested but not bound through a live end-to-end run
+- Cron/data agents: not production-safe; schema, identity mapping, live-source verification, and calibration gaps remain
+- P0 blockers: one connected mutation flow, mandatory production auth/config, disposable-repo integration test, CI, staging/deploy config, and observability
+
+See [Codebase Status](codebase-status.md) for source-backed implementation detail and [Production Case Studies](production-case-studies-state-of-play-2026-07-16.md) for the current external evidence.
 
 ---
 
@@ -140,6 +144,10 @@ Each phase adds ~2-5 new agent types but reuses 100% of:
 | Stripe Minions | 400+ MCP tools, devboxes, conditional rules | Tool strategy, per-dir rules |
 | LangChain Deep Agents | Middleware pipelines, sub-agents, context summarization, skills | Middleware refactor phase |
 | OpenAI Symphony | Orchestrator state machine, reconciliation loop | Orchestrator |
+| Shopify Aquifer | Durable session/event state separated from disposable harnesses and sandboxes | Orchestrator and execution state |
+| DoorDash DashBench | Replayable review benchmark with precision, recall, severity, latency, and cost | Evaluation backlog |
+| Pinterest skill harness | Explicit and implicit skill-selection regression tests | Evaluation backlog |
+| Datadog harness-first agents | Production telemetry and deterministic simulation as verification | Verification backlog |
 | Karpathy Autoresearch | NEVER STOP loop, single-metric acceptance, fixed time budget, crash recovery, simplicity criterion | Agent loop design, convergence detection, safety guardrails |
 | Tobi Lutke QMD | Hybrid search (BM25 + vector + reranking), MCP server, collections + context, query expansion | Agent knowledge retrieval, docs/ search |
 | Paperclip AI | Per-agent monthly budgets, task checkout locks, heartbeat protocol, React dashboard, run transcript persistence | Budget guard upgrade (Now), transcript storage (Now), fleet orchestration + dashboard (Phase 3) |

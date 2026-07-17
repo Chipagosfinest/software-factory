@@ -1,6 +1,6 @@
 # Software Factory
 
-**A research corpus on agent-native software delivery.** Nine topology patterns, 50+ curated references, production systems analysis (Stripe, Spotify, Ramp, Coinbase, Brex), and a working reference implementation.
+**A research corpus on agent-native software delivery.** Nine topology patterns, 50+ curated references, a July 2026 production case-study tracker, and a working TypeScript reference prototype.
 
 > **Core thesis:** Agents produce working but low-quality code, and instruction-based constraints (CLAUDE.md, AGENTS.md) don't enforce quality. The solution is programmatic verification — deterministic checks + LLM judge + bounded retries. How you wire the agents together matters more than how smart they are.
 
@@ -34,19 +34,20 @@ A dozen companies have proven the pattern at scale and published the receipts. A
 | **Anthropic** | [Claude Code dogfooding + Managed Agents](https://www.claude.com/blog/code-review) | 200% growth in output per engineer, substantive reviews 16% → 54%, 84% of 1000+ line PRs get findings | "Decouple brain from hands" harness thesis |
 | **LinkedIn** | [CAPT (Contextual Agent Playbooks & Tools)](https://www.linkedin.com/blog/engineering/ai/contextual-agent-playbooks-and-tools-how-linkedin-gave-ai-coding-agents-organizational-context) | 1,000+ engineers, 500+ playbooks, 70% triage time drop, 3x data workflows | Organizational context as the agent primitive |
 | **Stripe** | [Minions](https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents) | 1,300 PRs/week | Goose fork + devboxes (10s spin-up) + 400 MCP tools |
-| **Spotify** | [Honk](https://engineering.atspotify.com/2025/11/spotifys-background-coding-agent-part-1) | 1,500+ AI-generated PRs from Honk; separately, their Fleet Management org reports automating ~50% of internal PRs across all tooling | Containerized K8s + verification loops + LLM judge |
+| **Spotify** | [Honk + Fleet Management](https://engineering.atspotify.com/2026/6/code-with-claude-coding-is-no-longer-the-constraint) | >99% weekly AI use, PR frequency +76%, 2.5M+ lifetime automated maintenance PRs across the broader Fleet Management system | Deterministic targeting + agentic code changes; admit only standardized, verifiable task classes |
 | **Ramp** | [Inspect](https://builders.ramp.com/post/why-we-built-our-background-agent) | ~50% of merged PRs | Modal snapshot warm pools + multiplayer sessions |
 | **Coinbase** | [Forge](https://www.coinbase.com/blog/Tools-for-Developer-Productivity-at-Coinbase) *(née Cloudbot)* | 5% of merged PRs, 150h → 15h cycle time | Cloud sandboxes + Slack-first + agent councils |
-| **Block** | [AI-Assisted Development at Block](https://engineering.block.xyz/blog/ai-assisted-development-at-block) | 95% eng adoption, Champions program (50 devs × 30% time) | AI-readiness architecture for 40K-file monorepo |
-| **DoorDash** | [Collaborative AI Ecosystem](https://careersatdoordash.com/blog/beyond-single-agents-doordash-building-collaborative-ai-ecosystem/) | 25K hrs saved via Alteryx automation alone | 4-stage progression: workflows → single agents → deep agents → swarms |
+| **Block** | [Builderbot](https://block.xyz/inside/block-rolls-out-builderbot-a-new-suite-of-ai-native-tools-that-changes-the-way-we-ship) | First-party claim: 200K operations/day, ~1,500 merged PRs/week, ~15% of production changes | Shared company platform, not a collection of isolated assistants |
+| **DoorDash** | [DashBench](https://careersatdoordash.com/blog/how-we-learned-to-trust-our-ai-code-reviewer-at-doordash/) | 105 replay cases; production scout+reviewer found 504 findings at 53.6% weighted recall | Acceptance telemetry is not ground truth; measure recall, precision, severity, latency, and cost |
 | **Cognition** | [How Cognition Uses Devin to Build Devin](https://www.cognition-labs.com/blog/how-cognition-uses-devin-to-build-devin) | Hundreds of Devin PRs merged per week internally *(vendor-reported)* | Agent-to-agent REST API triggers |
 | **Nubank** | [Devin deployment](https://building.nubank.com/enhancing-engineering-workflows-with-ai-a-real-world-experience/) | 100K data class migrations; 12x efficiency claimed *(vendor-reported via Cognition case study)* | Fine-tuned Devin on the Nubank codebase |
-| **OpenAI** | [Harness Engineering](https://openai.com/index/harness-engineering/) | 1M lines, 1,500 PRs | Environment-first, 3.5 PRs/engineer/day |
+| **OpenAI** | [Symphony](https://openai.com/index/open-source-codex-orchestration-symphony/) + [Harness Engineering](https://openai.com/index/harness-engineering/) | Some teams reported +500% landed PRs in Symphony's first three weeks | Board-as-control-plane, bounded WIP, review packets, and CI/rebase shepherding |
 | **Airbnb** | [Large-scale test migration with LLMs](https://airbnb.tech/infrastructure/accelerating-large-scale-test-migration-with-llms/) | 3.5K files Enzyme → RTL in 6 weeks, 75% auto in 4 hrs, 97% after 4 days | Canonical batch migration harness pattern |
 | **Google** | [Jules — async coding agent](https://blog.google/technology/google-labs/jules) | 140K code improvements during beta | Ephemeral VM per task, GitHub-issue driven |
-| **Pinterest** | [MCP Ecosystem + Tricorder](https://medium.com/pinterest-engineering/building-an-mcp-ecosystem-at-pinterest-d881eb4c16f1) | 66K MCP invocations/mo, 844 MAUs | Central MCP registry + observability agent |
-| **Datadog** | [Bits AI SRE + Dev Agent](https://www.datadoghq.com/blog/engineering/bits-ai-eval-platform) | Observability-driven auto-PR | Eval platform for trusting autonomous agents at scale |
-| **Shopify** | [Roast framework](https://shopifyengineering.myshopify.com/blogs/engineering/introducing-roast) | Open-sourced Ruby DSL | Claude Code as a "CodingAgent" cog in structured workflows |
+| **Pinterest** | [AI skill testing](https://medium.com/pinterest-engineering/an-engineers-guide-to-better-ai-skills-implementing-a-testing-process-to-optimize-agent-a000c9c9abcd) | 100-test harness; 73% Codex vs 62% Claude on vanilla skill invocation | Test whether agents load the right skill, especially for terse and ambiguous prompts |
+| **Datadog** | [Harness-first agents](https://www.datadoghq.com/blog/ai/harness-first-agents/) | Production-like verification reported 87% less memory in one migration and ~93% peak disk throughput in another | Production telemetry and deterministic simulation are the evaluation substrate |
+| **Shopify** | [River + Aquifer](https://shopify.engineering/under-the-river) | 1 in 8 merged PRs coauthored; 3,536 merged River PRs in 30 days | Durable session/event state separated from disposable harnesses and sandboxes |
+| **GitHub** | [Agentic harness evaluation](https://github.blog/ai-and-ml/github-copilot/evaluating-performance-and-efficiency-of-the-github-copilot-agentic-harness-across-models-and-tasks/) | Same-model controlled comparisons across harnesses, tasks, tokens, cost, and run variance | Evaluate the harness, not just the model |
 | **Databricks** | [Genie Code](https://www.databricks.com/blog/introducing-genie-code) | 2x a leading coding agent on internal benchmarks | Data-specific coding agent with proactive prod monitoring |
 | **Vercel** | [AEO tracking for agents](https://vercel.com/blog/how-we-built-aeo-tracking-for-coding-agents) | — | Coding agents run in ephemeral Firecracker microVMs as probe fleet |
 
@@ -561,7 +562,13 @@ The quality problem is industry-wide. Alibaba's SWE-CI benchmark shows 75% of ag
 
 **The Tiered Gate pattern.** Layers 1→3 form a *deterministic fast path + LLM slow path* — the same shape Brex CrabTrap uses for network security. Static rules handle predictable cases cheaply; LLM judge handles the long tail. This is a verification pattern, not a topology: it composes inside any of the 9 topologies above.
 
-**Leaderboard:** See the [official SWE-bench leaderboard](https://www.swebench.com/) for current rankings. As of April 2026, the Verified split is dominated by Claude Opus 4.7, GPT-5.3-Codex, and Gemini 3.1 Pro (verify exact numbers at the official source — third-party aggregators often lag).
+**Benchmark warning (July 2026):** Public leaderboards are only one signal. OpenAI's [coding-evaluation audit](https://openai.com/index/separating-signal-from-noise-coding-evaluations) says SWE-bench Verified is no longer meaningful and estimates roughly 30% of SWE-Bench Pro tasks are broken, retracting its earlier recommendation to switch to Pro. Prefer repo-specific replay sets, independent human adjudication, repeated runs, and production outcome metrics.
+
+### Operating the Review Constraint
+
+Verification is necessary but not sufficient once agents create changes faster than humans can review them. A July 2026 longitudinal study of 802 developers and 196,212 PRs observed 2.09x per-capita throughput, 2.0x per-reviewer load, and a shift from substantive human review toward automated review. Microsoft's ten-month .NET retrospective shows the same constraint at repository scale.
+
+The operating response is **admission backpressure + scoped authority + proof bundles + risk-tiered review + earned autonomy**. See [Software Factory Operations](docs/software-factory-operations-2026-07-16.md) for the full evidence, scorecard, and implementation slice.
 
 ---
 
@@ -637,6 +644,7 @@ These are the first-person accounts from company engineering teams — the riche
 
 **Tier 1 — Deep case studies with numbers:**
 
+- [Production Coding-Agent Case Studies: State of Play](docs/production-case-studies-state-of-play-2026-07-16.md) — July 2026 matched Exa/Parallel refresh, source grading, and follow-up status
 - [Uber: uReview](https://blog.uber.com/blog/ureview/) — Multi-stage Commenter GenAI reviews 90% of ~65K weekly Phabricator diffs (Sonal Mahajan byline)
 - [Pragmatic Engineer: How Uber uses AI for development](https://newsletter.pragmaticengineer.com/p/how-uber-uses-ai-for-development) — Deep dive on Uber's 4-layer stack (Minion, Shepherd, uReview, Autocover)
 - [Cloudflare: The AI engineering stack we built internally](https://blog.cloudflare.com/internal-ai-engineering-stack/) — 93% R&D adoption, running on their own Workers/AI Gateway
@@ -645,17 +653,20 @@ These are the first-person accounts from company engineering teams — the riche
 - [Anthropic: Bringing Code Review to Claude Code](https://www.claude.com/blog/code-review) — Multi-agent parallel review; 16% → 54% of PRs get substantive comments
 - [Anthropic: Scaling Managed Agents — Decoupling brain from hands](https://www.anthropic.com/engineering/managed-agents) — Meta-harness thesis for long-horizon agents
 - [LinkedIn: CAPT — Contextual Agent Playbooks](https://www.linkedin.com/blog/engineering/ai/contextual-agent-playbooks-and-tools-how-linkedin-gave-ai-coding-agents-organizational-context) — 1,000+ engineers, 70% triage time drop (Ajay Prakash byline)
-- [Block: AI-Assisted Development at Block](https://engineering.block.xyz/blog/ai-assisted-development-at-block) — 95% eng adoption, Champions program (Angie Jones byline)
+- [Block: Builderbot](https://block.xyz/inside/block-rolls-out-builderbot-a-new-suite-of-ai-native-tools-that-changes-the-way-we-ship) — First-party scale claim of ~1,500 merged PRs/week and ~15% of production changes
+- [DoorDash: DashBench](https://careersatdoordash.com/blog/how-we-learned-to-trust-our-ai-code-reviewer-at-doordash/) — Replay benchmark for measuring reviewer recall, precision, severity, latency, and cost
+- [Shopify: Under the River](https://shopify.engineering/under-the-river) — River production scale and Aquifer's durable-state/disposable-execution architecture
+- [OpenAI: Separating signal from noise in coding evaluations](https://openai.com/index/separating-signal-from-noise-coding-evaluations) — Human-audited benchmark quality correction
 
 **Tier 2 — Strong patterns + production numbers:**
 
 - [Airbnb: Accelerating Large-Scale Test Migration with LLMs](https://airbnb.tech/infrastructure/accelerating-large-scale-test-migration-with-llms/) — 3.5K files Enzyme → RTL in 6 weeks (the canonical batch migration harness post)
 - [Airbnb: GraphQL Data Mocking at Scale with LLMs](https://airbnb.tech/uncategorized/graphql-data-mocking-at-scale-with-llms-and-generatemock/) — Type-safe mock data inside the dev loop
-- [DoorDash: Beyond Single Agents — Collaborative AI Ecosystem](https://careersatdoordash.com/blog/beyond-single-agents-doordash-building-collaborative-ai-ecosystem/) — 4-stage progression: workflows → agents → deep agents → swarms
-- [Pinterest: Building an MCP Ecosystem](https://medium.com/pinterest-engineering/building-an-mcp-ecosystem-at-pinterest-d881eb4c16f1) — Central MCP registry + IDE/chat integrations
-- [Datadog: Bits AI Dev Agent](https://datadoghq.com/blog/bits-ai-dev-agent) — Observability-driven auto-PR agent
-- [Datadog: Real-world evaluation platform for SRE agents](https://www.datadoghq.com/blog/engineering/bits-ai-eval-platform) — The "how do we trust it" post
-- [Shopify: Introducing Roast](https://shopifyengineering.myshopify.com/blogs/engineering/introducing-roast) — Structured AI workflows in Ruby, open-sourced
+- [DoorDash: Beyond Single Agents — Collaborative AI Ecosystem](https://careersatdoordash.com/blog/beyond-single-agents-doordash-building-collaborative-ai-ecosystem/) — Earlier 4-stage progression: workflows → agents → deep agents → swarms
+- [Pinterest: Testing AI skills](https://medium.com/pinterest-engineering/an-engineers-guide-to-better-ai-skills-implementing-a-testing-process-to-optimize-agent-a000c9c9abcd) — 100-test harness for explicit and implicit skill invocation
+- [Datadog: Harness-first agents](https://www.datadoghq.com/blog/ai/harness-first-agents/) — Production-like deterministic verification
+- [Datadog: Autoresearch for LLM experimentation](https://www.datadoghq.com/blog/llm-experimentation-autoresearch/) — Experiments, self-verification, and handoffs improved an internal SQL agent
+- [Shopify: Introducing Roast](https://shopifyengineering.myshopify.com/blogs/engineering/introducing-roast) — Earlier structured AI workflow framework
 - [Databricks: Introducing Genie Code](https://www.databricks.com/blog/introducing-genie-code) — Data-specific coding agent
 - [Cognition: How Cognition Uses Devin to Build Devin](https://www.cognition-labs.com/blog/how-cognition-uses-devin-to-build-devin) — 659 Devin PRs merged in one week
 - [Google: Jules async coding agent](https://blog.google/technology/google-labs/jules) — Ephemeral VM per task, GitHub-issue driven
@@ -673,11 +684,15 @@ These are the first-person accounts from company engineering teams — the riche
 | [Spotify Honk Part 1](https://engineering.atspotify.com/2025/11/spotifys-background-coding-agent-part-1) | 650+ PRs/month | Containerized K8s fleet management |
 | [Spotify Honk Part 2](https://engineering.atspotify.com/2025/11/context-engineering-background-coding-agents-part-2) | 60-90% time savings | Context engineering, Claude Code as top agent |
 | [Spotify Honk Part 3](https://engineering.atspotify.com/2025/12/feedback-loops-background-coding-agents-part-3) | Judge catches scope-creep / phantom fixes | Verification loops, LLM judge |
+| [Spotify Honk Part 4](https://engineering.atspotify.com/2026/4/background-coding-agents-dataset-migrations-honk-part-4) | 240 automated PRs, ~10 engineering weeks saved | Standardization and executable verification define the automation boundary |
+| [Spotify: Coding Is No Longer the Constraint](https://engineering.atspotify.com/2026/6/code-with-claude-coding-is-no-longer-the-constraint) | PR frequency +76% | Review and organizational adaptation become the constraint |
 | [Spotify x Anthropic (April 2026)](https://engineering.atspotify.com/2026/4/anthropic-agentic-development/) | Slack-@mention-driven | Backstage evolving to agent-first MCP platform |
 | [Ramp Inspect](https://builders.ramp.com/post/why-we-built-our-background-agent) | ~50% of merged PRs | Modal snapshot-based warm pools |
 | [Ramp on Modal](https://modal.com/blog/how-ramp-built-a-full-context-background-coding-agent-on-modal) | 1,000 Datadog monitors | Self-maintaining code, auto-generated monitoring |
 | [OpenAI Harness Engineering](https://openai.com/index/harness-engineering/) | 1M lines, 1,500 PRs | Environment-first, 3.5 PRs/engineer/day |
-| [OpenAI Codex follow-up posts](https://openai.com/research/) *(Feb–Mar 2026)* | — | Codex harness evolution: standalone app server + Responses API with computer environment (verify exact URLs on openai.com) |
+| [OpenAI Symphony](https://openai.com/index/open-source-codex-orchestration-symphony/) | Some teams +500% landed PRs in three weeks | Bounded interactive WIP plus background issue orchestration |
+| [Shopify River + Aquifer](https://shopify.engineering/under-the-river) | 3,536 merged PRs in 30 days | Durable sessions, append-only event log, disposable harness/sandbox |
+| [Block Builderbot](https://block.xyz/inside/block-rolls-out-builderbot-a-new-suite-of-ai-native-tools-that-changes-the-way-we-ship) | First-party claim: ~1,500 merged PRs/week | Shared agent-native delivery platform |
 | [Nubank + Devin](https://building.nubank.com/enhancing-engineering-workflows-with-ai-a-real-world-experience/) | 100K migrations | 12x efficiency, 20x cost savings |
 | [Nubank Agent Infra](http://nubank.dev/) *(Mar 2026)* | 131M customers | Clojure-based internal agent infrastructure |
 | [Coinbase Forge (née Cloudbot)](https://www.coinbase.com/blog/Tools-for-Developer-Productivity-at-Coinbase) | 5% of merged PRs | 150h → 15h cycle time, agent councils |
@@ -706,12 +721,17 @@ The papers that shaped how technical audiences think about coding agents. Missin
 - [SWE-agent (Yang et al., NeurIPS 2024)](https://arxiv.org/abs/2405.15793) — Agent-computer interface design; one of the first strong coding-agent harnesses
 - [OpenHands / CodeAct (Wang et al., 2024)](https://arxiv.org/abs/2407.16741) — Executable code as unified action space; open-source agent framework with 30K+ stars
 - [SWE-bench (ICLR 2024)](https://arxiv.org/abs/2310.06770) — 2,294 real GitHub issues, baseline eval standard
-- [SWE-bench Official Leaderboard](https://www.swebench.com/) — Canonical source for current rankings
-- [SWE-bench Pro (Scale AI, 2025)](https://arxiv.org/abs/2509.16941) — 1,865 long-horizon tasks across Python, Go, TypeScript, JavaScript
+- [SWE-bench Official Leaderboard](https://www.swebench.com/) — Public benchmark signal; do not treat rankings as production readiness
+- [SWE-bench Pro (Scale AI, 2025)](https://arxiv.org/abs/2509.16941) — 1,865 long-horizon tasks, but benchmark quality is now disputed
+- [OpenAI coding-evaluation audit (July 2026)](https://openai.com/index/separating-signal-from-noise-coding-evaluations) — Estimates ~30% of Pro tasks are broken and retracts the earlier recommendation to replace Verified with Pro
 - [SWE-bench Multimodal](https://arxiv.org/abs/2410.03859) — 617 visual UI tasks, only ~12% solved by top systems
 - [Alibaba SWE-CI (2025)](https://arxiv.org/abs/2504.08057) — 75% of agents break working code across consecutive PRs
 - [Answer.AI Devin Critique (Jan 2025)](https://www.answer.ai/posts/2025-01-08-devin.html) — Independent teardown of Devin's actual completion rate on real tasks
 - [Anthropic 2026 Agentic Coding Trends](https://resources.anthropic.com/hubfs/2026%20Agentic%20Coding%20Trends%20Report.pdf) — Context engineering, tool use, error reduction metrics
+- [AI Writes Faster Than Humans Can Review](https://arxiv.org/abs/2607.01904) — 802-developer longitudinal study of throughput, review load, and quality proxies
+- [ProdCodeBench](https://arxiv.org/abs/2604.01527) — Production-derived prompts, diffs, and stable executable tests across seven languages
+- [Needle in the Repo](https://arxiv.org/abs/2603.27745) — Functional tests plus structural maintainability oracles
+- [AgentLens](https://arxiv.org/abs/2607.06624) — Formal verification plus whole-trajectory review
 
 ### IDE / Pair-Programming Agents
 
