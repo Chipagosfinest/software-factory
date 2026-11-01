@@ -1,7 +1,7 @@
 {
   "version": 1,
   "generated": "2026-07-16",
-  "docCount": 40,
+  "docCount": 41,
   "docs": [
     {
       "id": "latent-briefing-kv-compaction",
@@ -178,6 +178,17 @@
       "lastUpdated": "2026-07-16",
       "keyNumbers": ["+76% Spotify PR frequency", "3,536 Shopify River PRs in 30 days", "~1,500 Block Builderbot PRs/week", "53.6% DoorDash weighted recall", "~30% SWE-Bench Pro tasks estimated broken"],
       "relatedDocs": ["software-factory-operations-2026-07-16", "enterprise-adoption", "swe-bench-ecosystem", "codebase-status"]
+    },
+    {
+      "id": "x-insights",
+      "title": "X Insights",
+      "path": "docs/x-insights.md",
+      "category": "landscape",
+      "tags": ["x", "coding-agents", "harness", "sandbox", "ci", "agent-skills", "mcp", "evals", "review-bottleneck"],
+      "sources": ["vercel", "replit", "langchain", "anthropic", "cursor", "amp", "factory", "cognition"],
+      "lastUpdated": "2026-10-31",
+      "keyNumbers": ["Devin Fusion 68 on Coding Agent Index", "71% saved 20+ hours (Utah Claude Code pilot)"],
+      "relatedDocs": ["harness-engineering", "sandbox-isolation", "software-factory-operations-2026-07-16", "coding-agents-landscape", "devin-factory"]
     },
     {
       "id": "competitive-analysis",

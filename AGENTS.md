@@ -63,6 +63,7 @@
 | What dev tools integrate well with agents? | [Dev Tools Stack](docs/dev-tools-stack.md) |
 | How does MCP connect agents to tools? | [MCP Ecosystem](docs/mcp-ecosystem-deep-dive.md) |
 | What does Carson's role-inversion thesis mean? | [Symphony + Carson](docs/symphony-carson.md) |
+| What are leading agent teams publishing on X? | [X Insights](docs/x-insights.md) |
 
 ### Quick Reference
 
