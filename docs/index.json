@@ -1847,11 +1847,13 @@
       "children": [],
       "tags": [],
       "sources": [
-        "https://x.com/AmpCode/status/2115912054964179204"
+        "https://x.com/AmpCode/status/2115912054964179204",
+        "https://x.com/AmpCode/status/2116243991922671619"
       ],
-      "lastUpdated": "2026-11-01",
+      "lastUpdated": "2026-11-02",
       "keyNumbers": [
-        "$10 credits in the bug-fix email"
+        "$10 credits in the bug-fix email",
+        "500s during rollout"
       ],
       "relatedDocs": [],
       "patterns": [
@@ -2145,9 +2147,10 @@
       "children": [],
       "tags": [],
       "sources": [
-        "https://x.com/amasad/status/2115485095251308740"
+        "https://x.com/amasad/status/2115485095251308740",
+        "https://x.com/amasad/status/2116998155925360965"
       ],
-      "lastUpdated": "2026-11-01",
+      "lastUpdated": "2026-11-02",
       "keyNumbers": [],
       "relatedDocs": [],
       "patterns": [
@@ -2244,9 +2247,11 @@
       "tags": [],
       "sources": [
         "https://x.com/rauchg/status/2115539426684408300",
-        "https://vercel.com/blog/how-we-built-aeo-tracking-for-coding-agents"
+        "https://vercel.com/blog/how-we-built-aeo-tracking-for-coding-agents",
+        "https://x.com/cramforce/status/2117267405923815913",
+        "https://x.com/cramforce/status/2116323769967128620"
       ],
-      "lastUpdated": "2026-11-01",
+      "lastUpdated": "2026-11-02",
       "keyNumbers": [
         "20 worldwide clusters",
         "millions of microVMs per day"
@@ -2634,7 +2639,9 @@
       "children": [],
       "tags": [],
       "sources": [
-        "https://docs.factory.ai"
+        "https://docs.factory.ai",
+        "https://x.com/factory/status/2116214422779953574",
+        "https://x.com/matanSF/status/2116215162898436176"
       ],
       "lastUpdated": "2026-11-02",
       "keyNumbers": [],
@@ -2655,10 +2662,13 @@
       "tags": [],
       "sources": [
         "https://cursor.com/docs/cloud-agent",
-        "https://cursor.com/docs/bugbot"
+        "https://cursor.com/docs/bugbot",
+        "https://x.com/cursor_ai/status/2116074289053175808"
       ],
       "lastUpdated": "2026-11-02",
-      "keyNumbers": [],
+      "keyNumbers": [
+        "at most 5,000 users reached in the marketplace incident"
+      ],
       "relatedDocs": [],
       "patterns": [
         "background-agents",
@@ -3013,7 +3023,8 @@
       "children": [],
       "tags": [],
       "sources": [
-        "https://tessl.io"
+        "https://tessl.io",
+        "https://x.com/tessl_io/status/2117284507460018665"
       ],
       "lastUpdated": "2026-11-02",
       "keyNumbers": [
@@ -3157,10 +3168,15 @@
       "tags": [],
       "sources": [
         "https://opencode.ai",
-        "https://github.com/anomalyco/opencode"
+        "https://github.com/anomalyco/opencode",
+        "https://x.com/thdxr/status/2116527005801873662",
+        "https://x.com/thdxr/status/2117299716987789772"
       ],
       "lastUpdated": "2026-11-02",
-      "keyNumbers": [],
+      "keyNumbers": [
+        "token cost 2× payroll",
+        "25-person team, output compared with a 75-person pre-AI team"
+      ],
       "relatedDocs": [],
       "patterns": [
         "harness-engineering"
@@ -3394,10 +3410,14 @@
       "tags": [],
       "sources": [
         "https://docs.coderabbit.ai",
-        "https://www.coderabbit.ai/"
+        "https://www.coderabbit.ai/",
+        "https://x.com/coderabbitai/status/2116258631222231179"
       ],
       "lastUpdated": "2026-11-02",
-      "keyNumbers": [],
+      "keyNumbers": [
+        "$1M tokens over two weeks",
+        "~10k scans and 35,000 critical vulnerabilities in one week"
+      ],
       "relatedDocs": [],
       "patterns": [
         "verification"
@@ -3770,7 +3790,7 @@
         "primary-posts"
       ],
       "sources": [],
-      "lastUpdated": "2026-11-01",
+      "lastUpdated": "2026-11-02",
       "keyNumbers": [],
       "relatedDocs": [
         "x-insights"
@@ -3801,12 +3821,25 @@
         "https://x.com/AmpCode/status/2115912054964179204",
         "https://x.com/rauchg/status/2115539426684408300",
         "https://x.com/amasad/status/2115485095251308740",
-        "https://x.com/hwchase17/status/2115161782079897946"
+        "https://x.com/hwchase17/status/2115161782079897946",
+        "https://x.com/factory/status/2116214422779953574",
+        "https://x.com/matanSF/status/2116215162898436176",
+        "https://x.com/cramforce/status/2117267405923815913",
+        "https://x.com/cramforce/status/2116323769967128620",
+        "https://x.com/thdxr/status/2116527005801873662",
+        "https://x.com/thdxr/status/2117299716987789772",
+        "https://x.com/AmpCode/status/2116243991922671619",
+        "https://x.com/dexhorthy/status/2116003536098263419",
+        "https://x.com/amasad/status/2116998155925360965",
+        "https://x.com/tessl_io/status/2117284507460018665",
+        "https://x.com/cursor_ai/status/2116074289053175808",
+        "https://x.com/coderabbitai/status/2116258631222231179"
       ],
-      "lastUpdated": "2026-11-01",
+      "lastUpdated": "2026-11-02",
       "keyNumbers": [
         "Devin Fusion 68 on Coding Agent Index",
-        "71% saved 20+ hours (Utah Claude Code pilot)"
+        "71% saved 20+ hours (Utah Claude Code pilot)",
+        "CodeRabbit ~10k scans and 35,000 critical vulnerabilities in one week"
       ],
       "relatedDocs": [
         "harness-engineering-openai",

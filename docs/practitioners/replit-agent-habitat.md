@@ -1,12 +1,14 @@
 # Replit Agent Habitat
 
-*Refreshed 2026-11-01*
+*Refreshed 2026-11-02*
 
 ## What they do
 
 Agent Habitat is Replit's contained space for coding agents. The account post on October 28, 2026, logged in [X insights](../signals/x-insights.md), frames agents as powerful and unpredictable: they can misunderstand instructions, and the misunderstanding is dangerous because the agent is capable. Habitat is the boundary that limits the damage.
 
 The post's opening image is an alien species that is good at software and mostly wants to help, and is also unpredictable. The reading already in the signals note is the operational claim: give that agent a contained space whose boundaries limit the damage.
+
+On November 1, 2026, the same account described a one-toggle feedback widget that turns end users' feedback on a site into prompts for the agent to build.
 
 This is a different surface from the "Replit Agent" row in the [landscape](../landscape/README.md) no-code table (prompt-to-app, 30+ integrations). That row is not used as evidence for Habitat.
 
@@ -28,3 +30,4 @@ No quantitative claim is made in the source used here.
 ## Sources
 
 - [Agent Habitat, 2026-10-28](https://x.com/amasad/status/2115485095251308740)
+- [Feedback widget, 2026-11-01](https://x.com/amasad/status/2116998155925360965)

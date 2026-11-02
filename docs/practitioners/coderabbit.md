@@ -8,7 +8,7 @@ CodeRabbit's docs describe an agent for change management: pull-request review, 
 
 ## What they do well
 
-Review is the product. Scale numbers that appear in older landscape notes in this repo are not restated, because these two pages are not where this profile measured them.
+Review is the product. On October 30, 2026, CodeRabbit said it committed $1M in tokens over two weeks for free customer security scans; in one week it ran about 10k scans and identified 35,000 critical vulnerabilities.
 
 ## Patterns shown
 
@@ -16,9 +16,14 @@ Review is the product. Scale numbers that appear in older landscape notes in thi
 
 ## Key numbers
 
-No quantitative claim is repeated here. The sources describe the system without a figure this profile uses.
+| Figure | Meaning | Source |
+|--------|---------|--------|
+| $1M | Tokens committed over two weeks for free customer security scans | [2026-10-30 post](https://x.com/coderabbitai/status/2116258631222231179) |
+| ~10k | Scans in one week | Same |
+| 35,000 | Critical vulnerabilities identified in that week | Same |
 
 ## Sources
 
 - [Docs](https://docs.coderabbit.ai)
 - [Product](https://www.coderabbit.ai/)
+- [Free security scans, 2026-10-30](https://x.com/coderabbitai/status/2116258631222231179)

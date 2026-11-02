@@ -10,6 +10,8 @@ Cursor's current docs split remote execution and review. The older path `docs.cu
 
 Cloud Agents run in parallel on their own virtual machines, so they can build and test without the developer's laptop staying online. Bugbot is the pull-request review product documented beside them. No throughput figure is taken from these two pages.
 
+On October 30, 2026, Cursor disclosed a security incident: a modified, malicious Claude Code VS Code extension (not developed by Anthropic) reached at most 5,000 users through Cursor's IDE extension marketplace.
+
 ## Patterns shown
 
 - [Background agents](../patterns/background-agents/README.md) — cloud agents on their own virtual machines
@@ -17,9 +19,12 @@ Cloud Agents run in parallel on their own virtual machines, so they can build an
 
 ## Key numbers
 
-No quantitative claim is repeated here. The sources describe the system without a figure this profile uses.
+| Figure | Meaning | Source |
+|--------|---------|--------|
+| at most 5,000 | Users reached by the modified extension in the marketplace incident | [2026-10-30 post](https://x.com/cursor_ai/status/2116074289053175808) |
 
 ## Sources
 
 - [Cloud Agents](https://cursor.com/docs/cloud-agent)
 - [Bugbot](https://cursor.com/docs/bugbot)
+- [Marketplace incident, 2026-10-30](https://x.com/cursor_ai/status/2116074289053175808)
