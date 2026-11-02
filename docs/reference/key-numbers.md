@@ -20,8 +20,8 @@
 | ~25% veto rate | Spotify LLM judge catches scope creep and phantom fixes | [Potent Combos](../patterns/orchestration/potent-combos.md) |
 | ~70% first-pass CI | Stripe agent success rate on CI repair | [Potent Combos](../patterns/orchestration/potent-combos.md) |
 | 89% acceptance rate | With diff summaries vs 62% without (Anthropic 2026) | [Context Engineering](../patterns/harness-engineering/context-engineering.md) |
-| 40% error reduction | Context engineering impact (Anthropic 2026 Report) | [README](../../README.md) |
-| 2-4x faster delivery | Plan → production with agents (Anthropic 2026) | [README](../../README.md) |
+| 40% error reduction | Context engineering impact (Anthropic 2026 Report) | [Figures retained from the landing README](#figures-retained-from-the-landing-readme) |
+| 2-4x faster delivery | Plan → production with agents (Anthropic 2026) | [Figures retained from the landing README](#figures-retained-from-the-landing-readme) |
 | 1.75x more logic errors | AI-generated code vs human (CodeRabbit) | [Enterprise Adoption](../landscape/enterprise-adoption.md) |
 | 2.74x more XSS vulns | AI-generated code vs human (CodeRabbit) | [Enterprise Adoption](../landscape/enterprise-adoption.md) |
 | 2.09x throughput | Per-developer PR throughput at the April 2026 endpoint of an 802-developer longitudinal study | [Software Factory Operations](../project/software-factory-operations-2026-07-16.md) |
@@ -39,10 +39,10 @@
 |--------|---------------|-----------|
 | 52% cheaper | Observation masking vs raw context (JetBrains) | [Context Engineering](../patterns/harness-engineering/context-engineering.md) |
 | +2.6% solve rate | Observation masking bonus over baseline (JetBrains) | [Context Engineering](../patterns/harness-engineering/context-engineering.md) |
-| 22-37% less hallucination | BM25 pre-filtering impact | [README](../../README.md) |
-| 85% perf degradation | Large tool spaces — scope to ~20 tools | [README](../../README.md) |
-| 47 tool calls/session | Average in 2026 (Anthropic Report) | [README](../../README.md) |
-| 78% multi-file edits | Up from 34% in 2025 (Anthropic Report) | [README](../../README.md) |
+| 22-37% less hallucination | BM25 pre-filtering impact | [Context Engineering](../patterns/harness-engineering/context-engineering.md) |
+| 85% perf degradation | Large tool spaces — scope to ~20 tools | [Context Engineering](../patterns/harness-engineering/context-engineering.md) |
+| 47 tool calls/session | Average in 2026 (Anthropic Report) | [Figures retained from the landing README](#figures-retained-from-the-landing-readme) |
+| 78% multi-file edits | Up from 34% in 2025 (Anthropic Report) | [Figures retained from the landing README](#figures-retained-from-the-landing-readme) |
 | ~500 MCP tools | Stripe Toolshed, curated to ~15 per task | [Enterprise Adoption](../landscape/enterprise-adoption.md) |
 | 64% accuracy | MCPBench benchmark for MCP tool use | [MCP Ecosystem](../landscape/mcp-ecosystem-deep-dive.md) |
 | 81K GitHub stars | MCP protocol adoption metric | [MCP Ecosystem](../landscape/mcp-ecosystem-deep-dive.md) |
@@ -81,10 +81,10 @@
 | 65-72% of code | AI-generated at Uber | [Enterprise Adoption](../landscape/enterprise-adoption.md) |
 | 5,000+ engineers | EY on Factory.ai Droids | [Enterprise Adoption](../landscape/enterprise-adoption.md) |
 | 80% of Fortune 500 | Using active AI agents in production (Microsoft) | [Enterprise Adoption](../landscape/enterprise-adoption.md) |
-| 57% have agents in prod | LangChain survey of their users | [README](../../README.md) |
-| 89% adopted observability | LangChain survey | [README](../../README.md) |
-| 52% adopted evals | LangChain survey (low!) | [README](../../README.md) |
-| 32% cite quality barrier | LangChain survey | [README](../../README.md) |
+| 57% have agents in prod | LangChain survey of their users | [Figures retained from the landing README](#figures-retained-from-the-landing-readme) |
+| 89% adopted observability | LangChain survey | [Figures retained from the landing README](#figures-retained-from-the-landing-readme) |
+| 52% adopted evals | LangChain survey (low!) | [Figures retained from the landing README](#figures-retained-from-the-landing-readme) |
+| 32% cite quality barrier | LangChain survey | [Figures retained from the landing README](#figures-retained-from-the-landing-readme) |
 | 12x efficiency | Nubank data migrations with Devin | [Devin + Factory.ai](../landscape/devin-factory.md) |
 | 20x cost savings | Nubank with Devin | [Devin + Factory.ai](../landscape/devin-factory.md) |
 | 79% time reduction | Rakuten: 24 days → 5 days time-to-market | [Enterprise Adoption](../landscape/enterprise-adoption.md) |
@@ -133,6 +133,10 @@
 | <5s local lint | Stripe: lint locally before any CI push | [Enterprise Adoption](../landscape/enterprise-adoption.md) |
 | 5-min hard kill | Timeout for runaway agent execution | [Agent Safety & Cost Control](../patterns/governance-safety/agent-safety-cost-control.md) |
 | $2/run, $5/day | Software Factory default budget caps | [Agent Safety & Cost Control](../patterns/governance-safety/agent-safety-cost-control.md) |
-| ~20 tools max | Beyond this, 85% performance degradation | [README](../../README.md) |
+| ~20 tools max | Beyond this, 85% performance degradation | [Context Engineering](../patterns/harness-engineering/context-engineering.md) |
 | 400 lines max | File size limit before mandatory split | CLAUDE.md |
 | 85% context threshold | Deep Agents auto-summarization trigger | [Deep Agents](../patterns/harness-engineering/deep-agents.md) |
+
+## Figures retained from the landing README
+
+These figures were cited from the landing page before it was shortened. They stay in the tables above. The landing page no longer restates them. Where a pattern note now carries the same figure, that note is the source link instead.

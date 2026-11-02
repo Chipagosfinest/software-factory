@@ -8,6 +8,7 @@
  * - ids are unique, kebab-case, and match the filename
  *   (README.md hubs use the directory name as the id)
  * - kinds, parent/child inverse, relatedDocs, patterns, practitioners
+ * - status is "current" or "snapshot"
  * - sources are http(s) URLs
  * - orphans: parent is null only for kind "hub"
  * - decisionMap entries point at a real pattern path
@@ -20,6 +21,8 @@ import path from 'node:path'
 const root = process.cwd()
 const indexPath = path.join(root, 'docs', 'index.json')
 const errors = []
+
+const STATUSES = new Set(['current', 'snapshot'])
 
 const KINDS = new Set([
   'hub',
@@ -107,6 +110,9 @@ if (docs) {
     }
     if (!KINDS.has(doc.kind)) {
       errors.push(`${doc.id}: kind ${JSON.stringify(doc.kind)} is not allowed`)
+    }
+    if (!STATUSES.has(doc.status)) {
+      errors.push(`${doc.id}: status must be "current" or "snapshot"`)
     }
     if (!Array.isArray(doc.children)) {
       errors.push(`${doc.id}: children must be an array of ids`)

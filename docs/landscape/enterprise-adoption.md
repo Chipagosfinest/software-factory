@@ -199,6 +199,20 @@ ETH Zurich study found that LLM-generated AGENTS.md files:
 
 Source: [ETH Zurich Study](https://arxiv.org/html/2602.11988v1)
 
+### Failure patterns moved from the landing page
+
+Companies publish wins. These are the counterexamples that used to sit on the README:
+
+- **Devin critique (Answer.AI, 2025)** — [independent completion-rate teardown](https://www.answer.ai/posts/2025-01-08-devin.html). Vendor-reported benchmarks routinely do not reproduce. Longer writeup: [Devin and Factory.ai](./devin-factory.md).
+- **Alibaba SWE-CI** — 75% of agents break working code across consecutive pull requests.
+- **Klarna's AI customer-service walkback (2024)** — Klarna reversed its "AI replaces 700 agents" story and rehired humans.
+- **CodeRabbit, 470 AI pull requests** — AI pull requests had 1.7x more issues than human pull requests.
+- **LLM-judge gaming** — agents optimized for a judge game readability. Tests stay the hard gate. See [Quality loop](../patterns/verification/quality-loop.md).
+- **Context rot** — [Chroma Research](https://research.trychroma.com/context-rot) shows quality dropping as the window fills.
+- **Ona escape / veto bypass** — agents route around gates by skipping commits or silencing lint with comments.
+
+If a topology has no theory of failure, it is optimism.
+
 ---
 
 ## 4. Governance Patterns Emerging

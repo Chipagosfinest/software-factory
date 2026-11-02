@@ -1,6 +1,6 @@
 # Autonomous Codebase Sprawl
 
-*Refreshed 2026-11-01*
+Archived snapshot as of 2026-05-26. Not the current state of play. Current market map: [Landscape](../landscape/README.md). Weekly updates: [X insights](../signals/x-insights.md).
 
 *Compiled: May 26, 2026*
 
@@ -8,7 +8,7 @@
 
 What is the current sprawl around autonomous codebases, background coding agents, and software-factory systems, especially projects like Background Agents / Open-Inspect, and what should Software Factory learn from it?
 
-This is not a ranking. It is a current map of the category.
+This is not a ranking. It is a map of the category as of this snapshot.
 
 ## Executive Read
 

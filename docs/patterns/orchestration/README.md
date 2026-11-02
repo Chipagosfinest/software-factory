@@ -11,6 +11,7 @@ Parent hub for how many agents share work: state machines, worktrees, org charts
 - [Paperclip org chart](./paperclip-org-chart.md) — budgets, heartbeat, approval gates
 - [Symphony role inversion](./symphony-carson.md) — board as control plane, agents as the workforce
 - [Potent Combos](./potent-combos.md) — topologies and build profiles
+- [Choosing a topology](./topology-choice.md) — design dimensions, pros and cons, decision matrix
 
 ## Practitioners
 

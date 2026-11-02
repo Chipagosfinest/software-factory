@@ -1,6 +1,6 @@
 # Autonomous Codebase Post-Merge Review
 
-*Refreshed 2026-11-01*
+Archived snapshot as of 2026-05-26. Not the current state of play. Current market map: [Landscape](../landscape/README.md). Weekly updates: [X insights](../signals/x-insights.md).
 
 *Compiled: May 26, 2026 after merging PR #5*
 

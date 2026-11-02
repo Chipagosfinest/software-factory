@@ -1,8 +1,6 @@
 # Software Factory Roadmap
 
-*Refreshed 2026-11-01*
-
-*Updated: July 16, 2026*
+Plan written 2026-07-16. The implementation audit is [Codebase status](./codebase-status.md). The current market map is [Landscape](../landscape/README.md).
 
 ---
 
@@ -26,7 +24,7 @@ Prove one governed factory loop end to end before expanding the agent fleet: adm
 - Cron/data agents: not production-safe; schema, identity mapping, live-source verification, and calibration gaps remain
 - P0 blockers: one connected mutation flow, mandatory production auth/config, disposable-repo integration test, CI, staging/deploy config, and observability
 
-See [Codebase Status](./codebase-status.md) for source-backed implementation detail and [Production Case Studies](../case-studies/production-case-studies-state-of-play-2026-07-16.md) for the current external evidence.
+See [Codebase Status](./codebase-status.md) for source-backed implementation detail. External evidence as of 2026-07-16 is the [archived production case-study snapshot](../case-studies/production-case-studies-state-of-play-2026-07-16.md). The current market map is [Landscape](../landscape/README.md).
 
 ---
 

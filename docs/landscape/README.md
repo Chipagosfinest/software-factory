@@ -1,8 +1,10 @@
 # Landscape
 
-*Refreshed 2026-11-01*
+Current state of play for this corpus: product categories, where this factory sits against other products, and which research sources are strong at which jobs.
 
-Market map for coding agents: product categories, where this factory sits against other products, and which research sources are strong at which competencies.
+Last updated: 2026-11-01
+
+Dated production surveys live under [case studies](../case-studies/README.md) and are archived snapshots. Weekly primary posts land in [X insights](../signals/x-insights.md). Company receipts moved off the landing page are in [Why software factories](./why-software-factories.md).
 
 Child docs:
 
@@ -11,10 +13,11 @@ Child docs:
 - [GitHub ecosystem](./github-ecosystem.md)
 - [Dev tools stack](./dev-tools-stack.md)
 - [MCP ecosystem](./mcp-ecosystem-deep-dive.md)
+- [Why software factories](./why-software-factories.md) — published production receipts and the corpus thesis
 
 ## Coding Agents Landscape: Comprehensive Market Analysis
 
-*Last updated: March 18, 2026*
+*Compiled: March 18, 2026*
 
 ---
 
@@ -441,7 +444,7 @@ Our unique position: the only platform combining incident response, security pat
 
 ## Competitive Analysis — Software Factory vs. Market
 
-*Last updated: March 21, 2026*
+*Compiled: March 21, 2026*
 
 ---
 
@@ -678,7 +681,7 @@ Full control over data, models, and infrastructure. Critical for enterprise depl
 
 ## Competency Graph — Research Sources
 
-*Last updated: March 18, 2026*
+*Compiled: March 18, 2026*
 
 Maps what each research source is best at, where they overlap, and how they compose into Software Factory.
 

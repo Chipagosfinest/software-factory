@@ -18,7 +18,7 @@ From the three Honk engineering posts, as summarized in [enterprise adoption](..
 - Part 3 splits verification in two. Deterministic verifiers run from Claude Code's stop hook and block the pull request if they fail. An LLM judge compares the diff to the original prompt. The recorded veto rate is about 25%. About half of vetoed attempts are then corrected. The stated trigger is the agent leaving the prompt. Spotify's own line, recorded in the enterprise note: "We have yet to invest in evals for our judge."
 - Three failure modes are distinguished: no pull request (acceptable), CI failure (review burden), and a pull request that passes CI but is wrong (the trust failure). The last two show up when the target has little test coverage or the agent cannot run the build.
 
-Company-level adoption figures in the July 2026 case studies (greater than 99% weekly AI use, +76% pull-request frequency, 2.5M+ lifetime Fleet Management pull requests) describe Spotify's broader system, not Honk alone. See [production case studies](../case-studies/production-case-studies-state-of-play-2026-07-16.md).
+Company-level adoption figures in the archived case-study snapshot as of 2026-07-16 (greater than 99% weekly AI use, +76% pull-request frequency, 2.5M+ lifetime Fleet Management pull requests) describe Spotify's broader system, not Honk alone. See [production case studies](../case-studies/production-case-studies-state-of-play-2026-07-16.md).
 
 ## Patterns shown
 

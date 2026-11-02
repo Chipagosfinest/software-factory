@@ -1,6 +1,6 @@
 # Repo Protection Tooling Comparison
 
-*Refreshed 2026-11-01*
+Archived snapshot as of 2026-04-27. Not the current state of play. Current market map: [Landscape](../../landscape/README.md). Weekly updates: [X insights](../../signals/x-insights.md).
 
 *Compiled: April 27, 2026*
 

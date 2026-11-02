@@ -1,8 +1,8 @@
 # Production Coding-Agent Case Studies: State of Play
 
-*Refreshed 2026-11-01*
+Archived snapshot as of 2026-07-16. Not the current state of play. Current market map: [Landscape](../landscape/README.md). Weekly updates: [X insights](../signals/x-insights.md).
 
-*Refreshed July 16, 2026 with matched Exa and Parallel searches plus direct verification of primary sources.*
+*Compiled July 16, 2026 with matched Exa and Parallel searches plus direct verification of primary sources.*
 
 ## Verdict
 

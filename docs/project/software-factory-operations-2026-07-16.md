@@ -1,6 +1,6 @@
 # Software Factory Operations: Review Backpressure, Evidence Contracts, and Earned Autonomy
 
-*Refreshed 2026-11-01*
+Archived snapshot as of 2026-07-16. Not the current state of play. Current market map: [Landscape](../landscape/README.md). Weekly updates: [X insights](../signals/x-insights.md).
 
 *Compiled July 16, 2026 from matched Exa and Parallel searches, followed by primary-source fetches from both providers.*
 

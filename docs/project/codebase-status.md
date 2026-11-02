@@ -1,6 +1,6 @@
-# Codebase Status — July 16, 2026
+# Codebase Status
 
-*Refreshed 2026-11-01*
+Implementation audit as of 2026-07-16. This is the repository's own build state, not the field's current state of play. Current market map: [Landscape](../landscape/README.md).
 
 ## Verdict
 

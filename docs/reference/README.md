@@ -9,3 +9,4 @@ Parent hub for lookup tables. These files consolidate numbers and terms that als
 - [Glossary](./glossary.md) — canonical terms used in this corpus
 - [Key numbers](./key-numbers.md) — quantitative findings in one index
 - [Open questions](./open-questions.md) — contradictions and unsettled frontier issues
+- [Corpus bibliography](./corpus-bibliography.md) — source links moved off the landing page

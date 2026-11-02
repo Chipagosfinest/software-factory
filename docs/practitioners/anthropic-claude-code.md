@@ -10,7 +10,7 @@ Agent Skills started as a Claude Code experiment and were donated to the Agentic
 
 ## What they do well
 
-- The landscape pass records 80.9% on SWE-bench Verified (Opus 4.5) and $2.5B ARR. [Key numbers](../reference/key-numbers.md) adds the later caveat from the July 2026 case studies: OpenAI's audit treats Verified as no longer meaningful, and estimates about 30% of SWE-bench Pro tasks are broken. The 80.9% figure stays as a historical published score.
+- The landscape pass records 80.9% on SWE-bench Verified (Opus 4.5) and $2.5B ARR. [Key numbers](../reference/key-numbers.md) adds the caveat from the archived case-study snapshot as of 2026-07-16: OpenAI's audit treats Verified as no longer meaningful, and estimates about 30% of SWE-bench Pro tasks are broken. The 80.9% figure stays as a historical published score.
 - README table, from Anthropic's code-review post: 200% growth in output per engineer, substantive reviews from 16% to 54%, and 84% of pull requests over 1,000 lines receiving findings. The same table quotes the harness line "decouple brain from hands."
 - Pricing recorded in the landscape pass before the profile was split out: $20/month (Pro), $100/month (Max 5x), $200/month (Max 20x).
 - Utah pilot, from X insights: 71% reported saving 20+ hours.

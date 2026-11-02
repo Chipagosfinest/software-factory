@@ -1,7 +1,5 @@
 # Verification
 
-*Refreshed 2026-11-01*
-
 Parent hub for proving an agent change is acceptable: deterministic checks, an LLM judge on the diff, bounded retries, and benchmarks that say what they do not measure.
 
 The working shape in this corpus is a fast deterministic gate (lint, build, tests, stop hooks) and a slower judge that can veto scope creep. Retries are capped. A green test suite is not treated as merge authority by itself. Evaluation benchmarks are a separate child: useful for comparing scaffolds, weak as a production merge signal.
@@ -9,8 +7,9 @@ The working shape in this corpus is a fast deterministic gate (lint, build, test
 ## Children
 
 - [SWE-bench ecosystem](./swe-bench-ecosystem.md) — variants, contamination, and the gap to mergeable code
+- [Quality loop](./quality-loop.md) — deterministic checks, test gate, LLM judge
 
-Related project note: [Software Factory operations](../../project/software-factory-operations-2026-07-16.md) (evidence contracts and earned autonomy).
+Related project note: [Software Factory operations (archived snapshot as of 2026-07-16)](../../project/software-factory-operations-2026-07-16.md) (evidence contracts and earned autonomy).
 
 ## Practitioners
 

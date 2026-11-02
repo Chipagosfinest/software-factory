@@ -1,7 +1,7 @@
 {
   "version": 2,
   "generated": "2026-11-01",
-  "docCount": 71,
+  "docCount": 77,
   "decisionMap": [
     {
       "situation": "Many independent, well-scoped tasks (CI failures, migrations, bumps)",
@@ -104,6 +104,7 @@
       "title": "Case Studies",
       "path": "docs/case-studies/README.md",
       "kind": "hub",
+      "status": "current",
       "parent": null,
       "children": [
         "autonomous-codebase-post-merge-review-2026-05-26",
@@ -124,9 +125,10 @@
     },
     {
       "id": "autonomous-codebase-post-merge-review-2026-05-26",
-      "title": "Autonomous Codebase Post-Merge Review",
+      "title": "Archived snapshot as of 2026-05-26: Post-merge review",
       "path": "docs/case-studies/autonomous-codebase-post-merge-review-2026-05-26.md",
       "kind": "case-study",
+      "status": "snapshot",
       "parent": "case-studies",
       "children": [],
       "tags": [
@@ -160,9 +162,10 @@
     },
     {
       "id": "autonomous-codebase-sprawl-2026-05-26",
-      "title": "Autonomous Codebase Sprawl",
+      "title": "Archived snapshot as of 2026-05-26: Autonomous codebase sprawl",
       "path": "docs/case-studies/autonomous-codebase-sprawl-2026-05-26.md",
       "kind": "case-study",
+      "status": "snapshot",
       "parent": "case-studies",
       "children": [],
       "tags": [
@@ -198,9 +201,10 @@
     },
     {
       "id": "production-case-studies-state-of-play-2026-07-16",
-      "title": "Production Coding-Agent Case Studies: State of Play",
+      "title": "Archived snapshot as of 2026-07-16: Production case studies",
       "path": "docs/case-studies/production-case-studies-state-of-play-2026-07-16.md",
       "kind": "case-study",
+      "status": "snapshot",
       "parent": "case-studies",
       "children": [],
       "tags": [
@@ -244,13 +248,15 @@
       "title": "Landscape",
       "path": "docs/landscape/README.md",
       "kind": "hub",
+      "status": "current",
       "parent": null,
       "children": [
         "dev-tools-stack",
         "devin-factory",
         "enterprise-adoption",
         "github-ecosystem",
-        "mcp-ecosystem-deep-dive"
+        "mcp-ecosystem-deep-dive",
+        "why-software-factories"
       ],
       "tags": [
         "devin",
@@ -291,7 +297,8 @@
         "enterprise-adoption",
         "swe-bench-ecosystem",
         "potent-combos",
-        "production-case-studies-state-of-play-2026-07-16"
+        "production-case-studies-state-of-play-2026-07-16",
+        "why-software-factories"
       ]
     },
     {
@@ -299,6 +306,7 @@
       "title": "Developer Tools Stack",
       "path": "docs/landscape/dev-tools-stack.md",
       "kind": "landscape",
+      "status": "current",
       "parent": "landscape",
       "children": [],
       "tags": [
@@ -329,6 +337,7 @@
       "title": "Devin AI & Factory.ai: Deep-Dive Competitor Analysis",
       "path": "docs/landscape/devin-factory.md",
       "kind": "landscape",
+      "status": "current",
       "parent": "landscape",
       "children": [],
       "tags": [
@@ -363,6 +372,7 @@
       "title": "Enterprise Agentic Coding Adoption: Case Studies & Lessons Learned",
       "path": "docs/landscape/enterprise-adoption.md",
       "kind": "landscape",
+      "status": "current",
       "parent": "landscape",
       "children": [],
       "tags": [
@@ -400,6 +410,7 @@
       "title": "GitHub's Agent Ecosystem",
       "path": "docs/landscape/github-ecosystem.md",
       "kind": "landscape",
+      "status": "current",
       "parent": "landscape",
       "children": [],
       "tags": [
@@ -429,6 +440,7 @@
       "title": "Model Context Protocol (MCP) Ecosystem Deep Dive",
       "path": "docs/landscape/mcp-ecosystem-deep-dive.md",
       "kind": "landscape",
+      "status": "current",
       "parent": "landscape",
       "children": [],
       "tags": [
@@ -461,6 +473,7 @@
       "title": "Background Agents",
       "path": "docs/patterns/background-agents/README.md",
       "kind": "hub",
+      "status": "current",
       "parent": null,
       "children": [
         "agent-filesystems",
@@ -502,6 +515,7 @@
       "title": "Agent Filesystems: The Database-as-Directory Pattern",
       "path": "docs/patterns/background-agents/agent-filesystems.md",
       "kind": "pattern",
+      "status": "current",
       "parent": "background-agents",
       "children": [],
       "tags": [
@@ -543,6 +557,7 @@
       "title": "Background Agents (Open-Inspect)",
       "path": "docs/patterns/background-agents/background-agents-open-inspect.md",
       "kind": "pattern",
+      "status": "current",
       "parent": "background-agents",
       "children": [],
       "tags": [
@@ -585,6 +600,7 @@
       "title": "Cloudflare Dynamic Workers: Isolate-Based Agent Sandboxing",
       "path": "docs/patterns/background-agents/cloudflare-dynamic-workers.md",
       "kind": "pattern",
+      "status": "current",
       "parent": "background-agents",
       "children": [],
       "tags": [
@@ -617,6 +633,7 @@
       "title": "Sandbox Architecture 2026: From Security Feature to Efficiency Infrastructure",
       "path": "docs/patterns/background-agents/sandbox-architecture-2026.md",
       "kind": "pattern",
+      "status": "current",
       "parent": "background-agents",
       "children": [],
       "tags": [
@@ -649,6 +666,7 @@
       "title": "Sandbox & Isolation Patterns for Autonomous Coding Agents (March 2026)",
       "path": "docs/patterns/background-agents/sandbox-isolation.md",
       "kind": "pattern",
+      "status": "current",
       "parent": "background-agents",
       "children": [],
       "tags": [
@@ -689,10 +707,12 @@
       "title": "Governance and Safety",
       "path": "docs/patterns/governance-safety/README.md",
       "kind": "hub",
+      "status": "current",
       "parent": null,
       "children": [
         "agent-safety-cost-control",
-        "repo-protection-tooling-comparison-2026-04-27"
+        "repo-protection-tooling-comparison-2026-04-27",
+        "agent-security-catalog"
       ],
       "tags": [
         "budget",
@@ -723,6 +743,7 @@
       "title": "Agent Safety, Governance & Cost Control",
       "path": "docs/patterns/governance-safety/agent-safety-cost-control.md",
       "kind": "pattern",
+      "status": "current",
       "parent": "governance-safety",
       "children": [],
       "tags": [
@@ -760,9 +781,10 @@
     },
     {
       "id": "repo-protection-tooling-comparison-2026-04-27",
-      "title": "Repo Protection Tooling Comparison",
+      "title": "Archived snapshot as of 2026-04-27: Repo protection tooling comparison",
       "path": "docs/patterns/governance-safety/repo-protection-tooling-comparison-2026-04-27.md",
       "kind": "pattern",
+      "status": "snapshot",
       "parent": "governance-safety",
       "children": [],
       "tags": [
@@ -803,6 +825,7 @@
       "title": "Harness Engineering",
       "path": "docs/patterns/harness-engineering/README.md",
       "kind": "hub",
+      "status": "current",
       "parent": null,
       "children": [
         "codex-planr",
@@ -840,6 +863,7 @@
       "title": "codex-planr: Repository-Local Planning for AI Agents",
       "path": "docs/patterns/harness-engineering/codex-planr.md",
       "kind": "pattern",
+      "status": "current",
       "parent": "harness-engineering",
       "children": [],
       "tags": [
@@ -868,6 +892,7 @@
       "title": "Context Engineering for Autonomous Coding Agents",
       "path": "docs/patterns/harness-engineering/context-engineering.md",
       "kind": "pattern",
+      "status": "current",
       "parent": "harness-engineering",
       "children": [],
       "tags": [
@@ -904,9 +929,10 @@
     },
     {
       "id": "deep-agents",
-      "title": "Deep Agents (LangChain) — Middleware-Driven Agent Composition",
+      "title": "Deep Agents (LangChain) \u2014 Middleware-Driven Agent Composition",
       "path": "docs/patterns/harness-engineering/deep-agents.md",
       "kind": "pattern",
+      "status": "current",
       "parent": "harness-engineering",
       "children": [],
       "tags": [
@@ -945,6 +971,7 @@
       "title": "Harness Engineering: LangChain Deep Agents",
       "path": "docs/patterns/harness-engineering/harness-engineering-langchain.md",
       "kind": "pattern",
+      "status": "current",
       "parent": "harness-engineering",
       "children": [],
       "tags": [
@@ -964,7 +991,7 @@
       ],
       "lastUpdated": "2026-11-01",
       "keyNumbers": [
-        "52.8→66.5% Terminal Bench",
+        "52.8\u219266.5% Terminal Bench",
         "13.7pp harness-only gain",
         "53.9% xhigh-everywhere"
       ],
@@ -979,9 +1006,10 @@
     },
     {
       "id": "harness-engineering-openai",
-      "title": "Harness Engineering (OpenAI) — Environment-First Agent Development",
+      "title": "Harness Engineering (OpenAI) \u2014 Environment-First Agent Development",
       "path": "docs/patterns/harness-engineering/harness-engineering-openai.md",
       "kind": "pattern",
+      "status": "current",
       "parent": "harness-engineering",
       "children": [],
       "tags": [
@@ -1019,6 +1047,7 @@
       "title": "Memory and Knowledge",
       "path": "docs/patterns/memory-knowledge/README.md",
       "kind": "hub",
+      "status": "current",
       "parent": null,
       "children": [
         "agent-memory-systems",
@@ -1049,9 +1078,10 @@
     },
     {
       "id": "agent-memory-systems",
-      "title": "Agent Memory Systems — Research Deep-Dive",
+      "title": "Agent Memory Systems \u2014 Research Deep-Dive",
       "path": "docs/patterns/memory-knowledge/agent-memory-systems.md",
       "kind": "pattern",
+      "status": "current",
       "parent": "memory-knowledge",
       "children": [],
       "tags": [
@@ -1084,6 +1114,7 @@
       "title": "Latent Briefing: KV Cache Compaction for Multi-Agent Systems",
       "path": "docs/patterns/memory-knowledge/latent-briefing-kv-compaction.md",
       "kind": "pattern",
+      "status": "current",
       "parent": "memory-knowledge",
       "children": [],
       "tags": [
@@ -1124,6 +1155,7 @@
       "title": "Obsidian as an Agent Knowledge Base",
       "path": "docs/patterns/memory-knowledge/obsidian-knowledge.md",
       "kind": "pattern",
+      "status": "current",
       "parent": "memory-knowledge",
       "children": [],
       "tags": [
@@ -1152,9 +1184,10 @@
     },
     {
       "id": "qmd",
-      "title": "QMD (Tobi Lutke) — Local-First Knowledge Search for Agents",
+      "title": "QMD (Tobi Lutke) \u2014 Local-First Knowledge Search for Agents",
       "path": "docs/patterns/memory-knowledge/qmd.md",
       "kind": "pattern",
+      "status": "current",
       "parent": "memory-knowledge",
       "children": [],
       "tags": [
@@ -1185,13 +1218,15 @@
       "title": "Orchestration",
       "path": "docs/patterns/orchestration/README.md",
       "kind": "hub",
+      "status": "current",
       "parent": null,
       "children": [
         "agent-orchestrator",
         "orchestrator",
         "paperclip-org-chart",
         "potent-combos",
-        "symphony-carson"
+        "symphony-carson",
+        "topology-choice"
       ],
       "tags": [
         "fleet",
@@ -1222,6 +1257,7 @@
       "title": "Composio Agent Orchestrator",
       "path": "docs/patterns/orchestration/agent-orchestrator.md",
       "kind": "pattern",
+      "status": "current",
       "parent": "orchestration",
       "children": [],
       "tags": [
@@ -1255,6 +1291,7 @@
       "title": "Symphony-Style Orchestrator",
       "path": "docs/patterns/orchestration/orchestrator.md",
       "kind": "pattern",
+      "status": "current",
       "parent": "orchestration",
       "children": [],
       "tags": [
@@ -1280,9 +1317,10 @@
     },
     {
       "id": "paperclip-org-chart",
-      "title": "Paperclip — Agent Orchestration Platform",
+      "title": "Paperclip \u2014 Agent Orchestration Platform",
       "path": "docs/patterns/orchestration/paperclip-org-chart.md",
       "kind": "pattern",
+      "status": "current",
       "parent": "orchestration",
       "children": [],
       "tags": [
@@ -1316,6 +1354,7 @@
       "title": "Potent Combos & Agent Topology Patterns",
       "path": "docs/patterns/orchestration/potent-combos.md",
       "kind": "pattern",
+      "status": "current",
       "parent": "orchestration",
       "children": [],
       "tags": [
@@ -1360,6 +1399,7 @@
       "title": "Symphony + Carson's Code Factory Pattern",
       "path": "docs/patterns/orchestration/symphony-carson.md",
       "kind": "pattern",
+      "status": "current",
       "parent": "orchestration",
       "children": [],
       "tags": [
@@ -1380,7 +1420,7 @@
       ],
       "lastUpdated": "2026-11-01",
       "keyNumbers": [
-        "$297 API → $50K value",
+        "$297 API \u2192 $50K value",
         "10 parallel agents",
         "6 bugs from phone"
       ],
@@ -1397,6 +1437,7 @@
       "title": "Self-Improvement",
       "path": "docs/patterns/self-improvement/README.md",
       "kind": "hub",
+      "status": "current",
       "parent": null,
       "children": [
         "autoresearch",
@@ -1428,9 +1469,10 @@
     },
     {
       "id": "autoresearch",
-      "title": "Autoresearch (Karpathy) — Autonomous Agent Experimentation Loop",
+      "title": "Autoresearch (Karpathy) \u2014 Autonomous Agent Experimentation Loop",
       "path": "docs/patterns/self-improvement/autoresearch.md",
       "kind": "pattern",
+      "status": "current",
       "parent": "self-improvement",
       "children": [],
       "tags": [
@@ -1464,6 +1506,7 @@
       "title": "Karpathy's Software Factory Thesis",
       "path": "docs/patterns/self-improvement/karpathy-software-factory-thesis.md",
       "kind": "pattern",
+      "status": "current",
       "parent": "self-improvement",
       "children": [],
       "tags": [
@@ -1496,6 +1539,7 @@
       "title": "Ramp Labs: Self-Maintaining Code",
       "path": "docs/patterns/self-improvement/ramp-self-maintaining-code.md",
       "kind": "pattern",
+      "status": "current",
       "parent": "self-improvement",
       "children": [],
       "tags": [
@@ -1527,9 +1571,11 @@
       "title": "Verification",
       "path": "docs/patterns/verification/README.md",
       "kind": "hub",
+      "status": "current",
       "parent": null,
       "children": [
-        "swe-bench-ecosystem"
+        "swe-bench-ecosystem",
+        "quality-loop"
       ],
       "tags": [
         "judge",
@@ -1563,6 +1609,7 @@
       "title": "SWE-bench Ecosystem: Autonomous Coding Agent Evaluation (March 2026)",
       "path": "docs/patterns/verification/swe-bench-ecosystem.md",
       "kind": "pattern",
+      "status": "current",
       "parent": "verification",
       "children": [],
       "tags": [
@@ -1602,6 +1649,7 @@
       "title": "Practitioners",
       "path": "docs/practitioners/README.md",
       "kind": "hub",
+      "status": "current",
       "parent": null,
       "children": [
         "amp",
@@ -1639,6 +1687,7 @@
       "title": "Amp",
       "path": "docs/practitioners/amp.md",
       "kind": "practitioner",
+      "status": "current",
       "parent": "practitioners",
       "children": [],
       "tags": [],
@@ -1660,6 +1709,7 @@
       "title": "Anthropic Claude Code",
       "path": "docs/practitioners/anthropic-claude-code.md",
       "kind": "practitioner",
+      "status": "current",
       "parent": "practitioners",
       "children": [],
       "tags": [],
@@ -1686,6 +1736,7 @@
       "title": "Cline",
       "path": "docs/practitioners/cline.md",
       "kind": "practitioner",
+      "status": "current",
       "parent": "practitioners",
       "children": [],
       "tags": [],
@@ -1708,6 +1759,7 @@
       "title": "Cognition Devin",
       "path": "docs/practitioners/cognition-devin.md",
       "kind": "practitioner",
+      "status": "current",
       "parent": "practitioners",
       "children": [],
       "tags": [],
@@ -1734,6 +1786,7 @@
       "title": "Composio Agent Orchestrator",
       "path": "docs/practitioners/composio-agent-orchestrator.md",
       "kind": "practitioner",
+      "status": "current",
       "parent": "practitioners",
       "children": [],
       "tags": [],
@@ -1757,6 +1810,7 @@
       "title": "Goose",
       "path": "docs/practitioners/goose.md",
       "kind": "practitioner",
+      "status": "current",
       "parent": "practitioners",
       "children": [],
       "tags": [],
@@ -1778,6 +1832,7 @@
       "title": "LangChain Deep Agents",
       "path": "docs/practitioners/langchain-deep-agents.md",
       "kind": "practitioner",
+      "status": "current",
       "parent": "practitioners",
       "children": [],
       "tags": [],
@@ -1789,7 +1844,7 @@
       ],
       "lastUpdated": "2026-11-01",
       "keyNumbers": [
-        "52.8→66.5% Terminal Bench",
+        "52.8\u219266.5% Terminal Bench",
         "+13.7pp harness-only"
       ],
       "relatedDocs": [],
@@ -1803,6 +1858,7 @@
       "title": "Open-Inspect",
       "path": "docs/practitioners/open-inspect.md",
       "kind": "practitioner",
+      "status": "current",
       "parent": "practitioners",
       "children": [],
       "tags": [],
@@ -1826,6 +1882,7 @@
       "title": "OpenAI Codex",
       "path": "docs/practitioners/openai-codex.md",
       "kind": "practitioner",
+      "status": "current",
       "parent": "practitioners",
       "children": [],
       "tags": [],
@@ -1853,6 +1910,7 @@
       "title": "OpenHands",
       "path": "docs/practitioners/openhands.md",
       "kind": "practitioner",
+      "status": "current",
       "parent": "practitioners",
       "children": [],
       "tags": [],
@@ -1877,6 +1935,7 @@
       "title": "Paperclip",
       "path": "docs/practitioners/paperclip.md",
       "kind": "practitioner",
+      "status": "current",
       "parent": "practitioners",
       "children": [],
       "tags": [],
@@ -1899,6 +1958,7 @@
       "title": "Ramp Inspect",
       "path": "docs/practitioners/ramp-inspect.md",
       "kind": "practitioner",
+      "status": "current",
       "parent": "practitioners",
       "children": [],
       "tags": [],
@@ -1925,6 +1985,7 @@
       "title": "Replit Agent Habitat",
       "path": "docs/practitioners/replit-agent-habitat.md",
       "kind": "practitioner",
+      "status": "current",
       "parent": "practitioners",
       "children": [],
       "tags": [],
@@ -1944,6 +2005,7 @@
       "title": "Spotify Honk",
       "path": "docs/practitioners/spotify-honk.md",
       "kind": "practitioner",
+      "status": "current",
       "parent": "practitioners",
       "children": [],
       "tags": [],
@@ -1970,6 +2032,7 @@
       "title": "Stripe Minions",
       "path": "docs/practitioners/stripe-minions.md",
       "kind": "practitioner",
+      "status": "current",
       "parent": "practitioners",
       "children": [],
       "tags": [],
@@ -1997,6 +2060,7 @@
       "title": "StrongDM Software Factory",
       "path": "docs/practitioners/strongdm-software-factory.md",
       "kind": "practitioner",
+      "status": "current",
       "parent": "practitioners",
       "children": [],
       "tags": [],
@@ -2005,7 +2069,7 @@
       ],
       "lastUpdated": "2026-11-01",
       "keyNumbers": [
-        "≥ $1,000 tokens per engineer per day"
+        "\u2265 $1,000 tokens per engineer per day"
       ],
       "relatedDocs": [],
       "patterns": [
@@ -2019,6 +2083,7 @@
       "title": "Vercel",
       "path": "docs/practitioners/vercel.md",
       "kind": "practitioner",
+      "status": "current",
       "parent": "practitioners",
       "children": [],
       "tags": [],
@@ -2042,12 +2107,14 @@
       "title": "Project",
       "path": "docs/project/README.md",
       "kind": "hub",
+      "status": "current",
       "parent": null,
       "children": [
         "codebase-status",
         "risk-forecast",
         "roadmap",
-        "software-factory-operations-2026-07-16"
+        "software-factory-operations-2026-07-16",
+        "reference-implementation"
       ],
       "tags": [
         "status",
@@ -2065,9 +2132,10 @@
     },
     {
       "id": "codebase-status",
-      "title": "Codebase Status — July 16, 2026",
+      "title": "Codebase status",
       "path": "docs/project/codebase-status.md",
       "kind": "project",
+      "status": "current",
       "parent": "project",
       "children": [],
       "tags": [
@@ -2089,9 +2157,10 @@
     },
     {
       "id": "risk-forecast",
-      "title": "Risk Forecast — First 30 Days of Operation",
+      "title": "Risk Forecast \u2014 First 30 Days of Operation",
       "path": "docs/project/risk-forecast.md",
       "kind": "project",
+      "status": "current",
       "parent": "project",
       "children": [],
       "tags": [
@@ -2112,6 +2181,7 @@
       "title": "Software Factory Roadmap",
       "path": "docs/project/roadmap.md",
       "kind": "project",
+      "status": "current",
       "parent": "project",
       "children": [],
       "tags": [
@@ -2128,9 +2198,10 @@
     },
     {
       "id": "software-factory-operations-2026-07-16",
-      "title": "Software Factory Operations: Review Backpressure, Evidence Contracts, and Earned Autonomy",
+      "title": "Archived snapshot as of 2026-07-16: Software factory operations",
       "path": "docs/project/software-factory-operations-2026-07-16.md",
       "kind": "project",
+      "status": "snapshot",
       "parent": "project",
       "children": [],
       "tags": [
@@ -2170,11 +2241,13 @@
       "title": "Reference",
       "path": "docs/reference/README.md",
       "kind": "hub",
+      "status": "current",
       "parent": null,
       "children": [
         "glossary",
         "key-numbers",
-        "open-questions"
+        "open-questions",
+        "corpus-bibliography"
       ],
       "tags": [
         "glossary",
@@ -2192,9 +2265,10 @@
     },
     {
       "id": "glossary",
-      "title": "Glossary — Canonical Term Definitions",
+      "title": "Glossary \u2014 Canonical Term Definitions",
       "path": "docs/reference/glossary.md",
       "kind": "reference",
+      "status": "current",
       "parent": "reference",
       "children": [],
       "tags": [
@@ -2211,9 +2285,10 @@
     },
     {
       "id": "key-numbers",
-      "title": "Key Numbers — Quantitative Findings Index",
+      "title": "Key Numbers \u2014 Quantitative Findings Index",
       "path": "docs/reference/key-numbers.md",
       "kind": "reference",
+      "status": "current",
       "parent": "reference",
       "children": [],
       "tags": [
@@ -2232,9 +2307,10 @@
     },
     {
       "id": "open-questions",
-      "title": "Open Questions — Contradictions, Unknowns & Frontier",
+      "title": "Open Questions \u2014 Contradictions, Unknowns & Frontier",
       "path": "docs/reference/open-questions.md",
       "kind": "reference",
+      "status": "current",
       "parent": "reference",
       "children": [],
       "tags": [
@@ -2262,6 +2338,7 @@
       "title": "Signals",
       "path": "docs/signals/README.md",
       "kind": "hub",
+      "status": "current",
       "parent": null,
       "children": [
         "x-insights"
@@ -2282,6 +2359,7 @@
       "title": "X Insights",
       "path": "docs/signals/x-insights.md",
       "kind": "signal",
+      "status": "current",
       "parent": "signals",
       "children": [],
       "tags": [
@@ -2317,6 +2395,167 @@
         "vercel",
         "amp",
         "replit-agent-habitat"
+      ]
+    },
+    {
+      "id": "why-software-factories",
+      "title": "Why Software Factories",
+      "path": "docs/landscape/why-software-factories.md",
+      "kind": "landscape",
+      "status": "current",
+      "parent": "landscape",
+      "children": [],
+      "tags": [
+        "production-receipts",
+        "thesis"
+      ],
+      "sources": [
+        "https://newsletter.pragmaticengineer.com/p/how-uber-uses-ai-for-development",
+        "https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents",
+        "http://rywalker.com/research/in-house-coding-agents"
+      ],
+      "lastUpdated": "2026-11-01",
+      "keyNumbers": [
+        "1,300 PRs/week",
+        "92% Uber monthly adoption"
+      ],
+      "relatedDocs": [
+        "enterprise-adoption",
+        "production-case-studies-state-of-play-2026-07-16"
+      ]
+    },
+    {
+      "id": "topology-choice",
+      "title": "Choosing a Topology",
+      "path": "docs/patterns/orchestration/topology-choice.md",
+      "kind": "pattern",
+      "status": "current",
+      "parent": "orchestration",
+      "children": [],
+      "tags": [
+        "topologies",
+        "decision-matrix",
+        "design-dimensions"
+      ],
+      "sources": [
+        "https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents",
+        "https://engineering.atspotify.com/2025/12/feedback-loops-background-coding-agents-part-3"
+      ],
+      "lastUpdated": "2026-11-01",
+      "keyNumbers": [
+        "9 topologies"
+      ],
+      "relatedDocs": [
+        "potent-combos",
+        "verification"
+      ],
+      "practitioners": [
+        "stripe-minions",
+        "spotify-honk",
+        "paperclip",
+        "ramp-inspect"
+      ]
+    },
+    {
+      "id": "quality-loop",
+      "title": "Quality Loop",
+      "path": "docs/patterns/verification/quality-loop.md",
+      "kind": "pattern",
+      "status": "current",
+      "parent": "verification",
+      "children": [],
+      "tags": [
+        "deterministic-checks",
+        "llm-judge",
+        "tiered-gate"
+      ],
+      "sources": [
+        "https://openai.com/index/separating-signal-from-noise-coding-evaluations",
+        "https://arxiv.org/abs/2504.08057"
+      ],
+      "lastUpdated": "2026-11-01",
+      "keyNumbers": [
+        "max 2 retries",
+        "75% break working code"
+      ],
+      "relatedDocs": [
+        "swe-bench-ecosystem",
+        "software-factory-operations-2026-07-16",
+        "why-software-factories"
+      ],
+      "practitioners": [
+        "spotify-honk",
+        "stripe-minions"
+      ]
+    },
+    {
+      "id": "agent-security-catalog",
+      "title": "Archived snapshot as of April 2026: Agent security catalog",
+      "path": "docs/patterns/governance-safety/agent-security-catalog.md",
+      "kind": "pattern",
+      "status": "snapshot",
+      "parent": "governance-safety",
+      "children": [],
+      "tags": [
+        "egress",
+        "crabtrap",
+        "sandbox"
+      ],
+      "sources": [
+        "https://github.com/brexhq/CrabTrap",
+        "https://www.brex.com/journal/building-crabtrap-open-source"
+      ],
+      "lastUpdated": "2026-04-30",
+      "keyNumbers": [
+        "LLM judge on <3% of requests"
+      ],
+      "relatedDocs": [
+        "agent-safety-cost-control",
+        "landscape"
+      ],
+      "practitioners": []
+    },
+    {
+      "id": "reference-implementation",
+      "title": "Reference Implementation",
+      "path": "docs/project/reference-implementation.md",
+      "kind": "project",
+      "status": "current",
+      "parent": "project",
+      "children": [],
+      "tags": [
+        "architecture",
+        "prototype"
+      ],
+      "sources": [],
+      "lastUpdated": "2026-11-01",
+      "keyNumbers": [],
+      "relatedDocs": [
+        "codebase-status",
+        "roadmap"
+      ]
+    },
+    {
+      "id": "corpus-bibliography",
+      "title": "Corpus Bibliography",
+      "path": "docs/reference/corpus-bibliography.md",
+      "kind": "reference",
+      "status": "current",
+      "parent": "reference",
+      "children": [],
+      "tags": [
+        "sources",
+        "bibliography"
+      ],
+      "sources": [
+        "https://www.swebench.com/",
+        "https://agents.md/"
+      ],
+      "lastUpdated": "2026-11-01",
+      "keyNumbers": [],
+      "relatedDocs": [
+        "landscape",
+        "key-numbers"
       ]
     }
   ]

@@ -338,3 +338,25 @@ From [Writing Tools for Agents](https://www.anthropic.com/engineering/writing-to
 - [Martin Fowler: Harness Engineering](https://martinfowler.com/articles/exploring-gen-ai/harness-engineering.html)
 - [arXiv 2603.05344: Building Effective AI Coding Agents (OPENDEV)](https://arxiv.org/abs/2603.05344)
 - [arXiv 2510.04618: Agentic Context Engineering](https://arxiv.org/abs/2510.04618)
+
+## Prompt, tool, and rules notes
+
+Moved from the landing page. Spotify's Part 2 is the source for the prompt rules.
+
+**Prompt design:**
+
+- Describe the end state, not step-by-step instructions
+- State preconditions — tell the agent when not to act
+- Use concrete examples — snippets heavily influence output
+- One change at a time — combining changes exhausts the window
+- Define success as tests — "make this code better" fails; "these tests should pass" succeeds
+
+**Tool strategy:**
+
+- Spotify keeps a minimal surface (verify MCP, Git, restricted Bash) and puts context in the prompt.
+- Stripe exposes 400+ MCP tools via Toolshed, pre-hydrated before the agent starts.
+- Start constrained. Add tools only when the prompt is not enough.
+
+**Conditional rules (Stripe):** global agent rules conflict across domains in a large codebase. Apply them by subdirectory, with a scoped config file per directory.
+
+**Context-file debate (2026):** a Princeton study found [AGENTS.md](https://agents.md/) adoption reduced runtime 28.6% and saved 16.6% of tokens. The ETH Zurich / LogicStar counter-study (Gloaguen et al. 2026) found verbose context files hurt performance. Concise, scoped, hierarchical context wins; bloated global rules lose. The ETH numbers are also in [Enterprise adoption](../../landscape/enterprise-adoption.md).
