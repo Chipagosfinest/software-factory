@@ -4,14 +4,14 @@
   <img src="docs/assets/banner.svg" alt="Software Factory: field guide to agentic software factories" width="100%">
 </p>
 
-[![Updated 2026-11-01](https://img.shields.io/badge/updated-2026--11--01-3f3f46)](docs/index.json) [![77 docs](https://img.shields.io/badge/docs-77-3f3f46)](docs/index.json) [![Weekly updates](https://img.shields.io/badge/updates-weekly-3f3f46)](docs/signals/x-insights.md)
+[![Updated 2026-11-02](https://img.shields.io/badge/updated-2026--11--02-3f3f46)](docs/index.json) [![138 docs](https://img.shields.io/badge/docs-138-3f3f46)](docs/index.json) [![Weekly updates](https://img.shields.io/badge/updates-weekly-3f3f46)](docs/signals/x-insights.md)
 
 A research corpus on agent-native software delivery: how teams wire coding agents, what they verify before merge, and which topologies show up in production. Pattern hubs hold the mechanisms. Practitioner profiles hold the cited team record. Dated surveys are archived snapshots; [landscape](docs/landscape/README.md) is the current state of play. Agents parse [`docs/index.json`](docs/index.json).
 
 ## Start here
 
 - [When to use what](AGENTS.md#when-to-use-what) — decision map
-- [Practitioners](docs/practitioners/README.md) — one profile per team
+- [Practitioners](docs/practitioners/README.md) — 78 profiles in six categories
 - [Patterns](docs/patterns/) — mechanism hubs
 - [X insights](docs/signals/x-insights.md) — weekly updates
 
@@ -41,13 +41,16 @@ flowchart LR
 
 ## Practitioners
 
-<table>
-<tr><td><a href="docs/practitioners/stripe-minions.md"><strong>Stripe Minions</strong></a><br>One-shot coding devboxes</td><td><a href="docs/practitioners/spotify-honk.md"><strong>Spotify Honk</strong></a><br>Fleet jobs and judge</td><td><a href="docs/practitioners/ramp-inspect.md"><strong>Ramp Inspect</strong></a><br>Snapshot sandbox sessions</td><td><a href="docs/practitioners/open-inspect.md"><strong>Open-Inspect</strong></a><br>Open source Inspect clone</td></tr>
-<tr><td><a href="docs/practitioners/openai-codex.md"><strong>OpenAI Codex</strong></a><br>Harness-built internal product</td><td><a href="docs/practitioners/strongdm-software-factory.md"><strong>StrongDM Software Factory</strong></a><br>Specs drive the agents</td><td><a href="docs/practitioners/cognition-devin.md"><strong>Cognition Devin</strong></a><br>Cloud autonomous engineer</td><td><a href="docs/practitioners/langchain-deep-agents.md"><strong>LangChain Deep Agents</strong></a><br>Harness-only benchmark gains</td></tr>
-<tr><td><a href="docs/practitioners/anthropic-claude-code.md"><strong>Anthropic Claude Code</strong></a><br>Terminal agent and skills</td><td><a href="docs/practitioners/amp.md"><strong>Amp</strong></a><br>Closes the reporter loop</td><td><a href="docs/practitioners/vercel.md"><strong>Vercel</strong></a><br>Agentic CI infrastructure</td><td><a href="docs/practitioners/replit-agent-habitat.md"><strong>Replit Agent Habitat</strong></a><br>Contained space for agents</td></tr>
-<tr><td><a href="docs/practitioners/openhands.md"><strong>OpenHands</strong></a><br>Open source sandbox agents</td><td><a href="docs/practitioners/goose.md"><strong>Goose</strong></a><br>Block open source agent</td><td><a href="docs/practitioners/cline.md"><strong>Cline</strong></a><br>Asks before it acts</td><td><a href="docs/practitioners/paperclip.md"><strong>Paperclip</strong></a><br>Org chart and budgets</td></tr>
-<tr><td><a href="docs/practitioners/composio-agent-orchestrator.md"><strong>Composio Agent Orchestrator</strong></a><br>One worktree per agent</td></tr>
-</table>
+78 profiles. Citations live in the [catalog](docs/practitioners/README.md).
+
+| Category | Profiles |
+| --- | --- |
+| Enterprise in-house factories | 19 |
+| Coding-agent vendors | 30 |
+| Open-source agents | 11 |
+| Infra and sandboxes | 9 |
+| Review and verification | 5 |
+| Orchestration | 4 |
 
 ## The loop
 

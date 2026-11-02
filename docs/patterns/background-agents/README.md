@@ -1,6 +1,6 @@
 # Background Agents
 
-*Refreshed 2026-11-01*
+*Refreshed 2026-11-02*
 
 Parent hub for agents that run without a developer sitting in the loop: isolated sandboxes, warm start, worktrees, and a pull request as the handoff. The developer submits work and reviews the result.
 
@@ -22,6 +22,31 @@ Parent hub for agents that run without a developer sitting in the loop: isolated
 - [Goose](../../practitioners/goose.md)
 - [Replit Agent Habitat](../../practitioners/replit-agent-habitat.md)
 - [Vercel](../../practitioners/vercel.md)
+- [Uber](../../practitioners/uber.md)
+- [Coinbase Forge](../../practitioners/coinbase-forge.md)
+- [Block Builderbot](../../practitioners/block-builderbot.md)
+- [Brex](../../practitioners/brex.md)
+- [Datadog Bits](../../practitioners/datadog-bits.md)
+- [Nubank](../../practitioners/nubank.md)
+- [Databricks Genie Code](../../practitioners/databricks-genie-code.md)
+- [Sentry Seer](../../practitioners/sentry-seer.md)
+- [Factory.ai](../../practitioners/factory-ai.md)
+- [Cursor](../../practitioners/cursor.md)
+- [GitHub Copilot](../../practitioners/github-copilot.md)
+- [Google Jules](../../practitioners/google-jules.md)
+- [Augment Code](../../practitioners/augment-code.md)
+- [Imbue Sculptor](../../practitioners/imbue-sculptor.md)
+- [Vercel v0](../../practitioners/vercel-v0.md)
+- [Bolt.new](../../practitioners/bolt-new.md)
+- [Lovable](../../practitioners/lovable.md)
+- [Modal](../../practitioners/modal.md)
+- [E2B](../../practitioners/e2b.md)
+- [Daytona](../../practitioners/daytona.md)
+- [Runloop](../../practitioners/runloop.md)
+- [Browserbase](../../practitioners/browserbase.md)
+- [Cloudflare Sandbox](../../practitioners/cloudflare-sandbox.md)
+- [Conductor](../../practitioners/conductor.md)
+- [Nimbalyst](../../practitioners/nimbalyst.md)
 
 ## Sources
 

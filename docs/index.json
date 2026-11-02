@@ -1,7 +1,7 @@
 {
   "version": 2,
-  "generated": "2026-11-01",
-  "docCount": 77,
+  "generated": "2026-11-02",
+  "docCount": 138,
   "decisionMap": [
     {
       "situation": "Many independent, well-scoped tasks (CI failures, migrations, bumps)",
@@ -492,7 +492,7 @@
         "https://engineering.atspotify.com/2025/11/spotifys-background-coding-agent-part-1",
         "https://modal.com/blog/how-ramp-built-a-full-context-background-coding-agent-on-modal"
       ],
-      "lastUpdated": "2026-11-01",
+      "lastUpdated": "2026-11-02",
       "keyNumbers": [],
       "relatedDocs": [
         "sandbox-isolation",
@@ -507,7 +507,32 @@
         "openhands",
         "goose",
         "replit-agent-habitat",
-        "vercel"
+        "vercel",
+        "uber",
+        "coinbase-forge",
+        "block-builderbot",
+        "brex",
+        "datadog-bits",
+        "nubank",
+        "databricks-genie-code",
+        "sentry-seer",
+        "factory-ai",
+        "cursor",
+        "github-copilot",
+        "google-jules",
+        "augment-code",
+        "imbue-sculptor",
+        "vercel-v0",
+        "bolt-new",
+        "lovable",
+        "modal",
+        "e2b",
+        "daytona",
+        "runloop",
+        "browserbase",
+        "cloudflare-sandbox",
+        "conductor",
+        "nimbalyst"
       ]
     },
     {
@@ -843,7 +868,7 @@
         "https://openai.com/index/harness-engineering/",
         "https://blog.langchain.com/improving-deep-agents-with-harness-engineering/"
       ],
-      "lastUpdated": "2026-11-01",
+      "lastUpdated": "2026-11-02",
       "keyNumbers": [],
       "relatedDocs": [
         "harness-engineering-openai",
@@ -855,7 +880,37 @@
         "langchain-deep-agents",
         "anthropic-claude-code",
         "stripe-minions",
-        "strongdm-software-factory"
+        "strongdm-software-factory",
+        "uber-autocover",
+        "airbnb",
+        "google-internal-migrations",
+        "shopify-helix",
+        "shopify-roast",
+        "meta-confucius",
+        "pinterest",
+        "augment-code",
+        "sourcegraph",
+        "windsurf",
+        "kiro",
+        "warp",
+        "zed",
+        "jetbrains-junie",
+        "tabnine",
+        "mistral-devstral",
+        "xai-grok-code",
+        "poolside",
+        "magic",
+        "tessl",
+        "aider",
+        "roo-code",
+        "kilo-code",
+        "opencode",
+        "charm-crush",
+        "continue-dev",
+        "swe-agent",
+        "runloop",
+        "morph",
+        "relace"
       ]
     },
     {
@@ -1064,7 +1119,7 @@
         "https://github.com/tobi/qmd",
         "https://github.com/langchain-ai/deepagents"
       ],
-      "lastUpdated": "2026-11-01",
+      "lastUpdated": "2026-11-02",
       "keyNumbers": [],
       "relatedDocs": [
         "agent-memory-systems",
@@ -1073,7 +1128,8 @@
       ],
       "practitioners": [
         "langchain-deep-agents",
-        "ramp-inspect"
+        "ramp-inspect",
+        "magic"
       ]
     },
     {
@@ -1238,7 +1294,7 @@
         "https://github.com/paperclipai/paperclip",
         "https://github.com/ComposioHQ/agent-orchestrator"
       ],
-      "lastUpdated": "2026-11-01",
+      "lastUpdated": "2026-11-02",
       "keyNumbers": [],
       "relatedDocs": [
         "orchestrator",
@@ -1249,7 +1305,22 @@
         "paperclip",
         "composio-agent-orchestrator",
         "openai-codex",
-        "stripe-minions"
+        "stripe-minions",
+        "uber",
+        "airbnb",
+        "shopify-roast",
+        "coinbase-forge",
+        "block-builderbot",
+        "meta-confucius",
+        "brex",
+        "factory-ai",
+        "sourcegraph",
+        "linear-agents",
+        "warp",
+        "harness-ai",
+        "graphite",
+        "conductor",
+        "nimbalyst"
       ]
     },
     {
@@ -1586,7 +1657,7 @@
         "https://engineering.atspotify.com/2025/12/feedback-loops-background-coding-agents-part-3",
         "https://www.swebench.com/"
       ],
-      "lastUpdated": "2026-11-01",
+      "lastUpdated": "2026-11-02",
       "keyNumbers": [],
       "relatedDocs": [
         "swe-bench-ecosystem",
@@ -1601,7 +1672,30 @@
         "openai-codex",
         "anthropic-claude-code",
         "cognition-devin",
-        "openhands"
+        "openhands",
+        "uber",
+        "uber-autocover",
+        "airbnb",
+        "google-internal-migrations",
+        "shopify-helix",
+        "datadog-bits",
+        "doordash",
+        "pinterest",
+        "databricks-genie-code",
+        "sentry-seer",
+        "cursor",
+        "kiro",
+        "jetbrains-junie",
+        "harness-ai",
+        "imbue-sculptor",
+        "tessl",
+        "swe-agent",
+        "browserbase",
+        "coderabbit",
+        "greptile",
+        "graphite",
+        "qodo",
+        "swe-bench"
       ]
     },
     {
@@ -1652,29 +1746,90 @@
       "status": "current",
       "parent": null,
       "children": [
+        "aider",
+        "airbnb",
         "amp",
         "anthropic-claude-code",
+        "augment-code",
+        "block-builderbot",
+        "bolt-new",
+        "brex",
+        "browserbase",
+        "charm-crush",
         "cline",
+        "cloudflare-sandbox",
+        "coderabbit",
         "cognition-devin",
+        "coinbase-forge",
         "composio-agent-orchestrator",
+        "conductor",
+        "continue-dev",
+        "cursor",
+        "databricks-genie-code",
+        "datadog-bits",
+        "daytona",
+        "doordash",
+        "e2b",
+        "factory-ai",
+        "github-copilot",
+        "google-internal-migrations",
+        "google-jules",
         "goose",
+        "graphite",
+        "greptile",
+        "harness-ai",
+        "imbue-sculptor",
+        "jetbrains-junie",
+        "kilo-code",
+        "kiro",
         "langchain-deep-agents",
+        "linear-agents",
+        "lovable",
+        "magic",
+        "meta-confucius",
+        "mistral-devstral",
+        "modal",
+        "morph",
+        "nimbalyst",
+        "nubank",
         "open-inspect",
         "openai-codex",
+        "opencode",
         "openhands",
         "paperclip",
+        "pinterest",
+        "poolside",
+        "qodo",
         "ramp-inspect",
+        "relace",
         "replit-agent-habitat",
+        "roo-code",
+        "runloop",
+        "sentry-seer",
+        "shopify-helix",
+        "shopify-roast",
+        "sourcegraph",
         "spotify-honk",
         "stripe-minions",
         "strongdm-software-factory",
-        "vercel"
+        "swe-agent",
+        "swe-bench",
+        "tabnine",
+        "tessl",
+        "uber",
+        "uber-autocover",
+        "vercel",
+        "vercel-v0",
+        "warp",
+        "windsurf",
+        "xai-grok-code",
+        "zed"
       ],
       "tags": [
         "profiles"
       ],
       "sources": [],
-      "lastUpdated": "2026-11-01",
+      "lastUpdated": "2026-11-02",
       "keyNumbers": [],
       "relatedDocs": [
         "harness-engineering",
@@ -2099,6 +2254,1273 @@
       "relatedDocs": [],
       "patterns": [
         "verification",
+        "background-agents"
+      ]
+    },
+    {
+      "id": "uber",
+      "title": "Uber",
+      "path": "docs/practitioners/uber.md",
+      "kind": "practitioner",
+      "status": "current",
+      "parent": "practitioners",
+      "children": [],
+      "tags": [],
+      "sources": [
+        "https://www.uber.com/us/en/blog/ureview/",
+        "https://newsletter.pragmaticengineer.com/p/how-uber-uses-ai-for-development"
+      ],
+      "lastUpdated": "2026-11-02",
+      "keyNumbers": [
+        ">90% of ~65,000 weekly diffs",
+        "75% of comments marked useful",
+        "11% of PRs opened by agents"
+      ],
+      "relatedDocs": [],
+      "patterns": [
+        "verification",
+        "background-agents",
+        "orchestration"
+      ]
+    },
+    {
+      "id": "uber-autocover",
+      "title": "Uber AutoCover",
+      "path": "docs/practitioners/uber-autocover.md",
+      "kind": "practitioner",
+      "status": "current",
+      "parent": "practitioners",
+      "children": [],
+      "tags": [],
+      "sources": [
+        "https://dl.acm.org/doi/full/10.1145/3786583.3786918",
+        "https://homes.cs.washington.edu/~rjust/publ/auto_cover_icse_2026.pdf"
+      ],
+      "lastUpdated": "2026-11-02",
+      "keyNumbers": [
+        "~11% of new tests added to the codebase"
+      ],
+      "relatedDocs": [],
+      "patterns": [
+        "verification",
+        "harness-engineering"
+      ]
+    },
+    {
+      "id": "airbnb",
+      "title": "Airbnb",
+      "path": "docs/practitioners/airbnb.md",
+      "kind": "practitioner",
+      "status": "current",
+      "parent": "practitioners",
+      "children": [],
+      "tags": [],
+      "sources": [
+        "https://airbnb.tech/infrastructure/accelerating-large-scale-test-migration-with-llms/"
+      ],
+      "lastUpdated": "2026-11-02",
+      "keyNumbers": [
+        "3.5K files",
+        "97% after the long tail",
+        "75% in four hours"
+      ],
+      "relatedDocs": [],
+      "patterns": [
+        "orchestration",
+        "verification",
+        "harness-engineering"
+      ]
+    },
+    {
+      "id": "google-internal-migrations",
+      "title": "Google internal migrations",
+      "path": "docs/practitioners/google-internal-migrations.md",
+      "kind": "practitioner",
+      "status": "current",
+      "parent": "practitioners",
+      "children": [],
+      "tags": [],
+      "sources": [
+        "https://research.google/blog/accelerating-code-migrations-with-ai/",
+        "https://arxiv.org/html/2504.09691"
+      ],
+      "lastUpdated": "2026-11-02",
+      "keyNumbers": [
+        "80% of landed change code AI-authored",
+        "~50% less time, engineer-reported"
+      ],
+      "relatedDocs": [],
+      "patterns": [
+        "harness-engineering",
+        "verification"
+      ]
+    },
+    {
+      "id": "shopify-helix",
+      "title": "Shopify Helix",
+      "path": "docs/practitioners/shopify-helix.md",
+      "kind": "practitioner",
+      "status": "current",
+      "parent": "practitioners",
+      "children": [],
+      "tags": [],
+      "sources": [
+        "https://shopify.engineering/helix"
+      ],
+      "lastUpdated": "2026-11-02",
+      "keyNumbers": [
+        ">300 screens"
+      ],
+      "relatedDocs": [],
+      "patterns": [
+        "verification",
+        "harness-engineering"
+      ]
+    },
+    {
+      "id": "shopify-roast",
+      "title": "Shopify Roast",
+      "path": "docs/practitioners/shopify-roast.md",
+      "kind": "practitioner",
+      "status": "current",
+      "parent": "practitioners",
+      "children": [],
+      "tags": [],
+      "sources": [
+        "https://github.com/Shopify/roast"
+      ],
+      "lastUpdated": "2026-11-02",
+      "keyNumbers": [],
+      "relatedDocs": [],
+      "patterns": [
+        "orchestration",
+        "harness-engineering"
+      ]
+    },
+    {
+      "id": "coinbase-forge",
+      "title": "Coinbase Forge",
+      "path": "docs/practitioners/coinbase-forge.md",
+      "kind": "practitioner",
+      "status": "current",
+      "parent": "practitioners",
+      "children": [],
+      "tags": [],
+      "sources": [
+        "https://www.coinbase.com/blog/Tools-for-Developer-Productivity-at-Coinbase",
+        "https://jackkora.com/p/mapping-the-ai-coding-orchestrator"
+      ],
+      "lastUpdated": "2026-11-02",
+      "keyNumbers": [
+        ">1,500 engineers on the model router",
+        "5,068 merged PRs / 461 repos (survey, Mux)"
+      ],
+      "relatedDocs": [],
+      "patterns": [
+        "orchestration",
+        "background-agents"
+      ]
+    },
+    {
+      "id": "block-builderbot",
+      "title": "Block Builderbot",
+      "path": "docs/practitioners/block-builderbot.md",
+      "kind": "practitioner",
+      "status": "current",
+      "parent": "practitioners",
+      "children": [],
+      "tags": [],
+      "sources": [
+        "https://block.xyz/inside/block-rolls-out-builderbot-a-new-suite-of-ai-native-tools-that-changes-the-way-we-ship"
+      ],
+      "lastUpdated": "2026-11-02",
+      "keyNumbers": [
+        "~1,500 merged PRs/week",
+        "~15% of production changes",
+        ">200,000 operations/day"
+      ],
+      "relatedDocs": [],
+      "patterns": [
+        "background-agents",
+        "orchestration"
+      ]
+    },
+    {
+      "id": "meta-confucius",
+      "title": "Meta Confucius",
+      "path": "docs/practitioners/meta-confucius.md",
+      "kind": "practitioner",
+      "status": "current",
+      "parent": "practitioners",
+      "children": [],
+      "tags": [],
+      "sources": [
+        "https://engineering.fb.com/2026/03/17/developer-tools/ranking-engineer-agent-rea-autonomous-ai-system-accelerating-meta-ads-ranking-innovation/",
+        "https://jackkora.com/p/mapping-the-ai-coding-orchestrator"
+      ],
+      "lastUpdated": "2026-11-02",
+      "keyNumbers": [],
+      "relatedDocs": [],
+      "patterns": [
+        "orchestration",
+        "harness-engineering"
+      ]
+    },
+    {
+      "id": "brex",
+      "title": "Brex",
+      "path": "docs/practitioners/brex.md",
+      "kind": "practitioner",
+      "status": "current",
+      "parent": "practitioners",
+      "children": [],
+      "tags": [],
+      "sources": [
+        "https://www.brex.com/journal/agent-automations-for-big-migrations"
+      ],
+      "lastUpdated": "2026-11-02",
+      "keyNumbers": [
+        "180 microservices in one month",
+        "32x per capita vs the prior attempt"
+      ],
+      "relatedDocs": [],
+      "patterns": [
+        "background-agents",
+        "orchestration"
+      ]
+    },
+    {
+      "id": "datadog-bits",
+      "title": "Datadog Bits",
+      "path": "docs/practitioners/datadog-bits.md",
+      "kind": "practitioner",
+      "status": "current",
+      "parent": "practitioners",
+      "children": [],
+      "tags": [],
+      "sources": [
+        "https://docs.datadoghq.com/bits_ai/bits_code/",
+        "https://www.datadoghq.com/blog/ai/harness-first-agents/"
+      ],
+      "lastUpdated": "2026-11-02",
+      "keyNumbers": [
+        "87% lower memory (redis-rust)",
+        "~93% of peak disk throughput (Helix)"
+      ],
+      "relatedDocs": [],
+      "patterns": [
+        "verification",
+        "background-agents"
+      ]
+    },
+    {
+      "id": "doordash",
+      "title": "DoorDash",
+      "path": "docs/practitioners/doordash.md",
+      "kind": "practitioner",
+      "status": "current",
+      "parent": "practitioners",
+      "children": [],
+      "tags": [],
+      "sources": [
+        "https://careersatdoordash.com/blog/how-we-learned-to-trust-our-ai-code-reviewer-at-doordash/"
+      ],
+      "lastUpdated": "2026-11-02",
+      "keyNumbers": [
+        "53.6% weighted recall",
+        "504 real findings",
+        "105 replay cases"
+      ],
+      "relatedDocs": [],
+      "patterns": [
+        "verification"
+      ]
+    },
+    {
+      "id": "nubank",
+      "title": "Nubank",
+      "path": "docs/practitioners/nubank.md",
+      "kind": "practitioner",
+      "status": "current",
+      "parent": "practitioners",
+      "children": [],
+      "tags": [],
+      "sources": [
+        "https://building.nubank.com/enhancing-engineering-workflows-with-ai-a-real-world-experience/"
+      ],
+      "lastUpdated": "2026-11-02",
+      "keyNumbers": [
+        "12-fold efficiency",
+        "18 months with a thousand engineers, done in weeks"
+      ],
+      "relatedDocs": [],
+      "patterns": [
+        "background-agents"
+      ]
+    },
+    {
+      "id": "pinterest",
+      "title": "Pinterest",
+      "path": "docs/practitioners/pinterest.md",
+      "kind": "practitioner",
+      "status": "current",
+      "parent": "practitioners",
+      "children": [],
+      "tags": [],
+      "sources": [
+        "https://medium.com/pinterest-engineering/an-engineers-guide-to-better-ai-skills-implementing-a-testing-process-to-optimize-agent-a000c9c9abcd"
+      ],
+      "lastUpdated": "2026-11-02",
+      "keyNumbers": [
+        "73% vs 62% vanilla accuracy",
+        "100 tests"
+      ],
+      "relatedDocs": [],
+      "patterns": [
+        "verification",
+        "harness-engineering"
+      ]
+    },
+    {
+      "id": "databricks-genie-code",
+      "title": "Databricks Genie Code",
+      "path": "docs/practitioners/databricks-genie-code.md",
+      "kind": "practitioner",
+      "status": "current",
+      "parent": "practitioners",
+      "children": [],
+      "tags": [],
+      "sources": [
+        "https://www.databricks.com/blog/introducing-genie-code"
+      ],
+      "lastUpdated": "2026-11-02",
+      "keyNumbers": [
+        ">2x a leading coding agent on an internal benchmark"
+      ],
+      "relatedDocs": [],
+      "patterns": [
+        "verification",
+        "background-agents"
+      ]
+    },
+    {
+      "id": "sentry-seer",
+      "title": "Sentry Seer",
+      "path": "docs/practitioners/sentry-seer.md",
+      "kind": "practitioner",
+      "status": "current",
+      "parent": "practitioners",
+      "children": [],
+      "tags": [],
+      "sources": [
+        "https://blog.sentry.io/ai-powered-autofix-debugs-and-fixes-your-code-in-minutes/",
+        "https://blog.sentry.io/building-a-code-review-system-that-uses-prod-data-to-predict-bugs/"
+      ],
+      "lastUpdated": "2026-11-02",
+      "keyNumbers": [],
+      "relatedDocs": [],
+      "patterns": [
+        "verification",
+        "background-agents"
+      ]
+    },
+    {
+      "id": "factory-ai",
+      "title": "Factory.ai",
+      "path": "docs/practitioners/factory-ai.md",
+      "kind": "practitioner",
+      "status": "current",
+      "parent": "practitioners",
+      "children": [],
+      "tags": [],
+      "sources": [
+        "https://docs.factory.ai"
+      ],
+      "lastUpdated": "2026-11-02",
+      "keyNumbers": [],
+      "relatedDocs": [],
+      "patterns": [
+        "background-agents",
+        "orchestration"
+      ]
+    },
+    {
+      "id": "cursor",
+      "title": "Cursor",
+      "path": "docs/practitioners/cursor.md",
+      "kind": "practitioner",
+      "status": "current",
+      "parent": "practitioners",
+      "children": [],
+      "tags": [],
+      "sources": [
+        "https://cursor.com/docs/cloud-agent",
+        "https://cursor.com/docs/bugbot"
+      ],
+      "lastUpdated": "2026-11-02",
+      "keyNumbers": [],
+      "relatedDocs": [],
+      "patterns": [
+        "background-agents",
+        "verification"
+      ]
+    },
+    {
+      "id": "github-copilot",
+      "title": "GitHub Copilot",
+      "path": "docs/practitioners/github-copilot.md",
+      "kind": "practitioner",
+      "status": "current",
+      "parent": "practitioners",
+      "children": [],
+      "tags": [],
+      "sources": [
+        "https://docs.github.com/en/copilot/how-tos/use-copilot-agents/cloud-agent",
+        "https://docs.github.com/en/copilot/concepts/agents/coding-agent"
+      ],
+      "lastUpdated": "2026-11-02",
+      "keyNumbers": [],
+      "relatedDocs": [],
+      "patterns": [
+        "background-agents"
+      ]
+    },
+    {
+      "id": "google-jules",
+      "title": "Google Jules",
+      "path": "docs/practitioners/google-jules.md",
+      "kind": "practitioner",
+      "status": "current",
+      "parent": "practitioners",
+      "children": [],
+      "tags": [],
+      "sources": [
+        "https://jules.google",
+        "https://blog.google/technology/google-labs/jules"
+      ],
+      "lastUpdated": "2026-11-02",
+      "keyNumbers": [
+        "15 / 100 / 300 tasks per day"
+      ],
+      "relatedDocs": [],
+      "patterns": [
+        "background-agents"
+      ]
+    },
+    {
+      "id": "augment-code",
+      "title": "Augment Code",
+      "path": "docs/practitioners/augment-code.md",
+      "kind": "practitioner",
+      "status": "current",
+      "parent": "practitioners",
+      "children": [],
+      "tags": [],
+      "sources": [
+        "https://docs.augmentcode.com"
+      ],
+      "lastUpdated": "2026-11-02",
+      "keyNumbers": [],
+      "relatedDocs": [],
+      "patterns": [
+        "harness-engineering",
+        "background-agents"
+      ]
+    },
+    {
+      "id": "sourcegraph",
+      "title": "Sourcegraph",
+      "path": "docs/practitioners/sourcegraph.md",
+      "kind": "practitioner",
+      "status": "current",
+      "parent": "practitioners",
+      "children": [],
+      "tags": [],
+      "sources": [
+        "https://sourcegraph.com/docs"
+      ],
+      "lastUpdated": "2026-11-02",
+      "keyNumbers": [],
+      "relatedDocs": [],
+      "patterns": [
+        "orchestration",
+        "harness-engineering"
+      ]
+    },
+    {
+      "id": "windsurf",
+      "title": "Windsurf",
+      "path": "docs/practitioners/windsurf.md",
+      "kind": "practitioner",
+      "status": "current",
+      "parent": "practitioners",
+      "children": [],
+      "tags": [],
+      "sources": [
+        "https://docs.windsurf.com"
+      ],
+      "lastUpdated": "2026-11-02",
+      "keyNumbers": [],
+      "relatedDocs": [],
+      "patterns": [
+        "harness-engineering"
+      ]
+    },
+    {
+      "id": "linear-agents",
+      "title": "Linear agents",
+      "path": "docs/practitioners/linear-agents.md",
+      "kind": "practitioner",
+      "status": "current",
+      "parent": "practitioners",
+      "children": [],
+      "tags": [],
+      "sources": [
+        "https://linear.app/docs/agents-in-linear"
+      ],
+      "lastUpdated": "2026-11-02",
+      "keyNumbers": [],
+      "relatedDocs": [],
+      "patterns": [
+        "orchestration"
+      ]
+    },
+    {
+      "id": "kiro",
+      "title": "Kiro",
+      "path": "docs/practitioners/kiro.md",
+      "kind": "practitioner",
+      "status": "current",
+      "parent": "practitioners",
+      "children": [],
+      "tags": [],
+      "sources": [
+        "https://kiro.dev/docs"
+      ],
+      "lastUpdated": "2026-11-02",
+      "keyNumbers": [],
+      "relatedDocs": [],
+      "patterns": [
+        "harness-engineering",
+        "verification"
+      ]
+    },
+    {
+      "id": "warp",
+      "title": "Warp",
+      "path": "docs/practitioners/warp.md",
+      "kind": "practitioner",
+      "status": "current",
+      "parent": "practitioners",
+      "children": [],
+      "tags": [],
+      "sources": [
+        "https://docs.warp.dev/agents"
+      ],
+      "lastUpdated": "2026-11-02",
+      "keyNumbers": [],
+      "relatedDocs": [],
+      "patterns": [
+        "harness-engineering",
+        "orchestration"
+      ]
+    },
+    {
+      "id": "zed",
+      "title": "Zed",
+      "path": "docs/practitioners/zed.md",
+      "kind": "practitioner",
+      "status": "current",
+      "parent": "practitioners",
+      "children": [],
+      "tags": [],
+      "sources": [
+        "https://zed.dev/docs/ai/external-agents"
+      ],
+      "lastUpdated": "2026-11-02",
+      "keyNumbers": [],
+      "relatedDocs": [],
+      "patterns": [
+        "harness-engineering"
+      ]
+    },
+    {
+      "id": "jetbrains-junie",
+      "title": "JetBrains Junie",
+      "path": "docs/practitioners/jetbrains-junie.md",
+      "kind": "practitioner",
+      "status": "current",
+      "parent": "practitioners",
+      "children": [],
+      "tags": [],
+      "sources": [
+        "https://www.jetbrains.com/junie/"
+      ],
+      "lastUpdated": "2026-11-02",
+      "keyNumbers": [],
+      "relatedDocs": [],
+      "patterns": [
+        "harness-engineering",
+        "verification"
+      ]
+    },
+    {
+      "id": "tabnine",
+      "title": "Tabnine",
+      "path": "docs/practitioners/tabnine.md",
+      "kind": "practitioner",
+      "status": "current",
+      "parent": "practitioners",
+      "children": [],
+      "tags": [],
+      "sources": [
+        "https://docs.tabnine.com"
+      ],
+      "lastUpdated": "2026-11-02",
+      "keyNumbers": [],
+      "relatedDocs": [],
+      "patterns": [
+        "harness-engineering"
+      ]
+    },
+    {
+      "id": "harness-ai",
+      "title": "Harness AI",
+      "path": "docs/practitioners/harness-ai.md",
+      "kind": "practitioner",
+      "status": "current",
+      "parent": "practitioners",
+      "children": [],
+      "tags": [],
+      "sources": [
+        "https://developer.harness.io"
+      ],
+      "lastUpdated": "2026-11-02",
+      "keyNumbers": [],
+      "relatedDocs": [],
+      "patterns": [
+        "orchestration",
+        "verification"
+      ]
+    },
+    {
+      "id": "mistral-devstral",
+      "title": "Mistral Devstral",
+      "path": "docs/practitioners/mistral-devstral.md",
+      "kind": "practitioner",
+      "status": "current",
+      "parent": "practitioners",
+      "children": [],
+      "tags": [],
+      "sources": [
+        "https://mistral.ai/news/devstral"
+      ],
+      "lastUpdated": "2026-11-02",
+      "keyNumbers": [],
+      "relatedDocs": [],
+      "patterns": [
+        "harness-engineering"
+      ]
+    },
+    {
+      "id": "xai-grok-code",
+      "title": "xAI Grok Code",
+      "path": "docs/practitioners/xai-grok-code.md",
+      "kind": "practitioner",
+      "status": "current",
+      "parent": "practitioners",
+      "children": [],
+      "tags": [],
+      "sources": [
+        "https://x.ai/news/grok-code-fast-1"
+      ],
+      "lastUpdated": "2026-11-02",
+      "keyNumbers": [],
+      "relatedDocs": [],
+      "patterns": [
+        "harness-engineering"
+      ]
+    },
+    {
+      "id": "poolside",
+      "title": "Poolside",
+      "path": "docs/practitioners/poolside.md",
+      "kind": "practitioner",
+      "status": "current",
+      "parent": "practitioners",
+      "children": [],
+      "tags": [],
+      "sources": [
+        "https://poolside.ai"
+      ],
+      "lastUpdated": "2026-11-02",
+      "keyNumbers": [],
+      "relatedDocs": [],
+      "patterns": [
+        "harness-engineering"
+      ]
+    },
+    {
+      "id": "magic",
+      "title": "Magic",
+      "path": "docs/practitioners/magic.md",
+      "kind": "practitioner",
+      "status": "current",
+      "parent": "practitioners",
+      "children": [],
+      "tags": [],
+      "sources": [
+        "https://magic.dev/blog"
+      ],
+      "lastUpdated": "2026-11-02",
+      "keyNumbers": [
+        "5 million tokens (LTM-1)",
+        "100 million tokens (blog title)"
+      ],
+      "relatedDocs": [],
+      "patterns": [
+        "memory-knowledge",
+        "harness-engineering"
+      ]
+    },
+    {
+      "id": "imbue-sculptor",
+      "title": "Imbue Sculptor",
+      "path": "docs/practitioners/imbue-sculptor.md",
+      "kind": "practitioner",
+      "status": "current",
+      "parent": "practitioners",
+      "children": [],
+      "tags": [],
+      "sources": [
+        "https://imbue.com/sculptor"
+      ],
+      "lastUpdated": "2026-11-02",
+      "keyNumbers": [],
+      "relatedDocs": [],
+      "patterns": [
+        "background-agents",
+        "verification"
+      ]
+    },
+    {
+      "id": "tessl",
+      "title": "Tessl",
+      "path": "docs/practitioners/tessl.md",
+      "kind": "practitioner",
+      "status": "current",
+      "parent": "practitioners",
+      "children": [],
+      "tags": [],
+      "sources": [
+        "https://tessl.io"
+      ],
+      "lastUpdated": "2026-11-02",
+      "keyNumbers": [
+        "1,000 credits a month on the free start"
+      ],
+      "relatedDocs": [],
+      "patterns": [
+        "harness-engineering",
+        "verification"
+      ]
+    },
+    {
+      "id": "vercel-v0",
+      "title": "Vercel v0",
+      "path": "docs/practitioners/vercel-v0.md",
+      "kind": "practitioner",
+      "status": "current",
+      "parent": "practitioners",
+      "children": [],
+      "tags": [],
+      "sources": [
+        "https://v0.dev/docs"
+      ],
+      "lastUpdated": "2026-11-02",
+      "keyNumbers": [],
+      "relatedDocs": [],
+      "patterns": [
+        "background-agents"
+      ]
+    },
+    {
+      "id": "bolt-new",
+      "title": "Bolt.new",
+      "path": "docs/practitioners/bolt-new.md",
+      "kind": "practitioner",
+      "status": "current",
+      "parent": "practitioners",
+      "children": [],
+      "tags": [],
+      "sources": [
+        "https://github.com/stackblitz/bolt.new"
+      ],
+      "lastUpdated": "2026-11-02",
+      "keyNumbers": [],
+      "relatedDocs": [],
+      "patterns": [
+        "background-agents"
+      ]
+    },
+    {
+      "id": "lovable",
+      "title": "Lovable",
+      "path": "docs/practitioners/lovable.md",
+      "kind": "practitioner",
+      "status": "current",
+      "parent": "practitioners",
+      "children": [],
+      "tags": [],
+      "sources": [
+        "https://docs.lovable.dev",
+        "https://docs.lovable.dev/integrations/supabase"
+      ],
+      "lastUpdated": "2026-11-02",
+      "keyNumbers": [],
+      "relatedDocs": [],
+      "patterns": [
+        "background-agents"
+      ]
+    },
+    {
+      "id": "aider",
+      "title": "Aider",
+      "path": "docs/practitioners/aider.md",
+      "kind": "practitioner",
+      "status": "current",
+      "parent": "practitioners",
+      "children": [],
+      "tags": [],
+      "sources": [
+        "https://github.com/Aider-AI/aider",
+        "https://aider.chat/docs/repomap.html",
+        "https://aider.chat/docs/leaderboards/"
+      ],
+      "lastUpdated": "2026-11-02",
+      "keyNumbers": [
+        "6.8M pip installs on the README badge"
+      ],
+      "relatedDocs": [],
+      "patterns": [
+        "harness-engineering"
+      ]
+    },
+    {
+      "id": "roo-code",
+      "title": "Roo Code",
+      "path": "docs/practitioners/roo-code.md",
+      "kind": "practitioner",
+      "status": "current",
+      "parent": "practitioners",
+      "children": [],
+      "tags": [],
+      "sources": [
+        "https://github.com/RooCodeInc/Roo-Code"
+      ],
+      "lastUpdated": "2026-11-02",
+      "keyNumbers": [],
+      "relatedDocs": [],
+      "patterns": [
+        "harness-engineering"
+      ]
+    },
+    {
+      "id": "kilo-code",
+      "title": "Kilo Code",
+      "path": "docs/practitioners/kilo-code.md",
+      "kind": "practitioner",
+      "status": "current",
+      "parent": "practitioners",
+      "children": [],
+      "tags": [],
+      "sources": [
+        "https://github.com/Kilo-Org/kilocode"
+      ],
+      "lastUpdated": "2026-11-02",
+      "keyNumbers": [
+        "500+ models"
+      ],
+      "relatedDocs": [],
+      "patterns": [
+        "harness-engineering"
+      ]
+    },
+    {
+      "id": "opencode",
+      "title": "OpenCode",
+      "path": "docs/practitioners/opencode.md",
+      "kind": "practitioner",
+      "status": "current",
+      "parent": "practitioners",
+      "children": [],
+      "tags": [],
+      "sources": [
+        "https://opencode.ai",
+        "https://github.com/anomalyco/opencode"
+      ],
+      "lastUpdated": "2026-11-02",
+      "keyNumbers": [],
+      "relatedDocs": [],
+      "patterns": [
+        "harness-engineering"
+      ]
+    },
+    {
+      "id": "charm-crush",
+      "title": "Charm Crush",
+      "path": "docs/practitioners/charm-crush.md",
+      "kind": "practitioner",
+      "status": "current",
+      "parent": "practitioners",
+      "children": [],
+      "tags": [],
+      "sources": [
+        "https://github.com/charmbracelet/crush"
+      ],
+      "lastUpdated": "2026-11-02",
+      "keyNumbers": [],
+      "relatedDocs": [],
+      "patterns": [
+        "harness-engineering"
+      ]
+    },
+    {
+      "id": "continue-dev",
+      "title": "Continue",
+      "path": "docs/practitioners/continue-dev.md",
+      "kind": "practitioner",
+      "status": "current",
+      "parent": "practitioners",
+      "children": [],
+      "tags": [],
+      "sources": [
+        "https://github.com/continuedev/continue",
+        "https://docs.continue.dev"
+      ],
+      "lastUpdated": "2026-11-02",
+      "keyNumbers": [],
+      "relatedDocs": [],
+      "patterns": [
+        "harness-engineering"
+      ]
+    },
+    {
+      "id": "swe-agent",
+      "title": "SWE-agent",
+      "path": "docs/practitioners/swe-agent.md",
+      "kind": "practitioner",
+      "status": "current",
+      "parent": "practitioners",
+      "children": [],
+      "tags": [],
+      "sources": [
+        "https://github.com/SWE-agent/SWE-agent",
+        "https://www.swebench.com"
+      ],
+      "lastUpdated": "2026-11-02",
+      "keyNumbers": [],
+      "relatedDocs": [],
+      "patterns": [
+        "verification",
+        "harness-engineering"
+      ]
+    },
+    {
+      "id": "modal",
+      "title": "Modal",
+      "path": "docs/practitioners/modal.md",
+      "kind": "practitioner",
+      "status": "current",
+      "parent": "practitioners",
+      "children": [],
+      "tags": [],
+      "sources": [
+        "https://modal.com/docs/guide/sandbox"
+      ],
+      "lastUpdated": "2026-11-02",
+      "keyNumbers": [],
+      "relatedDocs": [],
+      "patterns": [
+        "background-agents"
+      ]
+    },
+    {
+      "id": "e2b",
+      "title": "E2B",
+      "path": "docs/practitioners/e2b.md",
+      "kind": "practitioner",
+      "status": "current",
+      "parent": "practitioners",
+      "children": [],
+      "tags": [],
+      "sources": [
+        "https://e2b.dev",
+        "https://e2b.dev/docs"
+      ],
+      "lastUpdated": "2026-11-02",
+      "keyNumbers": [
+        "2 billion+ sandboxes, site claim"
+      ],
+      "relatedDocs": [],
+      "patterns": [
+        "background-agents"
+      ]
+    },
+    {
+      "id": "daytona",
+      "title": "Daytona",
+      "path": "docs/practitioners/daytona.md",
+      "kind": "practitioner",
+      "status": "current",
+      "parent": "practitioners",
+      "children": [],
+      "tags": [],
+      "sources": [
+        "https://www.daytona.io/docs"
+      ],
+      "lastUpdated": "2026-11-02",
+      "keyNumbers": [],
+      "relatedDocs": [],
+      "patterns": [
+        "background-agents"
+      ]
+    },
+    {
+      "id": "runloop",
+      "title": "Runloop",
+      "path": "docs/practitioners/runloop.md",
+      "kind": "practitioner",
+      "status": "current",
+      "parent": "practitioners",
+      "children": [],
+      "tags": [],
+      "sources": [
+        "https://docs.runloop.ai"
+      ],
+      "lastUpdated": "2026-11-02",
+      "keyNumbers": [],
+      "relatedDocs": [],
+      "patterns": [
+        "background-agents",
+        "harness-engineering"
+      ]
+    },
+    {
+      "id": "browserbase",
+      "title": "Browserbase",
+      "path": "docs/practitioners/browserbase.md",
+      "kind": "practitioner",
+      "status": "current",
+      "parent": "practitioners",
+      "children": [],
+      "tags": [],
+      "sources": [
+        "https://docs.browserbase.com"
+      ],
+      "lastUpdated": "2026-11-02",
+      "keyNumbers": [],
+      "relatedDocs": [],
+      "patterns": [
+        "verification",
+        "background-agents"
+      ]
+    },
+    {
+      "id": "morph",
+      "title": "Morph",
+      "path": "docs/practitioners/morph.md",
+      "kind": "practitioner",
+      "status": "current",
+      "parent": "practitioners",
+      "children": [],
+      "tags": [],
+      "sources": [
+        "https://docs.morphllm.com"
+      ],
+      "lastUpdated": "2026-11-02",
+      "keyNumbers": [],
+      "relatedDocs": [],
+      "patterns": [
+        "harness-engineering"
+      ]
+    },
+    {
+      "id": "relace",
+      "title": "Relace",
+      "path": "docs/practitioners/relace.md",
+      "kind": "practitioner",
+      "status": "current",
+      "parent": "practitioners",
+      "children": [],
+      "tags": [],
+      "sources": [
+        "https://docs.relace.ai"
+      ],
+      "lastUpdated": "2026-11-02",
+      "keyNumbers": [],
+      "relatedDocs": [],
+      "patterns": [
+        "harness-engineering"
+      ]
+    },
+    {
+      "id": "cloudflare-sandbox",
+      "title": "Cloudflare Sandbox",
+      "path": "docs/practitioners/cloudflare-sandbox.md",
+      "kind": "practitioner",
+      "status": "current",
+      "parent": "practitioners",
+      "children": [],
+      "tags": [],
+      "sources": [
+        "https://developers.cloudflare.com/sandbox/"
+      ],
+      "lastUpdated": "2026-11-02",
+      "keyNumbers": [],
+      "relatedDocs": [],
+      "patterns": [
+        "background-agents"
+      ]
+    },
+    {
+      "id": "coderabbit",
+      "title": "CodeRabbit",
+      "path": "docs/practitioners/coderabbit.md",
+      "kind": "practitioner",
+      "status": "current",
+      "parent": "practitioners",
+      "children": [],
+      "tags": [],
+      "sources": [
+        "https://docs.coderabbit.ai",
+        "https://www.coderabbit.ai/"
+      ],
+      "lastUpdated": "2026-11-02",
+      "keyNumbers": [],
+      "relatedDocs": [],
+      "patterns": [
+        "verification"
+      ]
+    },
+    {
+      "id": "greptile",
+      "title": "Greptile",
+      "path": "docs/practitioners/greptile.md",
+      "kind": "practitioner",
+      "status": "current",
+      "parent": "practitioners",
+      "children": [],
+      "tags": [],
+      "sources": [
+        "https://www.greptile.com/docs"
+      ],
+      "lastUpdated": "2026-11-02",
+      "keyNumbers": [],
+      "relatedDocs": [],
+      "patterns": [
+        "verification"
+      ]
+    },
+    {
+      "id": "graphite",
+      "title": "Graphite",
+      "path": "docs/practitioners/graphite.md",
+      "kind": "practitioner",
+      "status": "current",
+      "parent": "practitioners",
+      "children": [],
+      "tags": [],
+      "sources": [
+        "https://graphite.dev/docs",
+        "https://graphite.com/docs/ai-reviews"
+      ],
+      "lastUpdated": "2026-11-02",
+      "keyNumbers": [],
+      "relatedDocs": [],
+      "patterns": [
+        "orchestration",
+        "verification"
+      ]
+    },
+    {
+      "id": "qodo",
+      "title": "Qodo",
+      "path": "docs/practitioners/qodo.md",
+      "kind": "practitioner",
+      "status": "current",
+      "parent": "practitioners",
+      "children": [],
+      "tags": [],
+      "sources": [
+        "https://docs.qodo.ai"
+      ],
+      "lastUpdated": "2026-11-02",
+      "keyNumbers": [],
+      "relatedDocs": [],
+      "patterns": [
+        "verification"
+      ]
+    },
+    {
+      "id": "swe-bench",
+      "title": "SWE-bench",
+      "path": "docs/practitioners/swe-bench.md",
+      "kind": "practitioner",
+      "status": "current",
+      "parent": "practitioners",
+      "children": [],
+      "tags": [],
+      "sources": [
+        "https://www.swebench.com"
+      ],
+      "lastUpdated": "2026-11-02",
+      "keyNumbers": [],
+      "relatedDocs": [],
+      "patterns": [
+        "verification"
+      ]
+    },
+    {
+      "id": "conductor",
+      "title": "Conductor",
+      "path": "docs/practitioners/conductor.md",
+      "kind": "practitioner",
+      "status": "current",
+      "parent": "practitioners",
+      "children": [],
+      "tags": [],
+      "sources": [
+        "https://conductor.build"
+      ],
+      "lastUpdated": "2026-11-02",
+      "keyNumbers": [
+        "100k+ builders, homepage claim"
+      ],
+      "relatedDocs": [],
+      "patterns": [
+        "orchestration",
+        "background-agents"
+      ]
+    },
+    {
+      "id": "nimbalyst",
+      "title": "Nimbalyst",
+      "path": "docs/practitioners/nimbalyst.md",
+      "kind": "practitioner",
+      "status": "current",
+      "parent": "practitioners",
+      "children": [],
+      "tags": [],
+      "sources": [
+        "https://nimbalyst.com",
+        "https://github.com/nimbalyst/nimbalyst"
+      ],
+      "lastUpdated": "2026-11-02",
+      "keyNumbers": [],
+      "relatedDocs": [],
+      "patterns": [
+        "orchestration",
         "background-agents"
       ]
     },

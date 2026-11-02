@@ -83,7 +83,7 @@ Numbers live in [key numbers](docs/reference/key-numbers.md). Terms live in the 
   - [Risk forecast](docs/project/risk-forecast.md)
   - [Reference implementation](docs/project/reference-implementation.md)
   - [Operations (archived snapshot as of 2026-07-16)](docs/project/software-factory-operations-2026-07-16.md)
-- [Practitioners](docs/practitioners/README.md) — one profile per team; cited one-liners are in that README
+- [Practitioners](docs/practitioners/README.md) — 78 profiles in six categories; cited one-liners are in that README
 
 ## How the index is shaped
 

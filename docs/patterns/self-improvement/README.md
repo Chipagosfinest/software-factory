@@ -1,6 +1,6 @@
 # Self-Improvement
 
-*Refreshed 2026-11-01*
+*Refreshed 2026-11-02*
 
 Parent hub for loops that keep running while a metric moves: fixed-budget experiments, a ratchet that only keeps improvements, and production monitors that open their own fixes.
 

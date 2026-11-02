@@ -1,6 +1,6 @@
 # Harness Engineering
 
-*Refreshed 2026-11-01*
+*Refreshed 2026-11-02*
 
 Parent hub for the environment around a model: instructions, tools, middleware, plans, and feedback loops. The model is a component. The harness is what makes its work reliable.
 
@@ -21,6 +21,36 @@ OpenAI's internal product and LangChain's Deep Agents are children of this hub. 
 - [Anthropic Claude Code](../../practitioners/anthropic-claude-code.md)
 - [Stripe Minions](../../practitioners/stripe-minions.md)
 - [StrongDM Software Factory](../../practitioners/strongdm-software-factory.md)
+- [Uber AutoCover](../../practitioners/uber-autocover.md)
+- [Airbnb](../../practitioners/airbnb.md)
+- [Google internal migrations](../../practitioners/google-internal-migrations.md)
+- [Shopify Helix](../../practitioners/shopify-helix.md)
+- [Shopify Roast](../../practitioners/shopify-roast.md)
+- [Meta Confucius](../../practitioners/meta-confucius.md)
+- [Pinterest](../../practitioners/pinterest.md)
+- [Augment Code](../../practitioners/augment-code.md)
+- [Sourcegraph](../../practitioners/sourcegraph.md)
+- [Windsurf](../../practitioners/windsurf.md)
+- [Kiro](../../practitioners/kiro.md)
+- [Warp](../../practitioners/warp.md)
+- [Zed](../../practitioners/zed.md)
+- [JetBrains Junie](../../practitioners/jetbrains-junie.md)
+- [Tabnine](../../practitioners/tabnine.md)
+- [Mistral Devstral](../../practitioners/mistral-devstral.md)
+- [xAI Grok Code](../../practitioners/xai-grok-code.md)
+- [Poolside](../../practitioners/poolside.md)
+- [Magic](../../practitioners/magic.md)
+- [Tessl](../../practitioners/tessl.md)
+- [Aider](../../practitioners/aider.md)
+- [Roo Code](../../practitioners/roo-code.md)
+- [Kilo Code](../../practitioners/kilo-code.md)
+- [OpenCode](../../practitioners/opencode.md)
+- [Charm Crush](../../practitioners/charm-crush.md)
+- [Continue](../../practitioners/continue-dev.md)
+- [SWE-agent](../../practitioners/swe-agent.md)
+- [Runloop](../../practitioners/runloop.md)
+- [Morph](../../practitioners/morph.md)
+- [Relace](../../practitioners/relace.md)
 
 ## Sources
 
