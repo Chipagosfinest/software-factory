@@ -36,7 +36,7 @@ Parent hub for teams and products that show the patterns in production or in a p
 - [Anthropic Claude Code](./anthropic-claude-code.md) — terminal agent and skills
 - [Amp](./amp.md) — agent closes the loop with the people who hit a bug
 - [Replit Agent Habitat](./replit-agent-habitat.md) — contained space for unpredictable agents
-- [Sentry Seer](./sentry-seer.md) — production errors to a fix pull request; review from prod data
+- [Sentry Seer](./sentry-seer.md) — production errors to a fix pull request; Seer Agent answers from prod data and can act
 - [Factory.ai](./factory-ai.md) — Droids, Missions, remote environments
 - [Cursor](./cursor.md) — parallel cloud-VM agents and Bugbot
 - [GitHub Copilot](./github-copilot.md) — cloud agent from issue to pull request

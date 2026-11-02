@@ -4,6 +4,8 @@
 
 Parent hub for agents that run without a developer sitting in the loop: isolated sandboxes, warm start, worktrees, and a pull request as the handoff. The developer submits work and reviews the result.
 
+Warp's 23 October 2026 account of a software factory is that handoff moved off the laptop: one cloud sandbox, agreed models and skills, tasks from a backlog or Slack, and a pull request only after verification ([workshop](https://www.youtube.com/watch?v=Shqcc2aRTGY)). Mitchell Hashimoto, on OpenAI's channel the same week, describes dispatching Codex agents at the end of the day for research and for prototypes that are not fully specified ([Codex](https://www.youtube.com/watch?v=lPZQrVFcz3c)).
+
 ## Children
 
 - [Sandbox isolation](./sandbox-isolation.md) — containers, VMs, warm pools, network and filesystem limits
@@ -22,6 +24,7 @@ Parent hub for agents that run without a developer sitting in the loop: isolated
 - [Goose](../../practitioners/goose.md)
 - [Replit Agent Habitat](../../practitioners/replit-agent-habitat.md)
 - [Vercel](../../practitioners/vercel.md)
+- [Warp](../../practitioners/warp.md)
 - [Uber](../../practitioners/uber.md)
 - [Coinbase Forge](../../practitioners/coinbase-forge.md)
 - [Block Builderbot](../../practitioners/block-builderbot.md)
@@ -53,3 +56,4 @@ Parent hub for agents that run without a developer sitting in the loop: isolated
 - [Stripe Minions](https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents)
 - [Spotify Honk, part 1](https://engineering.atspotify.com/2025/11/spotifys-background-coding-agent-part-1)
 - [Ramp on Modal](https://modal.com/blog/how-ramp-built-a-full-context-background-coding-agent-on-modal)
+- [Powering Warp Factories with Sentry](https://www.youtube.com/watch?v=Shqcc2aRTGY) (2026-10-23)

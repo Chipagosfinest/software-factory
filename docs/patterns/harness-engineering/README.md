@@ -6,6 +6,8 @@ Parent hub for the environment around a model: instructions, tools, middleware, 
 
 OpenAI's internal product and LangChain's Deep Agents are children of this hub. They describe the same pattern from two measurements: a product built with no hand-written code, and a fixed model whose score moved only when the harness changed.
 
+LangChain's [27 October 2026 talk](https://www.youtube.com/watch?v=xy_7SzwsIjM) splits an agent into model, harness, and context, and says a harness change read from traces should stay human-reviewed because it applies to every user. [Managed Deep Agents](https://www.youtube.com/watch?v=Wb3hQaG_xf0), the day before, puts that harness on LangSmith Deployment so durable execution and the task queue are runtime rather than team-owned infrastructure.
+
 ## Children
 
 - [OpenAI harness engineering](./harness-engineering-openai.md) — AGENTS.md as a map, layered docs, mechanical checks
@@ -56,3 +58,5 @@ OpenAI's internal product and LangChain's Deep Agents are children of this hub. 
 
 - [OpenAI: Harness engineering](https://openai.com/index/harness-engineering/)
 - [LangChain: Improving Deep Agents with harness engineering](https://blog.langchain.com/improving-deep-agents-with-harness-engineering/)
+- [How to Build Agents That Improve Over Time](https://www.youtube.com/watch?v=xy_7SzwsIjM) (2026-10-27)
+- [Inside Managed Deep Agents](https://www.youtube.com/watch?v=Wb3hQaG_xf0) (2026-10-26)

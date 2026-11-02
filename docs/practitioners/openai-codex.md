@@ -1,6 +1,6 @@
 # OpenAI Codex
 
-*Refreshed 2026-11-01*
+*Refreshed 2026-11-02*
 
 ## What they do
 
@@ -16,6 +16,7 @@ Symphony is the orchestrator beside the agent: an Elixir/BEAM service that polls
 - Agents held single tasks for up to 6 hours with automated validation loops (enterprise adoption note).
 - The landscape pass records 57.0% on SWE-bench Pro for the Codex CLI, an Apache 2.0 CLI, and unprompted automations for triage, alerts, and CI.
 - The same-model lesson stated in the enterprise note: harness quality moved a task from 42% to 78% success. The LangChain measurement of a different harness is in [LangChain Deep Agents](./langchain-deep-agents.md).
+- On the [27 October 2026 video](https://www.youtube.com/watch?v=lPZQrVFcz3c), Mitchell Hashimoto describes ending the day by dispatching Codex agents for landscape research and for prototypes of features that are not fully specified, so the next session starts from that output.
 
 ## Patterns shown
 
@@ -40,3 +41,4 @@ Symphony is the orchestrator beside the agent: an Elixir/BEAM service that polls
 - [Introducing the Codex app](https://openai.com/index/introducing-the-codex-app/)
 - [Symphony spec](https://github.com/openai/symphony/blob/main/SPEC.md)
 - [Open-source Codex orchestration](https://openai.com/index/open-source-codex-orchestration-symphony/)
+- [Getting a Head Start with Codex](https://www.youtube.com/watch?v=lPZQrVFcz3c) (2026-10-27)

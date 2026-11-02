@@ -1,7 +1,7 @@
 {
   "version": 2,
   "generated": "2026-11-02",
-  "docCount": 138,
+  "docCount": 139,
   "decisionMap": [
     {
       "situation": "Many independent, well-scoped tasks (CI failures, migrations, bumps)",
@@ -490,14 +490,16 @@
       "sources": [
         "https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents",
         "https://engineering.atspotify.com/2025/11/spotifys-background-coding-agent-part-1",
-        "https://modal.com/blog/how-ramp-built-a-full-context-background-coding-agent-on-modal"
+        "https://modal.com/blog/how-ramp-built-a-full-context-background-coding-agent-on-modal",
+        "https://www.youtube.com/watch?v=Shqcc2aRTGY"
       ],
       "lastUpdated": "2026-11-02",
       "keyNumbers": [],
       "relatedDocs": [
         "sandbox-isolation",
         "background-agents-open-inspect",
-        "ramp-inspect"
+        "ramp-inspect",
+        "youtube"
       ],
       "practitioners": [
         "stripe-minions",
@@ -508,6 +510,7 @@
         "goose",
         "replit-agent-habitat",
         "vercel",
+        "warp",
         "uber",
         "coinbase-forge",
         "block-builderbot",
@@ -866,14 +869,17 @@
       ],
       "sources": [
         "https://openai.com/index/harness-engineering/",
-        "https://blog.langchain.com/improving-deep-agents-with-harness-engineering/"
+        "https://blog.langchain.com/improving-deep-agents-with-harness-engineering/",
+        "https://www.youtube.com/watch?v=xy_7SzwsIjM",
+        "https://www.youtube.com/watch?v=Wb3hQaG_xf0"
       ],
       "lastUpdated": "2026-11-02",
       "keyNumbers": [],
       "relatedDocs": [
         "harness-engineering-openai",
         "harness-engineering-langchain",
-        "context-engineering"
+        "context-engineering",
+        "youtube"
       ],
       "practitioners": [
         "openai-codex",
@@ -1292,14 +1298,17 @@
       "sources": [
         "https://github.com/openai/symphony/blob/main/SPEC.md",
         "https://github.com/paperclipai/paperclip",
-        "https://github.com/ComposioHQ/agent-orchestrator"
+        "https://github.com/ComposioHQ/agent-orchestrator",
+        "https://www.youtube.com/watch?v=Shqcc2aRTGY",
+        "https://www.youtube.com/watch?v=kY0_rRtJ8BM"
       ],
       "lastUpdated": "2026-11-02",
       "keyNumbers": [],
       "relatedDocs": [
         "orchestrator",
         "potent-combos",
-        "paperclip-org-chart"
+        "paperclip-org-chart",
+        "youtube"
       ],
       "practitioners": [
         "paperclip",
@@ -1655,14 +1664,17 @@
       ],
       "sources": [
         "https://engineering.atspotify.com/2025/12/feedback-loops-background-coding-agents-part-3",
-        "https://www.swebench.com/"
+        "https://www.swebench.com/",
+        "https://www.youtube.com/watch?v=rUlnhU0de7A",
+        "https://www.youtube.com/watch?v=Shqcc2aRTGY"
       ],
       "lastUpdated": "2026-11-02",
       "keyNumbers": [],
       "relatedDocs": [
         "swe-bench-ecosystem",
         "software-factory-operations-2026-07-16",
-        "spotify-honk"
+        "spotify-honk",
+        "youtube"
       ],
       "practitioners": [
         "spotify-honk",
@@ -1997,14 +2009,18 @@
         "https://blog.langchain.com/improving-deep-agents-with-harness-engineering/",
         "https://github.com/langchain-ai/deepagents",
         "https://x.com/hwchase17/status/2115854759991369840",
-        "https://x.com/hwchase17/status/2112650555852275951"
+        "https://x.com/hwchase17/status/2112650555852275951",
+        "https://www.youtube.com/watch?v=xy_7SzwsIjM",
+        "https://www.youtube.com/watch?v=Wb3hQaG_xf0"
       ],
-      "lastUpdated": "2026-11-01",
+      "lastUpdated": "2026-11-02",
       "keyNumbers": [
         "52.8\u219266.5% Terminal Bench",
         "+13.7pp harness-only"
       ],
-      "relatedDocs": [],
+      "relatedDocs": [
+        "youtube"
+      ],
       "patterns": [
         "harness-engineering",
         "memory-knowledge"
@@ -2047,15 +2063,18 @@
         "https://openai.com/index/harness-engineering/",
         "https://openai.com/index/introducing-the-codex-app/",
         "https://github.com/openai/symphony/blob/main/SPEC.md",
-        "https://openai.com/index/open-source-codex-orchestration-symphony/"
+        "https://openai.com/index/open-source-codex-orchestration-symphony/",
+        "https://www.youtube.com/watch?v=lPZQrVFcz3c"
       ],
-      "lastUpdated": "2026-11-01",
+      "lastUpdated": "2026-11-02",
       "keyNumbers": [
         "~1M lines, 0 hand-written",
         "3.5 PRs/eng/day",
         "57.0% SWE-bench Pro"
       ],
-      "relatedDocs": [],
+      "relatedDocs": [
+        "youtube"
+      ],
       "patterns": [
         "harness-engineering",
         "orchestration",
@@ -2619,11 +2638,18 @@
       "tags": [],
       "sources": [
         "https://blog.sentry.io/ai-powered-autofix-debugs-and-fixes-your-code-in-minutes/",
-        "https://blog.sentry.io/building-a-code-review-system-that-uses-prod-data-to-predict-bugs/"
+        "https://blog.sentry.io/building-a-code-review-system-that-uses-prod-data-to-predict-bugs/",
+        "https://www.youtube.com/watch?v=rUlnhU0de7A",
+        "https://www.youtube.com/watch?v=DCH1sQ2S2BQ",
+        "https://www.youtube.com/watch?v=0NEWeW0Opfk",
+        "https://www.youtube.com/watch?v=uyesTWSDllI",
+        "https://sentry.io/resources/launchdarkly-workshop/"
       ],
       "lastUpdated": "2026-11-02",
       "keyNumbers": [],
-      "relatedDocs": [],
+      "relatedDocs": [
+        "youtube"
+      ],
       "patterns": [
         "verification",
         "background-agents"
@@ -2747,11 +2773,14 @@
       "children": [],
       "tags": [],
       "sources": [
-        "https://sourcegraph.com/docs"
+        "https://sourcegraph.com/docs",
+        "https://www.youtube.com/watch?v=kY0_rRtJ8BM"
       ],
       "lastUpdated": "2026-11-02",
       "keyNumbers": [],
-      "relatedDocs": [],
+      "relatedDocs": [
+        "youtube"
+      ],
       "patterns": [
         "orchestration",
         "harness-engineering"
@@ -2825,14 +2854,18 @@
       "children": [],
       "tags": [],
       "sources": [
-        "https://docs.warp.dev/agents"
+        "https://docs.warp.dev/agents",
+        "https://www.youtube.com/watch?v=Shqcc2aRTGY"
       ],
       "lastUpdated": "2026-11-02",
       "keyNumbers": [],
-      "relatedDocs": [],
+      "relatedDocs": [
+        "youtube"
+      ],
       "patterns": [
         "harness-engineering",
-        "orchestration"
+        "orchestration",
+        "background-agents"
       ]
     },
     {
@@ -3473,11 +3506,14 @@
       "children": [],
       "tags": [],
       "sources": [
-        "https://docs.qodo.ai"
+        "https://docs.qodo.ai",
+        "https://www.youtube.com/watch?v=niH78HK0dUk"
       ],
       "lastUpdated": "2026-11-02",
       "keyNumbers": [],
-      "relatedDocs": [],
+      "relatedDocs": [
+        "youtube"
+      ],
       "patterns": [
         "verification"
       ]
@@ -3783,17 +3819,20 @@
       "status": "current",
       "parent": null,
       "children": [
-        "x-insights"
+        "x-insights",
+        "youtube"
       ],
       "tags": [
         "x",
-        "primary-posts"
+        "primary-posts",
+        "youtube"
       ],
       "sources": [],
       "lastUpdated": "2026-11-02",
       "keyNumbers": [],
       "relatedDocs": [
-        "x-insights"
+        "x-insights",
+        "youtube"
       ]
     },
     {
@@ -3850,6 +3889,50 @@
         "vercel",
         "amp",
         "replit-agent-habitat"
+      ]
+    },
+    {
+      "id": "youtube",
+      "title": "YouTube",
+      "path": "docs/signals/youtube.md",
+      "kind": "signal",
+      "status": "current",
+      "parent": "signals",
+      "children": [],
+      "tags": [
+        "youtube",
+        "coding-agents",
+        "software-factory",
+        "harness",
+        "verification",
+        "seer"
+      ],
+      "sources": [
+        "https://www.youtube.com/@Sentry-monitoring",
+        "https://www.youtube.com/watch?v=Shqcc2aRTGY",
+        "https://www.youtube.com/watch?v=rUlnhU0de7A",
+        "https://www.youtube.com/watch?v=DCH1sQ2S2BQ",
+        "https://www.youtube.com/watch?v=0NEWeW0Opfk",
+        "https://www.youtube.com/watch?v=uyesTWSDllI",
+        "https://www.youtube.com/watch?v=xy_7SzwsIjM",
+        "https://www.youtube.com/watch?v=Wb3hQaG_xf0",
+        "https://www.youtube.com/watch?v=kY0_rRtJ8BM",
+        "https://www.youtube.com/watch?v=niH78HK0dUk",
+        "https://www.youtube.com/watch?v=lPZQrVFcz3c"
+      ],
+      "lastUpdated": "2026-11-02",
+      "keyNumbers": [],
+      "relatedDocs": [
+        "sentry-seer",
+        "warp",
+        "langchain-deep-agents",
+        "sourcegraph",
+        "qodo",
+        "openai-codex",
+        "verification",
+        "background-agents",
+        "harness-engineering",
+        "orchestration"
       ]
     },
     {

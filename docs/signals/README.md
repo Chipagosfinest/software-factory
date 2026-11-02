@@ -7,3 +7,4 @@ Parent hub for short, dated observations from primary posts. Signals are not pat
 ## Children
 
 - [X insights](./x-insights.md) — first-party posts from coding-agent teams, collected 2026-10-17 through 2026-11-02
+- [YouTube](./youtube.md) — official team channels and teaching videos, 2026-09-03 through 2026-11-02

@@ -1,6 +1,6 @@
 # AGENTS.md — Navigation Map
 
-Read [README](README.md) first, then only the doc this map points at. The current market map is [Landscape](docs/landscape/README.md). Weekly posts are [X insights](docs/signals/x-insights.md).
+Read [README](README.md) first, then only the doc this map points at. The current market map is [Landscape](docs/landscape/README.md). Weekly posts are [X insights](docs/signals/x-insights.md). YouTube channels and recent teaching videos are [YouTube](docs/signals/youtube.md).
 Use the decision table below to choose a pattern. Do not load the whole tree.
 Every new doc is listed in [docs/index.json](docs/index.json) with a parent (`null` only for hubs) and `status` of `current` or `snapshot`. Run `npm run check:index` before you commit.
 
@@ -72,6 +72,7 @@ Numbers live in [key numbers](docs/reference/key-numbers.md). Terms live in the 
   - [Post-merge review, as of 2026-05-26](docs/case-studies/autonomous-codebase-post-merge-review-2026-05-26.md)
 - [Signals](docs/signals/README.md)
   - [X insights](docs/signals/x-insights.md)
+  - [YouTube](docs/signals/youtube.md)
 - [Reference](docs/reference/README.md)
   - [Glossary](docs/reference/glossary.md)
   - [Key numbers](docs/reference/key-numbers.md)

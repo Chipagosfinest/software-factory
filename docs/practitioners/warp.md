@@ -10,10 +10,13 @@ Warp's agents overview describes the Warp Agent as a coding agent that runs comm
 
 The docs say the agent asks before it runs commands, edits files, or calls MCP servers, and that profiles set how much it may do alone. Cloud agents run from a trigger, a schedule, or an integration on Warp's automation platform. Several conversations can run at once, and a parent agent can spawn children. A third-party CLI path is also documented on the same page.
 
+In the [23 October 2026 workshop](https://www.youtube.com/watch?v=Shqcc2aRTGY) with Sentry, Warp's developer-experience lead describes a software factory as one shared cloud sandbox: agreed models, skills, and automations from a backlog or Slack, instead of a per-laptop agent setup. The line is triage, a planning step that can stop for a human, implementation, verification, and adversarial review before the pull request. Verification includes a computer-use agent that records the clicks and cuts them to a short review video. After ship, the agent is supposed to watch Sentry alerts and user-session recordings and propose the next tasks.
+
 ## Patterns shown
 
 - [Harness engineering](../patterns/harness-engineering/README.md) — a coding agent whose actions are terminal commands
-- [Orchestration](../patterns/orchestration/README.md) — cloud agents on an automation platform
+- [Orchestration](../patterns/orchestration/README.md) — cloud agents on an automation platform; a factory line from triage through a post-ship loop
+- [Background agents](../patterns/background-agents/README.md) — one shared cloud sandbox instead of a per-laptop setup
 
 ## Key numbers
 
@@ -22,3 +25,4 @@ No quantitative claim is repeated here. The sources describe the system without 
 ## Sources
 
 - [Agents overview](https://docs.warp.dev/agents)
+- [Powering Warp Factories with Sentry](https://www.youtube.com/watch?v=Shqcc2aRTGY) (2026-10-23)
