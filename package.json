@@ -8,6 +8,7 @@
     "build": "tsc",
     "start": "node dist/index.js",
     "test": "vitest",
+    "check:index": "node scripts/check-index.mjs",
     "tunnel": "npx localtunnel --port 3847 --subdomain software-factory"
   },
   "dependencies": {

@@ -1,5 +1,7 @@
 # Software Factory
 
+*Refreshed 2026-11-01*
+
 **A research corpus on agent-native software delivery.** Nine topology patterns, 50+ curated references, a July 2026 production case-study tracker, and a working TypeScript reference prototype.
 
 > **Core thesis:** Agents produce working but low-quality code, and instruction-based constraints (CLAUDE.md, AGENTS.md) don't enforce quality. The solution is programmatic verification — deterministic checks + LLM judge + bounded retries. How you wire the agents together matters more than how smart they are.
@@ -8,30 +10,31 @@
 
 | Surface | Current evidence |
 |---------|------------------|
-| Research corpus | 40 indexed documents, including a matched Exa/Parallel [production case-study refresh](docs/production-case-studies-state-of-play-2026-07-16.md) |
+| Research corpus | Indexed in [`docs/index.json`](./docs/index.json). Dated survey: [production case studies](./docs/case-studies/production-case-studies-state-of-play-2026-07-16.md) |
 | Reference prototype | 5,240 lines of TypeScript; strict build and 45 unit tests pass |
 | Effectful agent paths | PR reviewer posts GitHub reviews; CI, security, incident, and merge agents currently stop at proposed actions |
 | Orchestration | State machine and worktree helpers are unit-tested; no live end-to-end factory run has been demonstrated |
 | Operations | No checked-in CI workflow, deployment manifest, staging environment, or production observability |
 
-**Verdict:** this is a strong research corpus and a functioning reference prototype, not a production-ready autonomous factory. See [Codebase Status](docs/codebase-status.md) for the source-backed audit and [Software Factory Operations](docs/software-factory-operations-2026-07-16.md) for the path from prototype to governed production.
+**Verdict:** this is a strong research corpus and a functioning reference prototype, not a production-ready autonomous factory. See [Codebase Status](./docs/project/codebase-status.md) for the source-backed audit and [Software Factory Operations](./docs/project/software-factory-operations-2026-07-16.md) for the path from prototype to governed production.
 
 ---
 
 ## Table of Contents
 
 1. [Why Software Factories](#why-software-factories)
-2. [Design Dimensions](#design-dimensions-not-a-single-spectrum)
-3. [Topology Walkthroughs](#topology-walkthroughs) — 9 patterns, side by side
-4. [Choosing a Topology](#choosing-a-topology) — decision matrix by problem shape
-5. [Latest State of Play](#july-2026-state-of-play) — current research and implementation verdict
-6. [What Doesn't Work (Failure Modes)](#what-doesnt-work-failure-modes)
-7. [Reference Implementation](#reference-implementation) — architecture, agents, safety layers
-8. [Verification & Quality](#verification--quality)
-9. [Context Engineering](#context-engineering)
-10. [Agent Security](#agent-security) — emerging category (CrabTrap, OpenShell, etc.)
-11. [Research Corpus](#research-corpus) — production systems, papers, platforms
-12. [License](#license)
+2. [Practitioners doing this well](#practitioners-doing-this-well)
+3. [Design Dimensions](#design-dimensions-not-a-single-spectrum)
+4. [Topology Walkthroughs](#topology-walkthroughs) — 9 patterns, side by side
+5. [Choosing a Topology](#choosing-a-topology) — decision matrix by problem shape
+6. [Latest State of Play](#july-2026-state-of-play) — current research and implementation verdict
+7. [What Doesn't Work (Failure Modes)](#what-doesnt-work-failure-modes)
+8. [Reference Implementation](#reference-implementation) — architecture, agents, safety layers
+9. [Verification & Quality](#verification--quality)
+10. [Context Engineering](#context-engineering)
+11. [Agent Security](#agent-security) — emerging category (CrabTrap, OpenShell, etc.)
+12. [Research Corpus](#research-corpus) — production systems, papers, platforms
+13. [License](#license)
 
 ---
 
@@ -67,6 +70,30 @@ A dozen companies have proven the pattern at scale and published the receipts. A
 **The convergent primitives:** isolated sandboxes, queue-based dispatch, PRs as review gates, verification loops, bounded retries, cost governance, MCP tool layer, organizational context injection.
 
 **Cross-company survey:** Ry Walker's [In-House Coding Agents: Build vs Buy](http://rywalker.com/research/in-house-coding-agents) (Feb 2026) aggregates many of these systems in one place — useful as a starting overview.
+
+---
+
+## Practitioners doing this well
+
+Profiles use one template and cite the source. Mechanisms stay on the pattern hubs. Full list: [docs/practitioners](./docs/practitioners/README.md).
+
+- [Stripe Minions](./docs/practitioners/stripe-minions.md) — one-shot devboxes, about 1,300 merged pull requests a week ([Stripe](https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents)).
+- [Spotify Honk](./docs/practitioners/spotify-honk.md) — fleet Kubernetes jobs and an LLM judge that vetoes about a quarter of diffs ([Honk, part 3](https://engineering.atspotify.com/2025/12/feedback-loops-background-coding-agents-part-3)).
+- [Ramp Inspect](./docs/practitioners/ramp-inspect.md) — snapshot sandboxes; the Modal/Ramp writeups in this repo put Inspect near half of merged pull requests ([Modal](https://modal.com/blog/how-ramp-built-a-full-context-background-coding-agent-on-modal)).
+- [Open-Inspect](./docs/practitioners/open-inspect.md) — open-source three-tier clone of that shape ([GitHub](https://github.com/ColeMurray/background-agents)).
+- [OpenAI Codex](./docs/practitioners/openai-codex.md) — internal product of about 1M lines and no hand-written code ([harness engineering](https://openai.com/index/harness-engineering/)).
+- [StrongDM Software Factory](./docs/practitioners/strongdm-software-factory.md) — specs and scenarios drive agents that write code and converge without human writing or review; guideline about $1,000 of tokens per engineer per day ([factory.strongdm.ai](https://factory.strongdm.ai/)).
+- [Cognition Devin](./docs/practitioners/cognition-devin.md) — cloud sandboxes; Nubank's 12x claim is vendor-reported ([Devin](https://devin.ai)).
+- [LangChain Deep Agents](./docs/practitioners/langchain-deep-agents.md) — +13.7 percentage points on Terminal Bench 2.0 with the model held fixed ([LangChain](https://blog.langchain.com/improving-deep-agents-with-harness-engineering/)).
+- [Anthropic Claude Code](./docs/practitioners/anthropic-claude-code.md) — terminal agent; historical 80.9% SWE-bench Verified, later flagged as a weak benchmark ([landscape](./docs/landscape/README.md)).
+- [Amp](./docs/practitioners/amp.md) — waits for a fix to roll out, then emails the reporter and everyone else who hit the bug ([post](https://x.com/AmpCode/status/2115912054964179204)).
+- [Vercel](./docs/practitioners/vercel.md) — agentic CI: inspect, abort, trigger, and replay runs; 20 clusters ([post](https://x.com/rauchg/status/2115539426684408300)).
+- [Replit Agent Habitat](./docs/practitioners/replit-agent-habitat.md) — a contained space whose boundary limits what an unpredictable agent can do ([post](https://x.com/amasad/status/2115485095251308740)).
+- [OpenHands](./docs/practitioners/openhands.md) — open-source Docker sandboxes; 77.6% SWE-bench Verified in the landscape pass ([OpenHands](https://openhands.dev/)).
+- [Goose](./docs/practitioners/goose.md) — Block's open-source agent; Stripe's Minions are a fork ([GitHub](https://github.com/block/goose)).
+- [Cline](./docs/practitioners/cline.md) — VS Code agent that asks before it acts; 5M+ installs in the landscape pass ([Cline](https://cline.bot/)).
+- [Paperclip](./docs/practitioners/paperclip.md) — org chart and per-agent budgets; 57.4K stars as of April 2026 in this README ([GitHub](https://github.com/paperclipai/paperclip)).
+- [Composio Agent Orchestrator](./docs/practitioners/composio-agent-orchestrator.md) — one worktree per agent, eight plugin slots ([GitHub](https://github.com/ComposioHQ/agent-orchestrator)).
 
 ---
 
@@ -446,7 +473,7 @@ Production systems rarely use one topology — they compose. Common combos:
 - **Pipeline + Tiered Gate verification**: Pipeline at each stage uses a deterministic-first / LLM-fallback verifier *(Spotify Honk's verification, this repo's 3-layer quality loop)*
 - **One-Shot Tree + Tiered Gate security**: Fan-out agents, each request they emit passes through a deterministic-first / LLM-fallback security gate *(Brex CrabTrap in front of a fleet)*
 
-See [`docs/potent-combos.md`](docs/potent-combos.md) for the full combinatorial analysis.
+See [`docs/patterns/orchestration/potent-combos.md`](./docs/patterns/orchestration/potent-combos.md) for the full combinatorial analysis.
 
 ---
 
@@ -589,7 +616,7 @@ The quality problem is industry-wide. Alibaba's SWE-CI benchmark shows 75% of ag
 
 Verification is necessary but not sufficient once agents create changes faster than humans can review them. A July 2026 longitudinal study of 802 developers and 196,212 PRs observed 2.09x per-capita throughput, 2.0x per-reviewer load, and a shift from substantive human review toward automated review. Microsoft's ten-month .NET retrospective shows the same constraint at repository scale.
 
-The operating response is **admission backpressure + scoped authority + proof bundles + risk-tiered review + earned autonomy**. See [Software Factory Operations](docs/software-factory-operations-2026-07-16.md) for the full evidence, scorecard, and implementation slice.
+The operating response is **admission backpressure + scoped authority + proof bundles + risk-tiered review + earned autonomy**. See [Software Factory Operations](./docs/project/software-factory-operations-2026-07-16.md) for the full evidence, scorecard, and implementation slice.
 
 ---
 
@@ -665,7 +692,7 @@ These are the first-person accounts from company engineering teams — the riche
 
 **Tier 1 — Deep case studies with numbers:**
 
-- [Production Coding-Agent Case Studies: State of Play](docs/production-case-studies-state-of-play-2026-07-16.md) — July 2026 matched Exa/Parallel refresh, source grading, and follow-up status
+- [Production Coding-Agent Case Studies: State of Play](./docs/case-studies/production-case-studies-state-of-play-2026-07-16.md) — July 2026 matched Exa/Parallel refresh, source grading, and follow-up status
 - [Uber: uReview](https://blog.uber.com/blog/ureview/) — Multi-stage Commenter GenAI reviews 90% of ~65K weekly Phabricator diffs (Sonal Mahajan byline)
 - [Pragmatic Engineer: How Uber uses AI for development](https://newsletter.pragmaticengineer.com/p/how-uber-uses-ai-for-development) — Deep dive on Uber's 4-layer stack (Minion, Shepherd, uReview, Autocover)
 - [Cloudflare: The AI engineering stack we built internally](https://blog.cloudflare.com/internal-ai-engineering-stack/) — 93% R&D adoption, running on their own Workers/AI Gateway
@@ -790,14 +817,14 @@ These sit on a different axis from background agents — human-in-loop editors. 
 
 ### Strategy & Cost
 
-- [Karpathy Software Factory Thesis](docs/karpathy-software-factory-thesis.md) — Code quality findings, instruction compliance crisis
+- [Karpathy Software Factory Thesis](./docs/patterns/self-improvement/karpathy-software-factory-thesis.md) — Code quality findings, instruction compliance crisis
 - [Agent Pricing Analysis (Cosine)](https://cosine.sh/blog/ai-coding-agent-pricing-task-vs-token) — Per-run vs token-based vs task-based pricing
 - [FinOps for Agentic AI](https://analyticsweek.com/finops-for-agentic-ai-cloud-cost-2026/) — $400M collective cloud leak estimate
 - [Stripe Walls > Models](https://www.anup.io/stripes-coding-agents-the-walls-matter-more-than-the-model/) — Why governance matters more than model capability
 
 ### Full Research Corpus
 
-The `docs/` directory contains 34+ research documents covering sandbox architectures, agent memory systems, harness engineering, context engineering, agent topologies, competitive landscape, and more. See [AGENTS.md](AGENTS.md) for a navigable index.
+The `docs/` tree is the research corpus: pattern hubs, practitioner profiles, landscape, case studies, signals, and reference tables. See [AGENTS.md](./AGENTS.md) for the parent/child map and [docs/index.json](./docs/index.json) for the machine-readable index.
 
 ---
 

@@ -1,12 +1,14 @@
 # CLAUDE.md
 
+*Refreshed 2026-11-01*
+
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 ## What This Is
 
 Software Factory is an agent-native platform that autonomously handles software delivery tasks: PR review, CI debugging, security patching, incident response, and merge conflict resolution. It receives GitHub webhooks and Linear issues, dispatches them to specialized agents, and outputs PRs/comments. Humans review before merge.
 
-The `docs/` directory is a **research corpus** (34 documents on autonomous coding agents from Stripe, Spotify, Ramp, LangChain, etc.), not project documentation.
+The `docs/` directory is a **research corpus** indexed by [`docs/index.json`](docs/index.json). Start at [`AGENTS.md`](AGENTS.md). It is not project documentation.
 
 ## Commands
 

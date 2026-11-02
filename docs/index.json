@@ -1,466 +1,2323 @@
 {
-  "version": 1,
-  "generated": "2026-07-16",
-  "docCount": 41,
+  "version": 2,
+  "generated": "2026-11-01",
+  "docCount": 71,
+  "decisionMap": [
+    {
+      "situation": "Many independent, well-scoped tasks (CI failures, migrations, bumps)",
+      "pattern": "background-agents",
+      "examples": [
+        "stripe-minions",
+        "spotify-honk"
+      ],
+      "path": "docs/patterns/background-agents/README.md"
+    },
+    {
+      "situation": "Humans join a shared sandbox while the agent is running",
+      "pattern": "background-agents",
+      "examples": [
+        "ramp-inspect",
+        "open-inspect"
+      ],
+      "path": "docs/patterns/background-agents/README.md"
+    },
+    {
+      "situation": "The same model is weak until the environment around it changes",
+      "pattern": "harness-engineering",
+      "examples": [
+        "openai-codex",
+        "langchain-deep-agents"
+      ],
+      "path": "docs/patterns/harness-engineering/README.md"
+    },
+    {
+      "situation": "The task has a clear success signal and scope creep is the main risk",
+      "pattern": "verification",
+      "examples": [
+        "spotify-honk",
+        "strongdm-software-factory"
+      ],
+      "path": "docs/patterns/verification/README.md"
+    },
+    {
+      "situation": "CI latency is the bottleneck for agent throughput",
+      "pattern": "verification",
+      "examples": [
+        "vercel",
+        "stripe-minions"
+      ],
+      "path": "docs/patterns/verification/README.md"
+    },
+    {
+      "situation": "Several agents must share budget, locks, or a lifecycle",
+      "pattern": "orchestration",
+      "examples": [
+        "paperclip",
+        "composio-agent-orchestrator",
+        "openai-codex"
+      ],
+      "path": "docs/patterns/orchestration/README.md"
+    },
+    {
+      "situation": "Spend, tool authority, or blast radius can run away",
+      "pattern": "governance-safety",
+      "examples": [
+        "paperclip",
+        "replit-agent-habitat",
+        "cline"
+      ],
+      "path": "docs/patterns/governance-safety/README.md"
+    },
+    {
+      "situation": "The context window is full, or the next run has to remember",
+      "pattern": "memory-knowledge",
+      "examples": [
+        "langchain-deep-agents",
+        "ramp-inspect"
+      ],
+      "path": "docs/patterns/memory-knowledge/README.md"
+    },
+    {
+      "situation": "An objective metric should keep an agent loop running",
+      "pattern": "self-improvement",
+      "examples": [
+        "ramp-inspect",
+        "strongdm-software-factory",
+        "amp"
+      ],
+      "path": "docs/patterns/self-improvement/README.md"
+    }
+  ],
+  "kinds": {
+    "hub": "Parent node. parent is null. Pattern hubs live at docs/patterns/<id>/README.md.",
+    "pattern": "Mechanism writeup. Parent is a pattern hub. Lists practitioners.",
+    "practitioner": "One team or product. Parent is practitioners. Lists pattern hubs.",
+    "landscape": "Market and ecosystem survey. Parent is landscape.",
+    "case-study": "Dated production survey. Parent is case-studies.",
+    "signal": "Short primary-source observation. Parent is signals.",
+    "reference": "Lookup table. Parent is reference.",
+    "project": "This repository. Parent is project."
+  },
   "docs": [
     {
-      "id": "latent-briefing-kv-compaction",
-      "title": "Latent Briefing: KV Cache Compaction for Multi-Agent Systems (Ramp Labs)",
-      "path": "docs/latent-briefing-kv-compaction.md",
-      "category": "research-papers",
-      "tags": ["kv-cache", "multi-agent", "rlm", "attention-matching", "token-efficiency", "orchestrator-worker"],
-      "sources": ["ramp-labs", "zweiger-am-2026", "zhang-rlm-2025"],
-      "lastUpdated": "2026-04-11",
-      "keyNumbers": ["+3pp accuracy", "42-57% worker token reduction", "~1.7s compaction overhead", "79% compression on hard tasks"],
-      "relatedDocs": ["context-engineering", "orchestrator", "harness-engineering", "ramp-self-maintaining-code"]
-    },
-    {
-      "id": "harness-engineering",
-      "title": "Harness Engineering (OpenAI)",
-      "path": "docs/harness-engineering.md",
-      "category": "core-systems",
-      "tags": ["agents-md", "layered-architecture", "golden-principles", "gc-agents", "progressive-disclosure"],
-      "sources": ["openai"],
-      "lastUpdated": "2026-03-16",
-      "keyNumbers": ["~1M lines, 0 hand-written", "3.5 PRs/eng/day", "1,500 PRs over 5 months"],
-      "relatedDocs": ["context-engineering", "harness-engineering-langchain", "deep-agents"]
-    },
-    {
-      "id": "deep-agents",
-      "title": "Deep Agents (LangChain)",
-      "path": "docs/deep-agents.md",
-      "category": "core-systems",
-      "tags": ["middleware", "sub-agents", "summarization", "skills", "human-in-the-loop", "langraph"],
-      "sources": ["langchain-ai/deepagents"],
-      "lastUpdated": "2026-03-16",
-      "keyNumbers": ["85% context summarization trigger", "10% keep-recent threshold"],
-      "relatedDocs": ["harness-engineering-langchain", "harness-engineering", "context-engineering"]
-    },
-    {
-      "id": "harness-engineering-langchain",
-      "title": "Harness Engineering (LangChain)",
-      "path": "docs/harness-engineering-langchain.md",
-      "category": "core-systems",
-      "tags": ["self-verification", "loop-detection", "reasoning-sandwich", "write-todos", "open-swe"],
-      "sources": ["langchain-blog", "harrison-chase-sequoia", "langchain-ai/deepagents"],
-      "lastUpdated": "2026-03-16",
-      "keyNumbers": ["52.8→66.5% Terminal Bench", "13.7pp harness-only gain", "53.9% xhigh-everywhere"],
-      "relatedDocs": ["deep-agents", "harness-engineering", "context-engineering"]
-    },
-    {
-      "id": "context-engineering",
-      "title": "Context Engineering",
-      "path": "docs/context-engineering.md",
-      "category": "core-systems",
-      "tags": ["observation-masking", "agents-md", "tool-sprawl", "dynamic-assembly", "context-rot"],
-      "sources": ["spotify", "openai", "anthropic", "jetbrains", "tobi-lutke"],
-      "lastUpdated": "2026-03-16",
-      "keyNumbers": ["52% cheaper with masking", "+2.6% solve rate", "17pts harness gap"],
-      "relatedDocs": ["harness-engineering", "harness-engineering-langchain", "agent-memory-systems"]
-    },
-    {
-      "id": "autoresearch",
-      "title": "Autoresearch (Karpathy)",
-      "path": "docs/autoresearch.md",
-      "category": "core-systems",
-      "tags": ["never-stop-loop", "ratchet-pattern", "circuit-breaker", "fixed-budget", "experiment-logging"],
-      "sources": ["karpathy/autoresearch"],
-      "lastUpdated": "2026-03-16",
-      "keyNumbers": ["~100 experiments overnight", "5 min fixed budget per experiment"],
-      "relatedDocs": ["potent-combos", "harness-engineering"]
-    },
-    {
-      "id": "qmd",
-      "title": "QMD (Tobi Lutke)",
-      "path": "docs/qmd.md",
-      "category": "core-systems",
-      "tags": ["hybrid-search", "bm25", "vector", "reranking", "mcp-server", "local-first"],
-      "sources": ["tobi/qmd"],
-      "lastUpdated": "2026-03-16",
+      "id": "case-studies",
+      "title": "Case Studies",
+      "path": "docs/case-studies/README.md",
+      "kind": "hub",
+      "parent": null,
+      "children": [
+        "autonomous-codebase-post-merge-review-2026-05-26",
+        "autonomous-codebase-sprawl-2026-05-26",
+        "production-case-studies-state-of-play-2026-07-16"
+      ],
+      "tags": [
+        "production",
+        "surveys"
+      ],
+      "sources": [],
+      "lastUpdated": "2026-11-01",
       "keyNumbers": [],
-      "relatedDocs": ["obsidian-knowledge", "agent-memory-systems", "context-engineering"]
-    },
-    {
-      "id": "paperclip",
-      "title": "Paperclip",
-      "path": "docs/paperclip.md",
-      "category": "core-systems",
-      "tags": ["fleet-management", "budgets", "task-checkout", "heartbeat", "org-chart", "dashboard"],
-      "sources": ["paperclipai/paperclip"],
-      "lastUpdated": "2026-03-16",
-      "keyNumbers": ["26.7k stars"],
-      "relatedDocs": ["agent-orchestrator", "agent-safety-cost-control", "potent-combos"]
-    },
-    {
-      "id": "orchestrator",
-      "title": "Symphony-Style Orchestrator",
-      "path": "docs/orchestrator.md",
-      "category": "core-systems",
-      "tags": ["reconciliation-loop", "state-machine", "git-worktree", "linear-integration"],
-      "sources": ["openai/symphony", "karpathy/autoresearch"],
-      "lastUpdated": "2026-03-16",
-      "keyNumbers": [],
-      "relatedDocs": ["symphony-carson", "autoresearch", "agent-orchestrator"]
-    },
-    {
-      "id": "agent-orchestrator",
-      "title": "Composio Agent Orchestrator",
-      "path": "docs/agent-orchestrator.md",
-      "category": "core-systems",
-      "tags": ["plugin-architecture", "fleet-management", "task-decomposition", "session-lifecycle", "tmux"],
-      "sources": ["ComposioHQ/agent-orchestrator"],
-      "lastUpdated": "2026-03-17",
-      "keyNumbers": ["4.5k stars", "8 pluggable slots", "15-state lifecycle"],
-      "relatedDocs": ["paperclip", "orchestrator"]
-    },
-    {
-      "id": "codex-planr",
-      "title": "codex-planr",
-      "path": "docs/codex-planr.md",
-      "category": "core-systems",
-      "tags": ["planning", "repo-local", "git-diff-review", "status-tracking"],
-      "sources": ["regenrek/codex-planr"],
-      "lastUpdated": "2026-03-16",
-      "keyNumbers": [],
-      "relatedDocs": ["harness-engineering-langchain", "deep-agents"]
-    },
-    {
-      "id": "background-agents-open-inspect",
-      "title": "Background Agents (Open-Inspect)",
-      "path": "docs/background-agents-open-inspect.md",
-      "category": "core-systems",
-      "tags": ["mesh-topology", "multiplayer", "modal-sandboxes", "cloudflare-durable-objects", "cron-automations", "warm-pools", "open-source"],
-      "sources": ["ColeMurray/background-agents"],
-      "lastUpdated": "2026-05-26",
-      "keyNumbers": ["1,524 stars", "232 forks", "MIT license", "3-tier architecture (Cloudflare + Modal + Next.js)"],
-      "relatedDocs": ["sandbox-isolation", "sandbox-architecture-2026", "potent-combos", "agent-orchestrator"]
-    },
-    {
-      "id": "autonomous-codebase-sprawl-2026-05-26",
-      "title": "Autonomous Codebase Sprawl",
-      "path": "docs/autonomous-codebase-sprawl-2026-05-26.md",
-      "category": "landscape",
-      "tags": ["background-agents", "software-factory", "autonomous-codebases", "symphony", "temporal", "agent-prs", "governance"],
-      "sources": ["background-agents", "openai-symphony", "aidev", "metr", "greptile", "temporal", "agent-substrate"],
-      "lastUpdated": "2026-05-26",
-      "keyNumbers": ["932,791 agentic PRs", "96%+ agent-initiated collaborator PRs", "27.6% fully AI-generated PRs in Apr 2026", "500% landed PR increase"],
-      "relatedDocs": ["background-agents-open-inspect", "coding-agents-landscape", "swe-bench-ecosystem", "repo-protection-tooling-comparison-2026-04-27"]
+      "relatedDocs": [
+        "production-case-studies-state-of-play-2026-07-16",
+        "enterprise-adoption"
+      ]
     },
     {
       "id": "autonomous-codebase-post-merge-review-2026-05-26",
       "title": "Autonomous Codebase Post-Merge Review",
-      "path": "docs/autonomous-codebase-post-merge-review-2026-05-26.md",
-      "category": "landscape",
-      "tags": ["multi-repo", "agent-teams", "repo-orchestration", "cloud-reference-architecture", "autonomy-levels", "governance"],
-      "sources": ["repoorch", "orch", "relay", "linear-agents", "gcp", "aws-samples", "temporal"],
-      "lastUpdated": "2026-05-26",
-      "keyNumbers": ["5 autonomy levels", "3 follow-up docs", "8 post-merge sources"],
-      "relatedDocs": ["autonomous-codebase-sprawl-2026-05-26", "background-agents-open-inspect", "orchestrator", "agent-orchestrator"]
+      "path": "docs/case-studies/autonomous-codebase-post-merge-review-2026-05-26.md",
+      "kind": "case-study",
+      "parent": "case-studies",
+      "children": [],
+      "tags": [
+        "multi-repo",
+        "agent-teams",
+        "repo-orchestration",
+        "cloud-reference-architecture",
+        "autonomy-levels",
+        "governance"
+      ],
+      "sources": [
+        "https://github.com/architonixlabs/RepoOrch",
+        "https://dev.to/ramcsamal/multi-repo-microservice-changes-are-a-coordination-problem-i-solved-it-with-ai-agent-teams-34mf",
+        "https://github.com/gabrielkoerich/orch",
+        "https://github.com/jcast90/relay",
+        "https://github.com/7oRR3s97/linear-agents",
+        "https://hackernoon.com/hands-off-coding-on-gcp-building-autonomous-agents-with-guardrails"
+      ],
+      "lastUpdated": "2026-11-01",
+      "keyNumbers": [
+        "5 autonomy levels",
+        "3 follow-up docs",
+        "8 post-merge sources"
+      ],
+      "relatedDocs": [
+        "autonomous-codebase-sprawl-2026-05-26",
+        "background-agents-open-inspect",
+        "orchestrator",
+        "agent-orchestrator"
+      ]
     },
     {
-      "id": "software-factory-operations-2026-07-16",
-      "title": "Software Factory Operations: Review Backpressure, Evidence Contracts, and Earned Autonomy",
-      "path": "docs/software-factory-operations-2026-07-16.md",
-      "category": "architecture",
-      "tags": ["review-backpressure", "evidence-contract", "earned-autonomy", "least-privilege", "trajectory-evaluation", "maintainability", "admission-control"],
-      "sources": ["arxiv-2607.01904", "dotnet-blog", "microsoft-security", "cloud-security-alliance", "ai-sdlc", "prodcodebench", "ramp", "needle-in-the-repo", "agentlens"],
-      "lastUpdated": "2026-07-16",
-      "keyNumbers": ["802 developers", "196,212 PRs", "2.09x throughput", "2.0x reviewer load", "13.3% functional-pass structural-fail"],
-      "relatedDocs": ["autonomous-codebase-post-merge-review-2026-05-26", "agent-safety-cost-control", "swe-bench-ecosystem", "repo-protection-tooling-comparison-2026-04-27"]
+      "id": "autonomous-codebase-sprawl-2026-05-26",
+      "title": "Autonomous Codebase Sprawl",
+      "path": "docs/case-studies/autonomous-codebase-sprawl-2026-05-26.md",
+      "kind": "case-study",
+      "parent": "case-studies",
+      "children": [],
+      "tags": [
+        "background-agents",
+        "software-factory",
+        "autonomous-codebases",
+        "symphony",
+        "temporal",
+        "agent-prs",
+        "governance"
+      ],
+      "sources": [
+        "https://github.com/ColeMurray/background-agents/",
+        "https://backgroundagents.dev/",
+        "https://ona.com/stories/background-agents-summit",
+        "https://openai.com/index/open-source-codex-orchestration-symphony/",
+        "https://github.com/openai/symphony",
+        "https://github.com/agent-substrate/substrate"
+      ],
+      "lastUpdated": "2026-11-01",
+      "keyNumbers": [
+        "932,791 agentic PRs",
+        "96%+ agent-initiated collaborator PRs",
+        "27.6% fully AI-generated PRs in Apr 2026",
+        "500% landed PR increase"
+      ],
+      "relatedDocs": [
+        "background-agents-open-inspect",
+        "landscape",
+        "swe-bench-ecosystem",
+        "repo-protection-tooling-comparison-2026-04-27"
+      ]
     },
     {
       "id": "production-case-studies-state-of-play-2026-07-16",
       "title": "Production Coding-Agent Case Studies: State of Play",
-      "path": "docs/production-case-studies-state-of-play-2026-07-16.md",
-      "category": "landscape",
-      "tags": ["production-case-studies", "spotify", "shopify", "block", "doordash", "github", "openai", "pinterest", "datadog", "cognition", "evaluations"],
-      "sources": ["exa", "parallel", "primary-sources"],
-      "lastUpdated": "2026-07-16",
-      "keyNumbers": ["+76% Spotify PR frequency", "3,536 Shopify River PRs in 30 days", "~1,500 Block Builderbot PRs/week", "53.6% DoorDash weighted recall", "~30% SWE-Bench Pro tasks estimated broken"],
-      "relatedDocs": ["software-factory-operations-2026-07-16", "enterprise-adoption", "swe-bench-ecosystem", "codebase-status"]
+      "path": "docs/case-studies/production-case-studies-state-of-play-2026-07-16.md",
+      "kind": "case-study",
+      "parent": "case-studies",
+      "children": [],
+      "tags": [
+        "production-case-studies",
+        "spotify",
+        "shopify",
+        "block",
+        "doordash",
+        "github",
+        "openai",
+        "pinterest",
+        "datadog",
+        "cognition",
+        "evaluations"
+      ],
+      "sources": [
+        "https://engineering.atspotify.com/2026/6/code-with-claude-coding-is-no-longer-the-constraint",
+        "https://engineering.atspotify.com/2026/4/background-coding-agents-dataset-migrations-honk-part-4",
+        "https://shopify.engineering/under-the-river",
+        "https://block.xyz/inside/block-rolls-out-builderbot-a-new-suite-of-ai-native-tools-that-changes-the-way-we-ship",
+        "https://careersatdoordash.com/blog/how-we-learned-to-trust-our-ai-code-reviewer-at-doordash/",
+        "https://github.blog/ai-and-ml/github-copilot/evaluating-performance-and-efficiency-of-the-github-copilot-agentic-harness-across-models-and-tasks/"
+      ],
+      "lastUpdated": "2026-11-01",
+      "keyNumbers": [
+        "+76% Spotify PR frequency",
+        "3,536 Shopify River PRs in 30 days",
+        "~1,500 Block Builderbot PRs/week",
+        "53.6% DoorDash weighted recall",
+        "~30% SWE-Bench Pro tasks estimated broken"
+      ],
+      "relatedDocs": [
+        "software-factory-operations-2026-07-16",
+        "enterprise-adoption",
+        "swe-bench-ecosystem",
+        "codebase-status"
+      ]
     },
     {
-      "id": "x-insights",
-      "title": "X Insights",
-      "path": "docs/x-insights.md",
-      "category": "landscape",
-      "tags": ["x", "coding-agents", "harness", "sandbox", "ci", "agent-skills", "mcp", "evals", "review-bottleneck"],
-      "sources": ["vercel", "replit", "langchain", "anthropic", "cursor", "amp", "factory", "cognition"],
-      "lastUpdated": "2026-10-31",
-      "keyNumbers": ["Devin Fusion 68 on Coding Agent Index", "71% saved 20+ hours (Utah Claude Code pilot)"],
-      "relatedDocs": ["harness-engineering", "sandbox-isolation", "software-factory-operations-2026-07-16", "coding-agents-landscape", "devin-factory"]
-    },
-    {
-      "id": "competitive-analysis",
-      "title": "Competitive Analysis",
-      "path": "docs/competitive-analysis.md",
-      "category": "landscape",
-      "tags": ["devin", "factory-ai", "copilot", "coderabbit", "market-positioning"],
-      "sources": ["multiple"],
-      "lastUpdated": "2026-03-08",
-      "keyNumbers": [],
-      "relatedDocs": ["devin-factory", "coding-agents-landscape"]
-    },
-    {
-      "id": "devin-factory",
-      "title": "Devin + Factory.ai",
-      "path": "docs/devin-factory.md",
-      "category": "landscape",
-      "tags": ["devin", "factory-ai", "acu-pricing", "nubank", "ey", "droids"],
-      "sources": ["devin.ai", "factory.ai"],
-      "lastUpdated": "2026-03-16",
-      "keyNumbers": ["8x efficiency (Nubank)", "5000+ engineers (EY)", "20x cost savings"],
-      "relatedDocs": ["competitive-analysis", "enterprise-adoption", "coding-agents-landscape"]
-    },
-    {
-      "id": "coding-agents-landscape",
-      "title": "Coding Agents Landscape",
-      "path": "docs/coding-agents-landscape.md",
-      "category": "landscape",
-      "tags": ["market-analysis", "cursor", "claude-code", "codex", "openhands", "aider"],
-      "sources": ["multiple"],
-      "lastUpdated": "2026-03-16",
-      "keyNumbers": [">$10B ARR market", "$2B Cursor", "$2.5B Claude Code", "80.9% SWE-bench Verified"],
-      "relatedDocs": ["competitive-analysis", "enterprise-adoption", "swe-bench-ecosystem"]
-    },
-    {
-      "id": "enterprise-adoption",
-      "title": "Enterprise Adoption",
-      "path": "docs/enterprise-adoption.md",
-      "category": "landscape",
-      "tags": ["uber", "stripe", "spotify", "openai", "shopify", "goldman-sachs", "coinbase"],
-      "sources": ["14 companies"],
-      "lastUpdated": "2026-03-16",
-      "keyNumbers": ["84% Uber adoption", "1300 PRs/week Stripe", "650 PRs/month Spotify", "80% Fortune 500"],
-      "relatedDocs": ["coding-agents-landscape", "devin-factory", "agent-safety-cost-control"]
-    },
-    {
-      "id": "symphony-carson",
-      "title": "Symphony + Carson",
-      "path": "docs/symphony-carson.md",
-      "category": "landscape",
-      "tags": ["elixir", "otp", "role-inversion", "linear", "codex", "code-factory"],
-      "sources": ["ryan-carson"],
-      "lastUpdated": "2026-03-17",
-      "keyNumbers": ["$297 API → $50K value", "10 parallel agents", "6 bugs from phone"],
-      "relatedDocs": ["orchestrator", "enterprise-adoption"]
-    },
-    {
-      "id": "agent-safety-cost-control",
-      "title": "Agent Safety & Cost Control",
-      "path": "docs/agent-safety-cost-control.md",
-      "category": "deep-dive",
-      "tags": ["kill-switch", "approval-gates", "blast-radius", "budget", "circuit-breaker", "cost-incidents"],
-      "sources": ["stripe", "owasp", "microsoft"],
-      "lastUpdated": "2026-03-16",
-      "keyNumbers": ["$400M cloud leak", "$2/run cap", "5-min timeout"],
-      "relatedDocs": ["paperclip", "enterprise-adoption", "potent-combos"]
-    },
-    {
-      "id": "sandbox-isolation",
-      "title": "Sandbox Isolation",
-      "path": "docs/sandbox-isolation.md",
-      "category": "deep-dive",
-      "tags": ["containers", "vms", "warm-pools", "git-worktrees", "network-isolation"],
-      "sources": ["spotify", "stripe", "ramp", "e2b"],
-      "lastUpdated": "2026-03-16",
-      "keyNumbers": ["650+ PRs/month Spotify", "~30% of PRs Ramp", "~10s devbox startup Stripe"],
-      "relatedDocs": ["sandbox-architecture-2026", "enterprise-adoption"]
-    },
-    {
-      "id": "sandbox-architecture-2026",
-      "title": "Sandbox Architecture 2026",
-      "path": "docs/sandbox-architecture-2026.md",
-      "category": "deep-dive",
-      "tags": ["agent-in-sandbox", "sandbox-as-tool", "warm-pools", "http-adapter", "enterprise-3-tier"],
-      "sources": ["weng-jialin", "rivet", "gke", "northflank"],
-      "lastUpdated": "2026-03-18",
-      "keyNumbers": ["40% fewer stalls with sandboxing (Cursor)"],
-      "relatedDocs": ["sandbox-isolation"]
-    },
-    {
-      "id": "swe-bench-ecosystem",
-      "title": "SWE-bench Ecosystem",
-      "path": "docs/swe-bench-ecosystem.md",
-      "category": "deep-dive",
-      "tags": ["benchmarks", "evaluation", "leaderboard", "contamination", "swe-bench-pro"],
-      "sources": ["princeton", "metr", "scale-ai", "microsoft"],
-      "lastUpdated": "2026-03-16",
-      "keyNumbers": ["~46% Pro vs ~81% Verified", "7 benchmark variants", "19% METR slowdown paradox"],
-      "relatedDocs": ["coding-agents-landscape", "enterprise-adoption"]
-    },
-    {
-      "id": "mcp-ecosystem-deep-dive",
-      "title": "MCP Ecosystem",
-      "path": "docs/mcp-ecosystem-deep-dive.md",
-      "category": "deep-dive",
-      "tags": ["mcp", "protocol", "tool-poisoning", "mcpbench", "anthropic"],
-      "sources": ["anthropic", "microsoft"],
-      "lastUpdated": "2026-03-16",
-      "keyNumbers": ["81K GitHub stars", "64% MCPBench accuracy"],
-      "relatedDocs": ["dev-tools-stack", "github-ecosystem"]
-    },
-    {
-      "id": "agent-memory-systems",
-      "title": "Agent Memory Systems",
-      "path": "docs/agent-memory-systems.md",
-      "category": "deep-dive",
-      "tags": ["napkin", "mem0", "letta", "hmem", "progressive-disclosure", "bm25", "memory-security"],
-      "sources": ["napkin", "mem0", "letta", "hmem"],
-      "lastUpdated": "2026-03-16",
-      "keyNumbers": [],
-      "relatedDocs": ["context-engineering", "qmd"]
-    },
-    {
-      "id": "potent-combos",
-      "title": "Potent Combos + Build Profiles",
-      "path": "docs/potent-combos.md",
-      "category": "architecture",
-      "tags": ["topologies", "one-shot-tree", "pipeline", "org-chart", "mesh", "ratchet", "sequential-multi-agent", "build-profiles", "anti-patterns"],
-      "sources": ["all"],
-      "lastUpdated": "2026-03-18",
-      "keyNumbers": ["9 topologies", "6 combos", "6 build profiles"],
-      "relatedDocs": ["competency-graph", "enterprise-adoption", "agent-safety-cost-control"]
-    },
-    {
-      "id": "competency-graph",
-      "title": "Competency Graph",
-      "path": "docs/competency-graph.md",
-      "category": "architecture",
-      "tags": ["matrix", "comparison", "complementary-pairs", "adoption-map"],
-      "sources": ["all"],
-      "lastUpdated": "2026-03-18",
-      "keyNumbers": ["25 dimensions", "9 sources compared"],
-      "relatedDocs": ["potent-combos"]
-    },
-    {
-      "id": "github-ecosystem",
-      "title": "GitHub Ecosystem",
-      "path": "docs/github-ecosystem.md",
-      "category": "architecture",
-      "tags": ["agent-hq", "agentic-workflows", "copilot-agent", "mcp-servers", "mission-control"],
-      "sources": ["github"],
-      "lastUpdated": "2026-03-16",
-      "keyNumbers": [],
-      "relatedDocs": ["mcp-ecosystem-deep-dive", "coding-agents-landscape"]
+      "id": "landscape",
+      "title": "Landscape",
+      "path": "docs/landscape/README.md",
+      "kind": "hub",
+      "parent": null,
+      "children": [
+        "dev-tools-stack",
+        "devin-factory",
+        "enterprise-adoption",
+        "github-ecosystem",
+        "mcp-ecosystem-deep-dive"
+      ],
+      "tags": [
+        "devin",
+        "factory-ai",
+        "copilot",
+        "coderabbit",
+        "market-positioning",
+        "market-analysis",
+        "cursor",
+        "claude-code",
+        "codex",
+        "openhands",
+        "aider",
+        "matrix",
+        "comparison",
+        "complementary-pairs",
+        "adoption-map"
+      ],
+      "sources": [
+        "https://techcrunch.com/2026/03/02/cursor-has-reportedly-surpassed-2b-in-annualized-revenue/",
+        "https://devclass.com/2025/06/06/cursor-ai-editor-hits-1-0-milestone-including-bugbot-and-high-risk-background-agents/",
+        "https://cursor.com/enterprise",
+        "https://github.blog/news-insights/product-news/github-copilot-meet-the-new-coding-agent/",
+        "https://github.blog/changelog/2026-03-05-copilot-code-review-now-runs-on-an-agentic-architecture/",
+        "https://windsurf.com"
+      ],
+      "lastUpdated": "2026-11-01",
+      "keyNumbers": [
+        ">$10B ARR market",
+        "$2B Cursor",
+        "$2.5B Claude Code",
+        "80.9% SWE-bench Verified",
+        "25 dimensions",
+        "9 sources compared"
+      ],
+      "relatedDocs": [
+        "devin-factory",
+        "enterprise-adoption",
+        "swe-bench-ecosystem",
+        "potent-combos",
+        "production-case-studies-state-of-play-2026-07-16"
+      ]
     },
     {
       "id": "dev-tools-stack",
-      "title": "Dev Tools Stack",
-      "path": "docs/dev-tools-stack.md",
-      "category": "architecture",
-      "tags": ["linear", "pagerduty", "sentry", "ci-cd"],
-      "sources": ["multiple"],
-      "lastUpdated": "2026-03-16",
-      "keyNumbers": ["$42/mo full stack"],
-      "relatedDocs": ["github-ecosystem", "mcp-ecosystem-deep-dive"]
+      "title": "Developer Tools Stack",
+      "path": "docs/landscape/dev-tools-stack.md",
+      "kind": "landscape",
+      "parent": "landscape",
+      "children": [],
+      "tags": [
+        "linear",
+        "pagerduty",
+        "sentry",
+        "ci-cd"
+      ],
+      "sources": [
+        "https://www.atcyrus.com/",
+        "https://linear.app/agents",
+        "https://linear.app/developers/agents",
+        "https://linear.app/developers/rate-limiting",
+        "https://linear.app/docs/mcp",
+        "https://www.pagerduty.com/blog/product/the-path-to-autonomous-operations-pagerduty-spring-26-release/"
+      ],
+      "lastUpdated": "2026-11-01",
+      "keyNumbers": [
+        "$42/mo full stack"
+      ],
+      "relatedDocs": [
+        "github-ecosystem",
+        "mcp-ecosystem-deep-dive"
+      ]
+    },
+    {
+      "id": "devin-factory",
+      "title": "Devin AI & Factory.ai: Deep-Dive Competitor Analysis",
+      "path": "docs/landscape/devin-factory.md",
+      "kind": "landscape",
+      "parent": "landscape",
+      "children": [],
+      "tags": [
+        "devin",
+        "factory-ai",
+        "acu-pricing",
+        "nubank",
+        "ey",
+        "droids"
+      ],
+      "sources": [
+        "https://devin.ai",
+        "https://devin.ai/customers/nubank/",
+        "https://building.nubank.com/enhancing-engineering-workflows-with-ai-a-real-world-experience/",
+        "https://www.cnbc.com/2025/07/11/goldman-sachs-autonomous-coder-pilot-marks-major-ai-milestone.html",
+        "https://www.ibm.com/think/news/goldman-sachs-first-ai-employee-devin",
+        "https://cognition.ai/blog/devin-annual-performance-review-2025"
+      ],
+      "lastUpdated": "2026-11-01",
+      "keyNumbers": [
+        "8x efficiency (Nubank)",
+        "5000+ engineers (EY)",
+        "20x cost savings"
+      ],
+      "relatedDocs": [
+        "landscape",
+        "enterprise-adoption"
+      ]
+    },
+    {
+      "id": "enterprise-adoption",
+      "title": "Enterprise Agentic Coding Adoption: Case Studies & Lessons Learned",
+      "path": "docs/landscape/enterprise-adoption.md",
+      "kind": "landscape",
+      "parent": "landscape",
+      "children": [],
+      "tags": [
+        "uber",
+        "stripe",
+        "spotify",
+        "openai",
+        "shopify",
+        "goldman-sachs",
+        "coinbase"
+      ],
+      "sources": [
+        "https://newsletter.pragmaticengineer.com/p/how-uber-uses-ai-for-development",
+        "https://factory.ai",
+        "https://devin.ai/customers/nubank/",
+        "https://building.nubank.com/enhancing-engineering-workflows-with-ai-a-real-world-experience/",
+        "https://www.microsoft.com/en-us/security/blog/2026/02/10/80-of-fortune-500-use-active-ai-agents-observability-governance-and-security-shape-the-new-frontier/",
+        "https://github.com/microsoft/skills"
+      ],
+      "lastUpdated": "2026-11-01",
+      "keyNumbers": [
+        "84% Uber adoption",
+        "1300 PRs/week Stripe",
+        "650 PRs/month Spotify",
+        "80% Fortune 500"
+      ],
+      "relatedDocs": [
+        "landscape",
+        "devin-factory",
+        "agent-safety-cost-control"
+      ]
+    },
+    {
+      "id": "github-ecosystem",
+      "title": "GitHub's Agent Ecosystem",
+      "path": "docs/landscape/github-ecosystem.md",
+      "kind": "landscape",
+      "parent": "landscape",
+      "children": [],
+      "tags": [
+        "agent-hq",
+        "agentic-workflows",
+        "copilot-agent",
+        "mcp-servers",
+        "mission-control"
+      ],
+      "sources": [
+        "https://github.blog/news-insights/company-news/welcome-home-agents/",
+        "https://github.blog/ai-and-ml/github-copilot/how-to-orchestrate-agents-using-mission-control/",
+        "https://www.eficode.com/blog/why-github-agent-hq-matters-for-engineering-teams-in-2026",
+        "https://github.blog/ai-and-ml/automate-repository-tasks-with-github-agentic-workflows/",
+        "https://github.blog/changelog/2026-02-13-github-agentic-workflows-are-now-in-technical-preview/",
+        "https://github.github.com/gh-aw/"
+      ],
+      "lastUpdated": "2026-11-01",
+      "keyNumbers": [],
+      "relatedDocs": [
+        "mcp-ecosystem-deep-dive",
+        "landscape"
+      ]
+    },
+    {
+      "id": "mcp-ecosystem-deep-dive",
+      "title": "Model Context Protocol (MCP) Ecosystem Deep Dive",
+      "path": "docs/landscape/mcp-ecosystem-deep-dive.md",
+      "kind": "landscape",
+      "parent": "landscape",
+      "children": [],
+      "tags": [
+        "mcp",
+        "protocol",
+        "tool-poisoning",
+        "mcpbench",
+        "anthropic"
+      ],
+      "sources": [
+        "https://github.com/modelcontextprotocol/specification",
+        "https://modelcontextprotocol.io/clients",
+        "https://arxiv.org/abs/2401.06201",
+        "https://arxiv.org/abs/2504.11094",
+        "https://arxiv.org/abs/2504.16736",
+        "https://www.anthropic.com/research/building-effective-agents"
+      ],
+      "lastUpdated": "2026-11-01",
+      "keyNumbers": [
+        "81K GitHub stars",
+        "64% MCPBench accuracy"
+      ],
+      "relatedDocs": [
+        "dev-tools-stack",
+        "github-ecosystem"
+      ]
+    },
+    {
+      "id": "background-agents",
+      "title": "Background Agents",
+      "path": "docs/patterns/background-agents/README.md",
+      "kind": "hub",
+      "parent": null,
+      "children": [
+        "agent-filesystems",
+        "background-agents-open-inspect",
+        "cloudflare-dynamic-workers",
+        "sandbox-architecture-2026",
+        "sandbox-isolation"
+      ],
+      "tags": [
+        "sandbox",
+        "warm-pool",
+        "async"
+      ],
+      "sources": [
+        "https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents",
+        "https://engineering.atspotify.com/2025/11/spotifys-background-coding-agent-part-1",
+        "https://modal.com/blog/how-ramp-built-a-full-context-background-coding-agent-on-modal"
+      ],
+      "lastUpdated": "2026-11-01",
+      "keyNumbers": [],
+      "relatedDocs": [
+        "sandbox-isolation",
+        "background-agents-open-inspect",
+        "ramp-inspect"
+      ],
+      "practitioners": [
+        "stripe-minions",
+        "spotify-honk",
+        "ramp-inspect",
+        "open-inspect",
+        "openhands",
+        "goose",
+        "replit-agent-habitat",
+        "vercel"
+      ]
+    },
+    {
+      "id": "agent-filesystems",
+      "title": "Agent Filesystems: The Database-as-Directory Pattern",
+      "path": "docs/patterns/background-agents/agent-filesystems.md",
+      "kind": "pattern",
+      "parent": "background-agents",
+      "children": [],
+      "tags": [
+        "tigerfs",
+        "agentfs",
+        "turso",
+        "tiger-data",
+        "fuse",
+        "nfs",
+        "database-as-directory",
+        "multi-agent-coordination",
+        "task-queues",
+        "version-history",
+        "postgres"
+      ],
+      "sources": [
+        "https://tigerfs.io",
+        "https://install.tigerfs.io",
+        "https://github.com/tursodatabase/agentfs",
+        "https://penberg.org/blog/disaggregated-agentfs.html",
+        "https://arize.com/blog/agent-interfaces-in-2026-filesystem-vs-api-vs-database-what-actually-works/",
+        "https://tigerfs.io/"
+      ],
+      "lastUpdated": "2026-11-01",
+      "keyNumbers": [
+        "110K+ IOPS (Tiger Fluid Storage)",
+        "0 production deployments at scale"
+      ],
+      "relatedDocs": [
+        "sandbox-isolation",
+        "sandbox-architecture-2026",
+        "agent-memory-systems",
+        "dev-tools-stack"
+      ],
+      "practitioners": []
+    },
+    {
+      "id": "background-agents-open-inspect",
+      "title": "Background Agents (Open-Inspect)",
+      "path": "docs/patterns/background-agents/background-agents-open-inspect.md",
+      "kind": "pattern",
+      "parent": "background-agents",
+      "children": [],
+      "tags": [
+        "mesh-topology",
+        "multiplayer",
+        "modal-sandboxes",
+        "cloudflare-durable-objects",
+        "cron-automations",
+        "warm-pools",
+        "open-source"
+      ],
+      "sources": [
+        "https://github.com/ColeMurray/background-agents",
+        "https://builders.ramp.com/post/why-we-built-our-background-agent",
+        "https://backgroundagents.dev",
+        "https://github.com/ColeMurray/background-agents/blob/main/docs/HOW_IT_WORKS.md",
+        "https://github.com/ColeMurray/background-agents/blob/main/docs/AUTOMATIONS.md",
+        "https://github.com/ColeMurray/background-agents/blob/main/docs/SETUP_GUIDE.md"
+      ],
+      "lastUpdated": "2026-11-01",
+      "keyNumbers": [
+        "1,524 stars",
+        "232 forks",
+        "MIT license",
+        "3-tier architecture (Cloudflare + Modal + Next.js)"
+      ],
+      "relatedDocs": [
+        "sandbox-isolation",
+        "sandbox-architecture-2026",
+        "potent-combos",
+        "agent-orchestrator"
+      ],
+      "practitioners": [
+        "open-inspect",
+        "ramp-inspect"
+      ]
+    },
+    {
+      "id": "cloudflare-dynamic-workers",
+      "title": "Cloudflare Dynamic Workers: Isolate-Based Agent Sandboxing",
+      "path": "docs/patterns/background-agents/cloudflare-dynamic-workers.md",
+      "kind": "pattern",
+      "parent": "background-agents",
+      "children": [],
+      "tags": [
+        "isolates",
+        "code-mode",
+        "sandbox",
+        "cloudflare"
+      ],
+      "sources": [
+        "https://blog.cloudflare.com/dynamic-workers/",
+        "https://blog.cloudflare.com/code-mode-mcp/"
+      ],
+      "lastUpdated": "2026-11-01",
+      "keyNumbers": [
+        "99.9% token reduction",
+        "ms isolate startup"
+      ],
+      "relatedDocs": [
+        "sandbox-isolation",
+        "sandbox-architecture-2026",
+        "goose"
+      ],
+      "practitioners": [
+        "goose",
+        "anthropic-claude-code"
+      ]
+    },
+    {
+      "id": "sandbox-architecture-2026",
+      "title": "Sandbox Architecture 2026: From Security Feature to Efficiency Infrastructure",
+      "path": "docs/patterns/background-agents/sandbox-architecture-2026.md",
+      "kind": "pattern",
+      "parent": "background-agents",
+      "children": [],
+      "tags": [
+        "agent-in-sandbox",
+        "sandbox-as-tool",
+        "warm-pools",
+        "http-adapter",
+        "enterprise-3-tier"
+      ],
+      "sources": [
+        "https://wengjialin.com/blog/agent-sandbox/",
+        "https://github.com/rivet-dev/sandbox-agent",
+        "https://docs.cloud.google.com/kubernetes-engine/docs/how-to/agent-sandbox",
+        "https://northflank.com/blog/best-sandboxes-for-coding-agents"
+      ],
+      "lastUpdated": "2026-11-01",
+      "keyNumbers": [
+        "40% fewer stalls with sandboxing (Cursor)"
+      ],
+      "relatedDocs": [
+        "sandbox-isolation"
+      ],
+      "practitioners": [
+        "vercel",
+        "open-inspect"
+      ]
+    },
+    {
+      "id": "sandbox-isolation",
+      "title": "Sandbox & Isolation Patterns for Autonomous Coding Agents (March 2026)",
+      "path": "docs/patterns/background-agents/sandbox-isolation.md",
+      "kind": "pattern",
+      "parent": "background-agents",
+      "children": [],
+      "tags": [
+        "containers",
+        "vms",
+        "warm-pools",
+        "git-worktrees",
+        "network-isolation"
+      ],
+      "sources": [
+        "https://e2b.dev/",
+        "https://github.com/e2b-dev/E2B",
+        "https://siliconangle.com/2025/07/28/e2b-shares-vision-sandboxed-cloud-environments-every-ai-agent-raising-21m-funding/",
+        "https://www.docker.com/blog/docker-e2b-building-the-future-of-trusted-ai/",
+        "https://ona.com/stories/dont-build-a-coding-agent-sandbox",
+        "https://sprites.dev/"
+      ],
+      "lastUpdated": "2026-11-01",
+      "keyNumbers": [
+        "650+ PRs/month Spotify",
+        "~30% of PRs Ramp",
+        "~10s devbox startup Stripe"
+      ],
+      "relatedDocs": [
+        "sandbox-architecture-2026",
+        "enterprise-adoption"
+      ],
+      "practitioners": [
+        "stripe-minions",
+        "spotify-honk",
+        "ramp-inspect",
+        "openhands",
+        "goose"
+      ]
+    },
+    {
+      "id": "governance-safety",
+      "title": "Governance and Safety",
+      "path": "docs/patterns/governance-safety/README.md",
+      "kind": "hub",
+      "parent": null,
+      "children": [
+        "agent-safety-cost-control",
+        "repo-protection-tooling-comparison-2026-04-27"
+      ],
+      "tags": [
+        "budget",
+        "approval",
+        "blast-radius"
+      ],
+      "sources": [
+        "https://github.com/paperclipai/paperclip",
+        "https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents"
+      ],
+      "lastUpdated": "2026-11-01",
+      "keyNumbers": [],
+      "relatedDocs": [
+        "agent-safety-cost-control",
+        "software-factory-operations-2026-07-16",
+        "paperclip"
+      ],
+      "practitioners": [
+        "paperclip",
+        "stripe-minions",
+        "replit-agent-habitat",
+        "cline",
+        "amp"
+      ]
+    },
+    {
+      "id": "agent-safety-cost-control",
+      "title": "Agent Safety, Governance & Cost Control",
+      "path": "docs/patterns/governance-safety/agent-safety-cost-control.md",
+      "kind": "pattern",
+      "parent": "governance-safety",
+      "children": [],
+      "tags": [
+        "kill-switch",
+        "approval-gates",
+        "blast-radius",
+        "budget",
+        "circuit-breaker",
+        "cost-incidents"
+      ],
+      "sources": [
+        "https://devin.ai/pricing/",
+        "https://cosine.sh/blog/ai-coding-agent-pricing-task-vs-token",
+        "https://paperclip.ing/",
+        "https://analyticsweek.com/finops-for-agentic-ai-cloud-cost-2026/",
+        "https://fortune.com/2025/07/23/ai-coding-tool-replit-wiped-database-called-it-a-catastrophic-failure/",
+        "https://www.theregister.com/2025/07/21/replit_saastr_vibe_coding_incident/"
+      ],
+      "lastUpdated": "2026-11-01",
+      "keyNumbers": [
+        "$400M cloud leak",
+        "$2/run cap",
+        "5-min timeout"
+      ],
+      "relatedDocs": [
+        "paperclip-org-chart",
+        "enterprise-adoption",
+        "potent-combos"
+      ],
+      "practitioners": [
+        "paperclip",
+        "stripe-minions",
+        "replit-agent-habitat"
+      ]
     },
     {
       "id": "repo-protection-tooling-comparison-2026-04-27",
       "title": "Repo Protection Tooling Comparison",
-      "path": "docs/repo-protection-tooling-comparison-2026-04-27.md",
-      "category": "architecture",
-      "tags": ["monitoring", "code-review", "security", "sentry", "checkly", "semgrep", "socket", "greptile", "coderabbit"],
-      "sources": ["productrank", "sentry", "checkly", "semgrep", "socket", "greptile", "coderabbit", "github", "factory-ai", "devin"],
-      "lastUpdated": "2026-04-27",
-      "keyNumbers": ["5 recommended tools", "30-day rollout", "20% accepted AI review finding target"],
-      "relatedDocs": ["dev-tools-stack", "competitive-analysis", "github-ecosystem", "codebase-status"]
+      "path": "docs/patterns/governance-safety/repo-protection-tooling-comparison-2026-04-27.md",
+      "kind": "pattern",
+      "parent": "governance-safety",
+      "children": [],
+      "tags": [
+        "monitoring",
+        "code-review",
+        "security",
+        "sentry",
+        "checkly",
+        "semgrep",
+        "socket",
+        "greptile",
+        "coderabbit"
+      ],
+      "sources": [
+        "https://productrank-rho.vercel.app/api/query`",
+        "https://productrank-rho.vercel.app/api/query",
+        "https://docs.sentry.io/product/ai-in-sentry/seer/",
+        "https://docs.sentry.io/ai/mcp.md",
+        "https://factory.ai/news/ga",
+        "https://docs.factory.ai/cli/features/code-review"
+      ],
+      "lastUpdated": "2026-11-01",
+      "keyNumbers": [
+        "5 recommended tools",
+        "30-day rollout",
+        "20% accepted AI review finding target"
+      ],
+      "relatedDocs": [
+        "dev-tools-stack",
+        "landscape",
+        "github-ecosystem",
+        "codebase-status"
+      ],
+      "practitioners": []
+    },
+    {
+      "id": "harness-engineering",
+      "title": "Harness Engineering",
+      "path": "docs/patterns/harness-engineering/README.md",
+      "kind": "hub",
+      "parent": null,
+      "children": [
+        "codex-planr",
+        "context-engineering",
+        "deep-agents",
+        "harness-engineering-langchain",
+        "harness-engineering-openai"
+      ],
+      "tags": [
+        "harness",
+        "environment",
+        "agents-md"
+      ],
+      "sources": [
+        "https://openai.com/index/harness-engineering/",
+        "https://blog.langchain.com/improving-deep-agents-with-harness-engineering/"
+      ],
+      "lastUpdated": "2026-11-01",
+      "keyNumbers": [],
+      "relatedDocs": [
+        "harness-engineering-openai",
+        "harness-engineering-langchain",
+        "context-engineering"
+      ],
+      "practitioners": [
+        "openai-codex",
+        "langchain-deep-agents",
+        "anthropic-claude-code",
+        "stripe-minions",
+        "strongdm-software-factory"
+      ]
+    },
+    {
+      "id": "codex-planr",
+      "title": "codex-planr: Repository-Local Planning for AI Agents",
+      "path": "docs/patterns/harness-engineering/codex-planr.md",
+      "kind": "pattern",
+      "parent": "harness-engineering",
+      "children": [],
+      "tags": [
+        "planning",
+        "repo-local",
+        "git-diff-review",
+        "status-tracking"
+      ],
+      "sources": [
+        "https://github.com/regenrek/codex-planr",
+        "https://lobehub.com/skills/regenrek-agent-skills-codex-sandbox",
+        "https://smartscope.blog/en/generative-ai/chatgpt/codex-plan-mode-complete-guide/"
+      ],
+      "lastUpdated": "2026-11-01",
+      "keyNumbers": [],
+      "relatedDocs": [
+        "harness-engineering-langchain",
+        "deep-agents"
+      ],
+      "practitioners": [
+        "openai-codex"
+      ]
+    },
+    {
+      "id": "context-engineering",
+      "title": "Context Engineering for Autonomous Coding Agents",
+      "path": "docs/patterns/harness-engineering/context-engineering.md",
+      "kind": "pattern",
+      "parent": "harness-engineering",
+      "children": [],
+      "tags": [
+        "observation-masking",
+        "agents-md",
+        "tool-sprawl",
+        "dynamic-assembly",
+        "context-rot"
+      ],
+      "sources": [
+        "https://x.com/tobi/status/1935533422589399127",
+        "https://simonwillison.net/2025/jun/27/context-engineering/",
+        "https://research.trychroma.com/context-rot",
+        "https://arxiv.org/html/2508.21433v2",
+        "https://blog.jetbrains.com/research/2025/12/efficient-context-management/",
+        "https://github.com/JetBrains-Research/the-complexity-trap"
+      ],
+      "lastUpdated": "2026-11-01",
+      "keyNumbers": [
+        "52% cheaper with masking",
+        "+2.6% solve rate",
+        "17pts harness gap"
+      ],
+      "relatedDocs": [
+        "harness-engineering-openai",
+        "harness-engineering-langchain",
+        "agent-memory-systems"
+      ],
+      "practitioners": [
+        "spotify-honk",
+        "stripe-minions",
+        "anthropic-claude-code"
+      ]
+    },
+    {
+      "id": "deep-agents",
+      "title": "Deep Agents (LangChain) — Middleware-Driven Agent Composition",
+      "path": "docs/patterns/harness-engineering/deep-agents.md",
+      "kind": "pattern",
+      "parent": "harness-engineering",
+      "children": [],
+      "tags": [
+        "middleware",
+        "sub-agents",
+        "summarization",
+        "skills",
+        "human-in-the-loop",
+        "langraph"
+      ],
+      "sources": [
+        "https://github.com/langchain-ai/deepagents",
+        "https://docs.langchain.com/oss/python/deepagents/overview",
+        "https://blog.langchain.com/the-anatomy-of-an-agent-harness/",
+        "https://resources.anthropic.com/hubfs/2026%20Agentic%20Coding%20Trends%20Report.pdf",
+        "https://www.morphllm.com/ai-coding-agent",
+        "https://engineering.atspotify.com/2025/11/context-engineering-background-coding-agents-part-2"
+      ],
+      "lastUpdated": "2026-11-01",
+      "keyNumbers": [
+        "85% context summarization trigger",
+        "10% keep-recent threshold"
+      ],
+      "relatedDocs": [
+        "harness-engineering-langchain",
+        "harness-engineering-openai",
+        "context-engineering"
+      ],
+      "practitioners": [
+        "langchain-deep-agents",
+        "anthropic-claude-code"
+      ]
+    },
+    {
+      "id": "harness-engineering-langchain",
+      "title": "Harness Engineering: LangChain Deep Agents",
+      "path": "docs/patterns/harness-engineering/harness-engineering-langchain.md",
+      "kind": "pattern",
+      "parent": "harness-engineering",
+      "children": [],
+      "tags": [
+        "self-verification",
+        "loop-detection",
+        "reasoning-sandwich",
+        "write-todos",
+        "open-swe"
+      ],
+      "sources": [
+        "https://blog.langchain.com/improving-deep-agents-with-harness-engineering/",
+        "https://sequoiacap.com/podcast/context-engineering-our-way-to-long-horizon-agents-langchains-harrison-chase/",
+        "https://github.com/langchain-ai/deepagents",
+        "https://docs.langchain.com/oss/python/deepagents/overview",
+        "https://www.langchain.com/state-of-agent-engineering",
+        "https://interrupt.langchain.com/"
+      ],
+      "lastUpdated": "2026-11-01",
+      "keyNumbers": [
+        "52.8→66.5% Terminal Bench",
+        "13.7pp harness-only gain",
+        "53.9% xhigh-everywhere"
+      ],
+      "relatedDocs": [
+        "deep-agents",
+        "harness-engineering-openai",
+        "context-engineering"
+      ],
+      "practitioners": [
+        "langchain-deep-agents"
+      ]
+    },
+    {
+      "id": "harness-engineering-openai",
+      "title": "Harness Engineering (OpenAI) — Environment-First Agent Development",
+      "path": "docs/patterns/harness-engineering/harness-engineering-openai.md",
+      "kind": "pattern",
+      "parent": "harness-engineering",
+      "children": [],
+      "tags": [
+        "agents-md",
+        "layered-architecture",
+        "golden-principles",
+        "gc-agents",
+        "progressive-disclosure"
+      ],
+      "sources": [
+        "https://openai.com/index/harness-engineering/",
+        "https://openai.com/index/unlocking-the-codex-harness/",
+        "https://openai.com/index/unrolling-the-codex-agent-loop/",
+        "https://www.ignorance.ai/p/the-emerging-harness-engineering",
+        "https://alexlavaee.me/blog/harness-engineering-why-coding-agents-need-infrastructure/",
+        "https://www.humanlayer.dev/blog/skill-issue-harness-engineering-for-coding-agents"
+      ],
+      "lastUpdated": "2026-11-01",
+      "keyNumbers": [
+        "~1M lines, 0 hand-written",
+        "3.5 PRs/eng/day",
+        "1,500 PRs over 5 months"
+      ],
+      "relatedDocs": [
+        "context-engineering",
+        "harness-engineering-langchain",
+        "deep-agents"
+      ],
+      "practitioners": [
+        "openai-codex"
+      ]
+    },
+    {
+      "id": "memory-knowledge",
+      "title": "Memory and Knowledge",
+      "path": "docs/patterns/memory-knowledge/README.md",
+      "kind": "hub",
+      "parent": null,
+      "children": [
+        "agent-memory-systems",
+        "latent-briefing-kv-compaction",
+        "obsidian-knowledge",
+        "qmd"
+      ],
+      "tags": [
+        "memory",
+        "search",
+        "compaction"
+      ],
+      "sources": [
+        "https://github.com/tobi/qmd",
+        "https://github.com/langchain-ai/deepagents"
+      ],
+      "lastUpdated": "2026-11-01",
+      "keyNumbers": [],
+      "relatedDocs": [
+        "agent-memory-systems",
+        "qmd",
+        "latent-briefing-kv-compaction"
+      ],
+      "practitioners": [
+        "langchain-deep-agents",
+        "ramp-inspect"
+      ]
+    },
+    {
+      "id": "agent-memory-systems",
+      "title": "Agent Memory Systems — Research Deep-Dive",
+      "path": "docs/patterns/memory-knowledge/agent-memory-systems.md",
+      "kind": "pattern",
+      "parent": "memory-knowledge",
+      "children": [],
+      "tags": [
+        "napkin",
+        "mem0",
+        "letta",
+        "hmem",
+        "progressive-disclosure",
+        "bm25",
+        "memory-security"
+      ],
+      "sources": [
+        "https://github.com/Michaelliv/napkin",
+        "https://x.com/micLivs/status/2033605835092312491",
+        "https://x.com/micLivs",
+        "https://github.com/blader/napkin",
+        "https://github.com/tobi/qmd",
+        "https://forum.obsidian.md/t/design-your-vault-for-ai-orientation-not-just-human-navigation/112010"
+      ],
+      "lastUpdated": "2026-11-01",
+      "keyNumbers": [],
+      "relatedDocs": [
+        "context-engineering",
+        "qmd"
+      ],
+      "practitioners": []
+    },
+    {
+      "id": "latent-briefing-kv-compaction",
+      "title": "Latent Briefing: KV Cache Compaction for Multi-Agent Systems",
+      "path": "docs/patterns/memory-knowledge/latent-briefing-kv-compaction.md",
+      "kind": "pattern",
+      "parent": "memory-knowledge",
+      "children": [],
+      "tags": [
+        "kv-cache",
+        "multi-agent",
+        "rlm",
+        "attention-matching",
+        "token-efficiency",
+        "orchestrator-worker"
+      ],
+      "sources": [
+        "https://x.com/RampLabs/status/2042660310851449223",
+        "https://arxiv.org/abs/2510.08037",
+        "https://arxiv.org/abs/2602.16284",
+        "https://www.baseten.co/research/towards-infinite-context-windows-neural-kv-cache-compaction/",
+        "https://github.com/WeianMao/triattention",
+        "https://kenhuangus.substack.com/p/the-kv-cache-wars"
+      ],
+      "lastUpdated": "2026-11-01",
+      "keyNumbers": [
+        "+3pp accuracy",
+        "42-57% worker token reduction",
+        "~1.7s compaction overhead",
+        "79% compression on hard tasks"
+      ],
+      "relatedDocs": [
+        "context-engineering",
+        "orchestrator",
+        "harness-engineering-openai",
+        "ramp-self-maintaining-code"
+      ],
+      "practitioners": [
+        "ramp-inspect"
+      ]
     },
     {
       "id": "obsidian-knowledge",
-      "title": "Obsidian Knowledge",
-      "path": "docs/obsidian-knowledge.md",
-      "category": "architecture",
-      "tags": ["obsidian", "mcp-servers", "knowledge-stores", "markdown"],
-      "sources": ["obsidian", "qmd"],
-      "lastUpdated": "2026-03-16",
-      "keyNumbers": ["10+ MCP servers"],
-      "relatedDocs": ["qmd", "agent-memory-systems"]
+      "title": "Obsidian as an Agent Knowledge Base",
+      "path": "docs/patterns/memory-knowledge/obsidian-knowledge.md",
+      "kind": "pattern",
+      "parent": "memory-knowledge",
+      "children": [],
+      "tags": [
+        "obsidian",
+        "mcp-servers",
+        "knowledge-stores",
+        "markdown"
+      ],
+      "sources": [
+        "https://github.com/cyanheads/obsidian-mcp-server",
+        "https://github.com/iansinnott/obsidian-claude-code-mcp",
+        "https://github.com/aaronsb/obsidian-mcp-plugin",
+        "https://github.com/MarkusPfundstein/mcp-obsidian",
+        "https://github.com/msdanyg/smart-connections-mcp",
+        "https://github.com/ToKiDoO/mcp-obsidian-advanced"
+      ],
+      "lastUpdated": "2026-11-01",
+      "keyNumbers": [
+        "10+ MCP servers"
+      ],
+      "relatedDocs": [
+        "qmd",
+        "agent-memory-systems"
+      ],
+      "practitioners": []
     },
     {
-      "id": "key-numbers",
-      "title": "Key Numbers",
-      "path": "docs/KEY-NUMBERS.md",
-      "category": "reference",
-      "tags": ["quantitative", "metrics", "costs", "benchmarks"],
-      "sources": ["all"],
-      "lastUpdated": "2026-07-16",
+      "id": "qmd",
+      "title": "QMD (Tobi Lutke) — Local-First Knowledge Search for Agents",
+      "path": "docs/patterns/memory-knowledge/qmd.md",
+      "kind": "pattern",
+      "parent": "memory-knowledge",
+      "children": [],
+      "tags": [
+        "hybrid-search",
+        "bm25",
+        "vector",
+        "reranking",
+        "mcp-server",
+        "local-first"
+      ],
+      "sources": [
+        "https://github.com/tobi/qmd",
+        "https://sourcegraph.com/blog/how-cody-understands-your-codebase",
+        "https://aider.chat/docs/repomap.html",
+        "https://www.augmentcode.com/tools/cursor-vs-sourcegraph-cody-embeddings-and-monorepo-scale"
+      ],
+      "lastUpdated": "2026-11-01",
       "keyNumbers": [],
-      "relatedDocs": []
+      "relatedDocs": [
+        "obsidian-knowledge",
+        "agent-memory-systems",
+        "context-engineering"
+      ],
+      "practitioners": []
     },
     {
-      "id": "glossary",
-      "title": "Glossary",
-      "path": "docs/GLOSSARY.md",
-      "category": "reference",
-      "tags": ["definitions", "terminology"],
-      "sources": ["all"],
-      "lastUpdated": "2026-03-18",
+      "id": "orchestration",
+      "title": "Orchestration",
+      "path": "docs/patterns/orchestration/README.md",
+      "kind": "hub",
+      "parent": null,
+      "children": [
+        "agent-orchestrator",
+        "orchestrator",
+        "paperclip-org-chart",
+        "potent-combos",
+        "symphony-carson"
+      ],
+      "tags": [
+        "fleet",
+        "state-machine",
+        "topology"
+      ],
+      "sources": [
+        "https://github.com/openai/symphony/blob/main/SPEC.md",
+        "https://github.com/paperclipai/paperclip",
+        "https://github.com/ComposioHQ/agent-orchestrator"
+      ],
+      "lastUpdated": "2026-11-01",
       "keyNumbers": [],
-      "relatedDocs": []
+      "relatedDocs": [
+        "orchestrator",
+        "potent-combos",
+        "paperclip-org-chart"
+      ],
+      "practitioners": [
+        "paperclip",
+        "composio-agent-orchestrator",
+        "openai-codex",
+        "stripe-minions"
+      ]
     },
     {
-      "id": "open-questions",
-      "title": "Open Questions",
-      "path": "docs/OPEN-QUESTIONS.md",
-      "category": "reference",
-      "tags": ["contradictions", "unknowns", "frontier", "risks"],
-      "sources": ["all"],
-      "lastUpdated": "2026-07-16",
+      "id": "agent-orchestrator",
+      "title": "Composio Agent Orchestrator",
+      "path": "docs/patterns/orchestration/agent-orchestrator.md",
+      "kind": "pattern",
+      "parent": "orchestration",
+      "children": [],
+      "tags": [
+        "plugin-architecture",
+        "fleet-management",
+        "task-decomposition",
+        "session-lifecycle",
+        "tmux"
+      ],
+      "sources": [
+        "https://github.com/ComposioHQ/agent-orchestrator",
+        "https://www.marktechpost.com/2026/02/23/composio-open-sources-agent-orchestrator-to-help-ai-developers-build-scalable-multi-agent-workflows-beyond-the-traditional-react-loops/",
+        "https://i10x.ai/news/composio-agent-orchestrator-ai-frameworks"
+      ],
+      "lastUpdated": "2026-11-01",
+      "keyNumbers": [
+        "4.5k stars",
+        "8 pluggable slots",
+        "15-state lifecycle"
+      ],
+      "relatedDocs": [
+        "paperclip-org-chart",
+        "orchestrator"
+      ],
+      "practitioners": [
+        "composio-agent-orchestrator"
+      ]
+    },
+    {
+      "id": "orchestrator",
+      "title": "Symphony-Style Orchestrator",
+      "path": "docs/patterns/orchestration/orchestrator.md",
+      "kind": "pattern",
+      "parent": "orchestration",
+      "children": [],
+      "tags": [
+        "reconciliation-loop",
+        "state-machine",
+        "git-worktree",
+        "linear-integration"
+      ],
+      "sources": [
+        "https://github.com/openai/symphony/blob/main/SPEC.md",
+        "https://github.com/karpathy/autoresearch"
+      ],
+      "lastUpdated": "2026-11-01",
       "keyNumbers": [],
-      "relatedDocs": []
+      "relatedDocs": [
+        "symphony-carson",
+        "autoresearch",
+        "agent-orchestrator"
+      ],
+      "practitioners": [
+        "openai-codex"
+      ]
     },
     {
-      "id": "agent-filesystems",
-      "title": "Agent Filesystems",
-      "path": "docs/agent-filesystems.md",
-      "category": "deep-dive",
-      "tags": ["tigerfs", "agentfs", "turso", "tiger-data", "fuse", "nfs", "database-as-directory", "multi-agent-coordination", "task-queues", "version-history", "postgres"],
-      "sources": ["tigerfs.io", "turso/agentfs", "tiger-data", "arize"],
-      "lastUpdated": "2026-03-18",
-      "keyNumbers": ["110K+ IOPS (Tiger Fluid Storage)", "0 production deployments at scale"],
-      "relatedDocs": ["sandbox-isolation", "sandbox-architecture-2026", "agent-memory-systems", "dev-tools-stack"]
+      "id": "paperclip-org-chart",
+      "title": "Paperclip — Agent Orchestration Platform",
+      "path": "docs/patterns/orchestration/paperclip-org-chart.md",
+      "kind": "pattern",
+      "parent": "orchestration",
+      "children": [],
+      "tags": [
+        "fleet-management",
+        "budgets",
+        "task-checkout",
+        "heartbeat",
+        "org-chart",
+        "dashboard"
+      ],
+      "sources": [
+        "https://github.com/paperclipai/paperclip",
+        "https://github.com/paperclipai/paperclip/releases/tag/v0.3.1",
+        "https://github.com/paperclipai/paperclip/releases/tag/v0.3.0"
+      ],
+      "lastUpdated": "2026-11-01",
+      "keyNumbers": [
+        "26.7k stars"
+      ],
+      "relatedDocs": [
+        "agent-orchestrator",
+        "agent-safety-cost-control",
+        "potent-combos"
+      ],
+      "practitioners": [
+        "paperclip"
+      ]
     },
     {
-      "id": "roadmap",
-      "title": "Roadmap",
-      "path": "docs/roadmap.md",
-      "category": "internal",
-      "tags": ["build-phases", "planning"],
-      "sources": ["internal"],
-      "lastUpdated": "2026-07-16",
+      "id": "potent-combos",
+      "title": "Potent Combos & Agent Topology Patterns",
+      "path": "docs/patterns/orchestration/potent-combos.md",
+      "kind": "pattern",
+      "parent": "orchestration",
+      "children": [],
+      "tags": [
+        "topologies",
+        "one-shot-tree",
+        "pipeline",
+        "org-chart",
+        "mesh",
+        "ratchet",
+        "sequential-multi-agent",
+        "build-profiles",
+        "anti-patterns"
+      ],
+      "sources": [
+        "https://github.com/block/goose",
+        "https://blog.bytebytego.com/p/how-stripes-minions-ship-1300-prs",
+        "https://www.sitepoint.com/stripe-minions-architecture-explained/",
+        "https://www.infoq.com/news/2026/03/spotify-honk-rewrite/",
+        "https://paperclip.ing/",
+        "https://github.com/ColeMurray/background-agents"
+      ],
+      "lastUpdated": "2026-11-01",
+      "keyNumbers": [
+        "9 topologies",
+        "6 combos",
+        "6 build profiles"
+      ],
+      "relatedDocs": [
+        "landscape",
+        "enterprise-adoption",
+        "agent-safety-cost-control"
+      ],
+      "practitioners": [
+        "stripe-minions",
+        "spotify-honk",
+        "paperclip",
+        "ramp-inspect"
+      ]
+    },
+    {
+      "id": "symphony-carson",
+      "title": "Symphony + Carson's Code Factory Pattern",
+      "path": "docs/patterns/orchestration/symphony-carson.md",
+      "kind": "pattern",
+      "parent": "orchestration",
+      "children": [],
+      "tags": [
+        "elixir",
+        "otp",
+        "role-inversion",
+        "linear",
+        "codex",
+        "code-factory"
+      ],
+      "sources": [
+        "https://x.com/ryancarson/status/2033958219891028302",
+        "https://x.com/ryancarson/status/2031755002205655511",
+        "https://www.ryancarson.com/articles",
+        "https://github.com/openai/symphony",
+        "https://www.heyuan110.com/posts/ai/2026-03-05-openai-symphony-autonomous-coding/",
+        "https://www.digitalapplied.com/blog/openai-symphony-autonomous-code-orchestration-framework"
+      ],
+      "lastUpdated": "2026-11-01",
+      "keyNumbers": [
+        "$297 API → $50K value",
+        "10 parallel agents",
+        "6 bugs from phone"
+      ],
+      "relatedDocs": [
+        "orchestrator",
+        "enterprise-adoption"
+      ],
+      "practitioners": [
+        "openai-codex"
+      ]
+    },
+    {
+      "id": "self-improvement",
+      "title": "Self-Improvement",
+      "path": "docs/patterns/self-improvement/README.md",
+      "kind": "hub",
+      "parent": null,
+      "children": [
+        "autoresearch",
+        "karpathy-software-factory-thesis",
+        "ramp-self-maintaining-code"
+      ],
+      "tags": [
+        "ratchet",
+        "loop",
+        "monitors"
+      ],
+      "sources": [
+        "https://github.com/karpathy/autoresearch",
+        "https://x.com/RampLabs",
+        "https://factory.strongdm.ai/"
+      ],
+      "lastUpdated": "2026-11-01",
       "keyNumbers": [],
-      "relatedDocs": ["codebase-status", "risk-forecast"]
+      "relatedDocs": [
+        "autoresearch",
+        "ramp-self-maintaining-code",
+        "karpathy-software-factory-thesis"
+      ],
+      "practitioners": [
+        "ramp-inspect",
+        "strongdm-software-factory",
+        "amp"
+      ]
     },
     {
-      "id": "risk-forecast",
-      "title": "Risk Forecast",
-      "path": "docs/risk-forecast.md",
-      "category": "internal",
-      "tags": ["operational-risks", "first-30-days", "security-fixes"],
-      "sources": ["internal"],
-      "lastUpdated": "2026-03-16",
+      "id": "autoresearch",
+      "title": "Autoresearch (Karpathy) — Autonomous Agent Experimentation Loop",
+      "path": "docs/patterns/self-improvement/autoresearch.md",
+      "kind": "pattern",
+      "parent": "self-improvement",
+      "children": [],
+      "tags": [
+        "never-stop-loop",
+        "ratchet-pattern",
+        "circuit-breaker",
+        "fixed-budget",
+        "experiment-logging"
+      ],
+      "sources": [
+        "https://github.com/karpathy/autoresearch",
+        "https://github.com/Shopify/liquid/pull/2056",
+        "https://github.com/davebcn87/pi-autoresearch",
+        "https://github.com/badlogicgames/pi",
+        "https://paddo.dev/blog/autoresearch-ecosystem/",
+        "https://github.com/aiming-lab/AutoResearchClaw"
+      ],
+      "lastUpdated": "2026-11-01",
+      "keyNumbers": [
+        "~100 experiments overnight",
+        "5 min fixed budget per experiment"
+      ],
+      "relatedDocs": [
+        "potent-combos",
+        "harness-engineering-openai"
+      ],
+      "practitioners": []
+    },
+    {
+      "id": "karpathy-software-factory-thesis",
+      "title": "Karpathy's Software Factory Thesis",
+      "path": "docs/patterns/self-improvement/karpathy-software-factory-thesis.md",
+      "kind": "pattern",
+      "parent": "self-improvement",
+      "children": [],
+      "tags": [
+        "factory",
+        "code-quality",
+        "agents-md",
+        "autoresearch"
+      ],
+      "sources": [
+        "https://www.youtube.com/watch?v=kwSVtQ7dziU",
+        "https://x.com/karpathy/status/2035173492447224237",
+        "https://thenewstack.io/jetbrains-names-the-debt-ai-agents-leave-behind/",
+        "https://weeraman.com/the-compounding-problem",
+        "https://medium.com/@montes.makes/lint-against-the-machine-a-field-guide-to-catching-ai-coding-agent-anti-patterns-3c4ef7baeb9e",
+        "https://awesomeagents.ai/news/alibaba-swe-ci-ai-coding-agents-long-term-maintenance/"
+      ],
+      "lastUpdated": "2026-11-01",
+      "keyNumbers": [
+        "~100 experiments overnight"
+      ],
+      "relatedDocs": [
+        "autoresearch",
+        "harness-engineering",
+        "strongdm-software-factory"
+      ],
+      "practitioners": []
+    },
+    {
+      "id": "ramp-self-maintaining-code",
+      "title": "Ramp Labs: Self-Maintaining Code",
+      "path": "docs/patterns/self-improvement/ramp-self-maintaining-code.md",
+      "kind": "pattern",
+      "parent": "self-improvement",
+      "children": [],
+      "tags": [
+        "monitors",
+        "triage",
+        "self-healing",
+        "inspect"
+      ],
+      "sources": [
+        "https://x.com/RampLabs",
+        "https://x.com/felixrieseberg/status/2036193240509235452"
+      ],
+      "lastUpdated": "2026-11-01",
+      "keyNumbers": [
+        "1,000 monitors",
+        "1 monitor per 75 LOC"
+      ],
+      "relatedDocs": [
+        "latent-briefing-kv-compaction",
+        "ramp-inspect",
+        "sandbox-isolation"
+      ],
+      "practitioners": [
+        "ramp-inspect"
+      ]
+    },
+    {
+      "id": "verification",
+      "title": "Verification",
+      "path": "docs/patterns/verification/README.md",
+      "kind": "hub",
+      "parent": null,
+      "children": [
+        "swe-bench-ecosystem"
+      ],
+      "tags": [
+        "judge",
+        "evals",
+        "bounded-retries"
+      ],
+      "sources": [
+        "https://engineering.atspotify.com/2025/12/feedback-loops-background-coding-agents-part-3",
+        "https://www.swebench.com/"
+      ],
+      "lastUpdated": "2026-11-01",
       "keyNumbers": [],
-      "relatedDocs": ["roadmap", "codebase-status"]
+      "relatedDocs": [
+        "swe-bench-ecosystem",
+        "software-factory-operations-2026-07-16",
+        "spotify-honk"
+      ],
+      "practitioners": [
+        "spotify-honk",
+        "stripe-minions",
+        "strongdm-software-factory",
+        "vercel",
+        "openai-codex",
+        "anthropic-claude-code",
+        "cognition-devin",
+        "openhands"
+      ]
+    },
+    {
+      "id": "swe-bench-ecosystem",
+      "title": "SWE-bench Ecosystem: Autonomous Coding Agent Evaluation (March 2026)",
+      "path": "docs/patterns/verification/swe-bench-ecosystem.md",
+      "kind": "pattern",
+      "parent": "verification",
+      "children": [],
+      "tags": [
+        "benchmarks",
+        "evaluation",
+        "leaderboard",
+        "contamination",
+        "swe-bench-pro"
+      ],
+      "sources": [
+        "https://arxiv.org/abs/2310.06770",
+        "https://arxiv.org/abs/2509.16941",
+        "https://labs.scale.com/leaderboard/swe_bench_pro_public",
+        "https://arxiv.org/abs/2410.03859",
+        "https://www.swebench.com/multimodal.html",
+        "https://www.swebench.com/multilingual-leaderboard.html"
+      ],
+      "lastUpdated": "2026-11-01",
+      "keyNumbers": [
+        "~46% Pro vs ~81% Verified",
+        "7 benchmark variants",
+        "19% METR slowdown paradox"
+      ],
+      "relatedDocs": [
+        "landscape",
+        "enterprise-adoption"
+      ],
+      "practitioners": [
+        "cognition-devin",
+        "anthropic-claude-code",
+        "openhands",
+        "openai-codex"
+      ]
+    },
+    {
+      "id": "practitioners",
+      "title": "Practitioners",
+      "path": "docs/practitioners/README.md",
+      "kind": "hub",
+      "parent": null,
+      "children": [
+        "amp",
+        "anthropic-claude-code",
+        "cline",
+        "cognition-devin",
+        "composio-agent-orchestrator",
+        "goose",
+        "langchain-deep-agents",
+        "open-inspect",
+        "openai-codex",
+        "openhands",
+        "paperclip",
+        "ramp-inspect",
+        "replit-agent-habitat",
+        "spotify-honk",
+        "stripe-minions",
+        "strongdm-software-factory",
+        "vercel"
+      ],
+      "tags": [
+        "profiles"
+      ],
+      "sources": [],
+      "lastUpdated": "2026-11-01",
+      "keyNumbers": [],
+      "relatedDocs": [
+        "harness-engineering",
+        "background-agents",
+        "verification"
+      ]
+    },
+    {
+      "id": "amp",
+      "title": "Amp",
+      "path": "docs/practitioners/amp.md",
+      "kind": "practitioner",
+      "parent": "practitioners",
+      "children": [],
+      "tags": [],
+      "sources": [
+        "https://x.com/AmpCode/status/2115912054964179204"
+      ],
+      "lastUpdated": "2026-11-01",
+      "keyNumbers": [
+        "$10 credits in the bug-fix email"
+      ],
+      "relatedDocs": [],
+      "patterns": [
+        "self-improvement",
+        "verification"
+      ]
+    },
+    {
+      "id": "anthropic-claude-code",
+      "title": "Anthropic Claude Code",
+      "path": "docs/practitioners/anthropic-claude-code.md",
+      "kind": "practitioner",
+      "parent": "practitioners",
+      "children": [],
+      "tags": [],
+      "sources": [
+        "https://claude.ai/code",
+        "https://www.claude.com/blog/code-review",
+        "https://www.linuxfoundation.org/press/linux-foundation-announces-the-formation-of-the-agentic-ai-foundation",
+        "https://x.com/bcherny/status/2113333859907747871",
+        "https://x.com/bcherny/status/2115491259381072269"
+      ],
+      "lastUpdated": "2026-11-01",
+      "keyNumbers": [
+        "80.9% SWE-bench Verified (historical)",
+        "$2.5B ARR"
+      ],
+      "relatedDocs": [],
+      "patterns": [
+        "harness-engineering",
+        "verification"
+      ]
+    },
+    {
+      "id": "cline",
+      "title": "Cline",
+      "path": "docs/practitioners/cline.md",
+      "kind": "practitioner",
+      "parent": "practitioners",
+      "children": [],
+      "tags": [],
+      "sources": [
+        "https://cline.bot/",
+        "https://github.com/cline/cline"
+      ],
+      "lastUpdated": "2026-11-01",
+      "keyNumbers": [
+        "5M+ installs"
+      ],
+      "relatedDocs": [],
+      "patterns": [
+        "governance-safety",
+        "harness-engineering"
+      ]
+    },
+    {
+      "id": "cognition-devin",
+      "title": "Cognition Devin",
+      "path": "docs/practitioners/cognition-devin.md",
+      "kind": "practitioner",
+      "parent": "practitioners",
+      "children": [],
+      "tags": [],
+      "sources": [
+        "https://devin.ai",
+        "https://devin.ai/customers/nubank/",
+        "https://building.nubank.com/enhancing-engineering-workflows-with-ai-a-real-world-experience/",
+        "https://cognition.ai/blog/devin-annual-performance-review-2025",
+        "https://x.com/cognition/status/2112290148205436979"
+      ],
+      "lastUpdated": "2026-11-01",
+      "keyNumbers": [
+        "67% PR merge rate",
+        "Devin Fusion 68"
+      ],
+      "relatedDocs": [],
+      "patterns": [
+        "verification",
+        "background-agents"
+      ]
+    },
+    {
+      "id": "composio-agent-orchestrator",
+      "title": "Composio Agent Orchestrator",
+      "path": "docs/practitioners/composio-agent-orchestrator.md",
+      "kind": "practitioner",
+      "parent": "practitioners",
+      "children": [],
+      "tags": [],
+      "sources": [
+        "https://github.com/ComposioHQ/agent-orchestrator"
+      ],
+      "lastUpdated": "2026-11-01",
+      "keyNumbers": [
+        "4,543 stars",
+        "8 pluggable slots",
+        "15+ lifecycle states"
+      ],
+      "relatedDocs": [],
+      "patterns": [
+        "orchestration",
+        "background-agents"
+      ]
+    },
+    {
+      "id": "goose",
+      "title": "Goose",
+      "path": "docs/practitioners/goose.md",
+      "kind": "practitioner",
+      "parent": "practitioners",
+      "children": [],
+      "tags": [],
+      "sources": [
+        "https://github.com/block/goose",
+        "https://www.linuxfoundation.org/press/linux-foundation-announces-the-formation-of-the-agentic-ai-foundation",
+        "https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents"
+      ],
+      "lastUpdated": "2026-11-01",
+      "keyNumbers": [],
+      "relatedDocs": [],
+      "patterns": [
+        "background-agents",
+        "harness-engineering"
+      ]
+    },
+    {
+      "id": "langchain-deep-agents",
+      "title": "LangChain Deep Agents",
+      "path": "docs/practitioners/langchain-deep-agents.md",
+      "kind": "practitioner",
+      "parent": "practitioners",
+      "children": [],
+      "tags": [],
+      "sources": [
+        "https://blog.langchain.com/improving-deep-agents-with-harness-engineering/",
+        "https://github.com/langchain-ai/deepagents",
+        "https://x.com/hwchase17/status/2115854759991369840",
+        "https://x.com/hwchase17/status/2112650555852275951"
+      ],
+      "lastUpdated": "2026-11-01",
+      "keyNumbers": [
+        "52.8→66.5% Terminal Bench",
+        "+13.7pp harness-only"
+      ],
+      "relatedDocs": [],
+      "patterns": [
+        "harness-engineering",
+        "memory-knowledge"
+      ]
+    },
+    {
+      "id": "open-inspect",
+      "title": "Open-Inspect",
+      "path": "docs/practitioners/open-inspect.md",
+      "kind": "practitioner",
+      "parent": "practitioners",
+      "children": [],
+      "tags": [],
+      "sources": [
+        "https://github.com/ColeMurray/background-agents",
+        "https://backgroundagents.dev",
+        "https://builders.ramp.com/post/why-we-built-our-background-agent"
+      ],
+      "lastUpdated": "2026-11-01",
+      "keyNumbers": [
+        "1,524 stars",
+        "232 forks"
+      ],
+      "relatedDocs": [],
+      "patterns": [
+        "background-agents"
+      ]
+    },
+    {
+      "id": "openai-codex",
+      "title": "OpenAI Codex",
+      "path": "docs/practitioners/openai-codex.md",
+      "kind": "practitioner",
+      "parent": "practitioners",
+      "children": [],
+      "tags": [],
+      "sources": [
+        "https://openai.com/index/harness-engineering/",
+        "https://openai.com/index/introducing-the-codex-app/",
+        "https://github.com/openai/symphony/blob/main/SPEC.md",
+        "https://openai.com/index/open-source-codex-orchestration-symphony/"
+      ],
+      "lastUpdated": "2026-11-01",
+      "keyNumbers": [
+        "~1M lines, 0 hand-written",
+        "3.5 PRs/eng/day",
+        "57.0% SWE-bench Pro"
+      ],
+      "relatedDocs": [],
+      "patterns": [
+        "harness-engineering",
+        "orchestration",
+        "verification"
+      ]
+    },
+    {
+      "id": "openhands",
+      "title": "OpenHands",
+      "path": "docs/practitioners/openhands.md",
+      "kind": "practitioner",
+      "parent": "practitioners",
+      "children": [],
+      "tags": [],
+      "sources": [
+        "https://openhands.dev/",
+        "https://github.com/OpenHands/OpenHands",
+        "https://arxiv.org/abs/2407.16741"
+      ],
+      "lastUpdated": "2026-11-01",
+      "keyNumbers": [
+        "77.6% SWE-bench Verified",
+        "50K+ stars"
+      ],
+      "relatedDocs": [],
+      "patterns": [
+        "background-agents",
+        "verification"
+      ]
+    },
+    {
+      "id": "paperclip",
+      "title": "Paperclip",
+      "path": "docs/practitioners/paperclip.md",
+      "kind": "practitioner",
+      "parent": "practitioners",
+      "children": [],
+      "tags": [],
+      "sources": [
+        "https://github.com/paperclipai/paperclip"
+      ],
+      "lastUpdated": "2026-11-01",
+      "keyNumbers": [
+        "26.7k stars (2026-03-16)",
+        "57.4K stars (2026-04)"
+      ],
+      "relatedDocs": [],
+      "patterns": [
+        "orchestration",
+        "governance-safety"
+      ]
+    },
+    {
+      "id": "ramp-inspect",
+      "title": "Ramp Inspect",
+      "path": "docs/practitioners/ramp-inspect.md",
+      "kind": "practitioner",
+      "parent": "practitioners",
+      "children": [],
+      "tags": [],
+      "sources": [
+        "https://modal.com/blog/how-ramp-built-a-full-context-background-coding-agent-on-modal",
+        "https://builders.ramp.com/post/why-we-built-our-background-agent",
+        "https://www.infoq.com/news/2026/01/ramp-coding-agent-platform/",
+        "https://x.com/RampLabs"
+      ],
+      "lastUpdated": "2026-11-01",
+      "keyNumbers": [
+        "~50% of merged PRs",
+        "1,000 monitors"
+      ],
+      "relatedDocs": [],
+      "patterns": [
+        "background-agents",
+        "self-improvement",
+        "memory-knowledge"
+      ]
+    },
+    {
+      "id": "replit-agent-habitat",
+      "title": "Replit Agent Habitat",
+      "path": "docs/practitioners/replit-agent-habitat.md",
+      "kind": "practitioner",
+      "parent": "practitioners",
+      "children": [],
+      "tags": [],
+      "sources": [
+        "https://x.com/amasad/status/2115485095251308740"
+      ],
+      "lastUpdated": "2026-11-01",
+      "keyNumbers": [],
+      "relatedDocs": [],
+      "patterns": [
+        "background-agents",
+        "governance-safety"
+      ]
+    },
+    {
+      "id": "spotify-honk",
+      "title": "Spotify Honk",
+      "path": "docs/practitioners/spotify-honk.md",
+      "kind": "practitioner",
+      "parent": "practitioners",
+      "children": [],
+      "tags": [],
+      "sources": [
+        "https://engineering.atspotify.com/2025/11/spotifys-background-coding-agent-part-1",
+        "https://engineering.atspotify.com/2025/11/context-engineering-background-coding-agents-part-2",
+        "https://engineering.atspotify.com/2025/12/feedback-loops-background-coding-agents-part-3",
+        "https://engineering.atspotify.com/2026/6/code-with-claude-coding-is-no-longer-the-constraint"
+      ],
+      "lastUpdated": "2026-11-01",
+      "keyNumbers": [
+        "650+ PRs/month",
+        "~25% judge veto"
+      ],
+      "relatedDocs": [],
+      "patterns": [
+        "background-agents",
+        "verification",
+        "harness-engineering"
+      ]
+    },
+    {
+      "id": "stripe-minions",
+      "title": "Stripe Minions",
+      "path": "docs/practitioners/stripe-minions.md",
+      "kind": "practitioner",
+      "parent": "practitioners",
+      "children": [],
+      "tags": [],
+      "sources": [
+        "https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents",
+        "https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents-part-2",
+        "https://blog.bytebytego.com/p/how-stripes-minions-ship-1300-prs"
+      ],
+      "lastUpdated": "2026-11-01",
+      "keyNumbers": [
+        "1,300+ PRs/week",
+        "~10s devbox startup"
+      ],
+      "relatedDocs": [],
+      "patterns": [
+        "background-agents",
+        "harness-engineering",
+        "verification",
+        "governance-safety",
+        "orchestration"
+      ]
+    },
+    {
+      "id": "strongdm-software-factory",
+      "title": "StrongDM Software Factory",
+      "path": "docs/practitioners/strongdm-software-factory.md",
+      "kind": "practitioner",
+      "parent": "practitioners",
+      "children": [],
+      "tags": [],
+      "sources": [
+        "https://factory.strongdm.ai/"
+      ],
+      "lastUpdated": "2026-11-01",
+      "keyNumbers": [
+        "≥ $1,000 tokens per engineer per day"
+      ],
+      "relatedDocs": [],
+      "patterns": [
+        "verification",
+        "harness-engineering",
+        "self-improvement"
+      ]
+    },
+    {
+      "id": "vercel",
+      "title": "Vercel",
+      "path": "docs/practitioners/vercel.md",
+      "kind": "practitioner",
+      "parent": "practitioners",
+      "children": [],
+      "tags": [],
+      "sources": [
+        "https://x.com/rauchg/status/2115539426684408300",
+        "https://vercel.com/blog/how-we-built-aeo-tracking-for-coding-agents"
+      ],
+      "lastUpdated": "2026-11-01",
+      "keyNumbers": [
+        "20 worldwide clusters",
+        "millions of microVMs per day"
+      ],
+      "relatedDocs": [],
+      "patterns": [
+        "verification",
+        "background-agents"
+      ]
+    },
+    {
+      "id": "project",
+      "title": "Project",
+      "path": "docs/project/README.md",
+      "kind": "hub",
+      "parent": null,
+      "children": [
+        "codebase-status",
+        "risk-forecast",
+        "roadmap",
+        "software-factory-operations-2026-07-16"
+      ],
+      "tags": [
+        "status",
+        "roadmap",
+        "operations"
+      ],
+      "sources": [],
+      "lastUpdated": "2026-11-01",
+      "keyNumbers": [],
+      "relatedDocs": [
+        "codebase-status",
+        "roadmap",
+        "software-factory-operations-2026-07-16"
+      ]
     },
     {
       "id": "codebase-status",
-      "title": "Codebase Status",
-      "path": "docs/codebase-status.md",
-      "category": "internal",
-      "tags": ["implementation-progress", "completion-tracking"],
-      "sources": ["internal"],
-      "lastUpdated": "2026-07-16",
-      "keyNumbers": ["5,240 TypeScript LoC", "45 unit tests", "1 effectful GitHub agent path", "0 live end-to-end factory runs"],
-      "relatedDocs": ["roadmap", "risk-forecast"]
+      "title": "Codebase Status — July 16, 2026",
+      "path": "docs/project/codebase-status.md",
+      "kind": "project",
+      "parent": "project",
+      "children": [],
+      "tags": [
+        "implementation-progress",
+        "completion-tracking"
+      ],
+      "sources": [],
+      "lastUpdated": "2026-11-01",
+      "keyNumbers": [
+        "5,240 TypeScript LoC",
+        "45 unit tests",
+        "1 effectful GitHub agent path",
+        "0 live end-to-end factory runs"
+      ],
+      "relatedDocs": [
+        "roadmap",
+        "risk-forecast"
+      ]
+    },
+    {
+      "id": "risk-forecast",
+      "title": "Risk Forecast — First 30 Days of Operation",
+      "path": "docs/project/risk-forecast.md",
+      "kind": "project",
+      "parent": "project",
+      "children": [],
+      "tags": [
+        "operational-risks",
+        "first-30-days",
+        "security-fixes"
+      ],
+      "sources": [],
+      "lastUpdated": "2026-11-01",
+      "keyNumbers": [],
+      "relatedDocs": [
+        "roadmap",
+        "codebase-status"
+      ]
+    },
+    {
+      "id": "roadmap",
+      "title": "Software Factory Roadmap",
+      "path": "docs/project/roadmap.md",
+      "kind": "project",
+      "parent": "project",
+      "children": [],
+      "tags": [
+        "build-phases",
+        "planning"
+      ],
+      "sources": [],
+      "lastUpdated": "2026-11-01",
+      "keyNumbers": [],
+      "relatedDocs": [
+        "codebase-status",
+        "risk-forecast"
+      ]
+    },
+    {
+      "id": "software-factory-operations-2026-07-16",
+      "title": "Software Factory Operations: Review Backpressure, Evidence Contracts, and Earned Autonomy",
+      "path": "docs/project/software-factory-operations-2026-07-16.md",
+      "kind": "project",
+      "parent": "project",
+      "children": [],
+      "tags": [
+        "review-backpressure",
+        "evidence-contract",
+        "earned-autonomy",
+        "least-privilege",
+        "trajectory-evaluation",
+        "maintainability",
+        "admission-control"
+      ],
+      "sources": [
+        "https://arxiv.org/abs/2607.01904",
+        "https://devblogs.microsoft.com/dotnet/ten-months-with-cca-in-dotnet-runtime/",
+        "https://www.microsoft.com/en-us/security/blog/2026/07/16/least-privilege-for-ai-agents-identity-access-and-tool-binding/",
+        "https://labs.cloudsecurityalliance.org/wp-content/uploads/2026/03/agentic-ai-autonomy-levels-control-framework-v2-csa-styled.pdf",
+        "https://github.com/ai-sdlc-framework/ai-sdlc/blob/main/spec/autonomy.md",
+        "https://arxiv.org/abs/2604.01527"
+      ],
+      "lastUpdated": "2026-11-01",
+      "keyNumbers": [
+        "802 developers",
+        "196,212 PRs",
+        "2.09x throughput",
+        "2.0x reviewer load",
+        "13.3% functional-pass structural-fail"
+      ],
+      "relatedDocs": [
+        "autonomous-codebase-post-merge-review-2026-05-26",
+        "agent-safety-cost-control",
+        "swe-bench-ecosystem",
+        "repo-protection-tooling-comparison-2026-04-27"
+      ]
+    },
+    {
+      "id": "reference",
+      "title": "Reference",
+      "path": "docs/reference/README.md",
+      "kind": "hub",
+      "parent": null,
+      "children": [
+        "glossary",
+        "key-numbers",
+        "open-questions"
+      ],
+      "tags": [
+        "glossary",
+        "numbers",
+        "questions"
+      ],
+      "sources": [],
+      "lastUpdated": "2026-11-01",
+      "keyNumbers": [],
+      "relatedDocs": [
+        "glossary",
+        "key-numbers",
+        "open-questions"
+      ]
+    },
+    {
+      "id": "glossary",
+      "title": "Glossary — Canonical Term Definitions",
+      "path": "docs/reference/glossary.md",
+      "kind": "reference",
+      "parent": "reference",
+      "children": [],
+      "tags": [
+        "definitions",
+        "terminology"
+      ],
+      "sources": [],
+      "lastUpdated": "2026-11-01",
+      "keyNumbers": [],
+      "relatedDocs": [
+        "harness-engineering",
+        "key-numbers"
+      ]
+    },
+    {
+      "id": "key-numbers",
+      "title": "Key Numbers — Quantitative Findings Index",
+      "path": "docs/reference/key-numbers.md",
+      "kind": "reference",
+      "parent": "reference",
+      "children": [],
+      "tags": [
+        "quantitative",
+        "metrics",
+        "costs",
+        "benchmarks"
+      ],
+      "sources": [],
+      "lastUpdated": "2026-11-01",
+      "keyNumbers": [],
+      "relatedDocs": [
+        "glossary",
+        "production-case-studies-state-of-play-2026-07-16"
+      ]
+    },
+    {
+      "id": "open-questions",
+      "title": "Open Questions — Contradictions, Unknowns & Frontier",
+      "path": "docs/reference/open-questions.md",
+      "kind": "reference",
+      "parent": "reference",
+      "children": [],
+      "tags": [
+        "contradictions",
+        "unknowns",
+        "frontier",
+        "risks"
+      ],
+      "sources": [
+        "https://github.com/Shopify/liquid/pull/2056",
+        "https://github.com/fabro-sh/fabro",
+        "https://github.com/gsd-build/gsd-2",
+        "https://github.com/RhysSullivan/executor"
+      ],
+      "lastUpdated": "2026-11-01",
+      "keyNumbers": [],
+      "relatedDocs": [
+        "harness-engineering",
+        "verification",
+        "swe-bench-ecosystem"
+      ]
+    },
+    {
+      "id": "signals",
+      "title": "Signals",
+      "path": "docs/signals/README.md",
+      "kind": "hub",
+      "parent": null,
+      "children": [
+        "x-insights"
+      ],
+      "tags": [
+        "x",
+        "primary-posts"
+      ],
+      "sources": [],
+      "lastUpdated": "2026-11-01",
+      "keyNumbers": [],
+      "relatedDocs": [
+        "x-insights"
+      ]
+    },
+    {
+      "id": "x-insights",
+      "title": "X Insights",
+      "path": "docs/signals/x-insights.md",
+      "kind": "signal",
+      "parent": "signals",
+      "children": [],
+      "tags": [
+        "x",
+        "coding-agents",
+        "harness",
+        "sandbox",
+        "ci",
+        "agent-skills",
+        "mcp",
+        "evals",
+        "review-bottleneck"
+      ],
+      "sources": [
+        "https://x.com/hwchase17/status/2115854759991369840",
+        "https://x.com/rauchg/status/2115874115118834153",
+        "https://x.com/AmpCode/status/2115912054964179204",
+        "https://x.com/rauchg/status/2115539426684408300",
+        "https://x.com/amasad/status/2115485095251308740",
+        "https://x.com/hwchase17/status/2115161782079897946"
+      ],
+      "lastUpdated": "2026-11-01",
+      "keyNumbers": [
+        "Devin Fusion 68 on Coding Agent Index",
+        "71% saved 20+ hours (Utah Claude Code pilot)"
+      ],
+      "relatedDocs": [
+        "harness-engineering-openai",
+        "sandbox-isolation",
+        "software-factory-operations-2026-07-16",
+        "landscape",
+        "devin-factory",
+        "vercel",
+        "amp",
+        "replit-agent-habitat"
+      ]
     }
-  ],
-  "categories": {
-    "core-systems": "Production systems and frameworks studied in depth",
-    "landscape": "Market analysis, enterprise adoption, competitive positioning",
-    "deep-dive": "Cross-cutting topics explored across multiple sources",
-    "architecture": "Patterns, tooling, and composition strategies",
-    "reference": "Consolidated indices and definitions",
-    "internal": "Software Factory project-specific documents"
-  }
+  ]
 }

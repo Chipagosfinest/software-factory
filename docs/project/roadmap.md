@@ -1,0 +1,171 @@
+# Software Factory Roadmap
+
+*Refreshed 2026-11-01*
+
+*Updated: July 16, 2026*
+
+---
+
+## Vision: Factory → Quality → General-Purpose
+
+At its core, this is **container management running different automation tasks per system**. Each new system we onboard reuses the same infrastructure — isolated containers, cron schedules, verification loops, governance — just with different agents and different data. Every system we add compounds the value.
+
+---
+
+## Phase 1: Application Uptime + Graph Growth (NOW)
+
+Prove one governed factory loop end to end before expanding the agent fleet: admit a task, bind it to an isolated workspace, make a change, run deterministic verification, commit, push, and open a draft PR with a proof bundle.
+
+**Current prototype:** 5 core agent handlers + 5 cron handlers, SQLite state, BullMQ queues, and a worktree orchestrator
+**Key metric:** Successful disposable-repository runs with complete proof bundles, followed by review time, revert rate, and incident rate
+
+### Status
+- PR reviewer: effectful GitHub review path exists; live integration proof is missing
+- CI, security, incident, and merge agents: produce proposed actions but do not apply, commit, push, or open PRs
+- Orchestrator: state machine and worktree helpers are unit-tested but not bound through a live end-to-end run
+- Cron/data agents: not production-safe; schema, identity mapping, live-source verification, and calibration gaps remain
+- P0 blockers: one connected mutation flow, mandatory production auth/config, disposable-repo integration test, CI, staging/deploy config, and observability
+
+See [Codebase Status](./codebase-status.md) for source-backed implementation detail and [Production Case Studies](../case-studies/production-case-studies-state-of-play-2026-07-16.md) for the current external evidence.
+
+---
+
+## Phase 1.5: Quality Verification Layer (NEW — informed by Karpathy thesis research)
+
+The industry is converging on a critical finding: **agents produce working but low-quality code**, and instruction-based constraints (CLAUDE.md, AGENTS.md) don't enforce quality. The mitigation is programmatic verification.
+
+**New components to build:**
+
+| Component | Purpose | Source |
+|-----------|---------|--------|
+| **Code Quality Verifier** | AST complexity checks, duplication detection, style linting | Karpathy Q&A, "Lint Against the Machine", CodeRabbit data |
+| **Regression Guard** | Track zero-regression rate across consecutive PRs | Alibaba SWE-CI benchmark (75% of agents break working code) |
+| **LLM-as-Judge for Quality** | Soft signal: readability, architecture coherence, duplication | Pydantic evals, W&B guide, Karpathy "low-hanging fruit" comment |
+| **Hook-based Enforcement** | PreToolUse/PostToolUse hooks that `exit 2` on violations | Claude Code #33097, #33603 — consensus: hooks > instructions |
+
+**Architecture:**
+```
+Agent generates code
+      │
+  Deterministic checks (free, fast)
+  ├── AST complexity (cyclomatic, nesting)
+  ├── Duplication detection (copy-paste blocks)
+  ├── Style linting (beyond formatting)
+  └── Type checking
+      │
+  Test execution (hard gate — does it work?)
+      │
+  LLM-as-Judge (soft signal — is it good?)
+  ├── Readability assessment
+  ├── Architecture coherence
+  └── Goodhart-aware scoring
+      │
+  Score → feed back or flag for human review
+```
+
+**Key metric:** Code quality score trending up + zero-regression rate > 50% (Claude Opus baseline from SWE-CI)
+
+**Research:** See `docs/patterns/self-improvement/karpathy-software-factory-thesis.md` for full evidence base.
+
+---
+
+## Phase 2: General-Purpose Factory
+
+Extract patterns that work for the initial application and make them reusable. Same container orchestration, same governance, same verification loops — different repos, different agents.
+
+**Containers:** Same core agents, parameterized per-repo
+**Key metric:** Time to onboard a new repo (target: <1 hour)
+
+### Orchestration UI Decision Point
+
+Two paths:
+1. **Build our own dashboard** — full control, tight integration with verification loops
+2. **Integrate with Paperclip** — 24K-star OSS orchestration layer, org charts, goal alignment, BYOA. We'd be the "factory floor" agents that Paperclip orchestrates.
+
+**Paperclip pros:** Beautiful React UI, multi-company isolation, cost governance, marketplace (ClipMart), massive community traction
+**Paperclip cons:** No verification loops, no LLM judge, no CI integration, no knowledge graph — all things we have
+
+**Likely answer:** Software Factory agents + Paperclip orchestration = best of both. We provide the execution quality guarantees they lack.
+
+---
+
+## Phase 3: Domain-Specific Applications
+
+Apply the factory to domain-specific platforms (commerce, fintech, healthcare). Same agents that review PRs review transaction flows, same CI debugger diagnoses pipeline failures, same security patcher responds to compliance alerts.
+
+**Containers:** Core agents + domain-specific agents (transaction reviewer, compliance checker)
+**Key metric:** Mean time to detect + fix domain pipeline issues
+
+---
+
+## Phase 4: Marketplace Crawlers
+
+Deploy crawler agents that ensure we're always offering the best configurations, freshest prices, and working APIs. Same container infrastructure — just different cron schedules and different data targets.
+
+**Containers:** Pricing crawlers, API health checkers, config validators, deal scrapers
+**Key metric:** Data freshness (% of products with pricing updated in last 7 days)
+
+---
+
+## Architecture Reuse (Compounding)
+
+```
+Phase 1:   Target App     → Build container orchestration + governance + verification
+Phase 1.5: Quality Layer  → Add code quality verification (industry catching up to this need)
+Phase 2:   General        → Reuse for any repo (same infra, different agents)
+Phase 3:   Domain Apps    → Reuse for commerce/fintech (same infra, different domain)
+Phase 4:   Marketplace    → Reuse for data freshness (same infra, different targets)
+```
+
+Each phase adds ~2-5 new agent types but reuses 100% of:
+- Container management (sandbox creation, warm pools, teardown)
+- Queue infrastructure (BullMQ dispatch, retry logic, dead letter)
+- Governance (permissions, cost caps, audit trails, blast radius)
+- Verification loops (deterministic checks, LLM judge, bounded retries)
+- Entry points (webhooks, cron, Slack, CLI)
+- Quality enforcement (AST checks, regression guard, hook-based constraints)
+
+| Component | Target App | Quality Layer | General | Domain Apps | Marketplace |
+|-----------|------------|---------------|---------|-------------|-------------|
+| Event Router | GitHub webhooks | — | GitHub webhooks | Transaction events | Cron schedules |
+| Agents | PR review, CI debug, graph crons | Quality verifier, regression guard | PR review, CI debug, security | Transaction review, compliance | Price crawlers, API health |
+| Verification | LLM judge, CI retry | + AST checks, duplication, LLM quality judge | Same | + Compliance rules | + Rate limits, budget caps |
+| Queue | Webhook + cron | Same | Same | Transaction processing | Crawl scheduling |
+| Audit Log | Agent actions | + Quality scores | Agent actions | Compliance trail | Data lineage |
+| Data Target | Knowledge graph (Supabase) | Code quality metrics | Target repo | Domain flows | Product catalog |
+
+---
+
+## Research Sources
+
+| Source | Key Pattern | Applied Where |
+|--------|------------|---------------|
+| OpenAI Harness Engineering | AGENTS.md as map, layered architecture, golden principles, background GC agents, agent-legible observability, execution plans | Knowledge base structure, linter enforcement, codebase self-maintenance |
+| Spotify Honk | K8s containers, LLM judge, verification loops | Sandbox, CI debugger |
+| Ramp Inspect | Modal warm pools, multiplayer sessions | Sandbox warm pools |
+| Stripe Minions | 400+ MCP tools, devboxes, conditional rules | Tool strategy, per-dir rules |
+| LangChain Deep Agents | Middleware pipelines, sub-agents, context summarization, skills | Middleware refactor phase |
+| OpenAI Symphony | Orchestrator state machine, reconciliation loop | Orchestrator |
+| Shopify Aquifer | Durable session/event state separated from disposable harnesses and sandboxes | Orchestrator and execution state |
+| DoorDash DashBench | Replayable review benchmark with precision, recall, severity, latency, and cost | Evaluation backlog |
+| Pinterest skill harness | Explicit and implicit skill-selection regression tests | Evaluation backlog |
+| Datadog harness-first agents | Production telemetry and deterministic simulation as verification | Verification backlog |
+| Karpathy Autoresearch | NEVER STOP loop, single-metric acceptance, fixed time budget, crash recovery, simplicity criterion | Agent loop design, convergence detection, safety guardrails |
+| Tobi Lutke QMD | Hybrid search (BM25 + vector + reranking), MCP server, collections + context, query expansion | Agent knowledge retrieval, docs/ search |
+| Paperclip AI | Per-agent monthly budgets, task checkout locks, heartbeat protocol, React dashboard, run transcript persistence | Budget guard upgrade (Now), transcript storage (Now), fleet orchestration + dashboard (Phase 3) |
+
+---
+
+## Competitive Landscape Context
+
+The market is splitting into two layers:
+1. **Agent execution** (Software Factory, Factory.ai, Devin, Copilot) — actually runs agents that write code
+2. **Agent orchestration** (Paperclip, LangSmith Fleet, Walseth AI) — manages fleets of agents
+
+We sit firmly in execution with unique verification. See `docs/landscape/README.md` for full breakdown.
+
+The Karpathy thesis research (`docs/patterns/self-improvement/karpathy-software-factory-thesis.md`) confirms our timing:
+- "Agents don't listen to AGENTS.md" → our hooks + governance layer is the answer
+- "Code quality is a shrug" → our verification loops fill the gap
+- "Token throughput is the new bottleneck" → our bounded retries (max 2) prevent waste
+- "Engineers are factory managers now" → our PR-as-review-gate keeps humans on the loop

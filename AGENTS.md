@@ -1,95 +1,105 @@
 # AGENTS.md — Navigation Map
 
-> This file is a map, not an encyclopedia. ~100 lines. Read the linked docs for depth.
+> Map, not an encyclopedia. Parse [docs/index.json](docs/index.json) and open only the nodes you need.
 
-## Start Here
+*Refreshed 2026-11-01*
 
-**First time?** Read these three in order:
-1. [README.md](README.md) — The core insight, research sources, competency heat map
-2. [Harness Engineering (OpenAI)](docs/harness-engineering.md) — The foundational pattern everything builds on
-3. [Potent Combos](docs/potent-combos.md) — How the patterns compose into architectures
+## Rule
 
-**Already familiar?** Jump to what you need below.
+Every new doc declares a parent in [docs/index.json](docs/index.json) and is listed there. Hubs use `"parent": null`. Anything else with no parent is an orphan. Before you commit, run `npm run check:index`. It fails on unindexed files, missing files, broken ids or links, orphans, and a `docCount` that does not match the markdown files under `docs/`.
 
----
+## Tree
 
-## If You Need To...
+- [Harness engineering](docs/patterns/harness-engineering/README.md)
+  - [OpenAI](docs/patterns/harness-engineering/harness-engineering-openai.md)
+  - [LangChain](docs/patterns/harness-engineering/harness-engineering-langchain.md)
+  - [Deep Agents](docs/patterns/harness-engineering/deep-agents.md)
+  - [Context engineering](docs/patterns/harness-engineering/context-engineering.md)
+  - [codex-planr](docs/patterns/harness-engineering/codex-planr.md)
+- [Background agents](docs/patterns/background-agents/README.md)
+  - [Sandbox isolation](docs/patterns/background-agents/sandbox-isolation.md)
+  - [Sandbox architecture 2026](docs/patterns/background-agents/sandbox-architecture-2026.md)
+  - [Open-Inspect architecture](docs/patterns/background-agents/background-agents-open-inspect.md)
+  - [Agent filesystems](docs/patterns/background-agents/agent-filesystems.md)
+  - [Cloudflare Dynamic Workers](docs/patterns/background-agents/cloudflare-dynamic-workers.md)
+- [Orchestration](docs/patterns/orchestration/README.md)
+  - [Symphony-style orchestrator](docs/patterns/orchestration/orchestrator.md)
+  - [Composio Agent Orchestrator](docs/patterns/orchestration/agent-orchestrator.md)
+  - [Paperclip org chart](docs/patterns/orchestration/paperclip-org-chart.md)
+  - [Symphony role inversion](docs/patterns/orchestration/symphony-carson.md)
+  - [Potent Combos](docs/patterns/orchestration/potent-combos.md)
+- [Verification](docs/patterns/verification/README.md)
+  - [SWE-bench ecosystem](docs/patterns/verification/swe-bench-ecosystem.md)
+- [Governance and safety](docs/patterns/governance-safety/README.md)
+  - [Agent safety and cost control](docs/patterns/governance-safety/agent-safety-cost-control.md)
+  - [Repo protection tooling](docs/patterns/governance-safety/repo-protection-tooling-comparison-2026-04-27.md)
+- [Memory and knowledge](docs/patterns/memory-knowledge/README.md)
+  - [Agent memory systems](docs/patterns/memory-knowledge/agent-memory-systems.md)
+  - [QMD](docs/patterns/memory-knowledge/qmd.md)
+  - [Obsidian knowledge](docs/patterns/memory-knowledge/obsidian-knowledge.md)
+  - [Latent briefing / KV compaction](docs/patterns/memory-knowledge/latent-briefing-kv-compaction.md)
+- [Self-improvement](docs/patterns/self-improvement/README.md)
+  - [Autoresearch](docs/patterns/self-improvement/autoresearch.md)
+  - [Karpathy software factory thesis](docs/patterns/self-improvement/karpathy-software-factory-thesis.md)
+  - [Ramp self-maintaining code](docs/patterns/self-improvement/ramp-self-maintaining-code.md)
+- [Landscape](docs/landscape/README.md)
+  - [Enterprise adoption](docs/landscape/enterprise-adoption.md)
+  - [Devin and Factory.ai](docs/landscape/devin-factory.md)
+  - [GitHub ecosystem](docs/landscape/github-ecosystem.md)
+  - [Dev tools stack](docs/landscape/dev-tools-stack.md)
+  - [MCP ecosystem](docs/landscape/mcp-ecosystem-deep-dive.md)
+- [Case studies](docs/case-studies/README.md)
+  - [State of play, 2026-07-16](docs/case-studies/production-case-studies-state-of-play-2026-07-16.md)
+  - [Codebase sprawl, 2026-05-26](docs/case-studies/autonomous-codebase-sprawl-2026-05-26.md)
+  - [Post-merge review, 2026-05-26](docs/case-studies/autonomous-codebase-post-merge-review-2026-05-26.md)
+- [Signals](docs/signals/README.md)
+  - [X insights](docs/signals/x-insights.md)
+- [Reference](docs/reference/README.md)
+  - [Glossary](docs/reference/glossary.md)
+  - [Key numbers](docs/reference/key-numbers.md)
+  - [Open questions](docs/reference/open-questions.md)
+- [Project](docs/project/README.md)
+  - [Codebase status](docs/project/codebase-status.md)
+  - [Roadmap](docs/project/roadmap.md)
+  - [Risk forecast](docs/project/risk-forecast.md)
+  - [Operations](docs/project/software-factory-operations-2026-07-16.md)
+- [Practitioners](docs/practitioners/README.md) — one profile per team; see the README section "Practitioners doing this well"
 
-### Understand How Agents Work Internally
+## When to use what
 
-| Question | Read |
-|----------|------|
-| How do I structure the environment around a model? | [Harness Engineering (OpenAI)](docs/harness-engineering.md) |
-| How do I compose agent capabilities via middleware? | [Deep Agents](docs/deep-agents.md) |
-| What information should enter the context window? | [Context Engineering](docs/context-engineering.md) |
-| How did LangChain get +13.7pp with harness-only changes? | [Harness Engineering (LangChain)](docs/harness-engineering-langchain.md) |
-| How do I make agents plan before executing? | [codex-planr](docs/codex-planr.md) |
-| How do I run agents in an infinite improvement loop? | [Autoresearch](docs/autoresearch.md) |
-| How do agents search knowledge effectively? | [QMD](docs/qmd.md) |
-| How do agents remember across sessions? | [Agent Memory Systems](docs/agent-memory-systems.md) |
+| Situation | Pattern | Example teams | Doc |
+|-----------|---------|---------------|-----|
+| Many independent, well-scoped tasks | Background agents | Stripe Minions, Spotify Honk | [Background agents](docs/patterns/background-agents/README.md) |
+| Humans join one sandbox mid-flight | Background agents | Ramp Inspect, Open-Inspect | [Sandbox isolation](docs/patterns/background-agents/sandbox-isolation.md) |
+| Same model, weak results | Harness engineering | OpenAI Codex, LangChain Deep Agents | [Harness engineering](docs/patterns/harness-engineering/README.md) |
+| Clear done-signal, scope creep is the risk | Verification | Spotify Honk, StrongDM | [Verification](docs/patterns/verification/README.md) |
+| CI latency blocks agent throughput | Verification | Vercel, Stripe Minions | [Vercel](docs/practitioners/vercel.md) |
+| Several agents need budget, locks, or a lifecycle | Orchestration | Paperclip, Composio | [Orchestration](docs/patterns/orchestration/README.md) |
+| Spend or blast radius can run away | Governance and safety | Paperclip, Replit Agent Habitat, Cline | [Governance and safety](docs/patterns/governance-safety/README.md) |
+| The window is full, or the next run must remember | Memory and knowledge | LangChain Deep Agents, Ramp Labs | [Memory and knowledge](docs/patterns/memory-knowledge/README.md) |
+| An objective metric should keep a loop running | Self-improvement | Ramp Inspect, StrongDM, Amp | [Self-improvement](docs/patterns/self-improvement/README.md) |
+| You need the market map, not a mechanism | Landscape | — | [Landscape](docs/landscape/README.md) |
+| You need a dated production survey | Case studies | Shopify, Block, DoorDash, Spotify | [State of play](docs/case-studies/production-case-studies-state-of-play-2026-07-16.md) |
 
-### Deploy Agents at Scale
+Numbers live in [key numbers](docs/reference/key-numbers.md). Terms live in the [glossary](docs/reference/glossary.md). Unsettled conflicts live in [open questions](docs/reference/open-questions.md). Recent primary posts live in [X insights](docs/signals/x-insights.md). This repo's own build state lives under [Project](docs/project/README.md).
 
-| Question | Read |
-|----------|------|
-| How does Spotify verify agent output with LLM judges? | [Sandbox Isolation](docs/sandbox-isolation.md) (Honk section) |
-| How does Stripe process 1,300 PRs/week? | [Sandbox Isolation](docs/sandbox-isolation.md) (Minions section) |
-| How does Ramp get sandboxes to start in seconds? | [Sandbox Isolation](docs/sandbox-isolation.md) (Inspect section) |
-| How does Open-Inspect clone Ramp's architecture? | [Background Agents (Open-Inspect)](docs/background-agents-open-inspect.md) |
-| What are the two sandbox architecture patterns? | [Sandbox Architecture 2026](docs/sandbox-architecture-2026.md) |
-| How do I manage a fleet of agents? | [Paperclip](docs/paperclip.md) + [Agent Orchestrator](docs/agent-orchestrator.md) |
-| How do I orchestrate with state machines and worktrees? | [Orchestrator](docs/orchestrator.md) |
+## How the index is shaped
 
-### Govern and Control Agents
+`parent` is the containment link. `children` is the inverse, maintained on the parent. `relatedDocs` is lateral: a note can point at a peer without becoming its child. `patterns` on a practitioner and `practitioners` on a pattern are the cross-links between those two kinds. `sources` are URLs, not nicknames.
 
-| Question | Read |
-|----------|------|
-| How do I prevent runaway costs? | [Agent Safety & Cost Control](docs/agent-safety-cost-control.md) |
-| What approval patterns exist? | [Agent Safety & Cost Control](docs/agent-safety-cost-control.md) (Approval Gates) |
-| How do I prevent agent throughput from overwhelming review? | [Software Factory Operations](docs/software-factory-operations-2026-07-16.md) |
-| How should agents earn merge autonomy? | [Software Factory Operations](docs/software-factory-operations-2026-07-16.md) (Earned Autonomy Ladder) |
-| What topologies/combos fit my team size? | [Potent Combos](docs/potent-combos.md) (Build Profiles) |
+A pattern hub (`docs/patterns/<name>/README.md`) is `kind: hub` with `parent: null`. Its writeups are `kind: pattern`. Practitioner profiles are `kind: practitioner` and parent to [practitioners](docs/practitioners/README.md). Do not file a new team note under a pattern directory; link it.
 
-### Evaluate the Market
+## Adding a doc
 
-| Question | Read |
-|----------|------|
-| What are the latest production case studies and what changed? | [Production Case Studies: State of Play](docs/production-case-studies-state-of-play-2026-07-16.md) |
-| What tools exist and how do they compare? | [Coding Agents Landscape](docs/coding-agents-landscape.md) |
-| How are enterprises adopting agentic coding? | [Enterprise Adoption](docs/enterprise-adoption.md) |
-| How does Devin/Factory.ai compare to us? | [Competitive Analysis](docs/competitive-analysis.md) + [Devin + Factory.ai](docs/devin-factory.md) |
-| What benchmarks matter and which are gamed? | [SWE-bench Ecosystem](docs/swe-bench-ecosystem.md) |
-| What is GitHub building for agents? | [GitHub Ecosystem](docs/github-ecosystem.md) |
-| What dev tools integrate well with agents? | [Dev Tools Stack](docs/dev-tools-stack.md) |
-| How does MCP connect agents to tools? | [MCP Ecosystem](docs/mcp-ecosystem-deep-dive.md) |
-| What does Carson's role-inversion thesis mean? | [Symphony + Carson](docs/symphony-carson.md) |
-| What are leading agent teams publishing on X? | [X Insights](docs/x-insights.md) |
+1. Pick the parent hub. If none fits, add a hub first. Do not leave the file at `docs/` root.
+2. Use a kebab-case filename. The id matches that filename (`README.md` hubs use the directory name).
+3. Add the entry to [docs/index.json](docs/index.json): `kind`, `parent`, `sources`, and either `patterns` or `practitioners` when the kind requires it. Set `docCount` to the number of `docs/**/*.md` files.
+4. Link the new file from its parent README and from this tree.
+5. Run `npm run check:index`. Fix orphans, broken relative links, and id mismatches before committing.
 
-### Quick Reference
+## First read
 
-| Resource | What It Contains |
-|----------|-----------------|
-| [KEY-NUMBERS.md](docs/KEY-NUMBERS.md) | Every quantitative finding in one place |
-| [GLOSSARY.md](docs/GLOSSARY.md) | Canonical definitions for ~40 terms |
-| [OPEN-QUESTIONS.md](docs/OPEN-QUESTIONS.md) | Contradictions, unknowns, frontier |
-| [Competency Graph](docs/competency-graph.md) | 25-dimension matrix across all sources |
-| [index.json](docs/index.json) | Machine-parseable doc metadata for agents |
-
----
-
-## For Agents Consuming This Repo
-
-1. Parse [docs/index.json](docs/index.json) to find relevant docs by category/tags
-2. Read only what's relevant — don't load all 40 indexed docs
-3. Numbers are consolidated in [KEY-NUMBERS.md](docs/KEY-NUMBERS.md) — no need to grep
-4. Term definitions are in [GLOSSARY.md](docs/GLOSSARY.md) — use canonical meanings
-
----
-
-## Internal Docs (Project-Specific)
-
-| Document | Purpose |
-|----------|---------|
-| [Roadmap](docs/roadmap.md) | Software Factory build phases |
-| [Risk Forecast](docs/risk-forecast.md) | First-30-days operational risks |
-| [Codebase Status](docs/codebase-status.md) | Verified implementation state and production gaps |
+1. [README](README.md) — thesis, topology sketches, practitioner one-liners
+2. [Harness engineering](docs/patterns/harness-engineering/README.md) — the environment around the model
+3. [Potent Combos](docs/patterns/orchestration/potent-combos.md) — how the topologies compose
+4. [Verification](docs/patterns/verification/README.md) — deterministic checks, judge, bounded retries
