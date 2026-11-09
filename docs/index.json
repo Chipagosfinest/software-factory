@@ -1,7 +1,7 @@
 {
   "version": 2,
-  "generated": "2026-11-02",
-  "docCount": 139,
+  "generated": "2026-11-09",
+  "docCount": 140,
   "decisionMap": [
     {
       "situation": "Many independent, well-scoped tasks (CI failures, migrations, bumps)",
@@ -749,9 +749,10 @@
       ],
       "sources": [
         "https://github.com/paperclipai/paperclip",
-        "https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents"
+        "https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents",
+        "https://www.youtube.com/watch?v=-GpxKKgoWWg"
       ],
-      "lastUpdated": "2026-11-01",
+      "lastUpdated": "2026-11-09",
       "keyNumbers": [],
       "relatedDocs": [
         "agent-safety-cost-control",
@@ -763,7 +764,8 @@
         "stripe-minions",
         "replit-agent-habitat",
         "cline",
-        "amp"
+        "amp",
+        "levi-strauss"
       ]
     },
     {
@@ -1300,9 +1302,10 @@
         "https://github.com/paperclipai/paperclip",
         "https://github.com/ComposioHQ/agent-orchestrator",
         "https://www.youtube.com/watch?v=Shqcc2aRTGY",
-        "https://www.youtube.com/watch?v=kY0_rRtJ8BM"
+        "https://www.youtube.com/watch?v=kY0_rRtJ8BM",
+        "https://www.youtube.com/watch?v=-GpxKKgoWWg"
       ],
-      "lastUpdated": "2026-11-02",
+      "lastUpdated": "2026-11-09",
       "keyNumbers": [],
       "relatedDocs": [
         "orchestrator",
@@ -1329,7 +1332,8 @@
         "harness-ai",
         "graphite",
         "conductor",
-        "nimbalyst"
+        "nimbalyst",
+        "levi-strauss"
       ]
     },
     {
@@ -1666,9 +1670,10 @@
         "https://engineering.atspotify.com/2025/12/feedback-loops-background-coding-agents-part-3",
         "https://www.swebench.com/",
         "https://www.youtube.com/watch?v=rUlnhU0de7A",
-        "https://www.youtube.com/watch?v=Shqcc2aRTGY"
+        "https://www.youtube.com/watch?v=Shqcc2aRTGY",
+        "https://www.youtube.com/watch?v=-GpxKKgoWWg"
       ],
-      "lastUpdated": "2026-11-02",
+      "lastUpdated": "2026-11-09",
       "keyNumbers": [],
       "relatedDocs": [
         "swe-bench-ecosystem",
@@ -1707,7 +1712,8 @@
         "greptile",
         "graphite",
         "qodo",
-        "swe-bench"
+        "swe-bench",
+        "levi-strauss"
       ]
     },
     {
@@ -1795,6 +1801,7 @@
         "kilo-code",
         "kiro",
         "langchain-deep-agents",
+        "levi-strauss",
         "linear-agents",
         "lovable",
         "magic",
@@ -1841,7 +1848,7 @@
         "profiles"
       ],
       "sources": [],
-      "lastUpdated": "2026-11-02",
+      "lastUpdated": "2026-11-09",
       "keyNumbers": [],
       "relatedDocs": [
         "harness-engineering",
@@ -1860,12 +1867,14 @@
       "tags": [],
       "sources": [
         "https://x.com/AmpCode/status/2115912054964179204",
-        "https://x.com/AmpCode/status/2116243991922671619"
+        "https://x.com/AmpCode/status/2116243991922671619",
+        "https://x.com/AmpCode/status/2117995287859929166"
       ],
-      "lastUpdated": "2026-11-02",
+      "lastUpdated": "2026-11-09",
       "keyNumbers": [
         "$10 credits in the bug-fix email",
-        "500s during rollout"
+        "500s during rollout",
+        "21 co-founders"
       ],
       "relatedDocs": [],
       "patterns": [
@@ -1937,12 +1946,15 @@
         "https://devin.ai/customers/nubank/",
         "https://building.nubank.com/enhancing-engineering-workflows-with-ai-a-real-world-experience/",
         "https://cognition.ai/blog/devin-annual-performance-review-2025",
-        "https://x.com/cognition/status/2112290148205436979"
+        "https://x.com/cognition/status/2112290148205436979",
+        "https://x.com/cognition/status/2118390707228745948",
+        "https://x.com/cognition/status/2118069614521241739"
       ],
-      "lastUpdated": "2026-11-01",
+      "lastUpdated": "2026-11-09",
       "keyNumbers": [
         "67% PR merge rate",
-        "Devin Fusion 68"
+        "Devin Fusion 68",
+        "Devin Review 2.0 up to 5x cheaper and 1.5x faster"
       ],
       "relatedDocs": [],
       "patterns": [
@@ -2011,9 +2023,11 @@
         "https://x.com/hwchase17/status/2115854759991369840",
         "https://x.com/hwchase17/status/2112650555852275951",
         "https://www.youtube.com/watch?v=xy_7SzwsIjM",
-        "https://www.youtube.com/watch?v=Wb3hQaG_xf0"
+        "https://www.youtube.com/watch?v=Wb3hQaG_xf0",
+        "https://x.com/hwchase17/status/2118464263497142576",
+        "https://x.com/hwchase17/status/2118739844696277338"
       ],
-      "lastUpdated": "2026-11-02",
+      "lastUpdated": "2026-11-09",
       "keyNumbers": [
         "52.8\u219266.5% Terminal Bench",
         "+13.7pp harness-only"
@@ -2064,13 +2078,16 @@
         "https://openai.com/index/introducing-the-codex-app/",
         "https://github.com/openai/symphony/blob/main/SPEC.md",
         "https://openai.com/index/open-source-codex-orchestration-symphony/",
-        "https://www.youtube.com/watch?v=lPZQrVFcz3c"
+        "https://www.youtube.com/watch?v=lPZQrVFcz3c",
+        "https://x.com/OpenAIDevs/status/2117408792346509663"
       ],
-      "lastUpdated": "2026-11-02",
+      "lastUpdated": "2026-11-09",
       "keyNumbers": [
         "~1M lines, 0 hand-written",
         "3.5 PRs/eng/day",
-        "57.0% SWE-bench Pro"
+        "57.0% SWE-bench Pro",
+        "about 80% push latency cut (Pando)",
+        "nearly a petabyte of Git data a day"
       ],
       "relatedDocs": [
         "youtube"
@@ -2167,10 +2184,13 @@
       "tags": [],
       "sources": [
         "https://x.com/amasad/status/2115485095251308740",
-        "https://x.com/amasad/status/2116998155925360965"
+        "https://x.com/amasad/status/2116998155925360965",
+        "https://x.com/amasad/status/2118503241390665776"
       ],
-      "lastUpdated": "2026-11-02",
-      "keyNumbers": [],
+      "lastUpdated": "2026-11-09",
+      "keyNumbers": [
+        "96% of recent Linux zero-days avoided"
+      ],
       "relatedDocs": [],
       "patterns": [
         "background-agents",
@@ -2268,9 +2288,10 @@
         "https://x.com/rauchg/status/2115539426684408300",
         "https://vercel.com/blog/how-we-built-aeo-tracking-for-coding-agents",
         "https://x.com/cramforce/status/2117267405923815913",
-        "https://x.com/cramforce/status/2116323769967128620"
+        "https://x.com/cramforce/status/2116323769967128620",
+        "https://x.com/cramforce/status/2117731626100863085"
       ],
-      "lastUpdated": "2026-11-02",
+      "lastUpdated": "2026-11-09",
       "keyNumbers": [
         "20 worldwide clusters",
         "millions of microVMs per day"
@@ -2643,9 +2664,11 @@
         "https://www.youtube.com/watch?v=DCH1sQ2S2BQ",
         "https://www.youtube.com/watch?v=0NEWeW0Opfk",
         "https://www.youtube.com/watch?v=uyesTWSDllI",
-        "https://sentry.io/resources/launchdarkly-workshop/"
+        "https://sentry.io/resources/launchdarkly-workshop/",
+        "https://www.youtube.com/watch?v=Ks51wPYmM3c",
+        "https://www.youtube.com/watch?v=p8kpOePCsAM"
       ],
-      "lastUpdated": "2026-11-02",
+      "lastUpdated": "2026-11-09",
       "keyNumbers": [],
       "relatedDocs": [
         "youtube"
@@ -2667,9 +2690,11 @@
       "sources": [
         "https://docs.factory.ai",
         "https://x.com/factory/status/2116214422779953574",
-        "https://x.com/matanSF/status/2116215162898436176"
+        "https://x.com/matanSF/status/2116215162898436176",
+        "https://x.com/factory/status/2118033889772155121",
+        "https://x.com/EnoReyes/status/2118767454721851680"
       ],
-      "lastUpdated": "2026-11-02",
+      "lastUpdated": "2026-11-09",
       "keyNumbers": [],
       "relatedDocs": [],
       "patterns": [
@@ -2712,11 +2737,20 @@
       "tags": [],
       "sources": [
         "https://docs.github.com/en/copilot/how-tos/use-copilot-agents/cloud-agent",
-        "https://docs.github.com/en/copilot/concepts/agents/coding-agent"
+        "https://docs.github.com/en/copilot/concepts/agents/coding-agent",
+        "https://github.blog/engineering/architecture-optimization/building-git-infrastructure-for-agent-scale-development/",
+        "https://x.com/github/status/2118830274431873379",
+        "https://x.com/github/status/2119133311465353675",
+        "https://www.youtube.com/watch?v=-GpxKKgoWWg"
       ],
-      "lastUpdated": "2026-11-02",
-      "keyNumbers": [],
-      "relatedDocs": [],
+      "lastUpdated": "2026-11-09",
+      "keyNumbers": [
+        "5,000 concurrent agents on one repo",
+        "7,200 pushes per second"
+      ],
+      "relatedDocs": [
+        "levi-strauss"
+      ],
       "patterns": [
         "background-agents"
       ]
@@ -2806,6 +2840,32 @@
       ]
     },
     {
+      "id": "levi-strauss",
+      "title": "Levi Strauss",
+      "path": "docs/practitioners/levi-strauss.md",
+      "kind": "practitioner",
+      "status": "current",
+      "parent": "practitioners",
+      "children": [],
+      "tags": [],
+      "sources": [
+        "https://www.youtube.com/watch?v=-GpxKKgoWWg"
+      ],
+      "lastUpdated": "2026-11-09",
+      "keyNumbers": [
+        "17 agents on one SDLC",
+        "Back Pocket rebuild about 2.5 months, legacy app 9 months"
+      ],
+      "relatedDocs": [
+        "github-copilot"
+      ],
+      "patterns": [
+        "verification",
+        "orchestration",
+        "governance-safety"
+      ]
+    },
+    {
       "id": "linear-agents",
       "title": "Linear agents",
       "path": "docs/practitioners/linear-agents.md",
@@ -2855,9 +2915,14 @@
       "tags": [],
       "sources": [
         "https://docs.warp.dev/agents",
-        "https://www.youtube.com/watch?v=Shqcc2aRTGY"
+        "https://www.youtube.com/watch?v=Shqcc2aRTGY",
+        "https://www.youtube.com/watch?v=gdFqUnD19lw",
+        "https://www.youtube.com/watch?v=PMRlYAB8kkI",
+        "https://x.com/warpdotdev/status/2118412166034538775",
+        "https://x.com/BHolmesDev/status/2118411592627052937",
+        "https://warp.dev/merge-risk"
       ],
-      "lastUpdated": "2026-11-02",
+      "lastUpdated": "2026-11-09",
       "keyNumbers": [],
       "relatedDocs": [
         "youtube"
@@ -3444,12 +3509,14 @@
       "sources": [
         "https://docs.coderabbit.ai",
         "https://www.coderabbit.ai/",
-        "https://x.com/coderabbitai/status/2116258631222231179"
+        "https://x.com/coderabbitai/status/2116258631222231179",
+        "https://x.com/coderabbitai/status/2118399600101093813"
       ],
-      "lastUpdated": "2026-11-02",
+      "lastUpdated": "2026-11-09",
       "keyNumbers": [
         "$1M tokens over two weeks",
-        "~10k scans and 35,000 critical vulnerabilities in one week"
+        "~10k scans and 35,000 critical vulnerabilities in one week",
+        "GPT-6 Cyber caught 22 of 33 known vulnerabilities"
       ],
       "relatedDocs": [],
       "patterns": [
@@ -3507,9 +3574,11 @@
       "tags": [],
       "sources": [
         "https://docs.qodo.ai",
-        "https://www.youtube.com/watch?v=niH78HK0dUk"
+        "https://www.youtube.com/watch?v=niH78HK0dUk",
+        "https://www.youtube.com/watch?v=sc-Dnzl_VUw",
+        "https://www.youtube.com/watch?v=yC72iQx6rM0"
       ],
-      "lastUpdated": "2026-11-02",
+      "lastUpdated": "2026-11-09",
       "keyNumbers": [],
       "relatedDocs": [
         "youtube"
@@ -3828,7 +3897,7 @@
         "youtube"
       ],
       "sources": [],
-      "lastUpdated": "2026-11-02",
+      "lastUpdated": "2026-11-09",
       "keyNumbers": [],
       "relatedDocs": [
         "x-insights",
@@ -3872,13 +3941,35 @@
         "https://x.com/amasad/status/2116998155925360965",
         "https://x.com/tessl_io/status/2117284507460018665",
         "https://x.com/cursor_ai/status/2116074289053175808",
-        "https://x.com/coderabbitai/status/2116258631222231179"
+        "https://x.com/coderabbitai/status/2116258631222231179",
+        "https://x.com/simonw/status/2119650353142747181",
+        "https://x.com/addyosmani/status/2119332146485891501",
+        "https://x.com/EnoReyes/status/2118767454721851680",
+        "https://x.com/dexhorthy/status/2118718628627464571",
+        "https://x.com/github/status/2118830274431873379",
+        "https://github.blog/engineering/architecture-optimization/building-git-infrastructure-for-agent-scale-development/",
+        "https://x.com/hwchase17/status/2118739844696277338",
+        "https://x.com/hwchase17/status/2118464263497142576",
+        "https://x.com/amasad/status/2118503241390665776",
+        "https://x.com/warpdotdev/status/2118412166034538775",
+        "https://x.com/BHolmesDev/status/2118411592627052937",
+        "https://warp.dev/merge-risk",
+        "https://x.com/factory/status/2118033889772155121",
+        "https://x.com/AmpCode/status/2117995287859929166",
+        "https://x.com/OpenAIDevs/status/2117408792346509663",
+        "https://x.com/cognition/status/2118390707228745948",
+        "https://x.com/cognition/status/2118069614521241739",
+        "https://x.com/coderabbitai/status/2118399600101093813",
+        "https://x.com/cramforce/status/2117731626100863085",
+        "https://x.com/github/status/2119133311465353675"
       ],
-      "lastUpdated": "2026-11-02",
+      "lastUpdated": "2026-11-09",
       "keyNumbers": [
         "Devin Fusion 68 on Coding Agent Index",
         "71% saved 20+ hours (Utah Claude Code pilot)",
-        "CodeRabbit ~10k scans and 35,000 critical vulnerabilities in one week"
+        "CodeRabbit ~10k scans and 35,000 critical vulnerabilities in one week",
+        "5,000 concurrent agents, 7,200 pushes/second (GitHub internal test)",
+        "Pando about 80% push latency cut"
       ],
       "relatedDocs": [
         "harness-engineering-openai",
@@ -3888,7 +3979,12 @@
         "devin-factory",
         "vercel",
         "amp",
-        "replit-agent-habitat"
+        "replit-agent-habitat",
+        "factory-ai",
+        "github-copilot",
+        "openai-codex",
+        "warp",
+        "langchain-deep-agents"
       ]
     },
     {
@@ -3918,9 +4014,17 @@
         "https://www.youtube.com/watch?v=Wb3hQaG_xf0",
         "https://www.youtube.com/watch?v=kY0_rRtJ8BM",
         "https://www.youtube.com/watch?v=niH78HK0dUk",
-        "https://www.youtube.com/watch?v=lPZQrVFcz3c"
+        "https://www.youtube.com/watch?v=lPZQrVFcz3c",
+        "https://www.youtube.com/watch?v=sc-Dnzl_VUw",
+        "https://www.youtube.com/watch?v=-GpxKKgoWWg",
+        "https://www.youtube.com/watch?v=Ks51wPYmM3c",
+        "https://www.youtube.com/watch?v=gdFqUnD19lw",
+        "https://www.youtube.com/watch?v=p8kpOePCsAM",
+        "https://www.youtube.com/watch?v=yC72iQx6rM0",
+        "https://www.youtube.com/watch?v=PMRlYAB8kkI",
+        "https://www.youtube.com/@GitHub"
       ],
-      "lastUpdated": "2026-11-02",
+      "lastUpdated": "2026-11-09",
       "keyNumbers": [],
       "relatedDocs": [
         "sentry-seer",
@@ -3932,7 +4036,9 @@
         "verification",
         "background-agents",
         "harness-engineering",
-        "orchestration"
+        "orchestration",
+        "levi-strauss",
+        "github-copilot"
       ]
     },
     {

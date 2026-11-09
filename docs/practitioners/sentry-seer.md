@@ -1,6 +1,6 @@
 # Sentry Seer
 
-*Refreshed 2026-11-02*
+*Refreshed 2026-11-09*
 
 ## What they do
 
@@ -15,6 +15,10 @@ The [15 October 2026 workshop](https://www.youtube.com/watch?v=rUlnhU0de7A) stat
 The [7 October 2026 video](https://www.youtube.com/watch?v=DCH1sQ2S2BQ) shows Seer Agent, from Slack or inside Sentry, answering from deploy data: which pull requests and commits shipped in a release, and which new issues followed. It can then build a dashboard for that error rate, comment, and assign issues. It uses the caller's permissions and asks before it changes anything.
 
 The [8 October 2026 workshop](https://www.youtube.com/watch?v=0NEWeW0Opfk) treats an agent failure as a wrong answer as well as an HTTP error, and walks traces for a store chatbot, a Slack agent that opens pull requests, and a CI review agent. The [24 September 2026 session](https://www.youtube.com/watch?v=uyesTWSDllI) with LaunchDarkly says review cannot absorb the volume of agent-written code; Sentry's [page for that livestream](https://sentry.io/resources/launchdarkly-workshop/) says the walkthrough wires Sentry into a guarded release, rolls back the broken feature, and deploys a Seer Autofix.
+
+The [6 November 2026 video](https://www.youtube.com/watch?v=Ks51wPYmM3c) shows agent traces with tool and model calls, handoffs, and full input and output transcripts. From a checkout failure, Seer follows the user journey to an inventory root cause, then Autofix plans, pushes code, and drafts a pull request for review.
+
+The [4 November 2026 livestream](https://www.youtube.com/watch?v=p8kpOePCsAM) description says agent cost is more than the model call: a slow or broken backend makes the agent retry, and every retry costs tokens, so one connected trace is needed to see spend that starts in an API or database. Anthropic's CJ Avilla sent Claude Platform OpenTelemetry data to Sentry and found an old project still burning tokens.
 
 ## Patterns shown
 
@@ -34,3 +38,5 @@ No quantitative claim is repeated here. The sources describe the system without 
 - [Debugging Agents in Different Environments](https://www.youtube.com/watch?v=0NEWeW0Opfk) (2026-10-08)
 - [Protecting releases, fixing bugs with Sentry and LaunchDarkly](https://www.youtube.com/watch?v=uyesTWSDllI) (2026-09-24)
 - [LaunchDarkly workshop page](https://sentry.io/resources/launchdarkly-workshop/)
+- [Agent Trace Investigation with Seer](https://www.youtube.com/watch?v=Ks51wPYmM3c) (2026-11-06)
+- [Where Did My Tokens Go?](https://www.youtube.com/watch?v=p8kpOePCsAM) (2026-11-04)

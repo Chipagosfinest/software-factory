@@ -1,6 +1,6 @@
 # Vercel
 
-*Refreshed 2026-11-02*
+*Refreshed 2026-11-09*
 
 ## What they do
 
@@ -13,6 +13,8 @@ The post says the bottleneck in AI coding is CI, and names three fixes:
 3. Agentic CI. A CLI can inspect, abort, trigger, and replay CI runs, so an agent can operate the pipeline instead of waiting out a human's click-path. The post treats this as the start of hooks that can also decide whether a test is worth running.
 
 On November 2, 2026, Malte Ubl attributed Vercel CI's speed to task caching by default (tasks unaffected by the diff never start), installing dependencies once and sharing them across tasks, and running all tasks at maximum concurrency. On October 31, 2026, Vercel Labs released agent-desktop, which brings agent-browser's token-efficient computer use to the whole desktop operating system.
+
+Vercel Security Review is source-code-aware security review combined with knowledge of the app's production risks on Vercel. Vercel's security team used it internally for months before release.
 
 Separately, the README records Vercel coding agents running in ephemeral Firecracker microVMs as a probe fleet for agent-experience tracking.
 
@@ -39,4 +41,5 @@ Other October 2026 posts in X insights, not used as the primary source for this 
 - [Agentic CI, 2026-10-28](https://x.com/rauchg/status/2115539426684408300)
 - [Vercel CI speed, 2026-11-02](https://x.com/cramforce/status/2117267405923815913)
 - [agent-desktop, 2026-10-31](https://x.com/cramforce/status/2116323769967128620)
+- [Security Review](https://x.com/cramforce/status/2117731626100863085)
 - [AEO tracking for coding agents](https://vercel.com/blog/how-we-built-aeo-tracking-for-coding-agents)

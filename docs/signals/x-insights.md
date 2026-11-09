@@ -1,12 +1,102 @@
 # X Insights
 
-*Refreshed 2026-11-02*
+*Refreshed 2026-11-09*
 
 Running log of insights those teams publish on X. Newer collection runs are prepended above older ones.
 
 ## Research Method
 
-First-party posts from team accounts, October 17 – November 2, 2026. Reposts from unverified accounts are excluded. Each entry records the handle, date, post, a short reading of the claim, and the closest topic already in this repo.
+First-party posts from team accounts, November 2 – November 9, 2026. Reposts from unverified accounts are excluded. Each entry records the handle, date, post, a short reading of the claim, and the closest topic already in this repo.
+
+## 2026-11-09
+
+### @simonw (Simon Willison) — 2026-11-09
+
+[Post](https://x.com/simonw/status/2119650353142747181)
+
+He now hides the bulk of AI-generated PR descriptions inside a collapsed `details`/`summary` block, which GitHub Markdown supports, so agent pull requests are less exhausting to review.
+
+**Related:** [Verification](../patterns/verification/README.md), [GitHub Ecosystem](../landscape/github-ecosystem.md)
+
+### @addyosmani (Addy Osmani) — 2026-11-08
+
+[Post](https://x.com/addyosmani/status/2119332146485891501)
+
+The skills for managing coding agents are the skills for managing a team: selecting tasks, writing instructions, delegating, following up, evaluating, and deciding what ships. "Every gripe you have about bad managers is a bug report for interacting with agents." The highest-leverage habit he lists first is giving the agent a way to check its work, and his example brief states the goal, why, constraints, out-of-scope items, and a check command.
+
+**Related:** [Context Engineering](../patterns/harness-engineering/context-engineering.md), [Verification](../patterns/verification/README.md)
+
+### @EnoReyes (Eno Reyes, Factory) — 2026-11-06
+
+[Post](https://x.com/EnoReyes/status/2118767454721851680)
+
+Factory defines a software factory as the same stages for every piece of work, which standardizes the process rather than the output. Work starts from a signal (a Slack thread, Linear ticket, Sentry alert, failing CI job, tweet, or idea); a person picks it up with Droid, or a workstream triages it against a goal and has droids write the spec and open the PR, and most work still starts with a person. Every change gets the same checks regardless of author (Droid review, security review, a risk judge that cannot see who wrote it, CI, and a live-preview QA), validation hill-climbs a regret-free merge rate toward auto-merging most changes, and production breaks traced to the causing PR become new signals.
+
+**Related:** [Factory.ai](../practitioners/factory-ai.md), [Verification](../patterns/verification/README.md), [Orchestration](../patterns/orchestration/README.md), [Self-Improvement](../patterns/self-improvement/README.md)
+
+### @dexhorthy (Dex Horthy) — 2026-11-06
+
+[Post](https://x.com/dexhorthy/status/2118718628627464571)
+
+The term "software factory" is being semantically diffused, and the pre-AI NATO and DoD sense (automate more things) is still a useful model. How a team runs its stack, linters, tests, and previews is too heterogeneous for one product to solve in general, so the best products are building blocks rather than drop-in solutions.
+
+**Related:** [Why Software Factories](../landscape/why-software-factories.md), [Harness Engineering](../patterns/harness-engineering/README.md)
+
+### @github (GitHub) — 2026-11-06
+
+[Post](https://x.com/github/status/2118830274431873379)
+
+In internal testing, GitHub's new Git storage architecture supported 5,000 concurrent agents on one repo sending 7,200 pushes per second, while serving reads at consistently low latency ([engineering post](https://github.blog/engineering/architecture-optimization/building-git-infrastructure-for-agent-scale-development/)). The design minimizes coordination and decouples storage from compute. Git objects are immutable and content-addressed, so only reference updates need agreement.
+
+**Related:** [GitHub Ecosystem](../landscape/github-ecosystem.md), [Background Agents](../patterns/background-agents/README.md)
+
+### @hwchase17 (Harrison Chase, LangChain) — 2026-11-06
+
+[Post](https://x.com/hwchase17/status/2118739844696277338) and [earlier post](https://x.com/hwchase17/status/2118464263497142576)
+
+Most agents LangChain builds internally use async subagents in a meaningful way, and Deep Agents now ships async subagents so the agent keeps talking to the user while subagents work in the background. The same week, a test of seven browser-use toolsets in Managed Deep Agents picked Stagehand.
+
+**Related:** [LangChain Deep Agents](../practitioners/langchain-deep-agents.md), [Orchestration](../patterns/orchestration/README.md)
+
+### @amasad (Amjad Masad, Replit) — 2026-11-06
+
+[Post](https://x.com/amasad/status/2118503241390665776)
+
+Replit's custom kernel build lets it avoid 96% of recent Linux zero-day vulnerabilities. The post points at a write-up of the new sandbox design.
+
+**Related:** [Replit Agent Habitat](../practitioners/replit-agent-habitat.md), [Sandbox Isolation](../patterns/background-agents/sandbox-isolation.md), [Governance and Safety](../patterns/governance-safety/README.md)
+
+### @warpdotdev (Warp) — 2026-11-05
+
+[Post](https://x.com/warpdotdev/status/2118412166034538775) quoting [Ben Holmes](https://x.com/BHolmesDev/status/2118411592627052937)
+
+Three levers for the agent code-review bottleneck: run rounds of adversarial review with your own review agent before a human looks, verify user flows end to end with simulated environments and computer use, and score merge risk on every PR with a [/merge-risk skill](https://warp.dev/merge-risk) so reviewers know where to focus. Owning the reviewer lets the team set grading criteria and turn production incidents and reverts into eval cases. The post does not argue for merging without human review.
+
+**Related:** [Warp](../practitioners/warp.md), [Verification](../patterns/verification/README.md)
+
+### @factory (Factory) — 2026-11-04
+
+[Post](https://x.com/factory/status/2118033889772155121)
+
+HumanLayer is joining Factory, with @dexhorthy and @0xblacklight. HumanLayer is a multiplayer coding-agent IDE and cloud for running agents locally or in the background.
+
+**Related:** [Factory.ai](../practitioners/factory-ai.md), [Devin + Factory.ai](../landscape/devin-factory.md)
+
+### @AmpCode (Amp) — 2026-11-04
+
+[Post](https://x.com/AmpCode/status/2117995287859929166)
+
+Asked how Amp avoids slop with no PR review, one meeting, and anyone able to push to main, @sqs answers "skin in the game": "We have 21 co-founders at Amp… every single person is a public face," and anyone can challenge a change.
+
+**Related:** [Amp](../practitioners/amp.md), [Governance and Safety](../patterns/governance-safety/README.md)
+
+### @OpenAIDevs (OpenAI developers) — 2026-11-03
+
+[Post](https://x.com/OpenAIDevs/status/2117408792346509663)
+
+OpenAI built Pando, a new Git backend for its monorepo, to handle more pushes and fetches without changing how engineers and agents use Git. It cut push latency by about 80% and serves nearly a petabyte of Git data a day. Paired with GitHub's agent-scale storage test, Git itself is becoming an agent-throughput bottleneck.
+
+**Related:** [OpenAI Codex](../practitioners/openai-codex.md), [Background Agents](../patterns/background-agents/README.md)
 
 ## 2026-11-02
 
@@ -174,6 +264,12 @@ Vercel is opening harness durability to any runtime, including Pi and OpenCode. 
 
 ## Notable launches
 
+- [Devin Review 2.0](https://x.com/cognition/status/2118390707228745948) is up to 5x cheaper and 1.5x faster PR review. See [Cognition Devin](../practitioners/cognition-devin.md) and [Verification](../patterns/verification/README.md).
+- [Cognition SWE-2 Flash](https://x.com/cognition/status/2118069614521241739) is a fast coding model. Cognition says it outperforms all American open-weight models on leading evals, and weights are shared with partners and researchers through a gated program. See [Cognition Devin](../practitioners/cognition-devin.md) and [SWE-bench Ecosystem](../patterns/verification/swe-bench-ecosystem.md).
+- [CodeRabbit GPT-6 Cyber eval](https://x.com/coderabbitai/status/2118399600101093813): GPT-6 Cyber inside CodeRabbit's security scan caught 22 of 33 known vulnerabilities, against 19 for its production ensemble, with 66% more high and medium severity findings. See [CodeRabbit](../practitioners/coderabbit.md) and [Verification](../patterns/verification/README.md).
+- [Vercel Security Review](https://x.com/cramforce/status/2117731626100863085) is source-code-aware security review combined with knowledge of the app's production risks on Vercel. Vercel's security team used it internally for months before release. See [Vercel](../practitioners/vercel.md) and [Verification](../patterns/verification/README.md).
+- [GitHub Copilot app projects](https://x.com/github/status/2119133311465353675) give Copilot a goal across one or more repos and have it coordinate sessions and recurring automations. See [GitHub Copilot](../practitioners/github-copilot.md) and [Orchestration](../patterns/orchestration/README.md).
+- [HumanLayer joins Factory](https://x.com/factory/status/2118033889772155121). HumanLayer is a multiplayer coding-agent IDE and cloud for running agents locally or in the background. See [Factory.ai](../practitioners/factory-ai.md).
 - [CodeRabbit free security scans](https://x.com/coderabbitai/status/2116258631222231179) committed $1M in tokens over two weeks for free customer security scans; in one week it ran ~10k scans and identified 35,000 critical vulnerabilities. See [CodeRabbit](../practitioners/coderabbit.md) and [Verification](../patterns/verification/README.md).
 - [Factory Droid 1.0](https://x.com/factory/status/2115934579446182213) claims the top of Terminal-Bench. See [Devin + Factory.ai](../landscape/devin-factory.md) and [SWE-bench Ecosystem](../patterns/verification/swe-bench-ecosystem.md).
 - [Cognition](https://x.com/cognition/status/2112290148205436979) reports a Devin Fusion score of 68 on the Coding Agent Index. See [Devin + Factory.ai](../landscape/devin-factory.md) and [SWE-bench Ecosystem](../patterns/verification/swe-bench-ecosystem.md).
@@ -190,7 +286,7 @@ Handles to read for first-party posts. **Top signal** is the shorter list for a 
 
 ### Already in the October–November 2026 log
 
-[@AnthropicAI](https://x.com/AnthropicAI) (Anthropic) · [@claudeai](https://x.com/claudeai) (Claude) · [@bcherny](https://x.com/bcherny) (Boris Cherny, Claude Code) · [@_catwu](https://x.com/_catwu) (Cat Wu, Claude Code) · [@trq212](https://x.com/trq212) (Claude Code) · [@OpenAIDevs](https://x.com/OpenAIDevs) (OpenAI developers) · [@thsottiaux](https://x.com/thsottiaux) (Thibault Sottiaux, Codex) · [@cursor_ai](https://x.com/cursor_ai) (Cursor) · [@mntruell](https://x.com/mntruell) (Michael Truell, Cursor) · [@leerob](https://x.com/leerob) (Lee Robinson) · [@eric_zakariasson](https://x.com/eric_zakariasson) (Eric Zakariasson, Cursor) · [@cognition](https://x.com/cognition) (Cognition) · [@factory](https://x.com/factory) (Factory) · [@matanSF](https://x.com/matanSF) (Factory) · [@AmpCode](https://x.com/AmpCode) (Amp) · [@sqs](https://x.com/sqs) (Quinn Slack, Sourcegraph) · [@LangChainAI](https://x.com/LangChainAI) (LangChain) · [@hwchase17](https://x.com/hwchase17) (Harrison Chase, LangChain) · [@rauchg](https://x.com/rauchg) (Guillermo Rauch, Vercel) · [@amasad](https://x.com/amasad) (Amjad Masad, Replit) · [@karpathy](https://x.com/karpathy) (Andrej Karpathy) · [@swyx](https://x.com/swyx) (Shawn Wang) · [@simonw](https://x.com/simonw) (Simon Willison) · [@cramforce](https://x.com/cramforce) (Malte Ubl, Vercel) · [@thdxr](https://x.com/thdxr) (Dax Raad, OpenCode/SST) · [@dexhorthy](https://x.com/dexhorthy) (Dex Horthy) · [@tessl_io](https://x.com/tessl_io) (Tessl) · [@coderabbitai](https://x.com/coderabbitai) (CodeRabbit)
+[@AnthropicAI](https://x.com/AnthropicAI) (Anthropic) · [@claudeai](https://x.com/claudeai) (Claude) · [@bcherny](https://x.com/bcherny) (Boris Cherny, Claude Code) · [@_catwu](https://x.com/_catwu) (Cat Wu, Claude Code) · [@trq212](https://x.com/trq212) (Claude Code) · [@OpenAIDevs](https://x.com/OpenAIDevs) (OpenAI developers) · [@thsottiaux](https://x.com/thsottiaux) (Thibault Sottiaux, Codex) · [@cursor_ai](https://x.com/cursor_ai) (Cursor) · [@mntruell](https://x.com/mntruell) (Michael Truell, Cursor) · [@leerob](https://x.com/leerob) (Lee Robinson) · [@eric_zakariasson](https://x.com/eric_zakariasson) (Eric Zakariasson, Cursor) · [@cognition](https://x.com/cognition) (Cognition) · [@factory](https://x.com/factory) (Factory) · [@matanSF](https://x.com/matanSF) (Factory) · [@AmpCode](https://x.com/AmpCode) (Amp) · [@sqs](https://x.com/sqs) (Quinn Slack, Sourcegraph) · [@LangChainAI](https://x.com/LangChainAI) (LangChain) · [@hwchase17](https://x.com/hwchase17) (Harrison Chase, LangChain) · [@rauchg](https://x.com/rauchg) (Guillermo Rauch, Vercel) · [@amasad](https://x.com/amasad) (Amjad Masad, Replit) · [@karpathy](https://x.com/karpathy) (Andrej Karpathy) · [@swyx](https://x.com/swyx) (Shawn Wang) · [@simonw](https://x.com/simonw) (Simon Willison) · [@cramforce](https://x.com/cramforce) (Malte Ubl, Vercel) · [@thdxr](https://x.com/thdxr) (Dax Raad, OpenCode/SST) · [@dexhorthy](https://x.com/dexhorthy) (Dex Horthy) · [@tessl_io](https://x.com/tessl_io) (Tessl) · [@coderabbitai](https://x.com/coderabbitai) (CodeRabbit) · [@EnoReyes](https://x.com/EnoReyes) (Eno Reyes, Factory) · [@github](https://x.com/github) (GitHub) · [@addyosmani](https://x.com/addyosmani) (Addy Osmani) · [@warpdotdev](https://x.com/warpdotdev) (Warp) · [@BHolmesDev](https://x.com/BHolmesDev) (Ben Holmes, Warp) · [@0xblacklight](https://x.com/0xblacklight) (HumanLayer)
 
 ### Labs and vendors
 

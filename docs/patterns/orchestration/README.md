@@ -1,6 +1,6 @@
 # Orchestration
 
-*Refreshed 2026-11-02*
+*Refreshed 2026-11-09*
 
 Parent hub for how many agents share work: state machines, worktrees, org charts, plugin fleets, and the topologies in Potent Combos. A single agent loop is a harness concern. Orchestration starts when more than one run must be scheduled, locked, budgeted, or resumed.
 
@@ -36,6 +36,7 @@ Warp's factory line is an ordered set of steps on one shared agent: triage, a pl
 - [Graphite](../../practitioners/graphite.md)
 - [Conductor](../../practitioners/conductor.md)
 - [Nimbalyst](../../practitioners/nimbalyst.md)
+- [Levi Strauss](../../practitioners/levi-strauss.md)
 
 ## Sources
 

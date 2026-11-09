@@ -19,6 +19,7 @@ Related project note: [Software Factory operations (archived snapshot as of 2026
 - [Replit Agent Habitat](../../practitioners/replit-agent-habitat.md)
 - [Cline](../../practitioners/cline.md)
 - [Amp](../../practitioners/amp.md)
+- [Levi Strauss](../../practitioners/levi-strauss.md)
 
 ## Sources
 

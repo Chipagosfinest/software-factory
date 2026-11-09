@@ -1,6 +1,6 @@
 # Cognition Devin
 
-*Refreshed 2026-11-01*
+*Refreshed 2026-11-09*
 
 ## What they do
 
@@ -16,6 +16,8 @@ Figures below are the ones already written down in this repo. Several are vendor
 - 2025 performance review, as tabulated in the Devin note: 67% pull-request merge rate (up from 34%), hundreds of thousands of merged pull requests, vulnerability fixes at 20x (1.5 minutes versus 30), migrations 10–14x faster than the human baseline they cite.
 - Devin 2.0 pricing in that note: entry moved from $500/month to $20/month, with an ACU (agent compute unit) around $2.25 and about 15 minutes of active work. The note also says real consumption often runs 2–3x the vendor estimate, and failed tasks still consume ACUs.
 - October 2026 signal: Cognition reports a Devin Fusion score of 68 on the Coding Agent Index ([X insights](../signals/x-insights.md)).
+- Devin Review 2.0 is up to 5x cheaper and 1.5x faster pull-request review.
+- SWE-2 Flash is a fast coding model. Cognition says it outperforms all American open-weight models on leading evals. Weights are shared with partners and researchers through a gated program.
 
 ## Patterns shown
 
@@ -31,6 +33,7 @@ Figures below are the ones already written down in this repo. Several are vendor
 | 4x | Sub-task time, 40 min to 10 min, after examples | Devin note |
 | $2.25/ACU | About 15 minutes of active work | Devin note |
 | 68 | Devin Fusion score on the Coding Agent Index | X insights |
+| up to 5x / 1.5x | Devin Review 2.0, cheaper and faster PR review | Cognition |
 
 ## Sources
 
@@ -39,3 +42,5 @@ Figures below are the ones already written down in this repo. Several are vendor
 - [Building Nubank](https://building.nubank.com/enhancing-engineering-workflows-with-ai-a-real-world-experience/)
 - [2025 performance review](https://cognition.ai/blog/devin-annual-performance-review-2025)
 - [Coding Agent Index post](https://x.com/cognition/status/2112290148205436979)
+- [Devin Review 2.0](https://x.com/cognition/status/2118390707228745948)
+- [SWE-2 Flash](https://x.com/cognition/status/2118069614521241739)

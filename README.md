@@ -4,14 +4,14 @@
   <img src="docs/assets/banner.svg" alt="Software Factory: field guide to agentic software factories" width="100%">
 </p>
 
-[![Updated 2026-11-02](https://img.shields.io/badge/updated-2026--11--02-3f3f46)](docs/index.json) [![138 docs](https://img.shields.io/badge/docs-138-3f3f46)](docs/index.json) [![Weekly updates](https://img.shields.io/badge/updates-weekly-3f3f46)](docs/signals/x-insights.md)
+[![Updated 2026-11-09](https://img.shields.io/badge/updated-2026--11--09-3f3f46)](docs/index.json) [![140 docs](https://img.shields.io/badge/docs-140-3f3f46)](docs/index.json) [![Weekly updates](https://img.shields.io/badge/updates-weekly-3f3f46)](docs/signals/x-insights.md)
 
 A research corpus on agent-native software delivery: how teams wire coding agents, what they verify before merge, and which topologies show up in production. Pattern hubs hold the mechanisms. Practitioner profiles hold the cited team record. Dated surveys are archived snapshots; [landscape](docs/landscape/README.md) is the current state of play. Agents parse [`docs/index.json`](docs/index.json).
 
 ## Start here
 
 - [When to use what](AGENTS.md#when-to-use-what) — decision map
-- [Practitioners](docs/practitioners/README.md) — 78 profiles in six categories
+- [Practitioners](docs/practitioners/README.md) — 79 profiles in six categories
 - [Patterns](docs/patterns/) — mechanism hubs
 - [X insights](docs/signals/x-insights.md) — weekly updates
 
@@ -41,11 +41,11 @@ flowchart LR
 
 ## Practitioners
 
-78 profiles. Citations live in the [catalog](docs/practitioners/README.md).
+79 profiles. Citations live in the [catalog](docs/practitioners/README.md).
 
 | Category | Profiles |
 | --- | --- |
-| Enterprise in-house factories | 19 |
+| Enterprise in-house factories | 20 |
 | Coding-agent vendors | 30 |
 | Open-source agents | 11 |
 | Infra and sandboxes | 9 |

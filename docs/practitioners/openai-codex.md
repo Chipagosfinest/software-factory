@@ -1,6 +1,6 @@
 # OpenAI Codex
 
-*Refreshed 2026-11-02*
+*Refreshed 2026-11-09*
 
 ## What they do
 
@@ -17,6 +17,7 @@ Symphony is the orchestrator beside the agent: an Elixir/BEAM service that polls
 - The landscape pass records 57.0% on SWE-bench Pro for the Codex CLI, an Apache 2.0 CLI, and unprompted automations for triage, alerts, and CI.
 - The same-model lesson stated in the enterprise note: harness quality moved a task from 42% to 78% success. The LangChain measurement of a different harness is in [LangChain Deep Agents](./langchain-deep-agents.md).
 - On the [27 October 2026 video](https://www.youtube.com/watch?v=lPZQrVFcz3c), Mitchell Hashimoto describes ending the day by dispatching Codex agents for landscape research and for prototypes of features that are not fully specified, so the next session starts from that output.
+- On November 3, 2026, OpenAI described Pando, a new Git backend for its monorepo, built to handle more pushes and fetches without changing how engineers and agents use Git. It cut push latency by about 80% and serves nearly a petabyte of Git data a day.
 
 ## Patterns shown
 
@@ -34,6 +35,8 @@ Symphony is the orchestrator beside the agent: an Elixir/BEAM service that polls
 | 3 → 7 engineers | Team grew; throughput rose | Harness engineering (OpenAI) |
 | up to 6 hours | Single task with validation loops | Enterprise adoption |
 | 57.0% | SWE-bench Pro in the landscape pass | Landscape |
+| ~80% | Push latency cut after Pando | OpenAI developers, 2026-11-03 |
+| ~1 petabyte / day | Git data Pando serves | Same |
 
 ## Sources
 
@@ -42,3 +45,4 @@ Symphony is the orchestrator beside the agent: an Elixir/BEAM service that polls
 - [Symphony spec](https://github.com/openai/symphony/blob/main/SPEC.md)
 - [Open-source Codex orchestration](https://openai.com/index/open-source-codex-orchestration-symphony/)
 - [Getting a Head Start with Codex](https://www.youtube.com/watch?v=lPZQrVFcz3c) (2026-10-27)
+- [Pando Git backend, 2026-11-03](https://x.com/OpenAIDevs/status/2117408792346509663)

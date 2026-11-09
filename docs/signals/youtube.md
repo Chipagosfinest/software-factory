@@ -1,12 +1,82 @@
 # YouTube
 
-*Refreshed 2026-11-02*
+*Refreshed 2026-11-09*
 
-Running log of official YouTube channels for teams in [Practitioners](../practitioners/README.md), plus the teaching videos those channels published from 2026-09-03 through 2026-11-02. Newer entries are prepended.
+Running log of official YouTube channels for teams in [Practitioners](../practitioners/README.md), plus the teaching videos those channels published from 2026-09-03 through 2026-11-09. Newer entries are prepended.
 
 ## Research method
 
-Checked 2026-11-02. A channel is listed only when its about page links to the team's own site, or its description names that site. Each video below was opened and attributed with YouTube's oEmbed (`author_url` on the official channel) and a published date from the channel's Atom feed. Takeaways are from the spoken content. Name-only collisions are excluded, including `@sentryai` (a camera company at smartsentry.ai) and tutorial channels that reuse Amp, OpenCode, or Codeium in the handle. Teams with no verified channel are omitted, including Factory, Cognition, Amp, Cline, Aider, OpenHands, Roo Code, Runloop, Tessl, Magic, Tabnine, Mistral, and Paperclip.
+Checked 2026-11-09. A channel is listed only when its about page links to the team's own site, or its description names that site. Each video below was opened and attributed with YouTube's oEmbed (`author_url` on the official channel) and a published date from the channel's Atom feed. Takeaways are from the spoken content. The 2026-11-04 Sentry entry uses the livestream description only. Name-only collisions are excluded, including `@sentryai` (a camera company at smartsentry.ai) and tutorial channels that reuse Amp, OpenCode, or Codeium in the handle. Teams with no verified channel are omitted, including Factory, Cognition, Amp, Cline, Aider, OpenHands, Roo Code, Runloop, Tessl, Magic, Tabnine, Mistral, and Paperclip.
+
+## 2026-11-09
+
+### Qodo — Qodo Hackathon — Day 5: A Factory That Improves
+
+[Video](https://www.youtube.com/watch?v=sc-Dnzl_VUw) · 2026-11-09
+
+Week one of Qodo's software-factory hackathon covered setup, verification of factory output, and a first self-improvement step that suggests rules. The framing is that a factory needs a mechanism to improve, with a human deciding what counts as improvement. Week two shifts review capabilities left into earlier stages.
+
+**Related:** [Qodo](../practitioners/qodo.md), [Self-improvement](../patterns/self-improvement/README.md)
+
+## 2026-11-08
+
+### GitHub — 17 agents, one SDLC: How Levi Strauss reimagined development on GitHub
+
+[Video](https://www.youtube.com/watch?v=-GpxKKgoWWg) · 2026-11-08
+
+Jenny Patchen (Levi Strauss & Co.) describes rebuilding the SDLC around 17 agents on GitHub. The Back Pocket store-stylist app rebuild took about 2.5 months, compared with 9 months for the legacy app. Specialist agents each push a labeled fix commit with a consolidated summary, and a human approves and merges.
+
+**Related:** [Levi Strauss](../practitioners/levi-strauss.md), [GitHub Copilot](../practitioners/github-copilot.md), [Verification](../patterns/verification/README.md), [Governance and safety](../patterns/governance-safety/README.md)
+
+## 2026-11-06
+
+### Sentry — Agent Trace Investigation with Seer
+
+[Video](https://www.youtube.com/watch?v=Ks51wPYmM3c) · 2026-11-06
+
+Agent tracing in Sentry shows tool and model calls, agent handoffs, and full input and output transcripts. From a checkout failure, Seer follows the user journey to an inventory root cause. Autofix then forms a plan, pushes code changes to the connected repo, and drafts a pull request for team review.
+
+**Related:** [Sentry Seer](../practitioners/sentry-seer.md), [Verification](../patterns/verification/README.md)
+
+## 2026-11-05
+
+### Warp — Warp Factories complete walkthrough
+
+[Video](https://www.youtube.com/watch?v=gdFqUnD19lw) · 2026-11-05
+
+Five out-of-the-box agents are led by a Factory Foreman that orchestrates a task and delegates to sub-agents. Each agent picks harness, model (including bring-your-own inference), host, runner, MCPs, and secrets, and the whole factory is defined as code so its own agents can change that configuration. Automations trigger from Slack, GitHub pull request reviews, schedules, and custom webhooks, and one task is reachable from Slack, Jira, and GitHub with a timeline of artifacts and screen captures. A dashboard score can feed a self-improvement loop that proposes config changes, and benchmarks on the team's own factory work choose models and custom routers.
+
+**Related:** [Warp](../practitioners/warp.md), [Orchestration](../patterns/orchestration/README.md), [Self-improvement](../patterns/self-improvement/README.md)
+
+## 2026-11-04
+
+### Sentry — Where Did My Tokens Go? Tracing Claude Agents with OpenTelemetry and Sentry
+
+[Video](https://www.youtube.com/watch?v=p8kpOePCsAM) · 2026-11-04
+
+The livestream description says agent cost is more than the model call: when a tool call hits a slow or broken backend, the agent retries, and every retry costs tokens, so one connected trace is needed to see spend that starts in an API or database. Anthropic's CJ Avilla sent Claude Platform OpenTelemetry data to Sentry and found an old project still burning tokens.
+
+**Related:** [Sentry Seer](../practitioners/sentry-seer.md), [Agent safety and cost control](../patterns/governance-safety/agent-safety-cost-control.md)
+
+## 2026-11-03
+
+### OpenAI — Qodo brings company context into Codex code review
+
+[Video](https://www.youtube.com/watch?v=yC72iQx6rM0) · 2026-11-03
+
+Qodo positions itself as context and review for Codex across the whole software, including across two Git providers, so review catches P0 bugs. Developers in the video want bug resolution to run as an automatic loop instead of manually invoking agent skills.
+
+**Related:** [Qodo](../practitioners/qodo.md), [OpenAI Codex](../practitioners/openai-codex.md), [Verification](../patterns/verification/README.md)
+
+## 2026-11-02
+
+### Warp — How to build an agentic self improvement loop
+
+[Video](https://www.youtube.com/watch?v=PMRlYAB8kkI) · 2026-11-02
+
+Ben, Warp's DevEx engineering lead, describes an inner factory loop: intake from Slack, GitHub, or Linear, triage (research and dedupe), an optional spec with a human, implementation, verification (computer use or Playwright end to end), adversarial review, ship, and monitoring such as Sentry that files new issues. The outer loop stores factory conversations, scores them (or a sample) with separate agents on 0-to-1 rubrics, and on a cron passes only failures to a self-improvement agent that looks for common failure patterns.
+
+**Related:** [Warp](../practitioners/warp.md), [Self-improvement](../patterns/self-improvement/README.md), [Verification](../patterns/verification/README.md)
 
 ## 2026-10-30
 
@@ -112,11 +182,11 @@ Handles to open for first-party video. **Top signal** marks a channel with an en
 
 ### Top signal
 
-[@Sentry-monitoring](https://www.youtube.com/@Sentry-monitoring) (Sentry) · [@warpdotdev](https://www.youtube.com/@warpdotdev) (Warp) · [@LangChain](https://www.youtube.com/@LangChain) (LangChain) · [@OpenAI](https://www.youtube.com/@OpenAI) (OpenAI) · [@Sourcegraph](https://www.youtube.com/@Sourcegraph) (Sourcegraph) · [@QodoAI](https://www.youtube.com/@QodoAI) (Qodo)
+[@Sentry-monitoring](https://www.youtube.com/@Sentry-monitoring) (Sentry) · [@warpdotdev](https://www.youtube.com/@warpdotdev) (Warp) · [@LangChain](https://www.youtube.com/@LangChain) (LangChain) · [@OpenAI](https://www.youtube.com/@OpenAI) (OpenAI) · [@Sourcegraph](https://www.youtube.com/@Sourcegraph) (Sourcegraph) · [@QodoAI](https://www.youtube.com/@QodoAI) (Qodo) · [@GitHub](https://www.youtube.com/@GitHub) (GitHub)
 
 ### Labs and vendors
 
-[@Sentry-monitoring](https://www.youtube.com/@Sentry-monitoring) (Sentry) **top signal** · [@OpenAI](https://www.youtube.com/@OpenAI) (OpenAI) **top signal** · [@anthropic-ai](https://www.youtube.com/@anthropic-ai) (Anthropic) · [@LangChain](https://www.youtube.com/@LangChain) (LangChain) **top signal** · [@cursor_ai](https://www.youtube.com/@cursor_ai) (Cursor) · [@GitHub](https://www.youtube.com/@GitHub) (GitHub) · [@Sourcegraph](https://www.youtube.com/@Sourcegraph) (Sourcegraph) **top signal** · [@VercelHQ](https://www.youtube.com/@VercelHQ) (Vercel) · [@replit](https://www.youtube.com/@replit) (Replit) · [@kirodotdev](https://www.youtube.com/@kirodotdev) (Kiro) · [@warpdotdev](https://www.youtube.com/@warpdotdev) (Warp) **top signal** · [@linear](https://www.youtube.com/@linear) (Linear) · [@JetBrainsTV](https://www.youtube.com/@JetBrainsTV) (JetBrains) · [@windsurf](https://www.youtube.com/@windsurf) (Windsurf) · [@poolsideai](https://www.youtube.com/@poolsideai) (Poolside) · [@lovable](https://www.youtube.com/@lovable) (Lovable) · [@Boltdotnew](https://www.youtube.com/@Boltdotnew) (Bolt.new) · [@googlecloudtech](https://www.youtube.com/@googlecloudtech) (Google Cloud) · [@Grok](https://www.youtube.com/@Grok) (xAI; about page links to x.ai) · [@Databricks](https://www.youtube.com/@Databricks) (Databricks) · [@Composio](https://www.youtube.com/@Composio) (Composio)
+[@Sentry-monitoring](https://www.youtube.com/@Sentry-monitoring) (Sentry) **top signal** · [@OpenAI](https://www.youtube.com/@OpenAI) (OpenAI) **top signal** · [@anthropic-ai](https://www.youtube.com/@anthropic-ai) (Anthropic) · [@LangChain](https://www.youtube.com/@LangChain) (LangChain) **top signal** · [@cursor_ai](https://www.youtube.com/@cursor_ai) (Cursor) · [@GitHub](https://www.youtube.com/@GitHub) (GitHub) **top signal** · [@Sourcegraph](https://www.youtube.com/@Sourcegraph) (Sourcegraph) **top signal** · [@VercelHQ](https://www.youtube.com/@VercelHQ) (Vercel) · [@replit](https://www.youtube.com/@replit) (Replit) · [@kirodotdev](https://www.youtube.com/@kirodotdev) (Kiro) · [@warpdotdev](https://www.youtube.com/@warpdotdev) (Warp) **top signal** · [@linear](https://www.youtube.com/@linear) (Linear) · [@JetBrainsTV](https://www.youtube.com/@JetBrainsTV) (JetBrains) · [@windsurf](https://www.youtube.com/@windsurf) (Windsurf) · [@poolsideai](https://www.youtube.com/@poolsideai) (Poolside) · [@lovable](https://www.youtube.com/@lovable) (Lovable) · [@Boltdotnew](https://www.youtube.com/@Boltdotnew) (Bolt.new) · [@googlecloudtech](https://www.youtube.com/@googlecloudtech) (Google Cloud) · [@Grok](https://www.youtube.com/@Grok) (xAI; about page links to x.ai) · [@Databricks](https://www.youtube.com/@Databricks) (Databricks) · [@Composio](https://www.youtube.com/@Composio) (Composio)
 
 ### Open-source builders
 

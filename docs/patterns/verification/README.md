@@ -46,6 +46,7 @@ Related project note: [Software Factory operations (archived snapshot as of 2026
 - [Graphite](../../practitioners/graphite.md)
 - [Qodo](../../practitioners/qodo.md)
 - [SWE-bench](../../practitioners/swe-bench.md)
+- [Levi Strauss](../../practitioners/levi-strauss.md)
 
 ## Sources
 
