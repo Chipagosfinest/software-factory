@@ -1,6 +1,6 @@
 # LangChain Deep Agents
 
-*Refreshed 2026-11-09*
+*Refreshed 2026-11-16*
 
 ## What they do
 
@@ -16,6 +16,7 @@ The harness note separates two words. Context engineering is getting the right i
 - The [27 October 2026 Interrupt talk](https://www.youtube.com/watch?v=xy_7SzwsIjM) splits an agent into model, harness, and context. Improvement can be manual, human-approved, or automated; fully automated improvement is described as not available. `smithtune` pulls LangSmith trajectories for supervised fine-tuning. A harness change read from traces should stay human-reviewed because it applies to every user.
 - The [26 October 2026 talk](https://www.youtube.com/watch?v=Wb3hQaG_xf0) describes Managed Deep Agents as that harness on LangSmith Deployment, including durable execution and a task queue, so the team owns the business logic rather than that runtime. Large tool output is stored on the filesystem and read back when needed.
 - On November 5 and 6, 2026, Harrison Chase said most agents LangChain builds internally use async subagents in a meaningful way, and that Deep Agents now ships them so the agent keeps talking to the user while subagents work in the background. The same week, a test of seven browser-use toolsets in Managed Deep Agents picked Stagehand.
+- On November 14, 2026, with Actively AI, he wrote that a goal should be scoped around the work a person can give feedback on. Actively moved from one agent per sales account to "motions" on Deep Agents, one job such as outbound, so similar tasks are reviewed together and a correction transfers.
 
 ## Patterns shown
 
@@ -42,3 +43,5 @@ The harness note separates two words. Context engineering is getting the right i
 - [Inside Managed Deep Agents](https://www.youtube.com/watch?v=Wb3hQaG_xf0) (2026-10-26)
 - [Async subagents, 2026-11-05](https://x.com/hwchase17/status/2118464263497142576)
 - [Async subagents and Stagehand, 2026-11-06](https://x.com/hwchase17/status/2118739844696277338)
+- [Goal engineering, 2026-11-14](https://x.com/hwchase17/status/2121635683999883577)
+- [Feedback scopes the goal, 2026-11-14](https://x.com/hwchase17/status/2121636034303905911)

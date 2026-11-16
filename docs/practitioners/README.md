@@ -1,12 +1,12 @@
 # Practitioners
 
-*Refreshed 2026-11-09*
+*Refreshed 2026-11-16*
 
 Parent hub for teams and products that show the patterns in production or in a public system. Each profile uses the same template: what they do, what they do well (cited), patterns shown, key numbers, sources.
 
-79 profiles. Mechanisms stay on the pattern hubs.
+80 profiles. Mechanisms stay on the pattern hubs.
 
-## Enterprise in-house factories (20)
+## Enterprise in-house factories (21)
 
 - [Stripe Minions](./stripe-minions.md) — one-shot devboxes, 1,300+ merged PRs/week
 - [Spotify Honk](./spotify-honk.md) — fleet jobs, small tool surface, LLM judge
@@ -28,6 +28,7 @@ Parent hub for teams and products that show the patterns in production or in a p
 - [Pinterest](./pinterest.md) — 100-test skill harness, 73% vs 62%
 - [Databricks Genie Code](./databricks-genie-code.md) — data-work agent, >2x on an internal benchmark
 - [Levi Strauss](./levi-strauss.md) — 17 agents on one GitHub SDLC; Back Pocket rebuild in about 2.5 months
+- [JPMorgan Chase Jarvis](./jpmc-jarvis.md) — an assembly line for agents; the agent that took months now takes minutes
 
 ## Coding-agent vendors (30)
 

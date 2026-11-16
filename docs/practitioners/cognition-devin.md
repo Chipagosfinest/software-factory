@@ -1,6 +1,6 @@
 # Cognition Devin
 
-*Refreshed 2026-11-09*
+*Refreshed 2026-11-16*
 
 ## What they do
 
@@ -18,6 +18,8 @@ Figures below are the ones already written down in this repo. Several are vendor
 - October 2026 signal: Cognition reports a Devin Fusion score of 68 on the Coding Agent Index ([X insights](../signals/x-insights.md)).
 - Devin Review 2.0 is up to 5x cheaper and 1.5x faster pull-request review.
 - SWE-2 Flash is a fast coding model. Cognition says it outperforms all American open-weight models on leading evals. Weights are shared with partners and researchers through a gated program.
+- On November 11, 2026, Cognition said the best engineering teams use cloud agents to build, test, and verify end to end, and pointed at Basis, whose agents cut 20-hour accounting tasks to 30 minutes.
+- Devin Apps, announced November 13, 2026, are private, shareable web applications that run on Devin's cloud computer, for internal tools, preview deployments, and extensions to Devin. Walden Yan says they use memory-snapshotting VMs, so a pull-request preview is not limited to the frontend and internal apps are "secure by design."
 
 ## Patterns shown
 
@@ -34,6 +36,7 @@ Figures below are the ones already written down in this repo. Several are vendor
 | $2.25/ACU | About 15 minutes of active work | Devin note |
 | 68 | Devin Fusion score on the Coding Agent Index | X insights |
 | up to 5x / 1.5x | Devin Review 2.0, cheaper and faster PR review | Cognition |
+| 20 hours → 30 minutes | Basis accounting tasks, as Cognition states it | [2026-11-11 post](https://x.com/cognition/status/2120626702246449362) |
 
 ## Sources
 
@@ -44,3 +47,6 @@ Figures below are the ones already written down in this repo. Several are vendor
 - [Coding Agent Index post](https://x.com/cognition/status/2112290148205436979)
 - [Devin Review 2.0](https://x.com/cognition/status/2118390707228745948)
 - [SWE-2 Flash](https://x.com/cognition/status/2118069614521241739)
+- [Basis and end-to-end cloud agents, 2026-11-11](https://x.com/cognition/status/2120626702246449362)
+- [Devin Apps, 2026-11-13](https://x.com/cognition/status/2121255137914077300)
+- [Memory-snapshotting VMs, 2026-11-13](https://x.com/walden_yan/status/2121287289628397926)

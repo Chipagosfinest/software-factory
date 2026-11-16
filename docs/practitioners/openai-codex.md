@@ -1,6 +1,6 @@
 # OpenAI Codex
 
-*Refreshed 2026-11-09*
+*Refreshed 2026-11-16*
 
 ## What they do
 
@@ -18,12 +18,16 @@ Symphony is the orchestrator beside the agent: an Elixir/BEAM service that polls
 - The same-model lesson stated in the enterprise note: harness quality moved a task from 42% to 78% success. The LangChain measurement of a different harness is in [LangChain Deep Agents](./langchain-deep-agents.md).
 - On the [27 October 2026 video](https://www.youtube.com/watch?v=lPZQrVFcz3c), Mitchell Hashimoto describes ending the day by dispatching Codex agents for landscape research and for prototypes of features that are not fully specified, so the next session starts from that output.
 - On November 3, 2026, OpenAI described Pando, a new Git backend for its monorepo, built to handle more pushes and fetches without changing how engineers and agents use Git. It cut push latency by about 80% and serves nearly a petabyte of Git data a day.
+- The [November 11, 2026 DevDay talk](https://www.youtube.com/watch?v=U1IVZy9FhVQ) describes a Codex agent that watched CI for six weeks and more than 1,000 hours, from a prompt of about 200 words. After about four days the main thread handed slow debugging to sub-agents. The talk reports more than 100 pull requests a week, more than 1,000 commits, more than 600 Slack messages, more than 213 fixes the agent merged itself, just under half a million tool calls, and more than 5,800 sub-agent sessions. Cost was about $32 an hour, then about $16 an hour on a later model. When the agent was unsure about deleting a test, it started another agent to review that change first.
+- The same day's [Agents API talk](https://www.youtube.com/watch?v=b7l_Dhe1h8M) presents the Codex harness as a service: the caller sets tools, data, instructions, and the environment (OpenAI's sandbox or their own), and OpenAI runs the harness, including compaction and resume when a server is replaced. A demo caps concurrent sub-agents and leaves the confirming action to a person.
+- On November 13, 2026, OpenAI described how it runs persistent OpenClaw agents, over 500 of them, including agents that open pull requests from product feedback. The trusted gateway is separate from the untrusted harness. Secrets stay behind a credential broker. A second agent auto-reviews every action. Each agent has its own identity and inference credential. Turn logs are limited to a small security group.
 
 ## Patterns shown
 
 - [Harness engineering](../patterns/harness-engineering/README.md)
 - [Orchestration](../patterns/orchestration/README.md) — Symphony
-- [Verification](../patterns/verification/README.md) — automated validation loops; SWE-bench Pro figure
+- [Verification](../patterns/verification/README.md) — automated validation loops; SWE-bench Pro figure; the CI agent checks its own fixes
+- [Governance and safety](../patterns/governance-safety/README.md) — sandbox, credential broker, auto-review, and a separate identity for persistent agents
 
 ## Key numbers
 
@@ -37,6 +41,10 @@ Symphony is the orchestrator beside the agent: an Elixir/BEAM service that polls
 | 57.0% | SWE-bench Pro in the landscape pass | Landscape |
 | ~80% | Push latency cut after Pando | OpenAI developers, 2026-11-03 |
 | ~1 petabyte / day | Git data Pando serves | Same |
+| >1,000 hours | One CI agent, six weeks | [DevDay 2026](https://www.youtube.com/watch?v=U1IVZy9FhVQ) |
+| >213 | Fixes that agent merged itself | Same |
+| ~$32, then ~$16 / hour | Cost of that run, then on a later model | Same |
+| >500 | Persistent OpenClaw agents inside OpenAI | [OpenClaw post](https://developers.openai.com/blog/securing-persistent-agents-like-openclaw-at-openai) |
 
 ## Sources
 
@@ -46,3 +54,7 @@ Symphony is the orchestrator beside the agent: an Elixir/BEAM service that polls
 - [Open-source Codex orchestration](https://openai.com/index/open-source-codex-orchestration-symphony/)
 - [Getting a Head Start with Codex](https://www.youtube.com/watch?v=lPZQrVFcz3c) (2026-10-27)
 - [Pando Git backend, 2026-11-03](https://x.com/OpenAIDevs/status/2117408792346509663)
+- [Coding agents that don't quit](https://www.youtube.com/watch?v=U1IVZy9FhVQ) (2026-11-11)
+- [Harness-as-a-Service](https://www.youtube.com/watch?v=b7l_Dhe1h8M) (2026-11-11)
+- [Securing persistent agents like OpenClaw](https://developers.openai.com/blog/securing-persistent-agents-like-openclaw-at-openai)
+- [Persistent agents, 2026-11-13](https://x.com/steipete/status/2121058770767982997)

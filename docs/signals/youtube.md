@@ -1,12 +1,62 @@
 # YouTube
 
-*Refreshed 2026-11-09*
+*Refreshed 2026-11-16*
 
-Running log of official YouTube channels for teams in [Practitioners](../practitioners/README.md), plus the teaching videos those channels published from 2026-09-03 through 2026-11-09. Newer entries are prepended.
+Running log of official YouTube channels for teams in [Practitioners](../practitioners/README.md), plus the teaching videos those channels published from 2026-09-03 through 2026-11-16. Newer entries are prepended.
 
 ## Research method
 
-Checked 2026-11-09. A channel is listed only when its about page links to the team's own site, or its description names that site. Each video below was opened and attributed with YouTube's oEmbed (`author_url` on the official channel) and a published date from the channel's Atom feed. Takeaways are from the spoken content. The 2026-11-04 Sentry entry uses the livestream description only. Name-only collisions are excluded, including `@sentryai` (a camera company at smartsentry.ai) and tutorial channels that reuse Amp, OpenCode, or Codeium in the handle. Teams with no verified channel are omitted, including Factory, Cognition, Amp, Cline, Aider, OpenHands, Roo Code, Runloop, Tessl, Magic, Tabnine, Mistral, and Paperclip.
+Checked 2026-11-16. A channel is listed only when its about page links to the team's own site, or its description names that site. Each video below was opened and attributed with YouTube's oEmbed (`author_url` on the official channel) and a published date from the channel's Atom feed. Takeaways are from the spoken content. The 2026-11-04 Sentry entry uses the livestream description only. Name-only collisions are excluded, including `@sentryai` (a camera company at smartsentry.ai) and tutorial channels that reuse Amp, OpenCode, or Codeium in the handle. Teams with no verified channel are omitted, including Factory, Cognition, Amp, Cline, Aider, OpenHands, Roo Code, Runloop, Tessl, Magic, Tabnine, Mistral, and Paperclip.
+
+## 2026-11-16
+
+### LangChain — Building Jarvis: JPMC's Agent Building Assembly Line
+
+[Video](https://www.youtube.com/watch?v=VpHYPfvfy0o) · 2026-11-16
+
+David Odomirok, Tony Wu, and Jane Xue describe Jarvis at JPMorgan Chase as an assembly line for agents, not a single agent. The one agent that took months last year now takes minutes. Skills on the line are replaceable across software, agent, and production work, including the harness, the sandbox, and where it is deployed. A new agent starts able to do about 20–30% of the job. Offline evals pair a good case with a boundary the agent must not cross. Online checks look for numbers and claims that are not in the input, and for answers that miss the question. People sample the output and take judge escalations, and that feedback is stored as business skills. The subject-matter expert leads the agent team.
+
+**Related:** [JPMorgan Chase Jarvis](../practitioners/jpmc-jarvis.md), [Harness engineering](../patterns/harness-engineering/README.md), [Verification](../patterns/verification/README.md), [Orchestration](../patterns/orchestration/README.md)
+
+### Warp — How to fix the code review bottleneck (full walkthrough)
+
+[Video](https://www.youtube.com/watch?v=uPCH2axUpbc) · 2026-11-12
+
+The walkthrough is explicit that the goal is not auto-merge. Review runs in a separate context window and sends findings back inside the pipeline, with a cap of about three to five rounds and a way to stop and ask a person, rather than posting every pass on GitHub. On Warp's own benchmark, that loop raised accuracy and cost. On their task the cost was 3x, so the factory lets the agent skip the loop when the change looks low risk. The merge-risk skill checks five things: alignment with the request, blast radius and sensitive paths, whether the change was verified, what a rollback would cost, and how an incident would be detected. Computer use runs in a sandbox the team controls, and the recording is what the reviewer is shown.
+
+**Related:** [Warp](../practitioners/warp.md), [Verification](../patterns/verification/README.md)
+
+### OpenAI — Harness-as-a-Service: Building with the Agents API | DevDay 2026
+
+[Video](https://www.youtube.com/watch?v=b7l_Dhe1h8M) · 2026-11-11
+
+The Agents API is the Codex harness run as a service. The caller sets the tools, the data, the instructions, and the environment, either an OpenAI sandbox or their own, and OpenAI runs the harness. The three problems they walk through are keeping the harness off the machine that executes commands, showing turns for a path the product cannot predict, and resuming after a server is replaced, including not replaying a command whose result was lost. The rebooking demo loads a skill, caps concurrent sub-agents at two, and leaves a ticket hold for a person to confirm. Notion, Rakuten, and Bain are named as users. Bedrock managed agents use the same core inside AWS.
+
+**Related:** [OpenAI Codex](../practitioners/openai-codex.md), [Harness engineering](../patterns/harness-engineering/README.md)
+
+### OpenAI — What Will You Build With Coding Agents That Don't Quit? | DevDay 2026
+
+[Video](https://www.youtube.com/watch?v=U1IVZy9FhVQ) · 2026-11-11
+
+An OpenAI engineer on engineering acceleration describes a Codex agent that watched CI for six weeks, more than 1,000 hours, from a starting prompt of about 200 words that stated the goal and the tradeoffs. After about four days he had the main thread hand the slow debugging to sub-agents. The talk reports more than 100 pull requests a week, more than 1,000 commits, more than 600 Slack messages, and more than 213 fixes the agent merged itself, with just under half a million tool calls and more than 5,800 sub-agent sessions. The cost worked out to about $32 an hour, then about $16 an hour on a later model. It was most productive across a five-day stretch when he sent no messages. When it was unsure about deleting a test, it started another agent to review that change before asking a person.
+
+**Related:** [OpenAI Codex](../practitioners/openai-codex.md), [Verification](../patterns/verification/README.md), [Orchestration](../patterns/orchestration/README.md)
+
+### GitHub — Inside the Microsoft Copilot Harness: Customizing AI Agents
+
+[Video](https://www.youtube.com/watch?v=STVHfSaSw7o) · 2026-11-10
+
+Patrick Nikoletich says the Copilot SDK is used more for non-coding work than for coding, and that a team can replace the default harness, including its identity, prompt sections, tools, permissions, and skills. The demo is a pool of workers in their own containers on a local Docker host. An inference gateway holds the credentials, so the agent does not, and a sandbox can mask credentials and limit the network. Agent Host Protocol tunnels a CLI into that environment. A direct-to-Azure mode does not pass through GitHub. A session is a workspace, not one repository, so the agent can clone more than one repo. Harness 2.0 is described as a Rust rewrite, with the protocol included in the SDK.
+
+**Related:** [GitHub Copilot](../practitioners/github-copilot.md), [Harness engineering](../patterns/harness-engineering/README.md), [Governance and safety](../patterns/governance-safety/README.md)
+
+### Replit — Replit Monitoring Agent | Your On-Call Engineer
+
+[Video](https://www.youtube.com/watch?v=9kd0qQfRwTA) · 2026-11-09
+
+Replit's monitoring agent is turned on with one switch in a project's publishing settings. It reads usage traffic, error messages, publishing logs, and page-load times together, investigates the way an on-call engineer would, and can publish a fix. The person chooses whether to review that change or to turn on auto-publish, which deploys a validated fix to production.
+
+**Related:** [Replit Agent Habitat](../practitioners/replit-agent-habitat.md), [Verification](../patterns/verification/README.md), [Self-improvement](../patterns/self-improvement/README.md)
 
 ## 2026-11-09
 
@@ -182,11 +232,11 @@ Handles to open for first-party video. **Top signal** marks a channel with an en
 
 ### Top signal
 
-[@Sentry-monitoring](https://www.youtube.com/@Sentry-monitoring) (Sentry) · [@warpdotdev](https://www.youtube.com/@warpdotdev) (Warp) · [@LangChain](https://www.youtube.com/@LangChain) (LangChain) · [@OpenAI](https://www.youtube.com/@OpenAI) (OpenAI) · [@Sourcegraph](https://www.youtube.com/@Sourcegraph) (Sourcegraph) · [@QodoAI](https://www.youtube.com/@QodoAI) (Qodo) · [@GitHub](https://www.youtube.com/@GitHub) (GitHub)
+[@Sentry-monitoring](https://www.youtube.com/@Sentry-monitoring) (Sentry) · [@warpdotdev](https://www.youtube.com/@warpdotdev) (Warp) · [@LangChain](https://www.youtube.com/@LangChain) (LangChain) · [@OpenAI](https://www.youtube.com/@OpenAI) (OpenAI) · [@Sourcegraph](https://www.youtube.com/@Sourcegraph) (Sourcegraph) · [@QodoAI](https://www.youtube.com/@QodoAI) (Qodo) · [@GitHub](https://www.youtube.com/@GitHub) (GitHub) · [@replit](https://www.youtube.com/@replit) (Replit)
 
 ### Labs and vendors
 
-[@Sentry-monitoring](https://www.youtube.com/@Sentry-monitoring) (Sentry) **top signal** · [@OpenAI](https://www.youtube.com/@OpenAI) (OpenAI) **top signal** · [@anthropic-ai](https://www.youtube.com/@anthropic-ai) (Anthropic) · [@LangChain](https://www.youtube.com/@LangChain) (LangChain) **top signal** · [@cursor_ai](https://www.youtube.com/@cursor_ai) (Cursor) · [@GitHub](https://www.youtube.com/@GitHub) (GitHub) **top signal** · [@Sourcegraph](https://www.youtube.com/@Sourcegraph) (Sourcegraph) **top signal** · [@VercelHQ](https://www.youtube.com/@VercelHQ) (Vercel) · [@replit](https://www.youtube.com/@replit) (Replit) · [@kirodotdev](https://www.youtube.com/@kirodotdev) (Kiro) · [@warpdotdev](https://www.youtube.com/@warpdotdev) (Warp) **top signal** · [@linear](https://www.youtube.com/@linear) (Linear) · [@JetBrainsTV](https://www.youtube.com/@JetBrainsTV) (JetBrains) · [@windsurf](https://www.youtube.com/@windsurf) (Windsurf) · [@poolsideai](https://www.youtube.com/@poolsideai) (Poolside) · [@lovable](https://www.youtube.com/@lovable) (Lovable) · [@Boltdotnew](https://www.youtube.com/@Boltdotnew) (Bolt.new) · [@googlecloudtech](https://www.youtube.com/@googlecloudtech) (Google Cloud) · [@Grok](https://www.youtube.com/@Grok) (xAI; about page links to x.ai) · [@Databricks](https://www.youtube.com/@Databricks) (Databricks) · [@Composio](https://www.youtube.com/@Composio) (Composio)
+[@Sentry-monitoring](https://www.youtube.com/@Sentry-monitoring) (Sentry) **top signal** · [@OpenAI](https://www.youtube.com/@OpenAI) (OpenAI) **top signal** · [@anthropic-ai](https://www.youtube.com/@anthropic-ai) (Anthropic) · [@LangChain](https://www.youtube.com/@LangChain) (LangChain) **top signal** · [@cursor_ai](https://www.youtube.com/@cursor_ai) (Cursor) · [@GitHub](https://www.youtube.com/@GitHub) (GitHub) **top signal** · [@Sourcegraph](https://www.youtube.com/@Sourcegraph) (Sourcegraph) **top signal** · [@VercelHQ](https://www.youtube.com/@VercelHQ) (Vercel) · [@replit](https://www.youtube.com/@replit) (Replit) **top signal** · [@kirodotdev](https://www.youtube.com/@kirodotdev) (Kiro) · [@warpdotdev](https://www.youtube.com/@warpdotdev) (Warp) **top signal** · [@linear](https://www.youtube.com/@linear) (Linear) · [@JetBrainsTV](https://www.youtube.com/@JetBrainsTV) (JetBrains) · [@windsurf](https://www.youtube.com/@windsurf) (Windsurf) · [@poolsideai](https://www.youtube.com/@poolsideai) (Poolside) · [@lovable](https://www.youtube.com/@lovable) (Lovable) · [@Boltdotnew](https://www.youtube.com/@Boltdotnew) (Bolt.new) · [@googlecloudtech](https://www.youtube.com/@googlecloudtech) (Google Cloud) · [@Grok](https://www.youtube.com/@Grok) (xAI; about page links to x.ai) · [@Databricks](https://www.youtube.com/@Databricks) (Databricks) · [@Composio](https://www.youtube.com/@Composio) (Composio)
 
 ### Open-source builders
 

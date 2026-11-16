@@ -1,6 +1,6 @@
 # Replit Agent Habitat
 
-*Refreshed 2026-11-09*
+*Refreshed 2026-11-16*
 
 ## What they do
 
@@ -11,6 +11,8 @@ The post's opening image is an alien species that is good at software and mostly
 On November 1, 2026, the same account described a one-toggle feedback widget that turns end users' feedback on a site into prompts for the agent to build.
 
 On November 6, 2026, Replit said its custom kernel build lets it avoid 96% of recent Linux zero-day vulnerabilities, and pointed at a write-up of the new sandbox design.
+
+On November 9, 2026, Replit's monitoring agent is described as an on-call engineer turned on with one switch in a project's publishing settings. It reads usage traffic, errors, publishing logs, and page-load times, investigates, and can publish a fix. The person chooses whether to review the change or to turn on auto-publish, which deploys a validated fix to production.
 
 This is a different surface from the "Replit Agent" row in the [landscape](../landscape/README.md) no-code table (prompt-to-app, 30+ integrations). That row is not used as evidence for Habitat.
 
@@ -24,6 +26,7 @@ No star count, task volume, or cost figure is in these posts, so none is added.
 
 - [Background agents](../patterns/background-agents/README.md) — a dedicated space per agent
 - [Governance and safety](../patterns/governance-safety/README.md) — boundaries as the control when behavior is unpredictable
+- [Verification](../patterns/verification/README.md) — the monitoring agent investigates from telemetry and can publish a validated fix
 
 ## Key numbers
 
@@ -36,3 +39,4 @@ No star count, task volume, or cost figure is in these posts, so none is added.
 - [Agent Habitat, 2026-10-28](https://x.com/amasad/status/2115485095251308740)
 - [Feedback widget, 2026-11-01](https://x.com/amasad/status/2116998155925360965)
 - [Custom kernel sandbox, 2026-11-06](https://x.com/amasad/status/2118503241390665776)
+- [Monitoring agent](https://www.youtube.com/watch?v=9kd0qQfRwTA) (2026-11-09)

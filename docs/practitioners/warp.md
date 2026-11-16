@@ -1,6 +1,6 @@
 # Warp
 
-*Refreshed 2026-11-09*
+*Refreshed 2026-11-16*
 
 ## What they do
 
@@ -18,15 +18,21 @@ The [2 November 2026 talk](https://www.youtube.com/watch?v=PMRlYAB8kkI) describe
 
 On November 5, 2026, Warp named three review levers: adversarial review before a human looks, end-to-end checks in simulated environments, and a [merge-risk](https://warp.dev/merge-risk) score on every pull request. The post does not argue for merging without human review.
 
+The [November 12, 2026 walkthrough](https://www.youtube.com/watch?v=uPCH2axUpbc) says the same thing about auto-merge. Review runs in a separate context window, findings stay inside the pipeline, and the loop is capped at about three to five rounds, with a way to stop and ask a person. On Warp's own task, adding that loop cost 3x and raised accuracy, so the factory lets the agent skip it when the change looks low risk. The merge-risk checklist is alignment with the request, blast radius and sensitive paths, whether the change was verified, rollback cost, and how an incident would be detected. Computer use runs in a sandbox the team controls, and the recording is what the reviewer sees.
+
 ## Patterns shown
 
 - [Harness engineering](../patterns/harness-engineering/README.md) — a coding agent whose actions are terminal commands
 - [Orchestration](../patterns/orchestration/README.md) — cloud agents on an automation platform; a factory line from triage through a post-ship loop
 - [Background agents](../patterns/background-agents/README.md) — one shared cloud sandbox instead of a per-laptop setup
+- [Verification](../patterns/verification/README.md) — a separate review window, a capped loop, and a five-part merge-risk check
 
 ## Key numbers
 
-No quantitative claim is repeated here. The sources describe the system without a figure this profile uses.
+| Figure | Meaning | Source |
+|--------|---------|--------|
+| 3x | Cost of adding the review loop, on Warp's own task, with higher accuracy | [2026-11-12 walkthrough](https://www.youtube.com/watch?v=uPCH2axUpbc) |
+| 3 to 5 | Suggested cap on review rounds | Same |
 
 ## Sources
 
@@ -37,3 +43,4 @@ No quantitative claim is repeated here. The sources describe the system without 
 - [Merge-risk review, 2026-11-05](https://x.com/warpdotdev/status/2118412166034538775)
 - [Ben Holmes on merge risk, 2026-11-05](https://x.com/BHolmesDev/status/2118411592627052937)
 - [merge-risk skill](https://warp.dev/merge-risk)
+- [How to fix the code review bottleneck](https://www.youtube.com/watch?v=uPCH2axUpbc) (2026-11-12)

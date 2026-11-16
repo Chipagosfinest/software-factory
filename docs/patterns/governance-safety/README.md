@@ -20,6 +20,10 @@ Related project note: [Software Factory operations (archived snapshot as of 2026
 - [Cline](../../practitioners/cline.md)
 - [Amp](../../practitioners/amp.md)
 - [Levi Strauss](../../practitioners/levi-strauss.md)
+- [OpenAI Codex](../../practitioners/openai-codex.md)
+- [Vercel](../../practitioners/vercel.md)
+- [Cursor](../../practitioners/cursor.md)
+- [GitHub Copilot](../../practitioners/github-copilot.md)
 
 ## Sources
 

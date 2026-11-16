@@ -1,6 +1,6 @@
 # Amp
 
-*Refreshed 2026-11-09*
+*Refreshed 2026-11-16*
 
 ## What they do
 
@@ -11,6 +11,8 @@ A user reports a bug. Amp waits until the fix has rolled out, then emails that p
 On October 30, 2026, Amp described a migration that removed a column old pods still wrote to and caused 500s during rollout. Amp argues mandatory review might have caught it but would not have been worth the churn and slower pace.
 
 On November 4, 2026, asked how Amp avoids slop with no PR review, one meeting, and anyone able to push to main, Quinn Slack answered "skin in the game": "We have 21 co-founders at Amp… every single person is a public face," and anyone can challenge a change.
+
+On November 14, 2026, he said skills should be written when the agent struggles, not ahead of time. Ask the agent how it could have done better, because a skill is often not the answer, and ask the agent to eval the skill.
 
 ## What they do well
 
@@ -37,3 +39,4 @@ The October 29 post states no throughput, cost, or quality number. The October 3
 - [Amp, 2026-10-29](https://x.com/AmpCode/status/2115912054964179204)
 - [Mandatory review, 2026-10-30](https://x.com/AmpCode/status/2116243991922671619)
 - [Skin in the game, 2026-11-04](https://x.com/AmpCode/status/2117995287859929166)
+- [Reactive skills, 2026-11-14](https://x.com/sqs/status/2121728182235881656)

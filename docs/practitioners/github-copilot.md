@@ -1,6 +1,6 @@
 # GitHub Copilot
 
-*Refreshed 2026-11-09*
+*Refreshed 2026-11-16*
 
 ## What they do
 
@@ -16,9 +16,13 @@ Copilot app projects give Copilot a goal across one or more repos and have it co
 
 The [8 November 2026 GitHub Universe talk](https://www.youtube.com/watch?v=-GpxKKgoWWg) is Levi Strauss & Co. on 17 agents across one SDLC. See [Levi Strauss](./levi-strauss.md).
 
+On November 10, 2026, Patrick Nikoletich said the Copilot SDK is used more for non-coding work than for coding, and that a team can replace the default harness, including identity, prompt sections, tools, permissions, and skills. The demo is a Docker pool of isolated workers. An inference gateway holds credentials so the agent does not, and a sandbox can mask them and limit the network. Agent Host Protocol tunnels a CLI into that environment, including a direct-to-Azure path that does not go through GitHub. A session is a workspace, so the agent can clone more than one repository. Harness 2.0 is described as a Rust rewrite, with the protocol in the SDK.
+
 ## Patterns shown
 
 - [Background agents](../patterns/background-agents/README.md) — a cloud agent that edits a repository and opens a pull request
+- [Harness engineering](../patterns/harness-engineering/README.md) — a replaceable harness inside the SDK
+- [Governance and safety](../patterns/governance-safety/README.md) — credentials stay at the inference gateway, not in the agent
 
 ## Key numbers
 
@@ -35,3 +39,4 @@ The [8 November 2026 GitHub Universe talk](https://www.youtube.com/watch?v=-GpxK
 - [Git storage post, 2026-11-06](https://x.com/github/status/2118830274431873379)
 - [Copilot app projects](https://x.com/github/status/2119133311465353675)
 - [Levi Strauss at GitHub Universe](https://www.youtube.com/watch?v=-GpxKKgoWWg) (2026-11-08)
+- [Inside the Microsoft Copilot Harness](https://www.youtube.com/watch?v=STVHfSaSw7o) (2026-11-10)

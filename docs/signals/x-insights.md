@@ -1,12 +1,86 @@
 # X Insights
 
-*Refreshed 2026-11-09*
+*Refreshed 2026-11-16*
 
 Running log of insights those teams publish on X. Newer collection runs are prepended above older ones.
 
 ## Research Method
 
-First-party posts from team accounts, November 2 – November 9, 2026. Reposts from unverified accounts are excluded. Each entry records the handle, date, post, a short reading of the claim, and the closest topic already in this repo.
+First-party posts from team accounts, November 10 – November 16, 2026. Reposts from unverified accounts are excluded. Each entry records the handle, date, post, a short reading of the claim, and the closest topic already in this repo.
+
+## 2026-11-16
+
+### @dexhorthy (Dex Horthy) — 2026-11-16
+
+[Post](https://x.com/dexhorthy/status/2122136000067723334)
+
+Preliminary: he says the run is only 10% through. On SlopCodeBench with Fable 5.2, he is comparing the standard "just solve" prompt with that prompt plus Anthropic's "you are the long term owner of this codebase" line. So far the owner line doubles tokens per task, and it is unclear whether results are better. Cost per pass is about the same. On `circuit_eval` the owner line is a full pass against a 50% pass for the default prompt, and it leads to more formal tests.
+
+**Related:** [Verification](../patterns/verification/README.md), [Self-Improvement](../patterns/self-improvement/README.md)
+
+### @sqs (Quinn Slack, Amp) — 2026-11-14
+
+[Post](https://x.com/sqs/status/2121728182235881656)
+
+Skills should be written when the agent struggles with something, not prepared in advance. He says to ask the agent how it could have done better, because a skill is often not the fix, and then to ask the agent to eval the skill.
+
+**Related:** [Amp](../practitioners/amp.md), [Harness Engineering](../patterns/harness-engineering/README.md)
+
+### @rauchg (Guillermo Rauch, Vercel) — 2026-11-14
+
+[Post](https://x.com/rauchg/status/2121711321347715093)
+
+His account of how agents will ship all code is three steps: the agent writes feature-gated code, verification gates run on push (proof checking and security audits), and the agent monitors metrics. He says that loop is available now with the Vercel CLI (`vercel flags`, `vercel metrics`, `vercel deploy`). The post quotes a workflow that ships a change visible only to the author in production, then to users, with the agent reminded to check logs and the database.
+
+**Related:** [Vercel](../practitioners/vercel.md), [Verification](../patterns/verification/README.md)
+
+### @cramforce (Malte Ubl, Vercel) — 2026-11-14
+
+[Post](https://x.com/cramforce/status/2121646284612501738)
+
+His summary of [Cursor's incident update](https://cursor.com/blog/security-incident-update) is that static credentials leaked through stolen LLM transcripts, and that the fix is to stop using long-lived static credentials. Cursor's update says an attacker used a key issued to Fireworks to copy coding-agent traces, mostly from 2025 and not in Privacy Mode. A small number contained credentials that had not been redacted: less than 0.01% of customers had API credentials exposed, and traces were exposed for fewer than 0.05% of users. His [linked post](https://vercel.com/blog/death-to-long-lived-static-credentials) describes those credentials as API keys and database passwords that are reused, often with no expiration. Vendors that do not support OIDC from Vercel and still use long-lived secrets get a "Not secure" label on their Marketplace listing by November 30, 2026. Vendors that do not offer secure auth are delisted in January 2027.
+
+**Related:** [Vercel](../practitioners/vercel.md), [Cursor](../practitioners/cursor.md), [Governance and Safety](../patterns/governance-safety/README.md)
+
+### @hwchase17 (Harrison Chase, LangChain) — 2026-11-14
+
+[Post](https://x.com/hwchase17/status/2121635683999883577) and [follow-up](https://x.com/hwchase17/status/2121636034303905911)
+
+Written with @mgarimella and Anshul Gupta at Actively AI, the note says to scope an agent's goal around the work a person can give feedback on, because the hard context is the kind that is not written down anywhere. Actively's first version was one agent per sales account, and corrections did not transfer. The replacement, built on Deep Agents, is a "motion": one job, such as outbound or early-stage deal progression, reviewed as a batch so a correction applies to the next task. The note's closing line is that prompt engineering and context engineering will disappear, and goal engineering will remain.
+
+**Related:** [LangChain Deep Agents](../practitioners/langchain-deep-agents.md), [Harness Engineering](../patterns/harness-engineering/README.md)
+
+### @zeddotdev (Zed) — 2026-11-13
+
+[Post](https://x.com/zeddotdev/status/2121279582703628747), [reply](https://x.com/zeddotdev/status/2121284258706719186), and [2026-11-14](https://x.com/zeddotdev/status/2121650009158435324)
+
+Zed says agents will trace code back to the threads that produced it, so they can see decisions the code does not record. The agent is pointed at that thread with a summary and tools to inspect the original conversation. The whole thread is not loaded into context. They call the failure mode "agent archaeology" (reconstructing intent from scattered commits, transcripts, and conversations) and link a talk on using Delta to avoid it.
+
+**Related:** [Zed](../practitioners/zed.md), [Memory and Knowledge](../patterns/memory-knowledge/README.md)
+
+### @cognition (Cognition) — 2026-11-11
+
+[Post](https://x.com/cognition/status/2120626702246449362) and [Walden Yan, 2026-11-13](https://x.com/walden_yan/status/2121287289628397926)
+
+Cognition says the best engineering teams use cloud agents to build, test, and verify end to end, and points at Basis, whose agents cut 20-hour accounting tasks to 30 minutes. [Devin Apps](https://x.com/cognition/status/2121255137914077300) are private, shareable web applications that run on Devin's cloud computer, for internal tools, preview deployments, and extensions to Devin. Walden Yan says they are powered by memory-snapshotting VMs, so builders who are not engineers can go past landing pages, internal apps are "secure by design," and a pull-request preview is not limited to the frontend.
+
+**Related:** [Cognition Devin](../practitioners/cognition-devin.md), [Background Agents](../patterns/background-agents/README.md)
+
+### @steipete (Peter Steinberger) — 2026-11-13
+
+[Post](https://x.com/steipete/status/2121058770767982997)
+
+The post points at his team's write-up, [Securing persistent agents like OpenClaw at OpenAI](https://developers.openai.com/blog/securing-persistent-agents-like-openclaw-at-openai). Unlike a Codex session with a fixed goal and a person steering, these agents run continuously and can act on their own. OpenAI says it runs over 500 of them, including agents that open pull requests from product feedback and agents that keep running data experiments. The controls in the post are a trusted gateway kept apart from the untrusted harness, a Codex sandbox whose secrets stay behind a credential broker, auto-review of every action by a second agent, a separate identity and inference credential per agent, and turn logs limited to a small security group.
+
+**Related:** [OpenAI Codex](../practitioners/openai-codex.md), [Governance and Safety](../patterns/governance-safety/README.md)
+
+### @karrisaarinen (Karri Saarinen, Linear) — 2026-11-12
+
+[Post](https://x.com/karrisaarinen/status/2120928839882936621), [Linear BYOK](https://x.com/linear/status/2120925693177696366), and [Linear Reviews](https://x.com/linear/status/2120984092699496619)
+
+Linear's cloud coding agent now accepts a bring-your-own key for OpenAI, Anthropic, or a compatible gateway, so a team uses its own provider credits and negotiated rates. Saarinen says it can be started from Slack, from an assigned issue, or as a triage and bug-fixing factory with Loops, and that one customer's bug-fix time has been falling and is basically down to zero. The same day, Linear Reviews can show a team's own risk scores, risk areas, and explanations on each pull request.
+
+**Related:** [Linear agents](../practitioners/linear-agents.md), [Orchestration](../patterns/orchestration/README.md), [Verification](../patterns/verification/README.md)
 
 ## 2026-11-09
 
@@ -290,7 +364,7 @@ Handles to read for first-party posts. **Top signal** is the shorter list for a 
 
 ### Labs and vendors
 
-[@dcramer](https://x.com/dcramer) (David Cramer, Sentry) **top signal** · [@getsentry](https://x.com/getsentry) (Sentry) · [@FactoryAI](https://x.com/FactoryAI) (Factory) · [@EnoReyes](https://x.com/EnoReyes) (Eno Reyes, Factory) **top signal** · [@ashtom](https://x.com/ashtom) (Thomas Dohmke) · [@kdaigle](https://x.com/kdaigle) (Kyle Daigle, GitHub) · [@github](https://x.com/github) (GitHub) · [@julesagent](https://x.com/julesagent) (Google Jules) · [@augmentcode](https://x.com/augmentcode) (Augment Code) · [@Sourcegraph](https://x.com/Sourcegraph) (Sourcegraph) · [@linear](https://x.com/linear) (Linear) · [@karrisaarinen](https://x.com/karrisaarinen) (Karri Saarinen, Linear) · [@kirodotdev](https://x.com/kirodotdev) (Kiro) · [@warpdotdev](https://x.com/warpdotdev) (Warp) · [@zeddotdev](https://x.com/zeddotdev) (Zed) · [@jetbrains](https://x.com/jetbrains) (JetBrains) · [@tabnine](https://x.com/tabnine) (Tabnine) · [@harnessio](https://x.com/harnessio) (Harness) · [@MistralAI](https://x.com/MistralAI) (Mistral) · [@xai](https://x.com/xai) (xAI) · [@googledevs](https://x.com/googledevs) (Google Developers) · [@GeminiApp](https://x.com/GeminiApp) (Gemini) · [@poolsideai](https://x.com/poolsideai) (Poolside) · [@magicailabs](https://x.com/magicailabs) (Magic) · [@imbue_ai](https://x.com/imbue_ai) (Imbue) · [@v0](https://x.com/v0) (v0) · [@boltdotnew](https://x.com/boltdotnew) (Bolt.new) · [@EricSimons40](https://x.com/EricSimons40) (Eric Simons, StackBlitz) · [@Lovable](https://x.com/Lovable) (Lovable) · [@antonosika](https://x.com/antonosika) (Anton Osika, Lovable) · [@ScottWu46](https://x.com/ScottWu46) (Scott Wu, Cognition) · [@walden_yan](https://x.com/walden_yan) (Walden Yan, Cognition) **top signal** · [@kevinhou22](https://x.com/kevinhou22) (Kevin Hou) · [@alexalbert__](https://x.com/alexalbert__) (Alex Albert, Anthropic) · [@jaredpalmer](https://x.com/jaredpalmer) (Jared Palmer) · [@tobi](https://x.com/tobi) (Tobi Lütke, Shopify) · [@mitchellh](https://x.com/mitchellh) (Mitchell Hashimoto) **top signal**
+[@dcramer](https://x.com/dcramer) (David Cramer, Sentry) **top signal** · [@getsentry](https://x.com/getsentry) (Sentry) · [@FactoryAI](https://x.com/FactoryAI) (Factory) · [@EnoReyes](https://x.com/EnoReyes) (Eno Reyes, Factory) **top signal** · [@ashtom](https://x.com/ashtom) (Thomas Dohmke) · [@kdaigle](https://x.com/kdaigle) (Kyle Daigle, GitHub) · [@github](https://x.com/github) (GitHub) · [@julesagent](https://x.com/julesagent) (Google Jules) · [@augmentcode](https://x.com/augmentcode) (Augment Code) · [@Sourcegraph](https://x.com/Sourcegraph) (Sourcegraph) · [@linear](https://x.com/linear) (Linear) · [@karrisaarinen](https://x.com/karrisaarinen) (Karri Saarinen, Linear) · [@kevins8](https://x.com/kevins8) (Kevin S Lin, OpenAI) · [@mgarimella](https://x.com/mgarimella) (Actively AI) · [@kirodotdev](https://x.com/kirodotdev) (Kiro) · [@warpdotdev](https://x.com/warpdotdev) (Warp) · [@zeddotdev](https://x.com/zeddotdev) (Zed) · [@jetbrains](https://x.com/jetbrains) (JetBrains) · [@tabnine](https://x.com/tabnine) (Tabnine) · [@harnessio](https://x.com/harnessio) (Harness) · [@MistralAI](https://x.com/MistralAI) (Mistral) · [@xai](https://x.com/xai) (xAI) · [@googledevs](https://x.com/googledevs) (Google Developers) · [@GeminiApp](https://x.com/GeminiApp) (Gemini) · [@poolsideai](https://x.com/poolsideai) (Poolside) · [@magicailabs](https://x.com/magicailabs) (Magic) · [@imbue_ai](https://x.com/imbue_ai) (Imbue) · [@v0](https://x.com/v0) (v0) · [@boltdotnew](https://x.com/boltdotnew) (Bolt.new) · [@EricSimons40](https://x.com/EricSimons40) (Eric Simons, StackBlitz) · [@Lovable](https://x.com/Lovable) (Lovable) · [@antonosika](https://x.com/antonosika) (Anton Osika, Lovable) · [@ScottWu46](https://x.com/ScottWu46) (Scott Wu, Cognition) · [@walden_yan](https://x.com/walden_yan) (Walden Yan, Cognition) **top signal** · [@kevinhou22](https://x.com/kevinhou22) (Kevin Hou) · [@alexalbert__](https://x.com/alexalbert__) (Alex Albert, Anthropic) · [@jaredpalmer](https://x.com/jaredpalmer) (Jared Palmer) · [@tobi](https://x.com/tobi) (Tobi Lütke, Shopify) · [@mitchellh](https://x.com/mitchellh) (Mitchell Hashimoto) **top signal**
 
 ### Open-source builders
 

@@ -1,6 +1,6 @@
 # Harness Engineering
 
-*Refreshed 2026-11-02*
+*Refreshed 2026-11-16*
 
 Parent hub for the environment around a model: instructions, tools, middleware, plans, and feedback loops. The model is a component. The harness is what makes its work reliable.
 
@@ -36,6 +36,8 @@ LangChain's [27 October 2026 talk](https://www.youtube.com/watch?v=xy_7SzwsIjM) 
 - [Kiro](../../practitioners/kiro.md)
 - [Warp](../../practitioners/warp.md)
 - [Zed](../../practitioners/zed.md)
+- [GitHub Copilot](../../practitioners/github-copilot.md)
+- [JPMorgan Chase Jarvis](../../practitioners/jpmc-jarvis.md)
 - [JetBrains Junie](../../practitioners/jetbrains-junie.md)
 - [Tabnine](../../practitioners/tabnine.md)
 - [Mistral Devstral](../../practitioners/mistral-devstral.md)

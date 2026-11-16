@@ -47,6 +47,9 @@ Related project note: [Software Factory operations (archived snapshot as of 2026
 - [Qodo](../../practitioners/qodo.md)
 - [SWE-bench](../../practitioners/swe-bench.md)
 - [Levi Strauss](../../practitioners/levi-strauss.md)
+- [JPMorgan Chase Jarvis](../../practitioners/jpmc-jarvis.md)
+- [Warp](../../practitioners/warp.md)
+- [Replit Agent Habitat](../../practitioners/replit-agent-habitat.md)
 
 ## Sources
 
