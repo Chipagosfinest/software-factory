@@ -1,6 +1,6 @@
 # Memory and Knowledge
 
-*Refreshed 2026-11-16*
+*Refreshed 2026-11-23*
 
 Parent hub for state that outlives a single prompt: memory systems, hybrid search over notes, markdown knowledge stores, and compaction when a multi-agent trace no longer fits the window.
 
@@ -19,8 +19,10 @@ Stuffing the repo into context is the failure mode. These notes cover progressiv
 - [Ramp Inspect](../../practitioners/ramp-inspect.md)
 - [Magic](../../practitioners/magic.md)
 - [Zed](../../practitioners/zed.md)
+- [Cursor](../../practitioners/cursor.md)
 
 ## Sources
 
 - [QMD](https://github.com/tobi/qmd)
 - [Deep Agents](https://github.com/langchain-ai/deepagents)
+- [Coordinating Agents on Large-Scale Work with Cursor Projects](https://www.youtube.com/watch?v=m1TbcQjPhNw) (2026-11-17)

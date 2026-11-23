@@ -24,8 +24,13 @@ Related project note: [Software Factory operations (archived snapshot as of 2026
 - [Vercel](../../practitioners/vercel.md)
 - [Cursor](../../practitioners/cursor.md)
 - [GitHub Copilot](../../practitioners/github-copilot.md)
+- [Factory.ai](../../practitioners/factory-ai.md)
+- [OpenCode](../../practitioners/opencode.md)
+- [LangChain Deep Agents](../../practitioners/langchain-deep-agents.md)
+- [Marks & Spencer](../../practitioners/marks-and-spencer.md)
 
 ## Sources
 
 - [Paperclip](https://github.com/paperclipai/paperclip)
 - [Stripe Minions](https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents)
+- [The factory mindset: Agentic workflows in production](https://www.youtube.com/watch?v=TYhsC-S-Fx0) (2026-11-23)

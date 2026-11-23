@@ -1,6 +1,6 @@
 # Sentry Seer
 
-*Refreshed 2026-11-09*
+*Refreshed 2026-11-23*
 
 ## What they do
 
@@ -19,6 +19,8 @@ The [8 October 2026 workshop](https://www.youtube.com/watch?v=0NEWeW0Opfk) treat
 The [6 November 2026 video](https://www.youtube.com/watch?v=Ks51wPYmM3c) shows agent traces with tool and model calls, handoffs, and full input and output transcripts. From a checkout failure, Seer follows the user journey to an inventory root cause, then Autofix plans, pushes code, and drafts a pull request for review.
 
 The [4 November 2026 livestream](https://www.youtube.com/watch?v=p8kpOePCsAM) description says agent cost is more than the model call: a slow or broken backend makes the agent retry, and every retry costs tokens, so one connected trace is needed to see spend that starts in an API or database. Anthropic's CJ Avilla sent Claude Platform OpenTelemetry data to Sentry and found an old project still burning tokens.
+
+The [19 November 2026 changelog](https://www.youtube.com/watch?v=wWD-bAu8hyg) shows Seer Agent in the Sentry UI and in Slack, with an approve-or-reject step before it acts. Connectors pull context from Datadog, Google Cloud, Grafana, and Linear. A GitLab integration is in early beta. People can tag Seer on a GitHub pull request to request changes. It keeps watching that pull request and fixes failing checks, which Serge and Lazar Nikolov call a self-healing loop. Onboarding a project yields one prompt for any coding agent, which installs a Sentry CLI that bundles an MCP server with persistent auth. A demo agent built with Claude Managed Agents and the Sentry MCP sends OpenTelemetry traces (duration, tokens, cost, and tool calls) to Sentry's Explore → Agents view, with filters that can limit collection. The CLI and MCP can export those traces to an evals tool. Seer can query the traces, for example to find frustrated chatbot users over 7 days.
 
 ## Patterns shown
 
@@ -40,3 +42,4 @@ No quantitative claim is repeated here. The sources describe the system without 
 - [LaunchDarkly workshop page](https://sentry.io/resources/launchdarkly-workshop/)
 - [Agent Trace Investigation with Seer](https://www.youtube.com/watch?v=Ks51wPYmM3c) (2026-11-06)
 - [Where Did My Tokens Go?](https://www.youtube.com/watch?v=p8kpOePCsAM) (2026-11-04)
+- [Changelog Live](https://www.youtube.com/watch?v=wWD-bAu8hyg) (2026-11-19)

@@ -1,6 +1,6 @@
 # LangChain Deep Agents
 
-*Refreshed 2026-11-16*
+*Refreshed 2026-11-23*
 
 ## What they do
 
@@ -17,11 +17,13 @@ The harness note separates two words. Context engineering is getting the right i
 - The [26 October 2026 talk](https://www.youtube.com/watch?v=Wb3hQaG_xf0) describes Managed Deep Agents as that harness on LangSmith Deployment, including durable execution and a task queue, so the team owns the business logic rather than that runtime. Large tool output is stored on the filesystem and read back when needed.
 - On November 5 and 6, 2026, Harrison Chase said most agents LangChain builds internally use async subagents in a meaningful way, and that Deep Agents now ships them so the agent keeps talking to the user while subagents work in the background. The same week, a test of seven browser-use toolsets in Managed Deep Agents picked Stagehand.
 - On November 14, 2026, with Actively AI, he wrote that a goal should be scoped around the work a person can give feedback on. Actively moved from one agent per sales account to "motions" on Deep Agents, one job such as outbound, so similar tasks are reviewed together and a correction transfers.
+- On November 20, 2026, he said LangSmith's Tool Gateway handles auth for every agent tool call, and LangSmith for coding agents shows what each merged pull request cost. The same post mentions trace access controls for sensitive data. He also wrote that most agent runs are not triggered by humans, and that he expects that to continue.
 
 ## Patterns shown
 
 - [Harness engineering](../patterns/harness-engineering/README.md)
 - [Memory and knowledge](../patterns/memory-knowledge/README.md) — summarization and filesystem context
+- [Governance and safety](../patterns/governance-safety/README.md) — auth on every tool call, and the cost of each merged pull request
 
 ## Key numbers
 
@@ -45,3 +47,5 @@ The harness note separates two words. Context engineering is getting the right i
 - [Async subagents and Stagehand, 2026-11-06](https://x.com/hwchase17/status/2118739844696277338)
 - [Goal engineering, 2026-11-14](https://x.com/hwchase17/status/2121635683999883577)
 - [Feedback scopes the goal, 2026-11-14](https://x.com/hwchase17/status/2121636034303905911)
+- [LangSmith for coding agents, 2026-11-20](https://x.com/hwchase17/status/2123802088547250358)
+- [Most runs are not human-triggered, 2026-11-20](https://x.com/hwchase17/status/2123853805276348782)

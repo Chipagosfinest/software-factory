@@ -1,6 +1,6 @@
 # Harness Engineering
 
-*Refreshed 2026-11-16*
+*Refreshed 2026-11-23*
 
 Parent hub for the environment around a model: instructions, tools, middleware, plans, and feedback loops. The model is a component. The harness is what makes its work reliable.
 
@@ -38,6 +38,7 @@ LangChain's [27 October 2026 talk](https://www.youtube.com/watch?v=xy_7SzwsIjM) 
 - [Zed](../../practitioners/zed.md)
 - [GitHub Copilot](../../practitioners/github-copilot.md)
 - [JPMorgan Chase Jarvis](../../practitioners/jpmc-jarvis.md)
+- [Vercel](../../practitioners/vercel.md)
 - [JetBrains Junie](../../practitioners/jetbrains-junie.md)
 - [Tabnine](../../practitioners/tabnine.md)
 - [Mistral Devstral](../../practitioners/mistral-devstral.md)
@@ -62,3 +63,5 @@ LangChain's [27 October 2026 talk](https://www.youtube.com/watch?v=xy_7SzwsIjM) 
 - [LangChain: Improving Deep Agents with harness engineering](https://blog.langchain.com/improving-deep-agents-with-harness-engineering/)
 - [How to Build Agents That Improve Over Time](https://www.youtube.com/watch?v=xy_7SzwsIjM) (2026-10-27)
 - [Inside Managed Deep Agents](https://www.youtube.com/watch?v=Wb3hQaG_xf0) (2026-10-26)
+- [How we optimize GitHub Copilot for every new model](https://www.youtube.com/watch?v=JSC8eVojIWY) (2026-11-18)
+- [Per-harness tool mappings](https://x.com/cramforce/status/2123926740842213768) (2026-11-20)

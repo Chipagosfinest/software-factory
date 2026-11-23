@@ -1,12 +1,56 @@
 # X Insights
 
-*Refreshed 2026-11-16*
+*Refreshed 2026-11-23*
 
 Running log of insights those teams publish on X. Newer collection runs are prepended above older ones.
 
 ## Research Method
 
-First-party posts from team accounts, November 10 – November 16, 2026. Reposts from unverified accounts are excluded. Each entry records the handle, date, post, a short reading of the claim, and the closest topic already in this repo.
+First-party posts from team accounts, November 17 – November 23, 2026. Reposts from unverified accounts are excluded. Each entry records the handle, date, post, a short reading of the claim, and the closest topic already in this repo.
+
+## 2026-11-23
+
+### @cognition (Cognition) — 2026-11-17
+
+[Post](https://x.com/cognition/status/2122737511684587551), [Manim, 2026-11-20](https://x.com/cognition/status/2123813355538239878), [Scott Wu](https://x.com/ScottWu46/status/2122776629995049377), and [Ryan Carson](https://x.com/ryancarson/status/2124174540204880154)
+
+Cognition introduces Devin Bots. A Devin Bot leads a team of agents, from writing firmware to merging thousands of pull requests a week. A later post says Grant Sanderson set up a Devin Bot for Manim, 3Blue1Brown's animation library (96.6k stars, 7,936 forks, 250,000 downloads a month). Scott Wu's framing is that going from an agent doing 98% of the work to 99% is an enormous difference. Ryan Carson says that at Untangle, Bots are like employees who own parts of the app and the engineering process, the team shares them, and "everyone talks to the same Bots."
+
+**Related:** [Cognition Devin](../practitioners/cognition-devin.md), [Orchestration](../patterns/orchestration/README.md), [Background Agents](../patterns/background-agents/README.md)
+
+### @factory (Factory) — 2026-11-17
+
+[Chained Automations](https://x.com/factory/status/2122745039445180478) and [NVIDIA, 2026-11-18](https://x.com/factory/status/2123106207997247855)
+
+Chained Automations let one automation trigger the next, pass that run's outputs in as context, and start from a schedule, Slack, a webhook, or a GitHub event. The next day Factory said NVIDIA post-trained Nemotron with Factory, entirely inside NVIDIA's own air-gapped network. Factory says it was the only commercially supported harness NVIDIA deployed in that environment, and that researchers got long-running agents and full execution traces.
+
+**Related:** [Factory.ai](../practitioners/factory-ai.md), [Orchestration](../patterns/orchestration/README.md), [Governance and Safety](../patterns/governance-safety/README.md)
+
+### @dexhorthy (Dex Horthy) — 2026-11-22
+
+[Which parts to own](https://x.com/dexhorthy/status/2124613833050472826), [code mode](https://x.com/dexhorthy/status/2124624191563698426), [read the evals](https://x.com/dexhorthy/status/2124666271530995771), and [Malte Ubl, 2026-11-20](https://x.com/cramforce/status/2123926740842213768)
+
+Dex Horthy says not to adopt a lab harness only because it is the lab's. Tool definitions and the system prompt are part of how the model was trained with reinforcement learning, so leaving those behind means you are on your own. The parts he says a team should own include orchestration, backpressure, forward pressure, the toolset, hook implementations, and memory and context. For the core of the agent loop he tries to match the frontier harness unless there is a very strong counterargument. A code-mode change in Factory, which he calls Procedural Tool Calling, cut a daily Linear sweep from 245k tokens to 23k and from 7 minutes to 36 seconds. He also writes that models are still bad at writing and reviewing evals, and that if you do not read the code you should at least read the evals.
+
+The same week Malte Ubl merged per-harness tool mappings into the Vercel Board skill. Each mapping translates that harness's own tools for talking to other agents into the matching Vercel Board commands, so a model trained on its own tools can use the cloud board. He says the mappings cover the common harnesses, "so codex and claude are now BFFs."
+
+**Related:** [Vercel](../practitioners/vercel.md), [Factory.ai](../practitioners/factory-ai.md), [Harness Engineering](../patterns/harness-engineering/README.md), [Orchestration](../patterns/orchestration/README.md), [Verification](../patterns/verification/README.md)
+
+### @opencode (OpenCode) — 2026-11-23
+
+[Automations](https://x.com/opencode/status/2124886266835505473) and [keyless auth, 2026-11-21](https://x.com/opencode/status/2124037654639468759)
+
+OpenCode 2.4.0 lets the agent create automations that run on a schedule or react to MCP events. An automation can trigger a prompt, a shell command, or a code-mode script that can call the user's MCP tools. Two days earlier, OpenCode Console added keyless auth: calling models from CI, or from anywhere that supports OIDC, no longer needs a long-lived API token. That follows the same direction as Malte Ubl's [November 14 post](https://x.com/cramforce/status/2121646284612501738) on retiring static credentials.
+
+**Related:** [OpenCode](../practitioners/opencode.md), [Orchestration](../patterns/orchestration/README.md), [Governance and Safety](../patterns/governance-safety/README.md)
+
+### @hwchase17 (Harrison Chase, LangChain) — 2026-11-20
+
+[Post](https://x.com/hwchase17/status/2123802088547250358) and [follow-up](https://x.com/hwchase17/status/2123853805276348782)
+
+LangSmith's Tool Gateway handles auth for every agent tool call. LangSmith for coding agents shows what each merged pull request cost. The same note mentions trace access controls for sensitive data, and two blogs on agents that pursue goals. He also writes that most agent runs are not triggered by humans, and that he expects that to continue.
+
+**Related:** [LangChain Deep Agents](../practitioners/langchain-deep-agents.md), [Governance and Safety](../patterns/governance-safety/README.md), [Agent Safety & Cost Control](../patterns/governance-safety/agent-safety-cost-control.md)
 
 ## 2026-11-16
 
@@ -360,7 +404,7 @@ Handles to read for first-party posts. **Top signal** is the shorter list for a 
 
 ### Already in the October–November 2026 log
 
-[@AnthropicAI](https://x.com/AnthropicAI) (Anthropic) · [@claudeai](https://x.com/claudeai) (Claude) · [@bcherny](https://x.com/bcherny) (Boris Cherny, Claude Code) · [@_catwu](https://x.com/_catwu) (Cat Wu, Claude Code) · [@trq212](https://x.com/trq212) (Claude Code) · [@OpenAIDevs](https://x.com/OpenAIDevs) (OpenAI developers) · [@thsottiaux](https://x.com/thsottiaux) (Thibault Sottiaux, Codex) · [@cursor_ai](https://x.com/cursor_ai) (Cursor) · [@mntruell](https://x.com/mntruell) (Michael Truell, Cursor) · [@leerob](https://x.com/leerob) (Lee Robinson) · [@eric_zakariasson](https://x.com/eric_zakariasson) (Eric Zakariasson, Cursor) · [@cognition](https://x.com/cognition) (Cognition) · [@factory](https://x.com/factory) (Factory) · [@matanSF](https://x.com/matanSF) (Factory) · [@AmpCode](https://x.com/AmpCode) (Amp) · [@sqs](https://x.com/sqs) (Quinn Slack, Sourcegraph) · [@LangChainAI](https://x.com/LangChainAI) (LangChain) · [@hwchase17](https://x.com/hwchase17) (Harrison Chase, LangChain) · [@rauchg](https://x.com/rauchg) (Guillermo Rauch, Vercel) · [@amasad](https://x.com/amasad) (Amjad Masad, Replit) · [@karpathy](https://x.com/karpathy) (Andrej Karpathy) · [@swyx](https://x.com/swyx) (Shawn Wang) · [@simonw](https://x.com/simonw) (Simon Willison) · [@cramforce](https://x.com/cramforce) (Malte Ubl, Vercel) · [@thdxr](https://x.com/thdxr) (Dax Raad, OpenCode/SST) · [@dexhorthy](https://x.com/dexhorthy) (Dex Horthy) · [@tessl_io](https://x.com/tessl_io) (Tessl) · [@coderabbitai](https://x.com/coderabbitai) (CodeRabbit) · [@EnoReyes](https://x.com/EnoReyes) (Eno Reyes, Factory) · [@github](https://x.com/github) (GitHub) · [@addyosmani](https://x.com/addyosmani) (Addy Osmani) · [@warpdotdev](https://x.com/warpdotdev) (Warp) · [@BHolmesDev](https://x.com/BHolmesDev) (Ben Holmes, Warp) · [@0xblacklight](https://x.com/0xblacklight) (HumanLayer)
+[@AnthropicAI](https://x.com/AnthropicAI) (Anthropic) · [@claudeai](https://x.com/claudeai) (Claude) · [@bcherny](https://x.com/bcherny) (Boris Cherny, Claude Code) · [@_catwu](https://x.com/_catwu) (Cat Wu, Claude Code) · [@trq212](https://x.com/trq212) (Claude Code) · [@OpenAIDevs](https://x.com/OpenAIDevs) (OpenAI developers) · [@thsottiaux](https://x.com/thsottiaux) (Thibault Sottiaux, Codex) · [@cursor_ai](https://x.com/cursor_ai) (Cursor) · [@mntruell](https://x.com/mntruell) (Michael Truell, Cursor) · [@leerob](https://x.com/leerob) (Lee Robinson) · [@eric_zakariasson](https://x.com/eric_zakariasson) (Eric Zakariasson, Cursor) · [@cognition](https://x.com/cognition) (Cognition) · [@factory](https://x.com/factory) (Factory) · [@matanSF](https://x.com/matanSF) (Factory) · [@AmpCode](https://x.com/AmpCode) (Amp) · [@sqs](https://x.com/sqs) (Quinn Slack, Sourcegraph) · [@LangChainAI](https://x.com/LangChainAI) (LangChain) · [@hwchase17](https://x.com/hwchase17) (Harrison Chase, LangChain) · [@rauchg](https://x.com/rauchg) (Guillermo Rauch, Vercel) · [@amasad](https://x.com/amasad) (Amjad Masad, Replit) · [@karpathy](https://x.com/karpathy) (Andrej Karpathy) · [@swyx](https://x.com/swyx) (Shawn Wang) · [@simonw](https://x.com/simonw) (Simon Willison) · [@cramforce](https://x.com/cramforce) (Malte Ubl, Vercel) · [@thdxr](https://x.com/thdxr) (Dax Raad, OpenCode/SST) · [@dexhorthy](https://x.com/dexhorthy) (Dex Horthy) · [@tessl_io](https://x.com/tessl_io) (Tessl) · [@coderabbitai](https://x.com/coderabbitai) (CodeRabbit) · [@EnoReyes](https://x.com/EnoReyes) (Eno Reyes, Factory) · [@github](https://x.com/github) (GitHub) · [@addyosmani](https://x.com/addyosmani) (Addy Osmani) · [@warpdotdev](https://x.com/warpdotdev) (Warp) · [@BHolmesDev](https://x.com/BHolmesDev) (Ben Holmes, Warp) · [@0xblacklight](https://x.com/0xblacklight) (HumanLayer) · [@ScottWu46](https://x.com/ScottWu46) (Scott Wu, Cognition) · [@ryancarson](https://x.com/ryancarson) (Ryan Carson) · [@opencode](https://x.com/opencode) (OpenCode)
 
 ### Labs and vendors
 

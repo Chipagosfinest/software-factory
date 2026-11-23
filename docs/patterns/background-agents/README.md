@@ -1,6 +1,6 @@
 # Background Agents
 
-*Refreshed 2026-11-02*
+*Refreshed 2026-11-23*
 
 Parent hub for agents that run without a developer sitting in the loop: isolated sandboxes, warm start, worktrees, and a pull request as the handoff. The developer submits work and reviews the result.
 
@@ -50,6 +50,7 @@ Warp's 23 October 2026 account of a software factory is that handoff moved off t
 - [Cloudflare Sandbox](../../practitioners/cloudflare-sandbox.md)
 - [Conductor](../../practitioners/conductor.md)
 - [Nimbalyst](../../practitioners/nimbalyst.md)
+- [Marks & Spencer](../../practitioners/marks-and-spencer.md)
 
 ## Sources
 
@@ -57,3 +58,5 @@ Warp's 23 October 2026 account of a software factory is that handoff moved off t
 - [Spotify Honk, part 1](https://engineering.atspotify.com/2025/11/spotifys-background-coding-agent-part-1)
 - [Ramp on Modal](https://modal.com/blog/how-ramp-built-a-full-context-background-coding-agent-on-modal)
 - [Powering Warp Factories with Sentry](https://www.youtube.com/watch?v=Shqcc2aRTGY) (2026-10-23)
+- [Stripe's Minions now ship 9,000 pull requests a week](https://www.youtube.com/watch?v=Yuo2V3f0ltY) (2026-11-19)
+- [The factory mindset: Agentic workflows in production](https://www.youtube.com/watch?v=TYhsC-S-Fx0) (2026-11-23)

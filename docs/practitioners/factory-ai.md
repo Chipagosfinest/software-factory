@@ -1,6 +1,6 @@
 # Factory.ai
 
-*Refreshed 2026-11-09*
+*Refreshed 2026-11-23*
 
 ## What they do
 
@@ -12,6 +12,8 @@ On November 4, 2026, Factory said HumanLayer is joining, with Dex Horthy (@dexho
 
 On November 6, 2026, Eno Reyes defined a software factory as the same stages for every piece of work, standardizing the process rather than the output. Work starts from a signal, a person picks it up with Droid or a workstream triages it, every change gets the same checks regardless of author, and validation hill-climbs a regret-free merge rate, with production breaks traced back to the causing PR as new signals.
 
+On November 17, 2026, Factory introduced Chained Automations. One automation can trigger the next, pass its outputs in as context, and start from a schedule, Slack, a webhook, or a GitHub event. On November 18, Factory said NVIDIA post-trained Nemotron with Factory inside NVIDIA's own air-gapped network, and that Factory was the only commercially supported harness NVIDIA deployed there. Researchers in that environment got long-running agents and full execution traces.
+
 ## What they do well
 
 The docs present Missions and Droids as the way work is packaged, with environments the agent runs in and a remote-control path. Autonomy and safety are a documented section, which is the harness boundary rather than a measured outcome.
@@ -19,7 +21,8 @@ The docs present Missions and Droids as the way work is packaged, with environme
 ## Patterns shown
 
 - [Background agents](../patterns/background-agents/README.md) — Droids, environments, and remote control
-- [Orchestration](../patterns/orchestration/README.md) — Missions as a named workflow surface
+- [Orchestration](../patterns/orchestration/README.md) — Missions as a named workflow surface; chained automations pass outputs downstream
+- [Governance and safety](../patterns/governance-safety/README.md) — an air-gapped NVIDIA deployment, with execution traces kept inside that network
 
 ## Key numbers
 
@@ -32,3 +35,5 @@ No quantitative claim is repeated here. The sources describe the system without 
 - [@matanSF, 2026-10-30](https://x.com/matanSF/status/2116215162898436176)
 - [HumanLayer joins Factory, 2026-11-04](https://x.com/factory/status/2118033889772155121)
 - [Software factory definition, 2026-11-06](https://x.com/EnoReyes/status/2118767454721851680)
+- [Chained Automations, 2026-11-17](https://x.com/factory/status/2122745039445180478)
+- [NVIDIA air-gapped deployment, 2026-11-18](https://x.com/factory/status/2123106207997247855)

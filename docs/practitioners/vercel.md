@@ -1,6 +1,6 @@
 # Vercel
 
-*Refreshed 2026-11-16*
+*Refreshed 2026-11-23*
 
 ## What they do
 
@@ -18,6 +18,8 @@ Vercel Security Review is source-code-aware security review combined with knowle
 
 On November 14, 2026, Guillermo Rauch described the ship path as the agent writing feature-gated code, verification gates on push (proof checking and security audits), and the agent watching metrics, through `vercel flags`, `vercel metrics`, and `vercel deploy`. The same day, Malte Ubl's post on long-lived static credentials says API keys and database passwords that get reused, often with no expiration, leak into repos and chats, get stolen, or get revealed by prompt injection. Vendors that do not support OIDC from Vercel and still use long-lived secrets get a "Not secure" label on their Marketplace listing by November 30, 2026. Vendors that do not offer secure auth are delisted in January 2027. His summary of the Cursor incident is that static credentials leaked through stolen LLM transcripts.
 
+On November 20, 2026, Malte Ubl merged per-harness tool mappings into the Vercel Board skill. Each mapping translates that harness's tools for talking to other agents into the matching Board commands, so a model trained on its own tools can use the cloud board. He says the mappings cover the common harnesses.
+
 Separately, the README records Vercel coding agents running in ephemeral Firecracker microVMs as a probe fleet for agent-experience tracking.
 
 ## What they do well
@@ -31,6 +33,7 @@ Other October 2026 posts in X insights, not used as the primary source for this 
 - [Verification](../patterns/verification/README.md) — CI the agent can inspect, abort, trigger, and replay
 - [Background agents](../patterns/background-agents/README.md) — microVM fleets as the execution substrate
 - [Governance and safety](../patterns/governance-safety/README.md) — short-lived identity tokens in place of static credentials
+- [Harness engineering](../patterns/harness-engineering/README.md) — per-harness tool mappings that stay on the tools a model was trained on
 
 ## Key numbers
 
@@ -51,3 +54,4 @@ Other October 2026 posts in X insights, not used as the primary source for this 
 - [How agents will ship all code, 2026-11-14](https://x.com/rauchg/status/2121711321347715093)
 - [Death to long-lived static credentials](https://vercel.com/blog/death-to-long-lived-static-credentials)
 - [Static credentials, 2026-11-14](https://x.com/cramforce/status/2121646284612501738)
+- [Per-harness tool mappings, 2026-11-20](https://x.com/cramforce/status/2123926740842213768)

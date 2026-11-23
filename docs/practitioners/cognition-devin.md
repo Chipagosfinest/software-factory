@@ -1,6 +1,6 @@
 # Cognition Devin
 
-*Refreshed 2026-11-16*
+*Refreshed 2026-11-23*
 
 ## What they do
 
@@ -20,11 +20,13 @@ Figures below are the ones already written down in this repo. Several are vendor
 - SWE-2 Flash is a fast coding model. Cognition says it outperforms all American open-weight models on leading evals. Weights are shared with partners and researchers through a gated program.
 - On November 11, 2026, Cognition said the best engineering teams use cloud agents to build, test, and verify end to end, and pointed at Basis, whose agents cut 20-hour accounting tasks to 30 minutes.
 - Devin Apps, announced November 13, 2026, are private, shareable web applications that run on Devin's cloud computer, for internal tools, preview deployments, and extensions to Devin. Walden Yan says they use memory-snapshotting VMs, so a pull-request preview is not limited to the frontend and internal apps are "secure by design."
+- On November 17, 2026, Cognition introduced Devin Bots. A Devin Bot leads a team of agents, from writing firmware to merging thousands of pull requests a week. A November 20 post says Grant Sanderson set up a Devin Bot for Manim, 3Blue1Brown's animation library (96.6k stars, 7,936 forks, 250,000 downloads a month). Scott Wu's framing is that going from an agent doing 98% of the work to 99% is an enormous difference. Ryan Carson says that at Untangle the team shares Bots, they own parts of the app and the engineering process, and "everyone talks to the same Bots."
 
 ## Patterns shown
 
 - [Verification](../patterns/verification/README.md) — benchmark and merge-rate claims; treat vendor figures as claims
 - [Background agents](../patterns/background-agents/README.md) — cloud VM per task, parallel sandboxes
+- [Orchestration](../patterns/orchestration/README.md) — a Devin Bot leads a team of agents
 
 ## Key numbers
 
@@ -37,6 +39,7 @@ Figures below are the ones already written down in this repo. Several are vendor
 | 68 | Devin Fusion score on the Coding Agent Index | X insights |
 | up to 5x / 1.5x | Devin Review 2.0, cheaper and faster PR review | Cognition |
 | 20 hours → 30 minutes | Basis accounting tasks, as Cognition states it | [2026-11-11 post](https://x.com/cognition/status/2120626702246449362) |
+| thousands / week | Top of the range Cognition states for a Devin Bot, from firmware work up to that merge rate | [2026-11-17 post](https://x.com/cognition/status/2122737511684587551) |
 
 ## Sources
 
@@ -50,3 +53,7 @@ Figures below are the ones already written down in this repo. Several are vendor
 - [Basis and end-to-end cloud agents, 2026-11-11](https://x.com/cognition/status/2120626702246449362)
 - [Devin Apps, 2026-11-13](https://x.com/cognition/status/2121255137914077300)
 - [Memory-snapshotting VMs, 2026-11-13](https://x.com/walden_yan/status/2121287289628397926)
+- [Devin Bots, 2026-11-17](https://x.com/cognition/status/2122737511684587551)
+- [Manim, 2026-11-20](https://x.com/cognition/status/2123813355538239878)
+- [Scott Wu, 2026-11-17](https://x.com/ScottWu46/status/2122776629995049377)
+- [Ryan Carson, 2026-11-21](https://x.com/ryancarson/status/2124174540204880154)
